@@ -1,0 +1,30 @@
+<form class="roll-card">
+    <div class="card-title">
+        Dice roll
+    </div>
+    <div class="roll-result">
+        <p>{{skillUsed}} - Success On: {{successOn}}+</p>
+        <p>Dice Pool: {{oldDicePoolValue}} reduced to {{newDicePoolValue}}</p>
+    </div>
+    <div class="roll-result">
+        {{{diceRollHTML}}}
+    </div>
+    {{#if horrorDiceUsed}}
+    <div class="roll-result">
+        <p>Horror</p>
+        {{{horrorDiceRollHTML}}}
+    </div>
+    {{/if}}
+    <div class="roll-result">
+        <div class="dice-results-container">
+            {{#each results}}
+            <span class="dice-result {{#if isHorror}}horror-die{{else}}{{#if (gte this.result ../successOn)}}success{{else if (eq this.result 1)}}failure{{/if}}{{/if}}">
+                {{this.result}}
+            </span>
+            {{/each}}
+        </div>
+        <p>
+            Successes: {{successCount}} Failures: {{failureCount}} Trauma: {{horrorFailureCount}}
+        </p>
+    </div>
+</form>

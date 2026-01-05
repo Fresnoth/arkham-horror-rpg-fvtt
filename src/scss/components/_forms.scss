@@ -181,3 +181,29 @@ nav.tabs [data-group="sheet"] {
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210,90,63,0.25);
 }
+
+.small-input{
+  width: 30px;
+}
+
+.dice-icon{
+  img{
+    height: 32px;
+    border-radius: 10%;
+  }
+}
+
+.dicepool-display{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .dicepool-dice{
+    margin-right: 5px;
+  }
+}
+
+.styled-label{
+  font-family: $font-primary;
+  font-size: 1.1em;
+}

@@ -1,0 +1,25 @@
+.dice-results-container{
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    border: 1px solid black;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.dice-result{
+    border: 1px solid #000;
+    padding: 2px;
+    &.failure{
+        background: red;
+        color: white;
+    }
+    &.success{
+        background: green;
+        color: white;
+    }
+    &.horror-die{
+        background: black !important;
+        color: white !important;
+    }
+}

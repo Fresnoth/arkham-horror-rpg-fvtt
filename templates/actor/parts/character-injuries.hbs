@@ -1,9 +1,12 @@
 <fieldset>
-    <legend>INJURIES</legend>
+    <legend>INJURIES &amp; TRAUMA</legend>
     {{#each injuries as |injury|}}
     <div class="injury-entry">
         <div>
-            <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">{{injury.name}} </strong>
+            <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">
+                {{#if (eq injury.type 'trauma')}}[TRAUMA] {{/if}}
+                {{#if (eq injury.type 'injury')}}[INJURY] {{/if}}
+                {{injury.name}}</strong>
             <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
                 injury'}}' data-item-id='{{injury._id}}'>
                 <i class='fas fa-edit'></i>

@@ -1,12 +1,30 @@
 {
   "ARKHAM_HORROR": {
     "Ability": {
-      "Str": { "long": "Strength", "abbr": "str" },
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Dex": { "long": "Dexterity", "abbr": "dex" },
-      "Int": { "long": "Intelligence", "abbr": "int" },
-      "Wis": { "long": "Wisdom", "abbr": "wis" },
-      "Cha": { "long": "Charisma", "abbr": "cha" }
+      "Str": {
+        "long": "Strength",
+        "abbr": "str"
+      },
+      "Con": {
+        "long": "Constitution",
+        "abbr": "con"
+      },
+      "Dex": {
+        "long": "Dexterity",
+        "abbr": "dex"
+      },
+      "Int": {
+        "long": "Intelligence",
+        "abbr": "int"
+      },
+      "Wis": {
+        "long": "Wisdom",
+        "abbr": "wis"
+      },
+      "Cha": {
+        "long": "Charisma",
+        "abbr": "cha"
+      }
     },
     "SheetLabels": {
       "Actor": "ArkhamHorror Actor Sheet",
@@ -28,12 +46,26 @@
     "LABELS": {
       "Form": "Data",
       "Description": "Description"
+    },
+    "SKILL": {
+      "rangedCombat": "Ranged Combat",
+      "meleeCombat": "Melee Combat",
+      "agility": "Agility",
+      "athletics": "Athletics",
+      "wits": "Wits",
+      "presence": "Presence",
+      "intuition": "Intuition",
+      "knowledge": "Knowledge",
+      "resolve": "Resolve",
+      "lore": "Lore"
     }
   },
-  "TABS":{
-    "Character": "Character"
+  "TABS": {
+    "Character": "Character",
+    "NPC": "NPC",
+    "Biography": "Biography"
   },
-  "ITEM":{
+  "ITEM": {
     "Weapon": {
       "skill": "Skill",
       "damage": "Damage",
@@ -49,15 +81,11 @@
       "specialRules": "Special Rules",
       "cost": "Cost"
     },
-    "Tome":{
+    "Tome": {
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
       "rarity": "Rarity"
     }
-  },
-  "SKILL":{
-    "rangedCombat": "Ranged Combat",
-    "meleeCombat": "Melee Combat"
   },
   "TYPES": {
     "Actor": {
@@ -75,7 +103,8 @@
       "useful_item": "Useful Item",
       "tome": "Tome",
       "relic": "Relic",
-      "injury": "Injury"
+      "injury": "Injury",
+      "trauma": "Trauma"
     }
   }
 }

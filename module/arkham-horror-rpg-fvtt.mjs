@@ -3,6 +3,7 @@ import { ArkhamHorrorActor } from './documents/actor.mjs';
 import { ArkhamHorrorItem } from './documents/item.mjs';
 // Import sheet classes.
 import { ArkhamHorrorActorSheet } from './sheets/actor-sheet.mjs';
+import { ArkhamHorrorNpcSheet } from './sheets/npc-sheet.mjs';
 import { ArkhamHorrorItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
@@ -20,7 +21,7 @@ Hooks.once('init', function () {
   game.arkhamhorrorrpgfvtt = {
     ArkhamHorrorActor,
     ArkhamHorrorItem,
-    rollItemMacro,
+    arkhamHorrorResetSceneActorDicePool: arkhamHorrorResetSceneActorDicePool
   };
 
   // Add custom constants for configuration.
@@ -57,7 +58,8 @@ Hooks.once('init', function () {
     useful_item: models.ArkhamHorrorUsefulItem,
     tome: models.ArkhamHorrorTome,
     relic: models.ArkhamHorrorRelic,
-    injury: models.ArkhamHorrorInjury
+    injury: models.ArkhamHorrorInjury,
+    trauma: models.ArkhamHorrorTrauma
   }
 
   // Active Effects are never copied to the Actor,
@@ -69,7 +71,13 @@ Hooks.once('init', function () {
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorActorSheet, {
     makeDefault: true,
+    types: ['character'],
     label: 'ARKHAM_HORROR.SheetLabels.Actor',
+  });
+  Actors.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorNpcSheet, {
+    makeDefault: false,
+    types: ['npc'],
+    label: 'ARKHAM_HORROR.SheetLabels.NPC',
   });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorItemSheet, {
@@ -137,6 +145,35 @@ async function createItemMacro(data, slot) {
   }
   game.user.assignHotbarMacro(macro, slot);
   return false;
+}
+
+// helper function to reset the dice pool of all actors in the current scene
+// can be called via a macro: game.arkhamhorrorrpgfvtt.arkhamHorrorResetSceneActorDicePool()
+async function arkhamHorrorResetSceneActorDicePool() {
+  for (let token of canvas.tokens.placeables) {
+    const actor = token.actor;
+    if (actor?.type === 'character' || actor?.type === 'npc') {
+      let oldValue = actor.system.dicepool.value;
+      let newValue = actor.system.dicepool.max - actor.system.damage;
+      await actor.update({ 'system.dicepool.value': newValue });
+
+      const chatVars = {
+        label: 'Dicepool Reset',
+        actorName: actor.name,
+        oldDicePoolValue: oldValue,
+        newDicePoolValue: newValue
+      };
+
+      const html = await foundry.applications.handlebars.renderTemplate(
+        "systems/arkham-horror-rpg-fvtt/templates/chat/dicepool-reset.hbs",
+        chatVars
+      );
+      ChatMessage.create({
+        content: html,
+        speaker: ChatMessage.getSpeaker({ actor }),
+      });
+    }
+  }
 }
 
 /**

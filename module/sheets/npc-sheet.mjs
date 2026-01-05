@@ -4,7 +4,7 @@ const { TextEditor, DragDrop } = foundry.applications.ux
 import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 
-export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
 
     /** @inheritDoc */
@@ -45,40 +45,21 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     static PARTS = {
         header: {
             id: 'header',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-header.hbs'
+            template: 'systems/arkham-horror-rpg-fvtt/templates/npc/parts/npc-header.hbs'
         },
         tabs: {
             id: 'tabs',
             template: 'templates/generic/tab-navigation.hbs'
         },
-        character: {
-            id: 'character',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-main.hbs',
-            scrollable: ['']
-        },
-        background: {
-            id: 'background',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-background.hbs',
-            scrollable: ['']
-        },
-        mundane_resources: {
-            id: 'mundane_resources',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-mundane-resources.hbs',
-            scrollable: ['']
-        },
-        supernatural_resources: {
-            id: 'supernatural_resources',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-supernatural-resources.hbs',
+        npc: {
+            id: 'npc',
+            template: 'systems/arkham-horror-rpg-fvtt/templates/npc/parts/npc-main.hbs',
             scrollable: ['']
         },
         biography: {
             id: 'biography',
             template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-biography.hbs'
         },
-        notes: {
-            id: 'notes',
-            template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-notes.hbs'
-        }
     }
 
     /**
@@ -89,12 +70,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'character', group: 'sheet', label: 'Character' },
-                    { id: 'mundane_resources', group: 'sheet', label: 'Mundane Resources' },
-                    { id: 'supernatural_resources', group: 'sheet', label: 'Supernatural Resources' },
-                    { id: 'background', group: 'sheet', label: 'Background' }
+                    { id: 'npc', label: 'TABS.NPC', group: 'sheet' },
+                    { id: 'biography', label: 'TABS.Biography', group: 'sheet' }
                 ],
-            initial: 'character'
+            initial: 'npc'
         }
     }
 
@@ -129,22 +108,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             }
         );
 
-        context.firstSupernaturalEncounterHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.document.system.background.firstSupernaturalEncounter,
-            {
-                // Whether to show secret blocks in the finished html
-                secrets: this.document.isOwner,
-                // Necessary in v11, can be removed in v12
-                async: true,
-                // Data to fill in for inline rolls
-                rollData: this.document.getRollData(),
-                // Relative UUID resolution
-                relativeTo: this.document,
-            }
-        );
-
-        context.notableEnemiesHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.document.system.background.notableEnemies,
+        context.abilitiesDescriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.document.system.abilitiesDescription,
             {
                 // Whether to show secret blocks in the finished html
                 secrets: this.document.isOwner,

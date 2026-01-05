@@ -16,3 +16,4 @@ export {default as ArkhamHorrorUsefulItem} from "./item-useful-item.mjs";
 export {default as ArkhamHorrorTome} from "./item-tome.mjs";
 export {default as ArkhamHorrorRelic} from "./item-relic.mjs";
 export {default as ArkhamHorrorInjury} from "./item-injury.mjs";
+export {default as ArkhamHorrorTrauma} from "./item-trauma.mjs";

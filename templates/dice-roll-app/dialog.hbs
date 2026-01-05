@@ -1,0 +1,29 @@
+<form class="roll-dialog-container scrollable">
+    <div class="form-group">
+        <label for="dicepool">Dice Pool</label>
+        <input type="number" id="dicepool" name="diceToUse" value="{{diceToUse}}" min="0"> / 
+        <input type="number" name="currentDicePool" value="{{currentDicePool}}" min="0" readonly>
+    </div>
+    <div class="form-group">
+        <label for="skill-key">Skill</label>
+        <input type="text" id="skill-key" name="skillKey" value="{{localize (concat "ARKHAM_HORROR.SKILL." skillKey)}}" readonly>
+    </div>
+    <div class="form-group">
+        <label for="skill-current">Success on X+</label>
+        <input type="number" id="skill-current" name="skillCurrent" value="{{skillCurrent}}" min="0">
+    </div>
+    <div class="form-group">
+        <label for="bonus_dice">Bonus Dice</label>
+        <input type="number" id="bonus_dice" name="bonus_dice" value="{{bonus_dice}}" min="0">
+    </div>
+    <div class="form-group">
+        <label for="penalty">Penalty</label>
+        <input type="number" id="penalty" name="penalty" value="{{penalty}}" min="0">
+    </div>
+    <footer class="dialog-footer">
+        <button type="button" class="roll-button" data-action="clickedRoll">Roll</button>
+        <button type="button" class="roll-button" data-action="clickedRollAdvantage">Advantage</button>
+        <button type="button" class="roll-button" data-action="clickedRollDisadvantage">Disadvantage</button>
+        <button type="button" class="roll-button" data-action="clickedRollAdvDisadvantage">Adv + Disadvantage</button>
+    </footer>
+</form>

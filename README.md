@@ -9,11 +9,19 @@ everything on your own. This system provides only the necessary sheets and item 
 
 ## Features
 - full character sheet
-- item types: weapons, protective equipment, useful items, relics, tomes, injuries
-
-## ToDo
-- basic dice rolling
 - npc sheets
+- item types: weapons, protective equipment, useful items, relics, tomes, injuries
+- basic dice rolling
+  
+## ToDo
+- bug fixing
+- weapon usage
+- styling
+
+## Manifest-URL for manual installation of the system
+
+    https://github.com/MrTheBino/arkham-horror-foundry-vtt/releases/latest/download/system.json
+
 
 ## Version schema
 

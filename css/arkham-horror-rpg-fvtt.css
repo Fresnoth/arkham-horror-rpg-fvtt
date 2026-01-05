@@ -37,6 +37,16 @@
   filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
 }
 
+.dice-roll-app .window-content {
+  background: none;
+  background-image: url("../assets/images/sheet-background.webp");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  color: #191813;
+  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
+}
+
 .grid,
 .grid-2col {
   display: grid;
@@ -318,6 +328,32 @@ form > nav > a.item.active {
   height: 100%;
 }
 
+.dice-results-container {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  border: 1px solid black;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.dice-result {
+  border: 1px solid #000;
+  padding: 2px;
+}
+.dice-result.failure {
+  background: red;
+  color: white;
+}
+.dice-result.success {
+  background: green;
+  color: white;
+}
+.dice-result.horror-die {
+  background: black !important;
+  color: white !important;
+}
+
 /* Styles limited to arkham-horror-rpg-fvtt sheets */
 .system-arkham-horror-rpg-fvtt .item-form {
   font-family: "MODESTO CONDENSED", sans-serif;
@@ -467,6 +503,25 @@ form > nav > a.item.active {
   font-family: "MODESTO CONDENSED", sans-serif;
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+}
+.system-arkham-horror-rpg-fvtt .small-input {
+  width: 30px;
+}
+.system-arkham-horror-rpg-fvtt .dice-icon img {
+  height: 32px;
+  border-radius: 10%;
+}
+.system-arkham-horror-rpg-fvtt .dicepool-display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.system-arkham-horror-rpg-fvtt .dicepool-display .dicepool-dice {
+  margin-right: 5px;
+}
+.system-arkham-horror-rpg-fvtt .styled-label {
+  font-family: "MODESTO CONDENSED", sans-serif;
+  font-size: 1.1em;
 }
 .system-arkham-horror-rpg-fvtt .resource-label {
   font-weight: bold;
