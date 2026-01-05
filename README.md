@@ -1,6 +1,6 @@
 # Unofficial ArkhamHorror RPG System for FoundryVTT
 
-![Foundry v13](https://img.shields.io/badge/foundry-v13-green) [![Github All Releases](https://img.shields.io/github/downloads/MrTheBino/mist-engine-fvtt/total.svg)]()
+![Foundry v13](https://img.shields.io/badge/foundry-v13-green) [![Github All Releases](https://img.shields.io/github/downloads/MrTheBino/arkham-horror-rpg-fvtt/total.svg)]()
 
 This is an unoffical system implementation for Foundry VTT of the Arkham Horror RPG. The Arkham Horror RPG is made by EDGE Studio.
 
