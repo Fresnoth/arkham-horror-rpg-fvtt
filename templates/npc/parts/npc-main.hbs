@@ -52,7 +52,10 @@
                 <div class='item-prop'>{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}}</div>
                 <div class='item-prop'>{{item.system.damage}}</div>
                 <div class='item-prop'>{{item.system.injuryRating}}</div>
-                <div class='item-prop'>{{item.system.ammunition.current}} / {{item.system.ammunition.max}}</div>
+                <div class='item-prop'><input type="text" value="{{item.system.ammunition.current}}" data-item-stat="system.ammunition.current"
+                            class="item-editable-stat ammo_input"> / {{item.system.ammunition.max}} <span class="weapon-reload-icon" data-item-id='{{item._id}}' data-action="clickWeaponReload"
+                            title="{reload"><i
+                                class="fa-solid fa-rotate clickable"></i></span></div>
                 <div class='item-controls'>
                     <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
                         Item'}}'>

@@ -22,7 +22,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             createItem: this.#handleCreateItem,
             deleteItem: this.#handleDeleteItem,
             toggleFoldableContent: this.#handleToggleFoldableContent,
-            clickSkill: this.#handleSkillClicked
+            clickSkill: this.#handleSkillClicked,
+            clickWeaponReload: this.#handleWeaponReload
         },
         form: {
             submitOnChange: true
@@ -206,6 +207,27 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, tomes: tomes, relics: relics, injuries: injuries };
     }
 
+    /** @inheritDoc */
+    _onRender(context, options) {
+        //this.#dragDrop.forEach((d) => d.bind(this.element))
+
+        const itemEditableStatsElements = this.element.querySelectorAll('.item-editable-stat')
+        for (const input of itemEditableStatsElements) {
+            input.addEventListener("change", event => this.handleItemStatChanged(event))
+        }
+    }
+
+    async handleItemStatChanged(ev) {
+        const li = $(ev.currentTarget).parents('.item');
+        const item = this.actor.items.get(li.data('itemId'));
+
+        if (ev.target.type === 'checkbox') {
+            item.update({ [ev.target.dataset.itemStat]: ev.target.checked });
+        } else {
+            item.update({ [ev.target.dataset.itemStat]: ev.target.value });
+        }
+    }
+
     static async #handleClickedDicePool(event, target) {
         event.preventDefault();
         const element = event.currentTarget;
@@ -294,5 +316,27 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let currentDicePool = this.actor.system.dicepool.value;
         console.log(`Current Skill: ${skillCurrent}, Max Skill: ${skillMax}, Current Dice Pool: ${currentDicePool}`);
         DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool }).render(true);
+    }
+
+    static async #handleWeaponReload(event, target) {
+        event.preventDefault();
+        const itemId = target.dataset.itemId;
+
+        const item = this.actor.items.get(itemId);
+        if (item) {
+            const currentAmmo = item.system.ammunition.current;
+            const maxAmmo = item.system.ammunition.max;
+
+            if (currentAmmo < maxAmmo) {
+                await item.update({ 'system.ammunition.current': maxAmmo });
+                // update the money according to reload cost
+                const reloadCost = item.system.reloadCost;
+                const currentMoney = this.actor.system.mundaneResources.money;
+                const newMoney = currentMoney - reloadCost;
+                await this.actor.update({ 'system.mundaneResources.money': newMoney });
+            } 
+        } else {
+            console.error(`Item with ID ${itemId} not found on actor.`);
+        }
     }
 }

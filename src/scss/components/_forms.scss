@@ -142,6 +142,7 @@ fieldset{
   }
 }
 
+.sheet{
 h5{
   color: $c-light-red;
   text-shadow: 1px 1px rgba(210,90,63,0.25);
@@ -156,6 +157,7 @@ h4{
   font-family: $font-primary;
 }
 
+}
 .foldable-content{
   display: none;
   &.collapsed{
@@ -182,6 +184,15 @@ nav.tabs [data-group="sheet"] {
   text-shadow: 1px 1px rgba(210,90,63,0.25);
 }
 
+.npc-skill{
+  font-family: $font-primary;
+  font-size: 1.4em;
+  text-shadow: 1px 1px rgba(210,90,63,0.25);
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
 .small-input{
   width: 30px;
 }
@@ -206,4 +217,14 @@ nav.tabs [data-group="sheet"] {
 .styled-label{
   font-family: $font-primary;
   font-size: 1.1em;
+}
+
+.ammo_input {
+  width: 35px;
+  height: 20px;
+  text-align: center;
+}
+
+.tab-description {
+  height: 100%;
 }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
-## 1.2.0
+## 13.0.2 preview
 
-- Add support for Foundry v10
+- updating ammunition for weapons for characters and npc
+- reloading for weapons (npc & characters), reloading costs are reduced for characters
+- usage count updates for useful items
+- fixed some styling
+- several bug fixes

@@ -28,6 +28,10 @@
         <label for="cost">{{localize "ITEM.Weapon.cost"}}</label>
         <input type="number" id="cost" name="system.cost" value="{{system.cost}}" min="0"/>
     </div>
+    <div class="form-group">
+        <label for="reloadCost">{{localize "ITEM.Weapon.reloadCost"}}</label>
+        <input type="number" id="reloadCost" name="system.reloadCost" value="{{system.reloadCost}}" min="0"/>
+    </div>
     <div class="form-group-rich-editor">
         <label for="specialRules">{{localize "ITEM.Weapon.specialRules"}}</label>
         <prose-mirror name="system.specialRules" button="true" editable="{{editable}}" toggled="false"

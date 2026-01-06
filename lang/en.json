@@ -74,7 +74,8 @@
       "ammunition": "Ammunition",
       "cost": "Cost",
       "specialRules": "Special Rules",
-      "ammunitionMax": "Ammunition Max"
+      "ammunitionMax": "Ammunition Max",
+      "reloadCost": "Reload Cost"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Defensive Benefit",
@@ -85,6 +86,9 @@
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
       "rarity": "Rarity"
+    },
+    "UsefulItem":{
+      "uses": "Uses"
     }
   },
   "TYPES": {

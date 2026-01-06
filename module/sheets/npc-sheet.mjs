@@ -9,7 +9,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
-        classes: ['sheet', 'actor', 'character'],
+        classes: ['sheet', 'actor', 'npc'],
         tag: 'form',
         position: {
             width: 700,
@@ -22,7 +22,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             createItem: this.#handleCreateItem,
             deleteItem: this.#handleDeleteItem,
             toggleFoldableContent: this.#handleToggleFoldableContent,
-            clickSkill: this.#handleSkillClicked
+            clickSkill: this.#handleSkillClicked,
+            clickWeaponReload: this.#handleWeaponReload
         },
         form: {
             submitOnChange: true
@@ -171,6 +172,16 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, tomes: tomes, relics: relics, injuries: injuries };
     }
 
+    /** @inheritDoc */
+    _onRender(context, options) {
+        //this.#dragDrop.forEach((d) => d.bind(this.element))
+
+        const itemEditableStatsElements = this.element.querySelectorAll('.item-editable-stat')
+        for (const input of itemEditableStatsElements) {
+            input.addEventListener("change", event => this.handleItemStatChanged(event))
+        }
+    }
+
     static async #handleClickedDicePool(event, target) {
         event.preventDefault();
         const element = event.currentTarget;
@@ -259,5 +270,33 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         let currentDicePool = this.actor.system.dicepool.value;
         console.log(`Current Skill: ${skillCurrent}, Max Skill: ${skillMax}, Current Dice Pool: ${currentDicePool}`);
         DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool }).render(true);
+    }
+
+    static async #handleWeaponReload(event, target) {
+        event.preventDefault();
+        const itemId = target.dataset.itemId;
+
+        const item = this.actor.items.get(itemId);
+        if (item) {
+            const currentAmmo = item.system.ammunition.current;
+            const maxAmmo = item.system.ammunition.max;
+
+            if (currentAmmo < maxAmmo) {
+                await item.update({ 'system.ammunition.current': maxAmmo });
+            } 
+        } else {
+            console.error(`Item with ID ${itemId} not found on actor.`);
+        }
+    }
+
+    async handleItemStatChanged(ev) {
+        const li = $(ev.currentTarget).parents('.item');
+        const item = this.actor.items.get(li.data('itemId'));
+
+        if (ev.target.type === 'checkbox') {
+            item.update({ [ev.target.dataset.itemStat]: ev.target.checked });
+        } else {
+            item.update({ [ev.target.dataset.itemStat]: ev.target.value });
+        }
     }
 }
