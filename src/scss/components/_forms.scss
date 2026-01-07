@@ -190,7 +190,7 @@
   }
 }
 
-.sheet.actor {
+.sheet.actor,.sheet.item {
   nav.tabs [data-group="sheet"] {
     color: $c-light-red;
     font-weight: bold;

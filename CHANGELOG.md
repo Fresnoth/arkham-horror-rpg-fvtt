@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 13.0.7 ALPHA
+- fixed important styling issues
+- added knack creation button on actor sheet
+
 ## 13.0.6 ALPHA
 - fixed important styling issues
   

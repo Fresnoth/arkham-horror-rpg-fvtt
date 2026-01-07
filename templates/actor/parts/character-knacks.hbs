@@ -1,5 +1,8 @@
 <fieldset>
-    <legend>KNACKS</legend>
+    <legend>KNACKS <a class='item-control item-create' data-action="createItem"
+                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='knack'>
+                        <i class='fas fa-plus'></i>
+                    </a></legend>
     {{#each knacks as |knack|}}
     <div class="knack-entry">
         <div>
