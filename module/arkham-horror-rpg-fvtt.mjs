@@ -8,6 +8,7 @@ import { ArkhamHorrorItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { ARKHAM_HORROR } from './helpers/config.mjs';
+import { ArkhamHorrorCombatTracker } from './combat/combat-tracker.mjs';
 // Import DataModel classes
 import * as models from './data/_module.mjs';
 
@@ -26,6 +27,9 @@ Hooks.once('init', function () {
 
   // Add custom constants for configuration.
   CONFIG.ARKHAM_HORROR = ARKHAM_HORROR;
+
+  // Override the sidebar Combat Tracker UI (Arkham is side-based, not initiative-based).
+  CONFIG.ui.combat = ArkhamHorrorCombatTracker;
 
   /**
    * Set an initiative formula for the system

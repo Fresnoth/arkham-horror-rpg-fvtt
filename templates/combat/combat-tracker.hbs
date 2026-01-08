@@ -1,0 +1,47 @@
+<ol class="combat-tracker" data-tab="combat" data-group="sidebar">
+  {{#each groupedTurns as |group|}}
+    <li class="combat-group-banner {{#if group.isActive}}is-active{{/if}}"
+        data-side="{{group.key}}">
+      <div class="flexrow">
+        <h5 class="combat-group-title flex1">{{group.label}}</h5>
+        {{#if @first}}
+          <div class="token-initiative" data-tooltip="Dice Pool">
+            <span class="initiative">Dice Pool</span>
+          </div>
+        {{/if}}
+      </div>
+      {{#if group.isActive}}
+        <span class="combat-group-subtitle">Active Side</span>
+      {{/if}}
+    </li>
+
+    {{#each group.entries as |turn|}}
+        <li class="combatant {{turn.css}}" data-combatant-id="{{turn.id}}" data-action="activateCombatant"
+          data-token-id="{{turn.tokenId}}"
+          data-actor-id="{{turn.actorId}}">
+
+        <img class="token-image" src="{{turn.img}}" alt="{{turn.name}}" loading="lazy">
+
+        <div class="token-name">
+          <strong class="name">{{turn.name}}</strong>
+          <div class="combatant-controls">
+            {{#if @root.user.isGM}}
+              <button type="button" class="inline-control combatant-control icon fa-solid fa-eye-slash {{#if turn.hidden}}active{{/if}}"
+                      data-action="toggleHidden"></button>
+              <button type="button" class="inline-control combatant-control icon fa-solid fa-skull {{#if turn.defeated}}active{{/if}}"
+                      data-action="toggleDefeated"></button>
+            {{/if}}
+            {{#unless @root.user.isGM}}
+              <button type="button" class="inline-control combatant-control icon fa-solid fa-arrows-to-eye"
+                      data-action="panToCombatant"></button>
+            {{/unless}}
+          </div>
+        </div>
+
+        <div class="token-initiative" data-tooltip="Dicepool">
+          <span class="initiative">{{turn.dicepool}}</span>
+        </div>
+      </li>
+    {{/each}}
+  {{/each}}
+</ol>
