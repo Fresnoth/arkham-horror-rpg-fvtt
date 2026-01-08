@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.9 ALPHA
+- merged Arkham Combat Tracker v1 #2 by Freshnoth
+  
 ## 13.0.8 ALPHA
 - added dice pool & damage numbers below actor tokens
 - added settings for dice pool & damage overlay in system settings
