@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.12 ALPHA
+- hotfixes
+
 ## 13.0.11 ALPHA
 - added spell item
 - added new config settings
