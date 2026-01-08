@@ -8,8 +8,13 @@ import { ArkhamHorrorItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { ARKHAM_HORROR } from './helpers/config.mjs';
+import { TokenInformationOverlay } from './overlay/token-information.mjs';
+
 // Import DataModel classes
 import * as models from './data/_module.mjs';
+
+import { setupConfiguration } from './util/configuration.mjs';
+
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -59,7 +64,8 @@ Hooks.once('init', function () {
     tome: models.ArkhamHorrorTome,
     relic: models.ArkhamHorrorRelic,
     injury: models.ArkhamHorrorInjury,
-    trauma: models.ArkhamHorrorTrauma
+    trauma: models.ArkhamHorrorTrauma,
+    favor: models.ArkhamHorrorFavor
   }
 
   // Active Effects are never copied to the Actor,
@@ -85,6 +91,8 @@ Hooks.once('init', function () {
     label: 'ARKHAM_HORROR.SheetLabels.Item',
   });
 
+  setupConfiguration();
+  TokenInformationOverlay.registerHooks();
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
 });
