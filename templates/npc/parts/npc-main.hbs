@@ -55,6 +55,7 @@
                 <div class='item-prop'>Skill</div>
                 <div class='item-prop'>Damage</div>
                 <div class='item-prop'>Injury Rating</div>
+                <div class="item-prop">Range</div>
                 <div class='item-prop'>Ammunition</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
@@ -78,6 +79,9 @@
                     <div class='item-prop'>{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}}</div>
                     <div class='item-prop'>{{item.system.damage}}</div>
                     <div class='item-prop'>{{item.system.injuryRating}}</div>
+                    <div class='item-prop'>
+                        {{#if (eq item.system.range 0)}}Engaged{{else}}{{item.system.range}}{{/if}}
+                    </div>
                     <div class='item-prop'><input type="text" value="{{item.system.ammunition.current}}"
                             data-item-stat="system.ammunition.current" class="item-editable-stat ammo_input"> /
                         {{item.system.ammunition.max}} <span class="weapon-reload-icon" data-item-id='{{item._id}}'
