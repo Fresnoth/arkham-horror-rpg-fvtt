@@ -16,4 +16,66 @@ export function setupConfiguration() {
         type: Boolean,
         default: true
     });
+
+    game.settings.register("arkham-horror-rpg-fvtt", "characterInjuryTable", {
+        name: "Character Injury Table",
+        hint: "Used for rolling injuries",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: () => {
+            const tables = {};
+            for (const table of game.tables) {
+                tables[table.id] = table.name;
+            }
+            return tables;
+        },
+        default: ""
+    });
+    game.settings.register("arkham-horror-rpg-fvtt", "characterHorrorTable", {
+        name: "Character Horror Table",
+        hint: "Used for rolling horror",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: () => {
+            const tables = {};
+            for (const table of game.tables) {
+                tables[table.id] = table.name;
+            }
+            return tables;
+        },
+        default: ""
+    });
+
+    game.settings.register("arkham-horror-rpg-fvtt", "npcInjuryTable", {
+        name: "NPC Injury Table",
+        hint: "Used for rolling injuries",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: () => {
+            const tables = {};
+            for (const table of game.tables) {
+                tables[table.id] = table.name;
+            }
+            return tables;
+        },
+        default: ""
+    });
+    game.settings.register("arkham-horror-rpg-fvtt", "npcHorrorTable", {
+        name: "NPC Horror Table",
+        hint: "Used for rolling horror",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: () => {
+            const tables = {};
+            for (const table of game.tables) {
+                tables[table.id] = table.name;
+            }
+            return tables;
+        },
+        default: ""
+    });
 }
