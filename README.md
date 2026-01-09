@@ -28,5 +28,8 @@ everything on your own. This system provides only the necessary sheets and item 
 * 13.X.X Foundry 13 VTT 
 
 ## 3rd Party
-* This system is using the font [Dicier](https://speakthesky.itch.io/typeface-dicier), by Speak the Sky, licensed under CC BY 4.0.
+* This system is using the fonts: 
+    * [Dicier](https://speakthesky.itch.io/typeface-dicier), by Speak the Sky, licensed under CC BY 4.0.
+    * [Alegreya](https://huertatipografica.com/en/fonts/alegreya-ht-pro), by Huerta Tipografica, licensed under [SIL OFL 1.1](https://fonts.google.com/specimen/Alegreya/license)
+    * [Teutonic](https://online-fonts.com/fonts/teutonic), by Peter Wiegel, licensed under SIL OFL 1.1
 * This system is using icons from [Game Icons.net](https://game-icons.net/) licensed under CC BY 4.0
