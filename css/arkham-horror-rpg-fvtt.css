@@ -2,7 +2,7 @@
 /* Global styles */
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Voltaire&display=swap");
 .window-app {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 
 .rollable:hover, .rollable:focus {
@@ -260,6 +260,11 @@
   src: url("../assets/fonts/Dicier-Flat-Dark.woff2") format("woff2");
   font-weight: normal;
 }
+@font-face {
+  font-family: Teutonic;
+  src: url("../assets/fonts/Teutonic-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
 .dicier-icon {
   font-family: Dicier, sans-serif;
   font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
@@ -367,39 +372,39 @@ form > nav > a.item.active {
 .journal-page-content h5 {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .journal-page-content h4 {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .journal-page-content h3 {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .journal-page-content h2 {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .journal-page-content h1 {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 
 .combat-group-title, .token-initiative {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.2em;
 }
 
 /* Styles limited to arkham-horror-rpg-fvtt sheets */
 .system-arkham-horror-rpg-fvtt .item-form {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .sheet-header {
   flex: 0 auto;
@@ -501,7 +506,7 @@ form > nav > a.item.active {
 .system-arkham-horror-rpg-fvtt .sheet.actor .form-group label, .system-arkham-horror-rpg-fvtt .sheet.item .form-group label, .system-arkham-horror-rpg-fvtt .roll-dialog-container .form-group label {
   margin-right: 5px;
   flex-basis: 50%;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.2em;
   min-width: 120px;
 }
@@ -514,17 +519,17 @@ form > nav > a.item.active {
 .system-arkham-horror-rpg-fvtt .sheet.actor .header-form-group label, .system-arkham-horror-rpg-fvtt .sheet.item .header-form-group label, .system-arkham-horror-rpg-fvtt .roll-dialog-container .header-form-group label {
   margin-right: 5px;
   flex-basis: 50%;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.2em;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .form-group-editor label, .system-arkham-horror-rpg-fvtt .sheet.item .form-group-editor label, .system-arkham-horror-rpg-fvtt .roll-dialog-container .form-group-editor label {
   margin-right: 5px;
   flex-basis: 50%;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.1em;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend, .system-arkham-horror-rpg-fvtt .sheet.item fieldset legend, .system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.2em;
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
@@ -534,31 +539,31 @@ form > nav > a.item.active {
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h4, .system-arkham-horror-rpg-fvtt .sheet.item .window-content h4, .system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h4 {
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h3, .system-arkham-horror-rpg-fvtt .sheet.item .window-content h3, .system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h3 {
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h2, .system-arkham-horror-rpg-fvtt .sheet.item .window-content h2, .system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h2 {
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h1, .system-arkham-horror-rpg-fvtt .sheet.item .window-content h1, .system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h1 {
   color: #2B100A;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   border-bottom: 1px solid #722A1C;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
 }
 .system-arkham-horror-rpg-fvtt .foldable-content {
   display: none;
@@ -576,7 +581,7 @@ form > nav > a.item.active {
 .system-arkham-horror-rpg-fvtt .sheet.actor nav.tabs [data-group=sheet], .system-arkham-horror-rpg-fvtt .sheet.item nav.tabs [data-group=sheet] {
   color: #2B100A;
   font-weight: bold;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.1em;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor nav.tabs [data-group=sheet] .active, .system-arkham-horror-rpg-fvtt .sheet.item nav.tabs [data-group=sheet] .active {
@@ -584,12 +589,12 @@ form > nav > a.item.active {
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
 }
 .system-arkham-horror-rpg-fvtt .skill {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
 }
 .system-arkham-horror-rpg-fvtt .npc-skill {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
   text-align: center;
@@ -612,7 +617,7 @@ form > nav > a.item.active {
   margin-right: 5px;
 }
 .system-arkham-horror-rpg-fvtt .styled-label {
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   font-size: 1.1em;
 }
 .system-arkham-horror-rpg-fvtt .ammo_input {
@@ -629,7 +634,7 @@ form > nav > a.item.active {
 .system-arkham-horror-rpg-fvtt .roll-button {
   margin: 5px;
   margin-top: 25px;
-  font-family: "MODESTO CONDENSED", sans-serif;
+  font-family: "Teutonic", sans-serif;
   width: 100%;
   font-size: 1.2em;
 }
