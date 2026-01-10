@@ -40,6 +40,16 @@
   filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
 }
 
+.vehicle .window-content {
+  background: none;
+  background-image: url("../assets/images/sheet-background-v2.webp");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  color: $c-dark;
+  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
+}
+
 .item .window-content {
   background: none;
   background-image: url("../assets/images/sheet-background-v2.webp");

@@ -2,6 +2,7 @@
 export {default as ArkhamHorrorActorBase} from "./base-actor.mjs";
 export {default as ArkhamHorrorCharacter} from "./actor-character.mjs";
 export {default as ArkhamHorrorNPC} from "./actor-npc.mjs";
+export {default as ArkhamHorrorVehicle} from "./actor-vehicle.mjs";
 
 // Export Items
 export {default as ArkhamHorrorItemBase} from "./base-item.mjs";

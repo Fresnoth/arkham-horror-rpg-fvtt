@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 13.0.14
+- basic vehicle actor based on the Terra Antarctica campaign
+  
+## 13.0.13 
+- added new dice roll engine by frosnoth
+- added new chat cards by frosnoth
+- improved styled
+- added knacks to NPCs for easier prepping sessions
+- bug fixes
+ 
 ## 13.0.12 ALPHA
 - hotfixes
 

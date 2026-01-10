@@ -4,6 +4,7 @@ import { ArkhamHorrorItem } from './documents/item.mjs';
 // Import sheet classes.
 import { ArkhamHorrorActorSheet } from './sheets/actor-sheet.mjs';
 import { ArkhamHorrorNpcSheet } from './sheets/npc-sheet.mjs';
+import { ArkhamHorrorVehicleSheet } from './sheets/vehicle-sheet.mjs';
 import { ArkhamHorrorItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
@@ -53,7 +54,8 @@ Hooks.once('init', function () {
   // with the Character/NPC as part of super.defineSchema()
   CONFIG.Actor.dataModels = {
     character: models.ArkhamHorrorCharacter,
-    npc: models.ArkhamHorrorNPC
+    npc: models.ArkhamHorrorNPC,
+    vehicle: models.ArkhamHorrorVehicle
   }
   CONFIG.Item.documentClass = ArkhamHorrorItem;
   CONFIG.Item.dataModels = {
@@ -88,6 +90,11 @@ Hooks.once('init', function () {
     makeDefault: false,
     types: ['npc'],
     label: 'ARKHAM_HORROR.SheetLabels.NPC',
+  });
+  foundry.documents.collections.Actors.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorVehicleSheet, {
+    makeDefault: false,
+    types: ['vehicle'],
+    label: 'ARKHAM_HORROR.SheetLabels.Vehicle',
   });
   foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
   foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorItemSheet, {

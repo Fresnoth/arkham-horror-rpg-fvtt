@@ -241,7 +241,18 @@
 }
 
 .small-input {
-  width: 30px;
+  width: 33px;
+  height: 20px;
+}
+
+.medium-input {
+  width: 40px;
+  height: 20px;
+}
+
+.large-input {
+  width: 60px;
+  height: 20px;
 }
 
 .dice-icon {
@@ -297,4 +308,11 @@
 
 .tab-biography {
   height: 100%;
+}
+
+.npc-skill-entry, .skills-list{
+  input{
+    text-align: center;
+    max-width: 40px;
+  }
 }

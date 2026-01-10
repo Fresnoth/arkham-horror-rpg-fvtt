@@ -28,7 +28,9 @@
     },
     "SheetLabels": {
       "Actor": "ArkhamHorror Actor Sheet",
-      "Item": "ArkhamHorror Item Sheet"
+      "Item": "ArkhamHorror Item Sheet",
+      "Vehicle": "ArkhamHorror Vehicle Sheet",
+      "NPC": "ArkhamHorror NPC Sheet"
     },
     "Item": {
       "Spell": {
@@ -63,7 +65,8 @@
   "TABS": {
     "Character": "Character",
     "NPC": "NPC",
-    "Biography": "Biography"
+    "Biography": "Biography",
+    "Vehicle": "Vehicle"
   },
   "ITEM": {
     "Weapon": {
@@ -106,7 +109,8 @@
   "TYPES": {
     "Actor": {
       "character": "Character",
-      "npc": "NPC"
+      "npc": "NPC",
+      "vehicle": "Vehicle"
     },
     "Item": {
       "item": "Item",

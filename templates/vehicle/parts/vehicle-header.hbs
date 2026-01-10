@@ -1,0 +1,47 @@
+<header class="sheet-header npc">
+
+    <img class="portrait-img" data-action="editImage" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"
+        height="120" />
+
+    <div class="header-fields">
+
+
+        {{!-- Edit Mode Layout --}}
+        <div class="title">
+            <h1 class="charname"><input name="name" type="text" value="{{actor.name}}"
+                    placeholder="{{localize 'MIST_ENGINE.PLACEHOLDERS.Name'}}" /></h1>
+
+        </div>
+
+        <div class="dicepool-container grid grid-3col">
+
+            <div class="header-form-group"><label>Damage:</label><input type="number" name="system.damage.current"
+                    value="{{system.damage.current}}" data-dtype="Number" class="small-input" />
+                / <input type="number" name="system.damage.max" value="{{system.damage.max}}" data-dtype="Number"
+                    class="small-input" /></div>
+
+            <div class="header-form-group"><label>Passengers:</label><input type="number"
+                    name="system.passengers.current" value="{{system.passengers.current}}" data-dtype="Number"
+                    class="small-input" />
+                / <input type="number" name="system.passengers.max" value="{{system.passengers.max}}"
+                    data-dtype="Number" class="small-input" /></div>
+            
+                        <div class="header-form-group"><label>Fuel:</label><input type="number" name="system.fuel.current"
+                    value="{{system.fuel.current}}" data-dtype="Number" class="small-input" />
+                / <input type="number" name="system.fuel.max" value="{{system.fuel.max}}" data-dtype="Number"
+                    class="small-input" /></div>
+        </div>
+        <div class="dicepool-container grid grid-3col">
+            <div class="header-form-group"><label>Cost:</label><input type="number" name="system.cost"
+                    value="{{system.cost}}" data-dtype="Number" class="large-input" />
+            </div>
+            <div class="header-form-group"><label>Max Range:</label><input type="number" name="system.maxRange"
+                    value="{{system.maxRange}}" data-dtype="Number" class="medium-input" />
+            </div>
+            <div class="header-form-group"><label>Cargo Capacity:</label><input type="number"
+                    name="system.loadCapacity.current" value="{{system.loadCapacity.current}}" data-dtype="Number"
+                    class="medium-input" />
+                / <input type="number" name="system.loadCapacity.max" value="{{system.loadCapacity.max}}"
+                    data-dtype="Number" class="medium-input" /></div>
+        </div>
+</header>
