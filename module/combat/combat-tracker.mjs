@@ -62,8 +62,22 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
         const dicepool = combatant.actor?.system?.dicepool;
         const dicepoolValue = dicepool?.value;
         const dicepoolMax = dicepool?.max;
-        const dicepoolDisplay = (dicepoolValue ?? dicepoolMax) != null
-          ? `${dicepoolValue ?? 0}/${dicepoolMax ?? "?"}`
+        const damage = combatant.actor?.system?.damage ?? 0;
+
+        // Dicepool "max" is reduced by current damage (see base actor derived data).
+        // If max is missing, fall back to showing whatever exists.
+        const numericDicepoolMax = Number(dicepoolMax);
+        const numericDamage = Number(damage) || 0;
+        const presentDicepoolMax = Number.isFinite(numericDicepoolMax)
+          ? Math.max(0, numericDicepoolMax - numericDamage)
+          : dicepoolMax;
+
+        const presentDicepoolValue = (Number.isFinite(presentDicepoolMax) && dicepoolValue != null)
+          ? Math.min(dicepoolValue, presentDicepoolMax)
+          : dicepoolValue;
+
+        const dicepoolDisplay = (presentDicepoolValue ?? presentDicepoolMax) != null
+          ? `${presentDicepoolValue ?? 0}/${presentDicepoolMax ?? "?"}`
           : "";
 
         group.entries.push({
@@ -153,8 +167,15 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
 }
 
 function isDicepoolUpdate(changed) {
-  const dicepool = changed?.system?.dicepool;
+  const system = changed?.system;
+  if (!system) return false;
+
+  // Damage directly affects the effective dicepool max (max - damage), so re-render when it changes.
+  if (Object.prototype.hasOwnProperty.call(system, "damage")) return true;
+
+  const dicepool = system.dicepool;
   if (!dicepool) return false;
+
   return Object.prototype.hasOwnProperty.call(dicepool, "value")
     || Object.prototype.hasOwnProperty.call(dicepool, "max");
 }
