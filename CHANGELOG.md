@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.17
+- just bug fixes
+
 ## 13.0.16
 - improved styling
 - dice roll dialog with buttons to inc/decreae the number of dice used

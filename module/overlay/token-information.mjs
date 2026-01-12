@@ -25,6 +25,14 @@ export const TokenInformationOverlay = (() => {
         return value;
     }
 
+    function computeFontSize() {
+        // Grid size in Pixeln (z. B. 100 bei 100px Grid)
+        const gs = canvas.grid.size;
+
+        // Beispiel: 18% der Grid-Größe, min/max begrenzen
+        return Math.clamped(Math.round(gs * 0.18), 12, 36);
+    }
+
     function ensureText(token) {
         // token is a Token (placeable) instance
         if (!token) return null;
@@ -34,7 +42,7 @@ export const TokenInformationOverlay = (() => {
 
         const style = new PIXI.TextStyle({
             fontFamily: "MODESTO CONDENSED, sans-serif",
-            fontSize: 32,
+            fontSize: computeFontSize(),
             fontWeight: "700",
             fill: 0xFFFFFF,
             stroke: 0x000000,
@@ -91,6 +99,8 @@ export const TokenInformationOverlay = (() => {
         }
 
         txt.visible = true;
+        txt.style.fontSize = computeFontSize();
+        txt.dirty = true; 
         positionText(token, txt);
     }
 
