@@ -38,6 +38,7 @@ export function calculatePoolsAndThresholds({
   diceToUse,
   penalty,
   bonusDice,
+  resultModifier,
   rollWithAdvantage,
   rollWithDisadvantage,
 }) {
@@ -67,9 +68,12 @@ export function calculatePoolsAndThresholds({
   diceToRoll += b;
 
   const p = Number.parseInt(penalty) || 0;
-  if (p > 0) {
-    successOn = Math.min(6, successOn + p);
-  }
+  const rm = Number.parseInt(resultModifier) || 0;
+  // Removing this because I believe it is double counting penalties for the purposes of # success calculation, 
+  // while the die results will match the correct penalty the success count logic already accounts for that and doesn't need to be raised.
+  // if (p > 0) {
+  //   successOn = Math.min(6, successOn + p);
+  // }
 
   if (rollWithAdvantage) diceToRoll += 1;
   if (rollWithDisadvantage && diceToRoll > 0) diceToRoll += 1;
@@ -81,6 +85,7 @@ export function calculatePoolsAndThresholds({
     horrorDiceToRoll,
     penalty: p,
     bonusDice: b,
+    resultModifier: rm,
     rollWithAdvantage: !!rollWithAdvantage,
     rollWithDisadvantage: !!rollWithDisadvantage,
   };
@@ -111,12 +116,12 @@ export function applyAdvantageDisadvantageDrop(diceRollResults, { rollWithAdvant
 }
 
 // Computes final success/failure counts based on modified dice results like original logic from 13.0.7 ALPHA dice-roll-app.
-export function computeSkillOutcome(diceRollResults, { successOn, penalty, successesNeeded }) {
+export function computeSkillOutcome(diceRollResults, { successOn, penalty, successesNeeded, resultModifier }) {
   // count all results that are >= 6
   let successCount = diceRollResults.filter(r => r.result >= 6).length;
 
-  // failures (1s)
-  const failureCount = diceRollResults.filter(r => r.result === 1 && !r.isHorror).length;
+  // failures (1s) 
+  let failureCount = diceRollResults.filter(r => r.result === 1 && !r.isHorror).length;
   const horrorFailureCount = diceRollResults.filter(r => r.result === 1 && r.isHorror).length;
 
   // keep 1s and 6s as-is
@@ -126,13 +131,23 @@ export function computeSkillOutcome(diceRollResults, { successOn, penalty, succe
   let tmpDiceRollResults = diceRollResults.filter(r => r.result !== 1 && r.result !== 6);
 
   // decrease remaining dice by penalty (consistent with original)
-  tmpDiceRollResults = tmpDiceRollResults.map(r => ({ ...r, result: r.result - penalty }));
+  tmpDiceRollResults = tmpDiceRollResults.map(r => {
+    const modified = (r.result - penalty) + resultModifier;
+    // Clamp to the representable faces for "modified" dice.
+    // We never want penalties/modifiers go below 1 or exceed 6.
+    // Natural 1s and 6s are handled separately above.
+    const clamped = Math.min(6, Math.max(1, modified));
+    return { ...r, result: clamped };
+  });
 
   // append remaining dice
   finalDiceRollResults = finalDiceRollResults.concat(tmpDiceRollResults);
 
   // check success threshold on modified dice now
   successCount += tmpDiceRollResults.filter(r => r.result >= successOn).length;
+  // failure count was originally only counting non-horror dice 1s, 
+  // but for consistency against success counting should we count all failures or change the chat card label.
+  failureCount += tmpDiceRollResults.filter(r => r.result < successOn).length;
 
   const needed = Number.parseInt(successesNeeded) || 0;
   const isSuccess = successCount >= needed;

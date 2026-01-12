@@ -31,6 +31,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         diceToUse: 0,
         penalty: 0,
         bonusDice: 0,
+        resultModifier: 0,
         successesNeeded: 0,
 
         rollWithAdvantage: false,
@@ -94,6 +95,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.diceToUse = 0;
     this.rollState.bonusDice = 0;
     this.rollState.penalty = 0;
+    this.rollState.resultModifier = 0;
     this.rollState.successesNeeded = 0;
   }
 
@@ -121,6 +123,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         diceToUse: this.rollState.diceToUse,
         penalty: this.rollState.penalty,
         bonus_dice: this.rollState.bonusDice, // bonus_dice match form field name so this populates 0 correctly now
+        resultModifier: this.rollState.resultModifier,
         successesNeeded: this.rollState.successesNeeded,
         rollWithAdvantage: this.rollState.rollWithAdvantage,
         rollWithDisadvantage: this.rollState.rollWithDisadvantage,
@@ -162,6 +165,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.diceToUse = Number.parseInt(form.diceToUse.value) || 0;
     this.rollState.penalty = Number.parseInt(form.penalty.value) || 0;
     this.rollState.bonusDice = Number.parseInt(form.bonus_dice.value) || 0;
+    this.rollState.resultModifier = Number.parseInt(form.resultModifier?.value) || 0;
     this.rollState.successesNeeded = Number.parseInt(form.difficulty.value) || 0;
 
     // Advantage / disadvantage selector logic (same as original intent)
