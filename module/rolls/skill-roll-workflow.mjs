@@ -18,6 +18,7 @@ export class SkillRollWorkflow {
       diceToUse: state.diceToUse,
       penalty: state.penalty,
       bonusDice: state.bonusDice,
+      resultModifier: state.resultModifier,
       rollWithAdvantage: state.rollWithAdvantage,
       rollWithDisadvantage: state.rollWithDisadvantage,
     });
@@ -88,6 +89,7 @@ export class SkillRollWorkflow {
       successOn: plan.successOn,
       penalty: plan.penalty,
       successesNeeded: state.successesNeeded,
+      resultModifier: plan.resultModifier,
     });
 
     outcome = { ...outcome, ...this.processWeapon({ state, outcome }) };
@@ -100,6 +102,7 @@ export class SkillRollWorkflow {
       horrorDiceToRoll: plan.horrorDiceToRoll,
       penalty: plan.penalty,
       bonusDice: plan.bonusDice,
+      resultModifier: plan.resultModifier,
       successesNeeded: Number.parseInt(state.successesNeeded) || 0,
       rollWithAdvantage: plan.rollWithAdvantage,
       rollWithDisadvantage: plan.rollWithDisadvantage,
@@ -135,6 +138,7 @@ export class SkillRollWorkflow {
       isSuccess: outcome.isSuccess,
       penalty: outcome.penalty,
       bonusDice: outcome.bonusDice,
+      resultModifier: outcome.resultModifier,
       successesNeeded: outcome.successesNeeded,
       rollWithAdvantage: outcome.rollWithAdvantage,
       rollWithDisadvantage: outcome.rollWithDisadvantage,

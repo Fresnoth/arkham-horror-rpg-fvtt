@@ -25,6 +25,10 @@
         <input type="number" id="penalty" name="penalty" value="{{penalty}}" min="0">
     </div>
     <div class="form-group">
+        <label for="result-modifier">Result Modifier</label>
+        <input type="number" id="result-modifier" name="resultModifier" value="{{resultModifier}}" min="0" max="6" step="1">
+    </div>
+    <div class="form-group">
         <label for="difficulty">Difficulty</label>
         <select id="difficulty" name="difficulty">
             <option value="1" {{#if (eq successesNeeded 1)}}selected{{/if}}>Normal (1)</option>

@@ -48,6 +48,13 @@
                 <span class="arkham-roll-flag is-dis">Disadvantage</span>
             {{/if}}
 
+            {{#if (gte penalty 1)}}
+                <span class="arkham-roll-flag is-diff">Penalty -{{penalty}}</span>
+            {{/if}}
+            {{#if (gte resultModifier 1)}}
+                <span class="arkham-roll-flag is-diff">Result +{{resultModifier}}</span>
+            {{/if}}
+
             <span class="arkham-roll-flag is-diff">
                 {{#if (eq successesNeeded 1)}}Normal{{else if (eq successesNeeded 2)}}Difficult{{else if (eq successesNeeded 3)}}Very Difficult{{else}}Difficulty {{successesNeeded}}{{/if}}
             </span>
