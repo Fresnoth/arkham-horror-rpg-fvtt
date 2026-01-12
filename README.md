@@ -2,7 +2,9 @@
 
 ![Foundry v13](https://img.shields.io/badge/foundry-v13-green) [![Github All Releases](https://img.shields.io/github/downloads/MrTheBino/arkham-horror-rpg-fvtt/total.svg)]()
 
-This is an unoffical system implementation for Foundry VTT of the Arkham Horror RPG. The Arkham Horror RPG is made by EDGE Studio.
+This is an unoffical system implementation for Foundry VTT of the Arkham Horror RPG. The [Arkham Horror RPG](https://www.edge-studio.net/categories-games/arkham/) is made by EDGE Studio.
+
+
 
 This Foundry VTT implementation has no rules text, items or whatsoever from the official books. You need to create
 everything on your own. This system provides only the necessary sheets and item types for FoundryVTT to play Arkham Horror RPG via Foundry VTT.
