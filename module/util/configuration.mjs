@@ -1,7 +1,7 @@
 export function setupConfiguration() {
     game.settings.register("arkham-horror-rpg-fvtt", "tokenShowDicePools", {
         name: "Show Token Dice Pools",
-        hint: "Show Dice Pool below tokens on the canvas.",
+        hint: "Show Dice Pool on tokens on the canvas.",
         scope: "world",
         config: true,
         type: Boolean,
@@ -10,11 +10,20 @@ export function setupConfiguration() {
 
     game.settings.register("arkham-horror-rpg-fvtt", "tokenShowDamage", {
         name: "Show Token Damage",
-        hint: "Show Damage below tokens on the canvas.",
+        hint: "Show Damage on tokens on the canvas.",
         scope: "world",
         config: true,
         type: Boolean,
         default: true
+    });
+
+    game.settings.register("arkham-horror-rpg-fvtt", "tokenOverlayAbove", {
+        name: "Token Overlay Above Token",
+        hint: "If enabled, show Dice Pool/Damage above the token instead of below.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "characterLoadCapacity", {
