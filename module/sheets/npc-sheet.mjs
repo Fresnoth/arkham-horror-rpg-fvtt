@@ -3,6 +3,7 @@ const { HandlebarsApplicationMixin } = foundry.applications.api
 const { TextEditor, DragDrop } = foundry.applications.ux
 import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
+import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 
 export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
@@ -25,7 +26,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             clickSkill: this.#handleSkillClicked,
             clickWeaponReload: this.#handleWeaponReload,
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
-            clickedRollWithWeapon: this.#handleClickedRollWithWeapon
+            clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
+            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
         },
         form: {
             submitOnChange: true
@@ -197,6 +199,11 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
     static async #handleClickedClearDicePool(event, target) {
         event.preventDefault();
         this.actor.update({ 'system.dicepool.value': 0 });
+    }
+
+    static async #handleClickedInjuryTraumaRoll(event, target) {
+        event.preventDefault();
+        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
     }
 
     static async #handleEditItem(event, target) {

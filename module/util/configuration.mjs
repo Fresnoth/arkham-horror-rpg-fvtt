@@ -34,6 +34,7 @@ export function setupConfiguration() {
         type: String,
         choices: () => {
             const tables = {};
+            tables[""] = "";
             for (const table of game.tables) {
                 tables[table.id] = table.name;
             }
@@ -41,14 +42,48 @@ export function setupConfiguration() {
         },
         default: ""
     });
+    
+    game.settings.register("arkham-horror-rpg-fvtt", "characterTraumaTableVariant", {
+        name: "Character Trauma Table Variant",
+        hint: "Choose which character trauma table to use when rolling trauma.",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: {
+            standard: "Standard",
+            noPersonality: "No-Personality",
+        },
+        default: "standard"
+    });
+    
     game.settings.register("arkham-horror-rpg-fvtt", "characterHorrorTable", {
-        name: "Character Horror Table",
-        hint: "Used for rolling horror",
+        name: "Character Trauma Table",
+        hint: "Used for rolling trauma",
         scope: "world",
         config: true,
         type: String,
         choices: () => {
             const tables = {};
+            tables[""] = "";
+            for (const table of game.tables) {
+                tables[table.id] = table.name;
+            }
+            return tables;
+        },
+        default: ""
+    });
+
+
+
+    game.settings.register("arkham-horror-rpg-fvtt", "characterHorrorTableNoPersonality", {
+        name: "Character Trauma Table (No-Personality)",
+        hint: "Optional alternate trauma table with fewer entries (no personality trait effects).",
+        scope: "world",
+        config: true,
+        type: String,
+        choices: () => {
+            const tables = {};
+            tables[""] = "";
             for (const table of game.tables) {
                 tables[table.id] = table.name;
             }
@@ -65,6 +100,7 @@ export function setupConfiguration() {
         type: String,
         choices: () => {
             const tables = {};
+            tables[""] = "";
             for (const table of game.tables) {
                 tables[table.id] = table.name;
             }
@@ -73,13 +109,14 @@ export function setupConfiguration() {
         default: ""
     });
     game.settings.register("arkham-horror-rpg-fvtt", "npcHorrorTable", {
-        name: "NPC Horror Table",
-        hint: "Used for rolling horror",
+        name: "NPC Trauma Table",
+        hint: "Used for rolling trauma",
         scope: "world",
         config: true,
         type: String,
         choices: () => {
             const tables = {};
+            tables[""] = "";
             for (const table of game.tables) {
                 tables[table.id] = table.name;
             }

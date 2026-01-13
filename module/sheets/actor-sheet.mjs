@@ -3,6 +3,7 @@ const { HandlebarsApplicationMixin } = foundry.applications.api
 const { TextEditor, DragDrop } = foundry.applications.ux
 import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
+import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -25,7 +26,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickSkill: this.#handleSkillClicked,
             clickWeaponReload: this.#handleWeaponReload,
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
-            clickedRollWithWeapon: this.#handleClickedRollWithWeapon
+            clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
+            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
         },
         form: {
             submitOnChange: true
@@ -557,5 +559,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }
+    }
+
+    static async #handleClickedInjuryTraumaRoll(event, target) {
+        event.preventDefault();
+        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
     }
 }

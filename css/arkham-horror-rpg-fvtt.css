@@ -714,6 +714,48 @@ li.chat-message.message > .message-content {
   margin-top: 0;
 }
 
+.arkham-injury-trauma-card .arkham-roll-kind.is-injury {
+  border-color: #722A1C;
+  background: rgba(114, 42, 28, 0.07);
+  color: #722A1C;
+}
+
+.arkham-injury-trauma-card .arkham-roll-kind.is-trauma {
+  border-color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.arkham-injury-trauma-banner {
+  margin: 8px 2px 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  border: 1px solid rgba(20, 16, 10, 0.45);
+  background: repeating-linear-gradient(-12deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 2px, rgba(255, 255, 255, 0) 2px, rgba(255, 255, 255, 0) 6px), rgba(30, 30, 30, 0.08);
+  color: rgba(20, 16, 10, 0.95);
+  font-family: "Voltaire", sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.arkham-injury-trauma-description {
+  margin: 0 2px 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(20, 16, 10, 0.14);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.arkham-injury-trauma-description p {
+  margin: 0;
+}
+
 .journal-page-content {
   font-family: "Lusitana", serif;
   text-align: justify;
@@ -1151,5 +1193,3 @@ li.chat-message.message > .message-content {
 .editor.prosemirror {
   height: 100%;
 }
-
-/*# sourceMappingURL=arkham-horror-rpg-fvtt.css.map */
