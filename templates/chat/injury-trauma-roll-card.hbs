@@ -1,0 +1,38 @@
+<section class="arkham-roll-card arkham-injury-trauma-card" data-roll-category="injury-trauma" data-roll-kind="{{rollKind}}">
+  <header class="arkham-roll-header">
+    <div class="arkham-roll-heading">
+      <span class="arkham-roll-kind {{#if (eq rollKind "injury")}}is-injury{{else}}is-trauma{{/if}}">{{rollKindLabel}}</span>
+    </div>
+  </header>
+
+  <div class="arkham-roll-banner arkham-injury-trauma-banner">
+    {{tableResultName}}
+  </div>
+
+  {{#if tableResultDescription}}
+    <div class="arkham-injury-trauma-description">
+      {{{tableResultDescription}}}
+    </div>
+  {{/if}}
+
+  <div class="arkham-roll-results">
+    <div class="arkham-roll-meta">
+      <div class="arkham-meta-row">
+        <span class="arkham-meta-label">Die</span>
+        <span class="arkham-meta-value">{{dieResult}}</span>
+      </div>
+      <div class="arkham-meta-row">
+        <span class="arkham-meta-label">Modifier</span>
+        <span class="arkham-meta-value">{{modifier}}</span>
+      </div>
+      <div class="arkham-meta-row">
+        <span class="arkham-meta-label">Total</span>
+        <span class="arkham-meta-value">{{total}}</span>
+      </div>
+      <div class="arkham-meta-row">
+        <span class="arkham-meta-label">Table</span>
+        <span class="arkham-meta-value">{{tableRange}}</span>
+      </div>
+    </div>
+  </div>
+</section>
