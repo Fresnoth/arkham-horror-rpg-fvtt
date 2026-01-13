@@ -6,6 +6,10 @@ import { ArkhamHorrorActorSheet } from './sheets/actor-sheet.mjs';
 import { ArkhamHorrorNpcSheet } from './sheets/npc-sheet.mjs';
 import { ArkhamHorrorVehicleSheet } from './sheets/vehicle-sheet.mjs';
 import { ArkhamHorrorItemSheet } from './sheets/item-sheet.mjs';
+import { ArkhamHorrorProtectiveEquipmentSheet } from './sheets/item-protective-equipment-sheet.mjs';
+import { ArkhamHorrorFavorSheet } from './sheets/item-favor-sheet.mjs';
+import { ArkhamHorrorWeaponSheet } from './sheets/item-weapon-sheet.mjs';
+import { ArkhamHorrorSpellSheet } from './sheets/item-spell-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { ARKHAM_HORROR } from './helpers/config.mjs';
@@ -97,12 +101,37 @@ Hooks.once('init', function () {
     types: ['vehicle'],
     label: 'ARKHAM_HORROR.SheetLabels.Vehicle',
   });
+
   foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
   foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorItemSheet, {
     makeDefault: true,
     label: 'ARKHAM_HORROR.SheetLabels.Item',
   });
 
+  foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorProtectiveEquipmentSheet, {
+    makeDefault: true,
+    types: ['protective_equipment'],
+    label: 'ARKHAM_HORROR.SheetLabels.Item',
+  });
+
+  foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorFavorSheet, {
+    makeDefault: true,
+    types: ['favor'],
+    label: 'ARKHAM_HORROR.SheetLabels.Item',
+  });
+
+  foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorWeaponSheet, {
+    makeDefault: true,
+    types: ['weapon'],
+    label: 'ARKHAM_HORROR.SheetLabels.Item',
+  });
+
+  foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorSpellSheet, {
+    makeDefault: true,
+    types: ['spell'],
+    label: 'ARKHAM_HORROR.SheetLabels.Item',
+  });
+  
   setupConfiguration();
   TokenInformationOverlay.registerHooks();
   // Preload Handlebars templates.

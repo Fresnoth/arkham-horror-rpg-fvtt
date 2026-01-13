@@ -78,7 +78,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             tabs:
                 [
                     { id: 'form', group: 'sheet', label: 'ARKHAM_HORROR.LABELS.Form' },
-                    { id: 'description', group: 'sheet', label: 'ARKHAM_HORROR.LABELS.Description' },
+                    { id: 'description', group: 'sheet', label: 'ARKHAM_HORROR.LABELS.Description' }
                 ],
             initial: 'form'
         }
@@ -193,7 +193,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
         if (actorData.system.specialRules) {
             context.specialRulesHTML = await enrichHTML('system.specialRules',this.document);
-            console.log("done");
         }
 
         if(actorData.system.defensiveBenefit){
@@ -494,7 +493,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             return;
         }
 
-        //console.log(data.type);
         // Handle different data types
         switch (data.type) {
             // write your cases

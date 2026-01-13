@@ -24,41 +24,41 @@
       "Description": "Description"
     },
     "SKILL": {
-      "rangedCombat": "Ranged Combat",
-      "meleeCombat": "Melee Combat",
-      "agility": "Agility",
-      "athletics": "Athletics",
-      "wits": "Wits",
-      "presence": "Presence",
+      "rangedCombat": "Fernkampf",
+      "meleeCombat": "Nahkampf",
+      "agility": "Beweglichkeit",
+      "athletics": "Athletik",
+      "wits": "Verstand",
+      "presence": "Präsenz",
       "intuition": "Intuition",
-      "knowledge": "Knowledge",
-      "resolve": "Resolve",
+      "knowledge": "Wissen",
+      "resolve": "Entschlossenheit",
       "lore": "Lore"
     }
   },
   "TABS": {
-    "Character": "Character",
+    "Character": "Charakter",
     "NPC": "NPC",
-    "Biography": "Biography",
-    "Vehicle": "Vehicle"
+    "Biography": "Biografie",
+    "Vehicle": "Fahrzeug"
   },
   "ITEM": {
     "Weapon": {
-      "skill": "Skill",
-      "damage": "Damage",
-      "range": "Range",
-      "injuryRating": "Injury Rating",
-      "ammunition": "Ammunition",
-      "cost": "Cost",
-      "specialRules": "Special Rules",
-      "ammunitionMax": "Ammunition Max",
-      "reloadCost": "Reload Cost",
-      "weight": "Weight"
+      "skill": "Fertigkeit",
+      "damage": "Schaden",
+      "range": "Reichweite",
+      "injuryRating": "Verletzungsgrad",
+      "ammunition": "Munition",
+      "cost": "Kosten",
+      "specialRules": "Spezialregeln",
+      "ammunitionMax": "Maximale Munition",
+      "reloadCost": "Nachladekosten",
+      "weight": "Gewicht"
     },
     "ProtectiveEquipment": {
-      "defensiveBenefit": "Defensive Benefit",
-      "specialRules": "Special Rules",
-      "cost": "Cost"
+      "defensiveBenefit": "Defensiver Vorteil",
+      "specialRules": "Spezialregeln",
+      "cost": "Kosten"
     },
     "Tome": {
       "alternativeNames": "Alternative Names",
@@ -82,24 +82,24 @@
   },
   "TYPES": {
     "Actor": {
-      "character": "Character",
+      "character": "Charakter",
       "npc": "NPC",
-      "vehicle": "Vehicle"
+      "vehicle": "Fahrzeug"
     },
     "Item": {
       "item": "Item",
       "feature": "Feature",
-      "spell": "Spell",
+      "spell": "Zauber",
       "knack": "Knack",
-      "personality_trait": "Personality Trait",
-      "weapon": "Weapon",
-      "protective_equipment": "Protective Equipment",
-      "useful_item": "Useful Item",
+      "personality_trait": "Persönlichkeitsmerkmal",
+      "weapon": "Waffe",
+      "protective_equipment": "Schutzausrüstung",
+      "useful_item": "Nützliches Objekt",
       "tome": "Tome",
-      "relic": "Relic",
-      "injury": "Injury",
+      "relic": "Relikt",
+      "injury": "Verletzung",
       "trauma": "Trauma",
-      "favor": "Favor",
+      "favor": "Gefallen",
       "archetype": "Archetype"
     }
   }

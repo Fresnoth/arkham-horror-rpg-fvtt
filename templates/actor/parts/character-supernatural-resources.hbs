@@ -5,6 +5,8 @@
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>Skill</div>
+                <div class='item-name'>Range</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type='spell'}}' data-type='spell'>
@@ -23,6 +25,8 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
+                    <div class='item-prop'>{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}}</div>
+                    <div class='item-prop'>{{item.system.range}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=' Item'}}'>

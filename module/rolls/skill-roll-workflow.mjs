@@ -63,7 +63,7 @@ export class SkillRollWorkflow {
           result.weaponAmmoUsed = true;
           // update item
           state.weaponToUse.update({"system.ammunition.current": state.weaponToUse.system.ammunition.current});
-          console.log("decreased ammo for weapon" + state.weaponToUse.name);
+          //console.log("decreased ammo for weapon" + state.weaponToUse.name);
         }
       }
     }else{

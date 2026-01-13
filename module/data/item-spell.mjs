@@ -7,6 +7,8 @@ export default class ArkhamHorrorSpell extends ArkhamHorrorItemBase {
     const schema = super.defineSchema();
 
     schema.specialRules = new fields.StringField({ required: false, blank: true, initial: "" });
+    schema.skill = new fields.StringField({ required: false, blank: true, initial: "lore" });
+    schema.range = new fields.NumberField({ required: false, blank: true, initial: 0 });
 
     return schema;
   }

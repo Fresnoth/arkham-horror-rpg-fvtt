@@ -31,4 +31,17 @@
       border-bottom: 1px solid $c-red;
       font-family: $font-primary;
     }
+    blockquote.read-aloud{
+      --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
+      --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
+      padding: 5px;
+      text-align: justify;
+      font-family: $font-tertiary;
+      border: 2px solid $c-red-border;
+      border-radius: 5px;
+      color: $c-dark;
+      background:
+          linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)),
+          repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0.00) 3px, rgba(255, 255, 255, 0.00) 7px);
+    }
 }

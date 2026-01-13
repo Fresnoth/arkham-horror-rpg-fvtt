@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 13.0.18
+- started refactoring item sheets to unique item sheets
+- improved? styling
+- added skill and range to spells
+- added agility and atheltics skills to select for weapons
+- first implementation of trauma & injury table rolling
+- token dice pool & damage indicator can now displayed above the tokens
+- improved background image for sheets, less noise
+  
 ## 13.0.17
 - just bug fixes
 
