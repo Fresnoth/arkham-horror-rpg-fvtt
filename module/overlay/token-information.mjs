@@ -30,7 +30,9 @@ export const TokenInformationOverlay = (() => {
         const gs = canvas.grid.size;
 
         // Beispiel: 18% der Grid-Größe, min/max begrenzen
-        return Math.clamped(Math.round(gs * 0.18), 12, 36);
+        const value = Math.round(gs * 0.18);
+        const clamp = Math.clamp ?? Math.clamped ?? ((n, min, max) => Math.min(Math.max(n, min), max));
+        return clamp(value, 12, 36);
     }
 
     function ensureText(token) {
@@ -63,7 +65,15 @@ export const TokenInformationOverlay = (() => {
     function positionText(token, txt) {
         const pad = 3;
         txt.x = token.w / 2;
-        txt.y = token.h + pad;
+
+        const above = game.settings.get("arkham-horror-rpg-fvtt", "tokenOverlayAbove");
+        if (above) {
+            const bounds = txt.getLocalBounds?.();
+            const height = bounds?.height ?? txt.height ?? (txt.style?.fontSize ?? 14);
+            txt.y = -height - pad;
+        } else {
+            txt.y = token.h + pad;
+        }
     }
 
     function update(token) {
@@ -129,6 +139,10 @@ export const TokenInformationOverlay = (() => {
             const token = canvas.tokens?.get(doc.id);
             if (token) update(token);
         });
+
+        // If the user changes the system setting controlling overlay position,
+        // update overlays after the Settings UI is closed.
+        Hooks.on("closeSettingsConfig", () => updateAll());
     }
 
     return { registerHooks, updateAll };

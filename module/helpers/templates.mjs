@@ -4,7 +4,8 @@
  * @return {Promise}
  */
 export const preloadHandlebarsTemplates = async function () {
-  return loadTemplates([
+  const load = foundry?.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates;
+  return load([
     // Actor partials.
     'systems/arkham-horror-rpg-fvtt/templates/actor/parts/actor-features.hbs',
     'systems/arkham-horror-rpg-fvtt/templates/actor/parts/actor-items.hbs',
