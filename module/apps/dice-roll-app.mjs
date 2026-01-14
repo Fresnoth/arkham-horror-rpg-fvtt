@@ -18,6 +18,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.skillMax = options.skillMax;
     this.currentDicePool = options.currentDicePool;
     this.weaponToUse = options.weaponToUse;
+    this.rollKind = options.rollKind ?? "complex";
 
     // Single canonical "book" of parameters
     // (UI template context reads from here; workflow reads from here)
@@ -27,6 +28,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         skillMax: this.skillMax,
         currentDicePool: this.currentDicePool,
         weaponToUse: this.weaponToUse,
+        rollKind: this.rollKind,
 
         diceToUse: 0,
         penalty: 0,
@@ -56,7 +58,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     position: {
         width: 400,
-        height: 450,
+        height: "auto",
     },
     actions: {
         clickedRoll: this.#handleClickedRoll,
@@ -80,6 +82,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (options.skillMax !== undefined) this.skillMax = options.skillMax;
     if (options.currentDicePool !== undefined) this.currentDicePool = options.currentDicePool;
     if(options.weaponToUse !== undefined) this.weaponToUse = options.weaponToUse;
+    this.rollKind = options.rollKind ?? "complex";
 
     // Keep rollState in sync (single book)
     this.rollState.skillKey = this.skillKey;
@@ -87,6 +90,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.skillMax = this.skillMax;
     this.rollState.currentDicePool = this.currentDicePool;
     this.rollState.weaponToUse = this.weaponToUse;
+    this.rollState.rollKind = this.rollKind ?? "complex";
 
     // Reset transient roll modifiers like your original code
     this.rollState.rollWithAdvantage = false;
@@ -97,6 +101,12 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.penalty = 0;
     this.rollState.resultModifier = 0;
     this.rollState.successesNeeded = 0;
+
+    // Reactions: exactly 1 die from pool (bonus dice and adv/disadv can add rolled dice without costing pool)
+    if (this.rollState.rollKind === "reaction") {
+      const pool = Number.parseInt(this.rollState.currentDicePool) || 0;
+      this.rollState.diceToUse = pool > 0 ? 1 : 0;
+    }
   }
 
   static getInstance(options = {}) {
@@ -111,11 +121,17 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
+    const rollKind = this.rollState.rollKind ?? "complex";
+    const isReaction = rollKind === "reaction";
+
     // Feed template from rollState (no separate context mapping logic)
     return {
         ...context,
 
         actor: this.actor,
+        rollKind,
+        rollKindLabel: isReaction ? "Reaction" : "Complex",
+        isReaction,
         skillKey: this.rollState.skillKey,
         skillCurrent: this.rollState.skillCurrent,
         skillMax: this.rollState.skillMax,
@@ -141,6 +157,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const form = target.form;
 
     this.updateRollStateWithForm(form);
+
+    if (this.rollState.rollKind === "reaction" && this.rollState.diceToUse !== 1) {
+        ui.notifications.warn("Reaction rolls require 1 die from your pool.");
+        return; // keep dialog open
+    }
 
     // If Adv/Disadv selected, you must be rolling at least 1 die
     const baseDice = (this.rollState.diceToUse || 0) + (this.rollState.bonusDice || 0);
@@ -168,6 +189,12 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.resultModifier = Number.parseInt(form.resultModifier?.value) || 0;
     this.rollState.successesNeeded = Number.parseInt(form.difficulty.value) || 0;
 
+    // Clamp reaction dice usage: exactly 1 die from pool if possible.
+    if (this.rollState.rollKind === "reaction") {
+        const pool = Number.parseInt(this.rollState.currentDicePool) || 0;
+        this.rollState.diceToUse = pool > 0 ? 1 : 0;
+    }
+
     // Advantage / disadvantage selector logic (same as original intent)
     this.rollState.modifierAdvantage = Number.parseInt(form.advantageModifier.value) || 0;
     if (this.rollState.modifierAdvantage === 1) {
@@ -189,6 +216,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     event.preventDefault();
     this.updateRollStateWithForm(event.target.form);
 
+    if (this.rollState.rollKind === "reaction") {
+      this.render({ force: true });
+      return;
+    }
+
     this.rollState.diceToUse += 1;
     if(this.rollState.diceToUse > this.rollState.currentDicePool){
       this.rollState.diceToUse = this.rollState.currentDicePool;
@@ -200,6 +232,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #handleDecreaseDicePool(event, target) {
     event.preventDefault();
     this.updateRollStateWithForm(event.target.form);
+
+    if (this.rollState.rollKind === "reaction") {
+      this.render({ force: true });
+      return;
+    }
 
     this.rollState.diceToUse -= 1;
     if(this.rollState.diceToUse < 0){

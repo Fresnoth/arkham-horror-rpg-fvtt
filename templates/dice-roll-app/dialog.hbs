@@ -2,11 +2,15 @@
     <div class="form-group">
         <label for="dicepool">Dice Pool</label>
         <div class="flexrow">
-            <button class="button-dicepool-rolldialog" data-action="clickedDecreaseDicePool">-</button>
-            <input type="number" id="dicepool" name="diceToUse" value="{{diceToUse}}" min="0"> / 
+            <button class="button-dicepool-rolldialog" data-action="clickedDecreaseDicePool" {{#if isReaction}}disabled{{/if}}>-</button>
+            <input type="number" id="dicepool" name="diceToUse" value="{{diceToUse}}" min="0" {{#if isReaction}}readonly{{/if}}> / 
             <input type="number" name="currentDicePool" value="{{currentDicePool}}" min="0" readonly>
-            <button class="button-dicepool-rolldialog" data-action="clickedIncreaseDicePool">+</button>
+            <button class="button-dicepool-rolldialog" data-action="clickedIncreaseDicePool" {{#if isReaction}}disabled{{/if}}>+</button>
         </div>
+    </div>
+    <div class="form-group">
+        <label for="roll-kind">Roll Type</label>
+        <input type="text" id="roll-kind" name="rollKindLabel" value="{{rollKindLabel}}" readonly>
     </div>
     <div class="form-group">
         <label for="skill-key">Skill</label>

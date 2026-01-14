@@ -1,7 +1,12 @@
 <section class="arkham-roll-card">
     <header class="arkham-roll-header">
         <div class="arkham-roll-heading">
-            <span class="arkham-roll-kind">{{skillUsed}}</span>
+            <span class="arkham-roll-kind">
+                {{#if (eq rollKind "reaction")}}
+                    <i class="fa-solid fa-arrow-rotate-left arkham-roll-reaction-icon" title="Reaction roll"></i>
+                {{/if}}
+                {{skillUsed}}
+            </span>
         </div>
         <div class="arkham-roll-subtitle">Success on <span class="arkham-emph">{{successOn}}+</span></div>
     </header>

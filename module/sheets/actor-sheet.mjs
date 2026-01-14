@@ -24,6 +24,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             toggleFoldableContent: this.#handleToggleFoldableContent,
             openActorArchetype: this.#handleOpenActorArchetype,
             clickSkill: this.#handleSkillClicked,
+            clickSkillReaction: this.#handleSkillReactionClicked,
             clickWeaponReload: this.#handleWeaponReload,
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
@@ -500,6 +501,17 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
          DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool,weaponToUse: null }).render(true);
+    }
+
+    static async #handleSkillReactionClicked(event, target) {
+        event.preventDefault();
+        const skillKey = target.dataset.skillKey;
+
+        let skillCurrent = this.actor.system.skills[skillKey].current;
+        let skillMax = this.actor.system.skills[skillKey].max;
+        let currentDicePool = this.actor.system.dicepool.value;
+
+        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null }).render(true);
     }
 
     static async #handleWeaponReload(event, target) {

@@ -226,10 +226,28 @@
     }
   }
 }
+
 .skill {
   font-family: $font-primary;
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+}
+
+// Character sheet skills: keep the reaction icon in its own fixed-width column
+// instead of consuming a full 1fr grid track.
+.skills-list .skill-row {
+  grid-template-columns: 1fr 1fr 40px 40px 18px;
+  gap: 6px;
+  align-items: center;
+}
+
+.skills-list .skill-row .skill-reaction-icon {
+  margin-left: 0;
+  justify-self: center;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .npc-skill {
@@ -239,6 +257,32 @@
   text-align: center;
   width: 100%;
   display: block;
+}
+
+/* NPC skills: lock each skill tile to a 3-column grid so it won't wrap/jumble */
+.npc-skill-entry {
+  display: grid;
+  grid-template-columns: 1fr 40px 18px;
+  align-items: center;
+  column-gap: 6px;
+}
+
+/* Override the global NPC label width just within the skill entry */
+.npc-skill-entry .npc-skill {
+  width: auto;
+  min-width: 0;
+}
+
+.npc-skill-entry input {
+  width: 40px;
+  justify-self: center;
+}
+
+.npc-skill-entry .skill-reaction-icon {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .small-input {

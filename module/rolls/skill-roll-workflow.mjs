@@ -8,6 +8,8 @@ import {
 } from "../helpers/roll-engine.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 
+const SYSTEM_ID = "arkham-horror-rpg-fvtt";
+
 
 export class SkillRollWorkflow {
   async plan({ actor, state }) {
@@ -122,7 +124,13 @@ export class SkillRollWorkflow {
   buildChat({ state, outcome }) {
     const template = "systems/arkham-horror-rpg-fvtt/templates/chat/roll-result.hbs";
 
+    const rollKind = String(state?.rollKind ?? "complex");
+    const rollKindLabel = rollKind === "reaction" ? "Reaction" : "Complex";
+
     const chatData = {
+      rollCategory: "skill",
+      rollKind,
+      rollKindLabel,
       diceRollHTML: outcome.diceRollHTML,
       horrorDiceRollHTML: outcome.horrorDiceRollHTML,
       successOn: outcome.successOn,
@@ -155,8 +163,14 @@ export class SkillRollWorkflow {
 
   async post({ actor, state, outcome }) {
     const { template, chatData } = this.buildChat({ state, outcome });
+    //destructure chatData to separate diceRollHTML and horrorDiceRollHTML from the rest of the flags 
+    // so we aren't passing rendered content strings to every roll
+    const { diceRollHTML, horrorDiceRollHTML, ...flagsData } = chatData;
+    const flags = {
+      [SYSTEM_ID]: flagsData
+    };
     // render and post chat message new method
-    return createArkhamHorrorChatCard( {actor, template, chatVars: chatData, flags: {"arkham-horror-rpg-fvtt": chatData}});
+    return createArkhamHorrorChatCard({ actor, template, chatVars: chatData, flags });
     }
 
   /**

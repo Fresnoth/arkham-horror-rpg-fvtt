@@ -27,7 +27,7 @@
 .arkham-roll-kind {
     display: inline-flex;
     align-items: center;
-    padding: 4px 10px;
+    padding: 4px 14px;
     border: 2px solid $c-red;
     border-radius: 6px;
     background: rgba($c-red, 0.07);
@@ -286,6 +286,10 @@
     margin-top: 2px;
     font-family: "Voltaire", sans-serif;
     font-variant-numeric: tabular-nums;
+}
+
+.arkham-roll-reaction-icon {
+  margin-right: 6px;
 }
 
 // -----------------------------------------------------------------------------

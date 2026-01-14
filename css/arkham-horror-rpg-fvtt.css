@@ -429,7 +429,7 @@ form > nav > a.item.active {
 .arkham-roll-kind {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 4px 14px;
   border: 2px solid #722A1C;
   border-radius: 6px;
   background: rgba(114, 42, 28, 0.07);
@@ -682,6 +682,10 @@ form > nav > a.item.active {
   margin-top: 2px;
   font-family: "Voltaire", sans-serif;
   font-variant-numeric: tabular-nums;
+}
+
+.arkham-roll-reaction-icon {
+  margin-right: 6px;
 }
 
 li.chat-message.message {
@@ -1027,6 +1031,19 @@ li.chat-message.message > .message-content {
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
 }
+.system-arkham-horror-rpg-fvtt .skills-list .skill-row {
+  grid-template-columns: 1fr 1fr 40px 40px 18px;
+  gap: 6px;
+  align-items: center;
+}
+.system-arkham-horror-rpg-fvtt .skills-list .skill-row .skill-reaction-icon {
+  margin-left: 0;
+  justify-self: center;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .system-arkham-horror-rpg-fvtt .npc-skill {
   font-family: "Teutonic", sans-serif;
   font-size: 1.4em;
@@ -1034,6 +1051,32 @@ li.chat-message.message > .message-content {
   text-align: center;
   width: 100%;
   display: block;
+}
+.system-arkham-horror-rpg-fvtt {
+  /* NPC skills: lock each skill tile to a 3-column grid so it won't wrap/jumble */
+}
+.system-arkham-horror-rpg-fvtt .npc-skill-entry {
+  display: grid;
+  grid-template-columns: 1fr 40px 18px;
+  align-items: center;
+  column-gap: 6px;
+}
+.system-arkham-horror-rpg-fvtt {
+  /* Override the global NPC label width just within the skill entry */
+}
+.system-arkham-horror-rpg-fvtt .npc-skill-entry .npc-skill {
+  width: auto;
+  min-width: 0;
+}
+.system-arkham-horror-rpg-fvtt .npc-skill-entry input {
+  width: 40px;
+  justify-self: center;
+}
+.system-arkham-horror-rpg-fvtt .npc-skill-entry .skill-reaction-icon {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .system-arkham-horror-rpg-fvtt .small-input {
   width: 33px;
@@ -1244,5 +1287,3 @@ li.chat-message.message > .message-content {
 .editor.prosemirror {
   height: 100%;
 }
-
-/*# sourceMappingURL=arkham-horror-rpg-fvtt.css.map */
