@@ -1,28 +1,31 @@
 <section class="tab {{tabs.mundane_resources.id}} {{tabs.mundane_resources.cssClass}} scrollable" id="mundane_resources"
     data-tab="{{tabs.mundane_resources.id}}" data-group="{{tabs.mundane_resources.group}}">
-    <div class="grid grid-2col">
-        <div class="form-group">
-            <label for="money">Money</label>
-            <input type="number" name="system.mundaneResources.money" id="money" class="fancy-input"
-                value="{{system.mundaneResources.money}}" data-dtype="Number">
+    <div class="resource-group-styled">
+        <div class="grid grid-2col">
+            <div class="form-group">
+                <label for="money">Money</label>
+                <input type="number" name="system.mundaneResources.money" id="money" class="fancy-input"
+                    value="{{system.mundaneResources.money}}" data-dtype="Number">
+            </div>
+            <div class="form-group">
+                <label for="vehicle">Vehicle</label>
+                <input type="text" name="system.mundaneResources.vehicle" id="vehicle" class="fancy-input"
+                    value="{{system.mundaneResources.vehicle}}" data-dtype="String">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="vehicle">Vehicle</label>
-            <input type="text" name="system.mundaneResources.vehicle" id="vehicle" class="fancy-input"
-                value="{{system.mundaneResources.vehicle}}" data-dtype="String">
-        </div>
-    </div>
-    <div class="grid grid-2col">
-        <div class="form-group">
-            <label for="lodging">Lodging</label>
-            <input type="text" name="system.mundaneResources.lodging" id="lodging" class="fancy-input"
-                value="{{system.mundaneResources.lodging}}" data-dtype="String">
-        </div>
-        <div class="form-group">
-            <label for="loadCapacity">Load Capacity (lbs)</label>
-            <input type="text" class="fancy-input" name="system.loadCapacity.current" value="{{system.loadCapacity.current}}" {{#if isAutoLoadCapacityEnabled}}disabled{{/if}} > /
-            <input type="text" class="fancy-input" name="system.loadCapacity.max" id="loadCapacity" 
-                value="{{system.loadCapacity.max}}" data-dtype="String">
+        <div class="grid grid-2col">
+            <div class="form-group">
+                <label for="lodging">Lodging</label>
+                <input type="text" name="system.mundaneResources.lodging" id="lodging" class="fancy-input"
+                    value="{{system.mundaneResources.lodging}}" data-dtype="String">
+            </div>
+            <div class="form-group">
+                <label for="loadCapacity">Load Capacity (lbs)</label>
+                <input type="text" class="fancy-input" name="system.loadCapacity.current"
+                    value="{{system.loadCapacity.current}}" {{#if isAutoLoadCapacityEnabled}}disabled{{/if}}> /
+                <input type="text" class="fancy-input" name="system.loadCapacity.max" id="loadCapacity"
+                    value="{{system.loadCapacity.max}}" data-dtype="String">
+            </div>
         </div>
     </div>
     <div class="resource-group">
@@ -46,14 +49,16 @@
             {{#each weapons as |item id|}}
             <li class='item ' data-item-id='{{item._id}}'>
                 <div class="flexrow">
-                    <div class='item-name' >
+                    <div class='item-name'>
                         <div class='item-image clickable' data-action="toggleFoldableContent"
-                        data-fc-id="weapon{{item._id}}">
+                            data-fc-id="weapon{{item._id}}">
                             <a class='rollable' data-roll-type='item'>
-                                <img src='{{item.img}}' title='{{item.name}} - click to expand special rules' width='24' height='24' />
+                                <img src='{{item.img}}' title='{{item.name}} - click to expand special rules' width='24'
+                                    height='24' />
                             </a>
                         </div>
-                        <span class="clickable" data-action="clickedRollWithWeapon" data-item-id="{{item._id}}">{{item.name}} <i class="fa-solid fa-dice"></i></span>
+                        <span class="clickable" data-action="clickedRollWithWeapon"
+                            data-item-id="{{item._id}}">{{item.name}} <i class="fa-solid fa-dice"></i></span>
                     </div>
                     <div class='item-prop'>{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}}</div>
                     <div class='item-prop'>{{item.system.damage}}</div>

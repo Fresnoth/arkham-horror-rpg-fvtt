@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 13.0.20
+- basic spell rolling
+- added useable items & spells to npcs
+- improved styling
+- actors have per default now a vision
+
 ## 13.0.19
 - added reaction rolls to npc & characters
 

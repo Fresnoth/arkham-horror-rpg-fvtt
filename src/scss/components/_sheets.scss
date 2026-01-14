@@ -1,0 +1,14 @@
+.photo-frame{
+    background: url("../assets/images/photo-frame.webp");
+    background-size: cover;
+    flex: 0 0 120px;
+    height: 150px;
+    img{
+        margin-left: auto;
+        margin-right: auto;
+        vertical-align: middle;
+        padding: 12px;
+        height: 100%;
+        border-radius: 25px;
+    }
+}

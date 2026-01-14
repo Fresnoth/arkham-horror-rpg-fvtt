@@ -10,10 +10,10 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 10px;
-  min-height: 180px;
+  min-height: 220px;
 
   &.npc {
-    min-height: 150px;
+    min-height: 180px;
   }
 
   .profile-img {
@@ -71,6 +71,7 @@
     flex-grow: 2;
     margin-right: 5px;
   }
+
 }
 
 .character-sheet-divider {
@@ -111,7 +112,9 @@
   }
 }
 
-.sheet.actor,.sheet.item, .roll-dialog-container {
+.sheet.actor,
+.sheet.item,
+.roll-dialog-container {
   .form-group {
     display: flex;
     flex-direction: row;
@@ -149,13 +152,32 @@
   }
 
   fieldset {
-    border-color: rgba(210, 90, 63);
+    color: $c-dark;
+    background:
+      linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.02) 0px,
+        rgba(0, 0, 0, 0.02) 1px,
+        rgba(255, 255, 255, 0) 3px,
+        rgba(255, 255, 255, 0) 7px
+      );
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    border: 2px solid $c-red-border;
+    border-radius: 5px;
+    padding:  5px;
+
     legend {
       font-family: $font-primary;
       font-size: 1.2em;
       color: $c-light-red;
       text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
       text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    input{
+      height: 20px;
     }
   }
 
@@ -197,23 +219,45 @@
 
 .foldable-content {
   display: none;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 0px;
   padding: 5px;
   color: $c-faint;
   text-align: justify;
   font-family: $font-tertiary;
-  
+
   &.collapsed {
     display: block;
   }
 }
 
-.sheet.actor,.sheet.item {
-  .resource-group{
+.sheet.actor,
+.sheet.item {
+  .resource-group {
     margin-top: 10px;
   }
-  
+
+  .resource-group-styled {
+    margin-top: 10px;
+    color: $c-dark;
+    background:
+      linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.02) 0px,
+        rgba(0, 0, 0, 0.02) 1px,
+        rgba(255, 255, 255, 0) 3px,
+        rgba(255, 255, 255, 0) 7px
+      );
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    border: 2px solid $c-red-border;
+    border-radius: 5px;
+    padding:  5px;
+    input{
+      height: 20px;
+    }
+  }
+
   nav.tabs [data-group="sheet"] {
     color: $c-light-red;
     font-weight: bold;
@@ -274,7 +318,7 @@
 }
 
 .npc-skill-entry input {
-  width: 40px;
+  width: 30px;
   justify-self: center;
 }
 
@@ -316,6 +360,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 
   .dicepool-dice {
     margin-right: 5px;
@@ -360,22 +405,23 @@
   height: 100%;
 }
 
-.npc-skill-entry, .skills-list{
-  input{
+.npc-skill-entry,
+.skills-list {
+  input {
     text-align: center;
     max-width: 40px;
   }
 }
 
-.button-dicepool-rolldialog{
+.button-dicepool-rolldialog {
   background-color: $c-red;
   color: white;
   height: 32px;
 }
 
-.fancy-input{
+.fancy-input {
   /* TODO: Style fancy inputs */
-    /*background: transparent;
+  /*background: transparent;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px 0px inset;
     color: black;

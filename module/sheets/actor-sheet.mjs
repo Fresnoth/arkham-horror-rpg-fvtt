@@ -13,7 +13,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         tag: 'form',
         position: {
             width: 700,
-            height: 800
+            height: 850
         },
         actions: {
             clickedDicePool: this.#handleClickedDicePool,

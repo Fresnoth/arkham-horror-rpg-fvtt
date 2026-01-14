@@ -1,6 +1,7 @@
 <header class="sheet-header">
-    <img class="portrait-img" data-action="editImage" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"
-        height="120" />
+    <div class="photo-frame">
+        <img class="portrait-img" data-action="editImage" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    </div>
     <div class="header-fields">
         {{!-- Edit Mode Layout --}}
         <div class="title">
@@ -8,12 +9,14 @@
                     placeholder="{{localize 'MIST_ENGINE.PLACEHOLDERS.Name'}}" /></h1>
 
         </div>
-        <div class="other">
+        <div class="resource-group-styled other">
             <div class="archetype-entry">
                 <label for="system.archetype" class="styled-label">ARCHETYPE</label>
                 {{#if system.archetypeUuid}}
                 <div class="form-fields" style="display:flex; gap:6px; align-items:center;">
-                    <input type="text" name="system.archetype" value="{{system.archetype}}" readonly data-action="openActorArchetype" title="Open Archetype" style="flex:1; cursor:pointer;" class="fancy-input"/>
+                    <input type="text" name="system.archetype" value="{{system.archetype}}" readonly
+                        data-action="openActorArchetype" title="Open Archetype" style="flex:1; cursor:pointer;"
+                        class="fancy-input" />
                     <a class="item-control" data-action="openActorArchetype" title="Open Archetype">
                         <i class="fas fa-up-right-from-square"></i>
                     </a>
@@ -23,31 +26,31 @@
                 {{/if}}
             </div>
             <div class="xp">
-                <div class="grid grid-3col">
+                <div class="grid grid-4col">
                     <div class="xp-entry">
-                        <label for="system.xp.total" class="styled-label">Total XP earned:</label>
-                        <input type="number" name="system.xp.total" value="{{system.xp.total}}" data-dtype="Number" class="medium-input fancy-input"/>
-                    </div>
-                    <div class="xp-entry">
-                        <label for="system.xp.unused" class="styled-label">Unused XP:</label>
-                        <input type="number" name="system.xp.unused" value="{{system.xp.unused}}" data-dtype="Number" class="medium-input fancy-input"/>
+                        <label for="system.xp.total" class="styled-label">XP:</label>
+                        <input type="number" name="system.xp.unused" value="{{system.xp.unused}}" data-dtype="Number"
+                            class="medium-input fancy-input" title="Unused XP" />
+                        of
+                        <input type="number" name="system.xp.total" value="{{system.xp.total}}" data-dtype="Number"
+                            class="medium-input fancy-input" title="Total XP" />
                     </div>
                     <div class="xp-entry">
                         <label for="system.dicepool.max" class="styled-label">Dicepool:</label>
                         <input type="number" name="system.dicepool.max" value="{{system.dicepool.max}}"
-                            data-dtype="Number" class="medium-input fancy-input"/>
+                            data-dtype="Number" class="medium-input fancy-input" />
                     </div>
+                    <div class="header-form-group"><label class="header-label">Damage:</label><input type="number"
+                            name="system.damage" value="{{system.damage}}" data-dtype="Number"
+                            class="small-input fancy-input" /></div>
+                    <div class="header-form-group"><label class="header-label">Horror:</label><input type="number"
+                            name="system.horror" value="{{system.horror}}" data-dtype="Number"
+                            class="small-input fancy-input" /></div>
                 </div>
             </div>
         </div>
-        <div class="dicepool-container grid grid-4col">
-            <div class="grid-span-2">
-                {{> systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-dicepool.hbs}}
-            </div>
-            <div class="header-form-group"><label class="header-label">Damage:</label><input type="number" name="system.damage"
-                    value="{{system.damage}}" data-dtype="Number" class="small-input fancy-input" /></div>
-            <div class="header-form-group"><label class="header-label">Horror:</label><input type="number" name="system.horror"
-                    value="{{system.horror}}" data-dtype="Number" class="small-input fancy-input" /></div>
+        <div class="resource-group-styled dicepool-container">
+            {{> systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-dicepool.hbs}}
         </div>
     </div>
 </header>

@@ -21,9 +21,16 @@ export class ArkhamHorrorActor extends Actor {
       defaults = {
         actorLink: true,
         disposition: CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+        sight: { enabled: true,range: 0,visionMode: "basic" },
+      };
+    }else{
+      defaults = {
+        disposition: CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+        sight: { enabled: true,range: 0,visionMode: "basic" },
       };
     }
 
+    console.log(data.prototypeToken);
 
     foundry.utils.mergeObject(data.prototypeToken, defaults, { overwrite: false });
 
