@@ -10,6 +10,7 @@ import { ArkhamHorrorProtectiveEquipmentSheet } from './sheets/item-protective-e
 import { ArkhamHorrorFavorSheet } from './sheets/item-favor-sheet.mjs';
 import { ArkhamHorrorWeaponSheet } from './sheets/item-weapon-sheet.mjs';
 import { ArkhamHorrorSpellSheet } from './sheets/item-spell-sheet.mjs';
+import { ArkhamHorrorUsefulItemSheet } from './sheets/item-useful-item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { ARKHAM_HORROR } from './helpers/config.mjs';
@@ -131,7 +132,12 @@ Hooks.once('init', function () {
     types: ['spell'],
     label: 'ARKHAM_HORROR.SheetLabels.Item',
   });
-  
+
+  foundry.documents.collections.Items.registerSheet('arkham-horror-rpg-fvtt', ArkhamHorrorUsefulItemSheet, {
+    makeDefault: true,
+    types: ['useful_item'],
+    label: 'ARKHAM_HORROR.SheetLabels.Item',
+  });
   setupConfiguration();
   TokenInformationOverlay.registerHooks();
   // Preload Handlebars templates.

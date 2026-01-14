@@ -67,7 +67,8 @@
     },
     "UsefulItem":{
       "uses": "Uses",
-      "weight": "Weight"
+      "weight": "Weight",
+      "specialRules": "Special Rules"
     },
     "PersonalityTrait": {
       "positive": "Positive Trait",

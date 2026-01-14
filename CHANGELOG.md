@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.19
+- added reaction rolls to npc & characters
+
 ## 13.0.18
 - started refactoring item sheets to unique item sheets
 - improved? styling
