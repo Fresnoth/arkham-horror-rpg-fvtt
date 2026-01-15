@@ -18,6 +18,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.skillMax = options.skillMax;
     this.currentDicePool = options.currentDicePool;
     this.weaponToUse = options.weaponToUse;
+    this.spellToUse = options.spellToUse;
     this.rollKind = options.rollKind ?? "complex";
     this.afterRoll = options.afterRoll;
     this.successesNeeded = options.successesNeeded;
@@ -31,6 +32,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         skillMax: this.skillMax,
         currentDicePool: this.currentDicePool,
         weaponToUse: this.weaponToUse,
+        spellToUse: this.spellToUse,
         rollKind: this.rollKind,
 
         diceToUse: 0,
@@ -43,6 +45,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollWithDisadvantage: false,
         modifierAdvantage: 0, // 0 = none, 1 = advantage, 2 = disadvantage, 3 = both, needed for the dialog and reactive updates
     };
+
+    if(options.spellToUse !== undefined && options.spellToUse !== null){ 
+      options.successesNeeded = options.spellToUse.system.difficulty;
+    }
 
     if (options.successesNeeded !== undefined) {
       this.rollState.successesNeeded = Number.parseInt(options.successesNeeded) || 0;
@@ -89,6 +95,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (options.skillMax !== undefined) this.skillMax = options.skillMax;
     if (options.currentDicePool !== undefined) this.currentDicePool = options.currentDicePool;
     if(options.weaponToUse !== undefined) this.weaponToUse = options.weaponToUse;
+    if(options.spellToUse !== undefined) this.spellToUse = options.spellToUse;
     this.rollKind = options.rollKind ?? "complex";
     this.afterRoll = options.afterRoll;
     this.successesNeeded = options.successesNeeded;
@@ -100,6 +107,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.skillMax = this.skillMax;
     this.rollState.currentDicePool = this.currentDicePool;
     this.rollState.weaponToUse = this.weaponToUse;
+    this.rollState.spellToUse = this.spellToUse;
     this.rollState.rollKind = this.rollKind ?? "complex";
 
     // Reset transient roll modifiers like your original code
@@ -111,6 +119,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.penalty = 0;
     this.rollState.resultModifier = 0;
     this.rollState.successesNeeded = 0;
+
+    if(options.spellToUse !== undefined && options.spellToUse !== null){ 
+      options.successesNeeded = options.spellToUse.system.difficulty;
+    }
 
     if (options.successesNeeded !== undefined) {
       this.rollState.successesNeeded = Number.parseInt(options.successesNeeded) || 0;
@@ -176,6 +188,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollWithDisadvantage: this.rollState.rollWithDisadvantage,
         modifierAdvantage: this.rollState.modifierAdvantage,
         weaponToUse: this.rollState.weaponToUse,
+        spellToUse: this.rollState.spellToUse,
 
         isSkillSelectable,
         skillChoices

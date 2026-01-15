@@ -207,7 +207,7 @@
     background: transparent;
 }
 
-.dice-result {
+.dice-result.arkham-die {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -409,4 +409,14 @@ li.chat-message.message > .message-content {
 
 .arkham-injury-trauma-description p {
     margin: 0;
+}
+
+.arkham-weapon-special-rules {
+    padding: 8px;
+    border: 1px solid rgba(20, 16, 10, 0.14);
+    border-radius: 6px;
+    background: transparent;
+    font-size: 0.8em;
+    opacity: 0.8;
+    letter-spacing: 0.3px;
 }

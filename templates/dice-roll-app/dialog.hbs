@@ -63,6 +63,12 @@
         <input type="text" id="weapon-to-use" name="weaponToUse" value="{{weaponToUse.name}}" readonly>
     </div>
     {{/if}}
+    {{#if spellToUse}}
+    <div class="form-group">
+        <label for="spell-to-use">Spell</label>
+        <input type="text" id="spell-to-use" name="spellToUse" value="{{spellToUse.name}}" readonly>
+    </div>
+    {{/if}}
     <footer class="dialog-footer">
         <button type="button" class="roll-button" data-action="clickedRoll"><i class="fa-solid fa-dice"></i> Roll</button>
     </footer>

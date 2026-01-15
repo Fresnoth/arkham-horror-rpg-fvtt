@@ -202,8 +202,9 @@
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-name'>Skill</div>
-                <div class='item-name'>Range</div>
+                <div class='item-prop'>Skill</div>
+                <div class='item-prop'>Difficulty</div>
+                <div class='item-prop'>Range</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type='spell'}}' data-type='spell'>
@@ -222,9 +223,13 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <span class="clickable" data-action="clickSkill"
-                            data-skill-key="{{item.system.skill}}">{{localize (concat "ARKHAM_HORROR.SKILL."
-                            item.system.skill)}} <i class="fa-solid fa-dice"></i></span>
+                    <div class="item-prop clickable" data-action="clickedRollWithSpell" data-item-id="{{item.id}}" data-skill-key="{{item.system.skill}}">{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}} <i class="fa-solid fa-dice"></i></div>
+                    <div class='item-prop'>
+                        {{#if (eq item.system.difficulty 1)}}Normal
+                        {{else if (eq item.system.difficulty 2)}}Difficult
+                        {{else if (eq item.system.difficulty 3)}}Very Difficult
+                        {{/if}}
+                    </div>
                     <div class='item-prop'>{{item.system.range}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"

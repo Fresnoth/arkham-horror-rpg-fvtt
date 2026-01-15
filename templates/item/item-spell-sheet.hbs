@@ -9,6 +9,14 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="difficulty">{{localize "ITEM.Spell.difficulty"}}</label>
+        <select id="difficulty" name="system.difficulty">
+            <option value="1" {{#if (eq system.difficulty 1)}}selected{{/if}}>Normal (1)</option>
+            <option value="2" {{#if (eq system.difficulty 2)}}selected{{/if}}>Difficult (2)</option>
+            <option value="3" {{#if (eq system.difficulty 3)}}selected{{/if}}>Very Difficult (3)</option>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="range">{{localize "ITEM.Weapon.range"}}</label>
         <input type="number" id="range" name="system.range" value="{{system.range}}" min="0"/>
     </div>

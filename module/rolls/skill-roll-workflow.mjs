@@ -39,6 +39,18 @@ export class SkillRollWorkflow {
     return { normal, horror };
   }
 
+  processSpell({ state, outcome }) {
+    let result = {spellUsageSuccess : false};
+    if (state.spellToUse) {
+      if (outcome.successCount >= state.spellToUse.system.difficulty) {
+        result.spellUsageSuccess = true;
+      }
+      result.spellSpecialRules = state.spellToUse.system.specialRules;
+      result.spellUsed = state.spellToUse;
+    }
+    return result;
+  }
+
   processWeapon({ state, outcome }) {
     // Implement weapon-specific logic here
     // if there are any success return the damage
@@ -95,6 +107,8 @@ export class SkillRollWorkflow {
     });
 
     outcome = { ...outcome, ...this.processWeapon({ state, outcome }) };
+    outcome = { ...outcome, ...this.processSpell({ state, outcome }) };
+    
 
 
     return {
@@ -161,7 +175,11 @@ export class SkillRollWorkflow {
       weaponUsageSuccess: outcome.weaponUsageSuccess,
       weaponDamage: outcome.weaponDamage,
       weaponInflictInjury: outcome.weaponInflictInjury,
-      weaponSpecialRules: outcome.weaponSpecialRules
+      weaponSpecialRules: outcome.weaponSpecialRules,
+      weaponHasSpecialRules: outcome.weaponSpecialRules && outcome.weaponSpecialRules.trim() !== "", // check if weaponSpecialRules is not empty
+      spellUsed: outcome.spellUsed,
+      spellSpecialRules: outcome.spellSpecialRules,
+      spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "" // check if spellSpecialRules is not empty
     };
 
     return { template, chatData };

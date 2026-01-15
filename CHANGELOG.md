@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 13.0.22
+- fixed native roll format in chat
+- added spell usage via dice roll dialog
+- fixed some styling regarding spells in actors
+- added difficulty configuration to spells
+- fixed actor image aspect ratios
+- npc don't show tiers for their knacks, not needed
+  
 ## 13.0.21
 - extended tomes: a tome can contain spells now, attuning & understanding rules applied to tomes
   

@@ -29,9 +29,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickWeaponReload: this.#handleWeaponReload,
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
-            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
-            ,understandTomeFromList: this.#handleUnderstandTomeFromList
-            ,attuneTomeFromList: this.#handleAttuneTomeFromList
+            clickedRollWithSpell: this.#handleClickedRollWithSpell,
+            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll,
+            understandTomeFromList: this.#handleUnderstandTomeFromList,
+            attuneTomeFromList: this.#handleAttuneTomeFromList
         },
         form: {
             submitOnChange: true
@@ -300,7 +301,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let items = this._prepareItems();
 
         // is automatic calculation enabled of the load capacity?
-        context.isAutoLoadCapacityEnabled  = game.settings.get("arkham-horror-rpg-fvtt", "characterLoadCapacity");
+        context.isAutoLoadCapacityEnabled = game.settings.get("arkham-horror-rpg-fvtt", "characterLoadCapacity");
 
         foundry.utils.mergeObject(context, items);
         return context;
@@ -356,17 +357,17 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         knacks.sort((a, b) => a.system.tier - b.system.tier);
 
         // caluculate total weight of items
-        if(game.settings.get("arkham-horror-rpg-fvtt", "characterLoadCapacity")){
+        if (game.settings.get("arkham-horror-rpg-fvtt", "characterLoadCapacity")) {
             let totalWeight = 0;
             for (const item of inventory) {
-                if(item.system.weight > 0){
+                if (item.system.weight > 0) {
                     totalWeight += item.system.weight * (item.system.quantity || 1);
                 }
             }
             this.document.system.loadCapacity.current = totalWeight;
         }
 
-        return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, tomes: tomes, relics: relics, injuries: injuries,favors: favors,spells: spells  };
+        return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, tomes: tomes, relics: relics, injuries: injuries, favors: favors, spells: spells };
     }
 
     /** @inheritDoc */
@@ -503,7 +504,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let skillCurrent = this.actor.system.skills[skillKey].current;
         let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
-         DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool,weaponToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null }).render(true);
     }
 
     static async #handleSkillReactionClicked(event, target) {
@@ -570,7 +571,22 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             let skillCurrent = this.actor.system.skills[skillKey].current;
             let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item }).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null}).render(true);
+        } else {
+            console.error(`Item with ID ${itemId} not found on actor.`);
+        }
+    }
+
+    static async #handleClickedRollWithSpell(event, target) {
+        event.preventDefault();
+        const itemId = target.dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        if (item) {
+            let skillKey = item.system.skill;
+            let skillCurrent = this.actor.system.skills[skillKey].current;
+            let skillMax = this.actor.system.skills[skillKey].max;
+            let currentDicePool = this.actor.system.dicepool.value;
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, spellToUse: item,weaponToUse: null }).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }

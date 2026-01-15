@@ -88,7 +88,29 @@
                     <span class="arkham-total-value">{{#if weaponInflictInjury}}<i class="fas fa-check"></i>{{else}}<i class="fas fa-times"></i>{{/if}}</span>
                 </div>
             </div>
+
+            {{#if weaponHasSpecialRules}}
+                <div class="arkham-weapon-special-rules">
+                    <strong>Special Rules:</strong>
+                    <p>{{{weaponSpecialRules}}}</p>
+                </div>
+            {{/if}}
         {{/if}}
+
+        {{#if spellUsed}}
+            <header class="arkham-roll-header">
+                <div class="arkham-roll-heading">
+                    <span class="arkham-roll-kind">{{spellUsed.name}}</span>
+                </div>
+            </header>
+            {{#if spellHasSpecialRules}}
+                <div class="arkham-weapon-special-rules">
+                    <strong>Special Rules:</strong>
+                    <p>{{{spellSpecialRules}}}</p>
+                </div>
+            {{/if}}
+        {{/if}}
+
 
         <footer class="arkham-roll-footer">
             <span class="arkham-roll-footer-left">Dice Pool: {{oldDicePoolValue}} → {{newDicePoolValue}}</span>

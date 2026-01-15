@@ -8,8 +8,7 @@
     },
     "Item": {
       "Spell": {
-        "SpellLVL": "Level {level} Spells",
-        "AddLVL": "Add LVL {level}"
+        "difficulty": "Difficulty"
       }
     },
     "Effect": {
@@ -93,6 +92,9 @@
       "benefit": "Benefit",
       "decliningText": "Declining",
       "losingText": "Losing"
+    },
+    "Spell":{
+      "difficulty":"Difficulty"
     }
   },
   "TYPES": {

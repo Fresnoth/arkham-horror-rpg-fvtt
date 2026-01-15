@@ -605,7 +605,7 @@ form > nav > a.item.active {
   background: transparent;
 }
 
-.dice-result {
+.dice-result.arkham-die {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -621,17 +621,17 @@ form > nav > a.item.active {
   font-family: "Voltaire", sans-serif;
   font-variant-numeric: tabular-nums;
 }
-.dice-result.success {
+.dice-result.arkham-die.success {
   border-color: rgba(25, 85, 55, 0.9);
   background: rgba(40, 140, 85, 0.9);
   color: rgba(255, 255, 255, 0.96);
 }
-.dice-result.failure {
+.dice-result.arkham-die.failure {
   border-color: rgba(110, 25, 25, 0.95);
   background: rgba(150, 45, 45, 0.9);
   color: rgba(255, 255, 255, 0.96);
 }
-.dice-result.horror-die {
+.dice-result.arkham-die.horror-die {
   border-color: rgba(0, 0, 0, 0.9);
   background: rgba(10, 10, 10, 0.94) !important;
   color: rgba(255, 255, 255, 0.96) !important;
@@ -787,6 +787,16 @@ li.chat-message.message > .message-content {
 
 .arkham-injury-trauma-description p {
   margin: 0;
+}
+
+.arkham-weapon-special-rules {
+  padding: 8px;
+  border: 1px solid rgba(20, 16, 10, 0.14);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.8em;
+  opacity: 0.8;
+  letter-spacing: 0.3px;
 }
 
 .journal-page-content {

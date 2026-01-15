@@ -28,6 +28,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             clickWeaponReload: this.#handleWeaponReload,
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
+            clickedRollWithSpell: this.#handleClickedRollWithSpell,
             clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
         },
         form: {
@@ -339,7 +340,22 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             let skillCurrent = this.actor.system.skills[skillKey].current;
             let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item }).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null }).render(true);
+        } else {
+            console.error(`Item with ID ${itemId} not found on actor.`);
+        }
+    }
+
+    static async #handleClickedRollWithSpell(event, target) {
+        event.preventDefault();
+        const itemId = target.dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        if (item) {
+            let skillKey = item.system.skill;
+            let skillCurrent = this.actor.system.skills[skillKey].current;
+            let skillMax = this.actor.system.skills[skillKey].max;
+            let currentDicePool = this.actor.system.dicepool.value;
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, spellToUse: item, weaponToUse: null }).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }
