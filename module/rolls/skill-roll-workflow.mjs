@@ -71,7 +71,11 @@ export class SkillRollWorkflow {
 
       //page 81 core rule book, if the final dice roll includes a 1, you expend one ammo
       // TODO: check for special rules in the future
-      if(outcome.finalDiceRollResults.some(r => r.result === 1)){
+      if(state.weaponToUse.system.ammunition.reloadAfterUsage){
+        result.weaponAmmoUsed = true;
+        state.weaponToUse.update({"system.ammunition.current": 0});
+      }
+      else if(outcome.finalDiceRollResults.some(r => r.result === 1)){
         if(state.weaponToUse.system.ammunition.max > 0){
           state.weaponToUse.system.ammunition.current = Math.max(0, state.weaponToUse.system.ammunition.current - 1);
           result.weaponAmmoUsed = true;

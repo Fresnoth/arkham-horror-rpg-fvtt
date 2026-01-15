@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 13.0.24
+- added intuition skill to spells
+- added force reload to weapons as option
+- UI notification if a weapon of a character is empty
+  
 ## 13.0.23
 - well.. you need to push
   

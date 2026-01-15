@@ -52,7 +52,9 @@
       "specialRules": "Special Rules",
       "ammunitionMax": "Ammunition Max",
       "reloadCost": "Reload Cost",
-      "weight": "Weight"
+      "weight": "Weight",
+      "reloadAfterUsage": "Reload After Usage",
+      "isRelic": "Relic"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Defensive Benefit",

@@ -37,4 +37,12 @@
         <label for="reloadCost">{{localize "ITEM.Weapon.reloadCost"}}</label>
         <input type="number" id="reloadCost" name="system.reloadCost" value="{{system.reloadCost}}" min="0"/>
     </div>
+    <div class="form-group">
+        <label for="reloadAfterUsage">{{localize "ITEM.Weapon.reloadAfterUsage"}}</label>
+        <input type="checkbox" id="reloadAfterUsage" name="system.ammunition.reloadAfterUsage" {{#if system.ammunition.reloadAfterUsage}}checked{{/if}}/>
+    </div>
+    <div class="form-group">
+        <label for="isRelic">{{localize "ITEM.Weapon.isRelic"}}</label>
+        <input type="checkbox" id="isRelic" name="system.isRelic" {{#if system.isRelic}}checked{{/if}}/>
+    </div>
 </section>

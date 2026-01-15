@@ -567,6 +567,12 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const itemId = target.dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) {
+            // check if the weapon has ammo
+            if( item.system.ammunition.max > 0 && item.system.ammunition.current <= 0){
+                ui.notifications.warn(`${item.name} has no ammunition left! Reload before using it.`);
+                return;
+            }
+            
             let skillKey = item.system.skill;
             let skillCurrent = this.actor.system.skills[skillKey].current;
             let skillMax = this.actor.system.skills[skillKey].max;
