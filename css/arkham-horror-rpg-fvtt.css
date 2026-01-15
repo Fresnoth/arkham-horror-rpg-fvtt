@@ -1072,8 +1072,9 @@ li.chat-message.message > .message-content {
   border-radius: 5px;
   padding: 5px;
 }
-.system-arkham-horror-rpg-fvtt .sheet.actor .resource-group-styled input,
-.system-arkham-horror-rpg-fvtt .sheet.item .resource-group-styled input {
+.system-arkham-horror-rpg-fvtt .sheet.actor .resource-group-styled input, .system-arkham-horror-rpg-fvtt .sheet.actor .resource-group-styled select,
+.system-arkham-horror-rpg-fvtt .sheet.item .resource-group-styled input,
+.system-arkham-horror-rpg-fvtt .sheet.item .resource-group-styled select {
   height: 20px;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor nav.tabs [data-group=sheet],

@@ -1,68 +1,79 @@
 <section class="tab {{tabs.form.id}} {{tabs.form.cssClass}} scrollable" id="form" data-tab="{{tabs.form.id}}"
     data-group="{{tabs.form.group}}">
 
-    <div class="form-group">
-        <label for="weight">{{localize "ITEM.Weapon.weight"}}</label>
-        <input type="number" id="weight" name="system.weight" value="{{system.weight}}" min="0"/>
-    </div>
-    <div class="form-group">
-        <label for="rarity">{{localize "ITEM.Tome.rarity"}}</label>
-        Common<input type="checkbox" id="rarity" name="system.rarity.common" {{#if system.rarity.common}}checked{{/if}} />
-        Uncommon<input type="checkbox" id="rarity" name="system.rarity.uncommon" {{#if system.rarity.uncommon}}checked{{/if}} />
-        Rare<input type="checkbox" id="rarity" name="system.rarity.rare" {{#if system.rarity.rare}}checked{{/if}} />
-        Unique<input type="checkbox" id="rarity" name="system.rarity.unique" {{#if system.rarity.unique}}checked{{/if}} />
-    </div>
+    <div class="resource-group-styled">
+        <div class="form-group">
+            <label for="weight">{{localize "ITEM.Weapon.weight"}}</label>
+            <input type="number" id="weight" name="system.weight" value="{{system.weight}}" min="0" />
+        </div>
+        <div class="form-group">
+            <label for="rarity">{{localize "ITEM.Tome.rarity"}}</label>
+            Common<input type="checkbox" id="rarity" name="system.rarity.common" {{#if
+                system.rarity.common}}checked{{/if}} />
+            Uncommon<input type="checkbox" id="rarity" name="system.rarity.uncommon" {{#if
+                system.rarity.uncommon}}checked{{/if}} />
+            Rare<input type="checkbox" id="rarity" name="system.rarity.rare" {{#if system.rarity.rare}}checked{{/if}} />
+            Unique<input type="checkbox" id="rarity" name="system.rarity.unique" {{#if
+                system.rarity.unique}}checked{{/if}} />
+        </div>
 
-    <div class="form-group">
-        <label for="alternativeNames">{{localize "ITEM.Tome.alternativeNames"}}</label>
-        <input type="text" id="alternativeNames" name="system.alternativeNames" value="{{system.alternativeNames}}" />
-    </div>
+        <div class="form-group">
+            <label for="alternativeNames">{{localize "ITEM.Tome.alternativeNames"}}</label>
+            <input type="text" id="alternativeNames" name="system.alternativeNames"
+                value="{{system.alternativeNames}}" />
+        </div>
 
-    <div class="form-group">
-        <label for="knowledgeBonus">{{localize "ITEM.Tome.knowledgeBonus"}}</label>
-        <input type="text" id="knowledgeBonus" name="system.knowledgeBonus" value="{{system.knowledgeBonus}}" />
-    </div>
+        <div class="form-group">
+            <label for="knowledgeBonus">{{localize "ITEM.Tome.knowledgeBonus"}}</label>
+            <input type="text" id="knowledgeBonus" name="system.knowledgeBonus" value="{{system.knowledgeBonus}}" />
+        </div>
 
-    <hr />
+        <hr />
 
-    <div class="form-group">
-        <label>{{localize "ITEM.Tome.attunementDifficulty"}}</label>
+        <div class="form-group">
+            <label>{{localize "ITEM.Tome.attunementDifficulty"}}</label>
+            {{#if isGM}}
+            <select name="system.attunementDifficulty">
+                <option value="1" {{#if (eq system.attunementDifficulty 1)}}selected{{/if}}>{{localize
+                    "ITEM.Tome.difficultyNormal"}}</option>
+                <option value="2" {{#if (eq system.attunementDifficulty 2)}}selected{{/if}}>{{localize
+                    "ITEM.Tome.difficultyDifficult"}}</option>
+                <option value="3" {{#if (eq system.attunementDifficulty 3)}}selected{{/if}}>{{localize
+                    "ITEM.Tome.difficultyVeryDifficult"}}</option>
+            </select>
+            {{else}}
+            <input type="text" value="{{attunementDifficultyLabel}}" readonly />
+            {{/if}}
+        </div>
+
+        {{#if isOwnedByActor}}
+        <div class="form-group">
+            <label>{{localize "ITEM.Tome.understood"}}</label>
+            <input type="checkbox" {{#if system.understood}}checked{{/if}} disabled />
+        </div>
+        <div class="form-group">
+            <label>{{localize "ITEM.Tome.attuned"}}</label>
+            <input type="checkbox" {{#if system.attuned}}checked{{/if}} disabled />
+        </div>
+
         {{#if isGM}}
-        <select name="system.attunementDifficulty">
-            <option value="1" {{#if (eq system.attunementDifficulty 1)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyNormal"}}</option>
-            <option value="2" {{#if (eq system.attunementDifficulty 2)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyDifficult"}}</option>
-            <option value="3" {{#if (eq system.attunementDifficulty 3)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyVeryDifficult"}}</option>
-        </select>
-        {{else}}
-        <input type="text" value="{{attunementDifficultyLabel}}" readonly />
-        {{/if}}
-    </div>
-
-    {{#if isOwnedByActor}}
-    <div class="form-group">
-        <label>{{localize "ITEM.Tome.understood"}}</label>
-        <input type="checkbox" {{#if system.understood}}checked{{/if}} disabled />
-    </div>
-    <div class="form-group">
-        <label>{{localize "ITEM.Tome.attuned"}}</label>
-        <input type="checkbox" {{#if system.attuned}}checked{{/if}} disabled />
-    </div>
-
-    {{#if isGM}}
         {{#if system.understood}}
         <div class="form-group">
             <label></label>
-            <button type="button" data-action="clearTomeUnderstanding">{{localize "ITEM.Tome.clearUnderstoodButton"}}</button>
+            <button type="button" data-action="clearTomeUnderstanding">{{localize
+                "ITEM.Tome.clearUnderstoodButton"}}</button>
         </div>
         {{else if system.attuned}}
         <div class="form-group">
             <label></label>
-            <button type="button" data-action="clearTomeUnderstanding">{{localize "ITEM.Tome.clearUnderstoodButton"}}</button>
+            <button type="button" data-action="clearTomeUnderstanding">{{localize
+                "ITEM.Tome.clearUnderstoodButton"}}</button>
         </div>
         {{/if}}
-    {{/if}}
-    {{/if}}
+        {{/if}}
+        {{/if}}
 
+    </div>
     <hr />
 
     <div class="resource-group tome-spells">
@@ -86,7 +97,8 @@
             {{#each tomeSpells as |spell|}}
             <li class='item' data-uuid='{{spell.uuid}}'>
                 <div class="flexrow">
-                    <div class='item-name clickable' data-action="toggleFoldableContent" data-fc-id="tomeSpell{{@index}}">
+                    <div class='item-name clickable' data-action="toggleFoldableContent"
+                        data-fc-id="tomeSpell{{@index}}">
                         <span>{{spell.name}}</span>
                     </div>
                     <div class='item-prop'>{{spell.sourceLabel}}</div>
@@ -112,6 +124,4 @@
             {{/each}}
         </ol>
     </div>
-
-
 </section>

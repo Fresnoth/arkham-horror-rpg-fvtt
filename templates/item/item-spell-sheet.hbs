@@ -1,24 +1,23 @@
 <section class="tab {{tabs.form.id}} {{tabs.form.cssClass}} scrollable" id="form"
     data-tab="{{tabs.form.id}}" data-group="{{tabs.form.group}}">
-    <div class="form-group">
-        <label for="skill">{{localize "ITEM.Weapon.skill"}}</label>
-        <select id="skill" name="system.skill">
-            <option value="lore" {{#if (eq system.skill "lore")}}selected{{/if}}>{{localize "ARKHAM_HORROR.SKILL.lore"}}</option>
-            <option value="knowledge" {{#if (eq system.skill "knowledge")}}selected{{/if}}>{{localize "ARKHAM_HORROR.SKILL.knowledge"}}</option>
-            <option value="wits" {{#if (eq system.skill "wits")}}selected{{/if}}>{{localize "ARKHAM_HORROR.SKILL.wits"}}</option>
-            <option value="intuition" {{#if (eq system.skill "intuition")}}selected{{/if}}>{{localize "ARKHAM_HORROR.SKILL.intuition"}}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="difficulty">{{localize "ITEM.Spell.difficulty"}}</label>
-        <select id="difficulty" name="system.difficulty">
-            <option value="1" {{#if (eq system.difficulty 1)}}selected{{/if}}>Normal (1)</option>
-            <option value="2" {{#if (eq system.difficulty 2)}}selected{{/if}}>Difficult (2)</option>
-            <option value="3" {{#if (eq system.difficulty 3)}}selected{{/if}}>Very Difficult (3)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="range">{{localize "ITEM.Weapon.range"}}</label>
-        <input type="number" id="range" name="system.range" value="{{system.range}}" min="0"/>
+    <div class="resource-group-styled">
+        <div class="form-group">
+            <label for="skill">{{localize "ITEM.Weapon.skill"}}</label>
+            <select id="skill" name="system.skill">
+                {{> "systems/arkham-horror-rpg-fvtt/templates/shared/_skill_options.hbs" skill=system.skill}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="difficulty">{{localize "ITEM.Spell.difficulty"}}</label>
+            <select id="difficulty" name="system.difficulty">
+                <option value="1" {{#if (eq system.difficulty 1)}}selected{{/if}}>Normal (1)</option>
+                <option value="2" {{#if (eq system.difficulty 2)}}selected{{/if}}>Difficult (2)</option>
+                <option value="3" {{#if (eq system.difficulty 3)}}selected{{/if}}>Very Difficult (3)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="range">{{localize "ITEM.Weapon.range"}}</label>
+            <input type="number" id="range" name="system.range" value="{{system.range}}" min="0"/>
+        </div>
     </div>
 </section>
