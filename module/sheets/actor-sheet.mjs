@@ -29,6 +29,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
             clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
+            ,understandTomeFromList: this.#handleUnderstandTomeFromList
+            ,attuneTomeFromList: this.#handleAttuneTomeFromList
         },
         form: {
             submitOnChange: true
@@ -576,5 +578,138 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     static async #handleClickedInjuryTraumaRoll(event, target) {
         event.preventDefault();
         InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
+    }
+
+    static async #handleUnderstandTomeFromList(event, target) {
+        event.preventDefault();
+        await this.understandTomeFromList(event, target);
+    }
+
+    static async #handleAttuneTomeFromList(event, target) {
+        event.preventDefault();
+        await this.attuneTomeFromList(event, target);
+    }
+
+    async understandTomeFromList(event, target) {
+        const itemId = target.dataset.itemId;
+        const tome = this.actor.items.get(itemId);
+        if (!tome || tome.type !== 'tome') return;
+        if (!this.actor.isOwner) {
+            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            return;
+        }
+        if (Boolean(tome.system?.understood)) {
+            ui.notifications.info('This Tome is already understood.');
+            return;
+        }
+
+        const skillKey = 'knowledge';
+        const skillCurrent = this.actor.system.skills?.[skillKey]?.current ?? 0;
+        const skillMax = this.actor.system.skills?.[skillKey]?.max ?? 0;
+        const currentDicePool = this.actor.system.dicepool?.value ?? 0;
+        const successesNeeded = Number(tome.system?.attunementDifficulty ?? 2);
+
+        DiceRollApp.getInstance({
+            actor: this.actor,
+            rollKind: 'tome-understand',
+            skillChoices: ['knowledge', 'lore'],
+            skillKey,
+            skillCurrent,
+            skillMax,
+            currentDicePool,
+            weaponToUse: null,
+            successesNeeded,
+            afterRoll: async ({ outcome }) => {
+                if (!outcome?.isSuccess) return;
+
+                await tome.update({ 'system.understood': true });
+
+                const uuids = (tome.system?.spellUuids ?? []).filter(u => !!u);
+                if (uuids.length === 0) {
+                    ui.notifications.info('This Tome has no spells to learn.');
+                    return;
+                }
+
+                const existing = (this.actor.items?.contents ?? []).filter(i => i.type === 'spell');
+                const existingSourceIds = new Set(existing.map(i => i.flags?.core?.sourceId).filter(Boolean));
+
+                const toCreate = [];
+                for (const uuid of uuids) {
+                    if (existingSourceIds.has(uuid)) continue;
+
+                    let source;
+                    try {
+                        source = await fromUuid(uuid);
+                    } catch (e) {
+                        source = null;
+                    }
+                    if (!source || source.type !== 'spell') continue;
+
+                    const itemData = foundry.utils.deepClone(source.toObject());
+                    delete itemData._id;
+                    itemData.flags = itemData.flags ?? {};
+                    itemData.flags.core = itemData.flags.core ?? {};
+                    itemData.flags.core.sourceId = uuid;
+                    itemData.flags['arkham-horror-rpg-fvtt'] = {
+                        ...(itemData.flags['arkham-horror-rpg-fvtt'] ?? {}),
+                        tomeSourceItemId: tome.id,
+                        tomeSourceUuid: tome.uuid,
+                        tomeSourceName: tome.name
+                    };
+                    toCreate.push(itemData);
+                }
+
+                if (toCreate.length > 0) {
+                    await this.actor.createEmbeddedDocuments('Item', toCreate);
+                    ui.notifications.info(`Learned ${toCreate.length} spell(s) from the Tome.`);
+                } else {
+                    ui.notifications.info('No new spells were learned from this Tome.');
+                }
+            }
+        }).render(true);
+    }
+
+    async attuneTomeFromList(event, target) {
+        const itemId = target.dataset.itemId;
+        const tome = this.actor.items.get(itemId);
+        if (!tome || tome.type !== 'tome') return;
+        if (!this.actor.isOwner) {
+            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            return;
+        }
+        if (!Boolean(tome.system?.understood)) {
+            ui.notifications.warn('You must understand this Tome before attuning to it.');
+            return;
+        }
+
+        const skillKey = 'intuition';
+        const skillCurrent = this.actor.system.skills?.[skillKey]?.current ?? 0;
+        const skillMax = this.actor.system.skills?.[skillKey]?.max ?? 0;
+        const currentDicePool = this.actor.system.dicepool?.value ?? 0;
+        const successesNeeded = 2;
+
+        DiceRollApp.getInstance({
+            actor: this.actor,
+            rollKind: 'tome-attune',
+            skillKey,
+            skillCurrent,
+            skillMax,
+            currentDicePool,
+            weaponToUse: null,
+            successesNeeded,
+            afterRoll: async ({ outcome }) => {
+                if (!outcome?.isSuccess) return;
+
+                const updates = [];
+                for (const i of (this.actor.items?.contents ?? [])) {
+                    if (i.type !== 'tome') continue;
+                    if (i.id === tome.id) continue;
+                    if (i.system?.attuned) updates.push({ _id: i.id, 'system.attuned': false });
+                }
+                updates.push({ _id: tome.id, 'system.attuned': true });
+                await this.actor.updateEmbeddedDocuments('Item', updates);
+                ui.notifications.info(`Attuned to ${tome.name}.`);
+            }
+        }).render(true);
     }
 }

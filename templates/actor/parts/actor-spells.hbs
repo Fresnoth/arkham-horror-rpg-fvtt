@@ -27,7 +27,13 @@
                 height='24'
               /></a>
           </div>
-          <h4>{{item.name}}</h4>
+          <h4>{{item.name}}
+            {{#with (lookup item.flags "arkham-horror-rpg-fvtt") as |ah|}}
+              {{#if ah.tomeSourceName}}
+                <small class="notes">(Tome: {{ah.tomeSourceName}})</small>
+              {{/if}}
+            {{/with}}
+          </h4>
         </div>
         <div class='item-controls'>
           <a

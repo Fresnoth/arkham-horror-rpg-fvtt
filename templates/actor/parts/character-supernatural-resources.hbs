@@ -7,8 +7,8 @@
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-name'>Skill</div>
-                <div class='item-name'>Range</div>
+                <div class='item-prop'>Skill</div>
+                <div class='item-prop'>Range</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' spell'}}' data-type='spell'>
@@ -25,7 +25,13 @@
                                 <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
                             </a>
                         </div>
-                        <span>{{item.name}}</span>
+                        <span>{{item.name}}
+                            {{#with (lookup item.flags "arkham-horror-rpg-fvtt") as |ah|}}
+                                {{#if ah.tomeSourceName}}
+                                    <small class="notes">({{ah.tomeSourceName}})</small>
+                                {{/if}}
+                            {{/with}}
+                        </span>
                     </div>
                     <div class='item-prop'>
                         <span class="clickable" data-action="clickSkill"
@@ -35,11 +41,11 @@
                     <div class='item-prop'>{{item.system.range}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type='Item'}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type='Item'}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -60,6 +66,8 @@
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
                 <div class='item-prop'>Rarity</div>
+                <div class='item-prop'>{{localize "ITEM.Tome.understood"}}</div>
+                <div class='item-prop'>{{localize "ITEM.Tome.attuned"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='tome'>
@@ -92,13 +100,45 @@
                         Uncommon
                         {{/if}}
                     </div>
+                    <div class='item-prop'>
+                        {{#if item.system.understood}}
+                        <i class="fa-solid fa-check"></i>
+                        {{else}}
+                        {{#if ../actor.isOwner}}
+                        <a class="clickable" data-action="understandTomeFromList" data-item-id='{{item._id}}'
+                            title='{{localize "ITEM.Tome.understandButton"}}'>
+                            <i class="fa-solid fa-dice"></i>
+                        </a>
+                        {{else}}
+                        <i class="fa-regular fa-circle"></i>
+                        {{/if}}
+                        {{/if}}
+                    </div>
+                    <div class='item-prop'>
+                        {{#if item.system.attuned}}
+                            <i class="fa-solid fa-star"></i>
+                        {{else}}
+                            {{#if item.system.understood}}
+                                {{#if ../actor.isOwner}}
+                                <a class="clickable" data-action="attuneTomeFromList" data-item-id='{{item._id}}'
+                                    title='{{localize "ITEM.Tome.attuneButton"}}'>
+                                    <i class="fa-solid fa-dice"></i>
+                                </a>
+                                {{else}}
+                                <i class="fa-regular fa-star"></i>
+                                {{/if}}
+                            {{else}}
+                                <i class="fa-regular fa-star"></i>
+                            {{/if}}
+                        {{/if}}
+                    </div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type='Item'}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type='Item'}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>

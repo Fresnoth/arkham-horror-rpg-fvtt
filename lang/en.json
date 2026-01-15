@@ -63,7 +63,21 @@
     "Tome": {
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
-      "rarity": "Rarity"
+      "rarity": "Rarity",
+      "spells": "Spells",
+      "source": "Source",
+      "dropSpellHint": "(GM: drag a spell here)",
+      "dropSpellTarget": "Drop Spell items onto this Tome (GM only).",
+      "attunementDifficulty": "Understand Difficulty",
+      "difficultyNormal": "Normal (1)",
+      "difficultyDifficult": "Difficult (2)",
+      "difficultyVeryDifficult": "Very Difficult (3)",
+      "understood": "Understood",
+      "attuned": "Attuned",
+      "understandButton": "Understand",
+      "attuneButton": "Attune",
+      "clearUnderstoodButton": "Clear Understood",
+      "inaccessibleSpells": "This Tome contains {count} spell(s) you do not have permission to view."
     },
     "UsefulItem":{
       "uses": "Uses",

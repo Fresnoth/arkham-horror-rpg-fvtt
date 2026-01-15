@@ -2,10 +2,12 @@ const { ItemSheetV2 } = foundry.applications.sheets
 const { HandlebarsApplicationMixin } = foundry.applications.api
 const { TextEditor, DragDrop } = foundry.applications.ux
 import { enrichHTML } from "../util/util.mjs"
+import { DiceRollApp } from "../apps/dice-roll-app.mjs";
 
 export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
     #dragDropBoundElement
+    #tomeInaccessibleWarned = false
     // Right now need these 4 helpers to be able to force auto save of the archetype document since default
     // ItemSheetV2 autosave interactions are lagging, when we are qucick change then drag dropping knacks
     //  onto the actors, without these 4 helpers there can be scenarios where
@@ -26,6 +28,10 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         },
         actions: {
             removeArchetypeKnack: this.#handleRemoveArchetypeKnack,
+            removeTomeSpell: this.#handleRemoveTomeSpell,
+            understandTome: this.#handleUnderstandTome,
+            attuneTome: this.#handleAttuneTome,
+            clearTomeUnderstanding: this.#handleClearTomeUnderstanding,
             toggleFoldableContent: this.#handleToggleFoldableContent,
             openUuidItem: this.#handleOpenUuidItem
         },
@@ -278,6 +284,57 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 "4": await buildTier(4)
             };
         }
+
+        if (this.document.type === 'tome') {
+            context.isGM = game.user?.isGM ?? false;
+            context.isOwnedByActor = !!this.document.actor;
+
+            const difficulty = Number(this.document.system?.attunementDifficulty ?? 2);
+            context.attunementDifficultyLabel = difficulty === 3 ? 'Very Difficult (3)' : difficulty === 1 ? 'Normal (1)' : 'Difficult (2)';
+
+            const spellUuids = (this.document.system?.spellUuids ?? []).filter(u => !!u);
+            const docByUuid = new Map();
+            const descriptionByUuid = new Map();
+            const resolved = [];
+            let inaccessibleCount = 0;
+
+            for (const uuid of spellUuids) {
+                let doc = docByUuid.get(uuid);
+                if (!docByUuid.has(uuid)) {
+                    try {
+                        doc = await fromUuid(uuid);
+                    } catch (e) {
+                        doc = null;
+                    }
+                    docByUuid.set(uuid, doc ?? null);
+                }
+
+                if (!doc) {
+                    inaccessibleCount += 1;
+                    continue;
+                }
+
+                const name = doc.name ?? uuid;
+                const sourceLabel = doc.pack ? (game.packs.get(doc.pack)?.metadata?.label ?? doc.pack) : (game.world?.title ?? 'World');
+                let descriptionHTML = descriptionByUuid.get(uuid);
+                if (descriptionHTML === undefined) {
+                    descriptionHTML = await enrichHTML('system.description', doc);
+                    descriptionByUuid.set(uuid, descriptionHTML);
+                }
+
+                resolved.push({ uuid, name, sourceLabel, descriptionHTML });
+            }
+
+            context.tomeSpells = resolved;
+            context.inaccessibleSpellCount = inaccessibleCount;
+            context.showInaccessibleSpellWarning = inaccessibleCount > 0 && !(game.user?.isGM ?? false);
+
+            // Button visibility
+            const actor = this.document.actor;
+            const isOwner = actor ? actor.isOwner : this.document.isOwner;
+            context.canUnderstand = !!actor && isOwner && !Boolean(this.document.system?.understood);
+            context.canAttune = !!actor && isOwner && Boolean(this.document.system?.understood);
+        }
         return context;
     }
 
@@ -293,6 +350,22 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         this.openUuidItem(event, target);
     }
 
+    static async #handleRemoveTomeSpell(event, target) {
+        this.removeTomeSpell(event, target);
+    }
+
+    static async #handleUnderstandTome(event, target) {
+        this.understandTome(event, target);
+    }
+
+    static async #handleAttuneTome(event, target) {
+        this.attuneTome(event, target);
+    }
+
+    static async #handleClearTomeUnderstanding(event, target) {
+        this.clearTomeUnderstanding(event, target);
+    }
+
     toggleFoldableContent(event, target) {
         event.preventDefault();
         const fcId = target.dataset.fcId;
@@ -304,6 +377,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     async openUuidItem(event, target) {
         event.preventDefault();
+        event.stopPropagation();
         // Archetype knacks are UUID references (not embedded). Opening their sheets for players is risky because it
         // can lead to editing the source document (world/compendium) rather than an owned copy.
         if (this.document.type === 'archetype' && !(game.user?.isGM ?? false)) {
@@ -320,13 +394,190 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 return;
             }
             if (doc.sheet) {
-                doc.sheet.render(true);
+                // Tome spell viewing: players can open read-only to avoid editing source docs.
+                if (this.document.type === 'tome' && !(game.user?.isGM ?? false)) {
+                    doc.sheet.render(true, { editable: false });
+                } else {
+                    doc.sheet.render(true);
+                }
                 return;
             }
             ui.notifications.warn('No sheet available for that document.');
         } catch (e) {
             ui.notifications.warn('Failed to open the UUID document.');
         }
+    }
+
+    async removeTomeSpell(event, target) {
+        event.preventDefault();
+        if (this.document.type !== 'tome') return;
+        if (!(game.user?.isGM ?? false)) {
+            ui.notifications.warn('Only the GM can modify a Tome\'s spells.');
+            return;
+        }
+
+        const uuid = target.dataset.uuid;
+        if (!uuid) return;
+
+        const current = (this.document.system?.spellUuids ?? []).filter(u => !!u);
+        const next = current.filter(u => u !== uuid);
+        await this.document.update({ 'system.spellUuids': next });
+        this.render(false);
+    }
+
+    async understandTome(event, target) {
+        event.preventDefault();
+        if (this.document.type !== 'tome') return;
+        const actor = this.document.actor;
+        if (!actor) {
+            ui.notifications.warn('This Tome must be owned by an Actor to be understood.');
+            return;
+        }
+        if (!actor.isOwner) {
+            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            return;
+        }
+        if (Boolean(this.document.system?.understood)) {
+            ui.notifications.info('This Tome is already understood.');
+            return;
+        }
+
+        // Default to Knowledge, but allow switching to Lore by editing the dialog's skillCurrent (success-on) and skillKey is fixed.
+        // For v1: we prompt with Knowledge by default; player can re-open and pick Lore from a secondary button in future.
+        const skillKey = 'knowledge';
+        const skillCurrent = actor.system.skills?.[skillKey]?.current ?? 0;
+        const skillMax = actor.system.skills?.[skillKey]?.max ?? 0;
+        const currentDicePool = actor.system.dicepool?.value ?? 0;
+        const successesNeeded = Number(this.document.system?.attunementDifficulty ?? 2);
+
+        DiceRollApp.getInstance({
+            actor,
+            rollKind: 'tome-understand',
+            skillChoices: ['knowledge', 'lore'],
+            skillKey,
+            skillCurrent,
+            skillMax,
+            currentDicePool,
+            weaponToUse: null,
+            successesNeeded,
+            afterRoll: async ({ outcome }) => {
+                if (!outcome?.isSuccess) return;
+
+                // Mark understood first.
+                await this.document.update({ 'system.understood': true });
+
+                // Create embedded spell copies on the actor.
+                const uuids = (this.document.system?.spellUuids ?? []).filter(u => !!u);
+                if (uuids.length === 0) {
+                    ui.notifications.info('This Tome has no spells to learn.');
+                    return;
+                }
+
+                const existing = (actor.items?.contents ?? []).filter(i => i.type === 'spell');
+                const existingSourceIds = new Set(existing.map(i => i.flags?.core?.sourceId).filter(Boolean));
+
+                const toCreate = [];
+                for (const uuid of uuids) {
+                    if (existingSourceIds.has(uuid)) continue;
+
+                    let source;
+                    try {
+                        source = await fromUuid(uuid);
+                    } catch (e) {
+                        source = null;
+                    }
+                    if (!source || source.type !== 'spell') continue;
+
+                    const itemData = foundry.utils.deepClone(source.toObject());
+                    delete itemData._id;
+                    itemData.flags = itemData.flags ?? {};
+                    itemData.flags.core = itemData.flags.core ?? {};
+                    itemData.flags.core.sourceId = uuid;
+
+                    itemData.flags['arkham-horror-rpg-fvtt'] = {
+                        ...(itemData.flags['arkham-horror-rpg-fvtt'] ?? {}),
+                        tomeSourceItemId: this.document.id,
+                        tomeSourceUuid: this.document.uuid,
+                        tomeSourceName: this.document.name
+                    };
+
+                    toCreate.push(itemData);
+                }
+
+                if (toCreate.length > 0) {
+                    await actor.createEmbeddedDocuments('Item', toCreate);
+                    ui.notifications.info(`Learned ${toCreate.length} spell(s) from the Tome.`);
+                } else {
+                    ui.notifications.info('No new spells were learned from this Tome.');
+                }
+            }
+        }).render(true);
+    }
+
+    async attuneTome(event, target) {
+        event.preventDefault();
+        if (this.document.type !== 'tome') return;
+        const actor = this.document.actor;
+        if (!actor) {
+            ui.notifications.warn('This Tome must be owned by an Actor to attune to it.');
+            return;
+        }
+        if (!actor.isOwner) {
+            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            return;
+        }
+        if (!Boolean(this.document.system?.understood)) {
+            ui.notifications.warn('You must understand this Tome before attuning to it.');
+            return;
+        }
+
+        const skillKey = 'intuition';
+        const skillCurrent = actor.system.skills?.[skillKey]?.current ?? 0;
+        const skillMax = actor.system.skills?.[skillKey]?.max ?? 0;
+        const currentDicePool = actor.system.dicepool?.value ?? 0;
+        const successesNeeded = 2;
+
+        DiceRollApp.getInstance({
+            actor,
+            rollKind: 'tome-attune',
+            skillKey,
+            skillCurrent,
+            skillMax,
+            currentDicePool,
+            weaponToUse: null,
+            successesNeeded,
+            afterRoll: async ({ outcome }) => {
+                if (!outcome?.isSuccess) return;
+
+                // Only one tome can be attuned at a time: set others to false, this one true.
+                const updates = [];
+                for (const i of (actor.items?.contents ?? [])) {
+                    if (i.type !== 'tome') continue;
+                    if (i.id === this.document.id) continue;
+                    if (i.system?.attuned) updates.push({ _id: i.id, 'system.attuned': false });
+                }
+
+                updates.push({ _id: this.document.id, 'system.attuned': true });
+                await actor.updateEmbeddedDocuments('Item', updates);
+                ui.notifications.info(`Attuned to ${this.document.name}.`);
+            }
+        }).render(true);
+    }
+
+    async clearTomeUnderstanding(event, target) {
+        event.preventDefault();
+        if (this.document.type !== 'tome') return;
+        if (!(game.user?.isGM ?? false)) {
+            ui.notifications.warn("Only the GM can clear a Tome's understood/attuned state.");
+            return;
+        }
+
+        await this.document.update({
+            'system.understood': false,
+            'system.attuned': false
+        });
+
+        this.render(false);
     }
 
     async removeArchetypeKnack(event, target) {
@@ -493,6 +744,57 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             return;
         }
 
+        // Tome: store UUID references to dropped spells (no embedding)
+        if (this.document.type === 'tome' && data?.type === 'Item') {
+            if (!(game.user?.isGM ?? false)) {
+                ui.notifications.warn('Only the GM can add or remove spells from a Tome.');
+                return;
+            }
+
+            // Only accept drops inside the Tome spells section
+            const inSpellSection = !!(event.target?.closest?.('.tome-spells') ?? event.currentTarget?.closest?.('.tome-spells'));
+            if (!inSpellSection) return;
+
+            // Prefer UUID resolution (works for compendium/world)
+            const uuid = data.uuid
+                ?? (data.pack && (data.id || data.documentId)
+                    ? `Compendium.${data.pack}.Item.${data.id ?? data.documentId}`
+                    : null);
+
+            let dropped = null;
+            if (uuid) {
+                try {
+                    dropped = await fromUuid(uuid);
+                } catch (e) {
+                    dropped = null;
+                }
+            }
+
+            // Fallback to Foundry drop helper
+            if (!dropped) {
+                try {
+                    dropped = await Item.fromDropData(data);
+                } catch (e) {
+                    dropped = null;
+                }
+            }
+
+            if (!dropped || dropped.type !== 'spell') {
+                ui.notifications.warn('Only Spell items can be dropped onto a Tome.');
+                return;
+            }
+
+            const current = (this.document.system?.spellUuids ?? []).filter(u => !!u);
+            if (current.includes(dropped.uuid)) {
+                ui.notifications.info('That spell is already in this Tome.');
+                return;
+            }
+
+            await this.document.update({ 'system.spellUuids': [...current, dropped.uuid] });
+            this.render(false);
+            return;
+        }
+
         // Handle different data types
         switch (data.type) {
             // write your cases
@@ -510,5 +812,13 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         }
 
         this.#bindArchetypeAutosaveHandlers()
+
+        if (this.document.type === 'tome') {
+            const inaccessible = Number(context?.inaccessibleSpellCount ?? 0);
+            if (inaccessible > 0 && !(game.user?.isGM ?? false) && !this.#tomeInaccessibleWarned) {
+                ui.notifications.warn(`This Tome contains ${inaccessible} spell(s) you do not have permission to view.`);
+                this.#tomeInaccessibleWarned = true;
+            }
+        }
     }
 }

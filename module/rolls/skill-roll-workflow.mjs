@@ -125,7 +125,13 @@ export class SkillRollWorkflow {
     const template = "systems/arkham-horror-rpg-fvtt/templates/chat/roll-result.hbs";
 
     const rollKind = String(state?.rollKind ?? "complex");
-    const rollKindLabel = rollKind === "reaction" ? "Reaction" : "Complex";
+    const rollKindLabel = rollKind === "reaction"
+      ? "Reaction"
+      : rollKind === "tome-understand"
+        ? "Tome: Understand"
+        : rollKind === "tome-attune"
+          ? "Tome: Attune"
+          : "Complex";
 
     const chatData = {
       rollCategory: "skill",

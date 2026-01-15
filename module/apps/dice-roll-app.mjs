@@ -19,6 +19,9 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.currentDicePool = options.currentDicePool;
     this.weaponToUse = options.weaponToUse;
     this.rollKind = options.rollKind ?? "complex";
+    this.afterRoll = options.afterRoll;
+    this.successesNeeded = options.successesNeeded;
+    this.skillChoices = Array.isArray(options.skillChoices) ? options.skillChoices : null;
 
     // Single canonical "book" of parameters
     // (UI template context reads from here; workflow reads from here)
@@ -40,6 +43,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollWithDisadvantage: false,
         modifierAdvantage: 0, // 0 = none, 1 = advantage, 2 = disadvantage, 3 = both, needed for the dialog and reactive updates
     };
+
+    if (options.successesNeeded !== undefined) {
+      this.rollState.successesNeeded = Number.parseInt(options.successesNeeded) || 0;
+    }
 
     DiceRollApp.instance = this;
   }
@@ -83,6 +90,9 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (options.currentDicePool !== undefined) this.currentDicePool = options.currentDicePool;
     if(options.weaponToUse !== undefined) this.weaponToUse = options.weaponToUse;
     this.rollKind = options.rollKind ?? "complex";
+    this.afterRoll = options.afterRoll;
+    this.successesNeeded = options.successesNeeded;
+    this.skillChoices = Array.isArray(options.skillChoices) ? options.skillChoices : null;
 
     // Keep rollState in sync (single book)
     this.rollState.skillKey = this.skillKey;
@@ -101,6 +111,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.penalty = 0;
     this.rollState.resultModifier = 0;
     this.rollState.successesNeeded = 0;
+
+    if (options.successesNeeded !== undefined) {
+      this.rollState.successesNeeded = Number.parseInt(options.successesNeeded) || 0;
+    }
 
     // Reactions: exactly 1 die from pool (bonus dice and adv/disadv can add rolled dice without costing pool)
     if (this.rollState.rollKind === "reaction") {
@@ -124,13 +138,30 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const rollKind = this.rollState.rollKind ?? "complex";
     const isReaction = rollKind === "reaction";
 
+    const rollKindLabel = rollKind === "reaction"
+      ? "Reaction"
+      : rollKind === "tome-understand"
+        ? "Tome: Understand"
+        : rollKind === "tome-attune"
+          ? "Tome: Attune"
+          : "Complex";
+
+    const isTomeUnderstand = rollKind === "tome-understand";
+    const isSkillSelectable = isTomeUnderstand && Array.isArray(this.skillChoices) && this.skillChoices.length > 0;
+    const skillChoices = isSkillSelectable
+      ? this.skillChoices.map(key => ({
+          key,
+          label: game.i18n.localize(`ARKHAM_HORROR.SKILL.${key}`)
+        }))
+      : [];
+
     // Feed template from rollState (no separate context mapping logic)
     return {
         ...context,
 
         actor: this.actor,
         rollKind,
-        rollKindLabel: isReaction ? "Reaction" : "Complex",
+        rollKindLabel,
         isReaction,
         skillKey: this.rollState.skillKey,
         skillCurrent: this.rollState.skillCurrent,
@@ -144,8 +175,39 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollWithAdvantage: this.rollState.rollWithAdvantage,
         rollWithDisadvantage: this.rollState.rollWithDisadvantage,
         modifierAdvantage: this.rollState.modifierAdvantage,
-        weaponToUse: this.rollState.weaponToUse
+        weaponToUse: this.rollState.weaponToUse,
+
+        isSkillSelectable,
+        skillChoices
     };
+  }
+
+  /** @inheritDoc */
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    const form = this.element?.querySelector?.('form');
+    if (!form) return;
+
+    const skillSelect = form.querySelector('select[name="skillKey"]');
+    if (!skillSelect) return;
+
+    skillSelect.addEventListener('change', (event) => {
+      // Preserve current transient UI state (diceToUse, bonus, etc.)
+      this.updateRollStateWithForm(form);
+
+      const selectedKey = String(event.target?.value ?? '');
+      const allowed = Array.isArray(this.skillChoices) && this.skillChoices.includes(selectedKey);
+      if (!allowed) return;
+
+      // Overwrite Success on X+ from the actor's current skill when the skill changes
+      const skillData = this.actor?.system?.skills?.[selectedKey];
+      this.rollState.skillKey = selectedKey;
+      this.rollState.skillCurrent = Number(skillData?.current ?? 0);
+      this.rollState.skillMax = Number(skillData?.max ?? 0);
+
+      this.render({ force: true });
+    });
   }
 
   static async #handleClickedRoll(event, target) {
@@ -175,12 +237,34 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     
     // Run workflow end-to-end (roll + update actor + post chat)
     const workflow = new SkillRollWorkflow();
-    await workflow.run({ actor: this.actor, state: this.rollState });
+    const result = await workflow.run({ actor: this.actor, state: this.rollState });
+
+    if (typeof this.afterRoll === "function") {
+      try {
+        await this.afterRoll({
+          actor: this.actor,
+          state: this.rollState,
+          ...result
+        });
+      } catch (e) {
+        ui.notifications?.warn?.("Post-roll processing failed.");
+      }
+    }
 
     this.close();
   }
 
   updateRollStateWithForm(form){
+    // If a skill selector is present, allow it to update skillKey.
+    // NOTE: the default (non-selector) UI uses a read-only localized label, so do not read that.
+    if (form.skillKey && form.skillKey.tagName === 'SELECT') {
+      const selectedKey = String(form.skillKey.value ?? '');
+      const allowed = Array.isArray(this.skillChoices)
+        ? this.skillChoices.includes(selectedKey)
+        : true;
+      if (allowed) this.rollState.skillKey = selectedKey;
+    }
+
     // Update rollState FROM UI once
     this.rollState.skillCurrent = Number.parseInt(form.skillCurrent.value) || 0;
     this.rollState.diceToUse = Number.parseInt(form.diceToUse.value) || 0;

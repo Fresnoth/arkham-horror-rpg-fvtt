@@ -5,6 +5,12 @@
                 {{#if (eq rollKind "reaction")}}
                     <i class="fa-solid fa-arrow-rotate-left arkham-roll-reaction-icon" title="Reaction roll"></i>
                 {{/if}}
+                {{#if (eq rollKind "tome-understand")}}
+                    <i class="fa-solid fa-book-atlas arkham-roll-reaction-icon" title="{{rollKindLabel}}"></i>
+                {{/if}}
+                {{#if (eq rollKind "tome-attune")}}
+                    <i class="fa-solid fa-book-atlas arkham-roll-reaction-icon" title="{{rollKindLabel}}"></i>
+                {{/if}}
                 {{skillUsed}}
             </span>
         </div>

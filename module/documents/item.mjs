@@ -3,6 +3,42 @@
  * @extends {Item}
  */
 export class ArkhamHorrorItem extends Item {
+  /** @override */
+  async _preUpdate(changed, options, userId) {
+    await super._preUpdate(changed, options, userId);
+
+    const deletePath = (obj, path) => {
+      if (!obj || !path) return;
+      const parts = String(path).split('.');
+      let cur = obj;
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!cur || typeof cur !== 'object') return;
+        cur = cur[parts[i]];
+      }
+      if (cur && typeof cur === 'object') delete cur[parts[parts.length - 1]];
+    };
+
+    // Tome spell lists and base understanding difficulty are GM-managed.
+    // Players can still own Tomes and update state like understood/attuned.
+    if (this.type === 'tome') {
+      const user = (userId ? game.users?.get(userId) : null) ?? game.user;
+      const isGM = user?.isGM ?? false;
+
+      if (!isGM) {
+        const touchesSpellUuids = foundry.utils.hasProperty(changed, 'system.spellUuids')
+          || (changed?.system && Object.prototype.hasOwnProperty.call(changed.system, 'spellUuids'));
+        const touchesDifficulty = foundry.utils.hasProperty(changed, 'system.attunementDifficulty')
+          || (changed?.system && Object.prototype.hasOwnProperty.call(changed.system, 'attunementDifficulty'));
+
+        if (touchesSpellUuids || touchesDifficulty) {
+          deletePath(changed, 'system.spellUuids');
+          deletePath(changed, 'system.attunementDifficulty');
+          ui.notifications?.warn?.('Only the GM can modify a Tome\'s spell list or understanding difficulty.');
+        }
+      }
+    }
+  }
+
   /**
    * Augment the basic Item data model with additional dynamic data.
    */

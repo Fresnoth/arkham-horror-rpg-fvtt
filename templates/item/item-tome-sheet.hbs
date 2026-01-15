@@ -23,5 +23,95 @@
         <input type="text" id="knowledgeBonus" name="system.knowledgeBonus" value="{{system.knowledgeBonus}}" />
     </div>
 
+    <hr />
+
+    <div class="form-group">
+        <label>{{localize "ITEM.Tome.attunementDifficulty"}}</label>
+        {{#if isGM}}
+        <select name="system.attunementDifficulty">
+            <option value="1" {{#if (eq system.attunementDifficulty 1)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyNormal"}}</option>
+            <option value="2" {{#if (eq system.attunementDifficulty 2)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyDifficult"}}</option>
+            <option value="3" {{#if (eq system.attunementDifficulty 3)}}selected{{/if}}>{{localize "ITEM.Tome.difficultyVeryDifficult"}}</option>
+        </select>
+        {{else}}
+        <input type="text" value="{{attunementDifficultyLabel}}" readonly />
+        {{/if}}
+    </div>
+
+    {{#if isOwnedByActor}}
+    <div class="form-group">
+        <label>{{localize "ITEM.Tome.understood"}}</label>
+        <input type="checkbox" {{#if system.understood}}checked{{/if}} disabled />
+    </div>
+    <div class="form-group">
+        <label>{{localize "ITEM.Tome.attuned"}}</label>
+        <input type="checkbox" {{#if system.attuned}}checked{{/if}} disabled />
+    </div>
+
+    {{#if isGM}}
+        {{#if system.understood}}
+        <div class="form-group">
+            <label></label>
+            <button type="button" data-action="clearTomeUnderstanding">{{localize "ITEM.Tome.clearUnderstoodButton"}}</button>
+        </div>
+        {{else if system.attuned}}
+        <div class="form-group">
+            <label></label>
+            <button type="button" data-action="clearTomeUnderstanding">{{localize "ITEM.Tome.clearUnderstoodButton"}}</button>
+        </div>
+        {{/if}}
+    {{/if}}
+    {{/if}}
+
+    <hr />
+
+    <div class="resource-group tome-spells">
+        <h5 class="quick-label">{{localize "ITEM.Tome.spells"}}</h5>
+
+        {{#if isGM}}
+        <p class="notes">{{localize "ITEM.Tome.dropSpellTarget"}}</p>
+        {{/if}}
+
+        {{#if showInaccessibleSpellWarning}}
+        <p class="notes">{{localize "ITEM.Tome.inaccessibleSpells" count=inaccessibleSpellCount}}</p>
+        {{/if}}
+
+        <ol class='items-list'>
+            <li class='item flexrow items-header'>
+                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-prop'>{{localize "ITEM.Tome.source"}}</div>
+                <div class='item-controls'></div>
+            </li>
+
+            {{#each tomeSpells as |spell|}}
+            <li class='item' data-uuid='{{spell.uuid}}'>
+                <div class="flexrow">
+                    <div class='item-name clickable' data-action="toggleFoldableContent" data-fc-id="tomeSpell{{@index}}">
+                        <span>{{spell.name}}</span>
+                    </div>
+                    <div class='item-prop'>{{spell.sourceLabel}}</div>
+                    <div class='item-controls'>
+                        <a class='item-control item-edit' data-action="openUuidItem" data-uuid="{{spell.uuid}}"
+                            title='{{localize "DOCUMENT.View" type=' spell'}}'>
+                            <i class='fas fa-eye'></i>
+                        </a>
+                        {{#if ../isGM}}
+                        <a class='item-control item-delete' data-action="removeTomeSpell" data-uuid="{{spell.uuid}}"
+                            title='{{localize "DOCUMENT.Delete" type=' spell'}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="foldable-content" data-fc-id="tomeSpell{{@index}}">
+                    <div>
+                        {{{spell.descriptionHTML}}}
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+    </div>
+
 
 </section>
