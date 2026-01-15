@@ -504,7 +504,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let skillCurrent = this.actor.system.skills[skillKey].current;
         let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
-        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null,spellToUse: null }).render(true);
     }
 
     static async #handleSkillReactionClicked(event, target) {
@@ -515,7 +515,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
 
-        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
     }
 
     static async #handleWeaponReload(event, target) {
@@ -641,6 +641,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             skillMax,
             currentDicePool,
             weaponToUse: null,
+            spellToUse: null,
             successesNeeded,
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;
@@ -677,6 +678,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             skillMax,
             currentDicePool,
             weaponToUse: null,
+            spellToUse: null,
             successesNeeded,
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;

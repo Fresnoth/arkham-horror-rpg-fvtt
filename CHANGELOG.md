@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 13.0.25
+- fixed bugs regarding dice roll dialog
+- added all skills to skill select options for weapons & spells
+- styling fixes
+  
 ## 13.0.24
 - added intuition skill to spells
 - added force reload to weapons as option

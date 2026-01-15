@@ -240,6 +240,18 @@
   margin-top: 5px;
 }
 
+.damage-prop {
+  flex-grow: 0.3;
+}
+
+.range-prop {
+  flex-grow: 0.5;
+}
+
+.injury-rating-prop {
+  flex-grow: 0.4;
+}
+
 .flex-group-center,
 .flex-group-left,
 .flex-group-right {
