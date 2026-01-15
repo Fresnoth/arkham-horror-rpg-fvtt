@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.21
+- extended tomes: a tome can contain spells now, attuning & understanding rules applied to tomes
+  
 ## 13.0.20
 - basic spell rolling
 - added useable items & spells to npcs
