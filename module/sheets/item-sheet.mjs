@@ -3,6 +3,7 @@ const { HandlebarsApplicationMixin } = foundry.applications.api
 const { TextEditor, DragDrop } = foundry.applications.ux
 import { enrichHTML } from "../util/util.mjs"
 import { DiceRollApp } from "../apps/dice-roll-app.mjs";
+import { attuneTomeExclusive, clearTomeUnderstanding as clearTomeUnderstandingHelper, understandTomeAndLearnSpells } from "../helpers/tome.mjs";
 
 export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
@@ -463,53 +464,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;
 
-                // Mark understood first.
-                await this.document.update({ 'system.understood': true });
-
-                // Create embedded spell copies on the actor.
-                const uuids = (this.document.system?.spellUuids ?? []).filter(u => !!u);
-                if (uuids.length === 0) {
-                    ui.notifications.info('This Tome has no spells to learn.');
-                    return;
-                }
-
-                const existing = (actor.items?.contents ?? []).filter(i => i.type === 'spell');
-                const existingSourceIds = new Set(existing.map(i => i.flags?.core?.sourceId).filter(Boolean));
-
-                const toCreate = [];
-                for (const uuid of uuids) {
-                    if (existingSourceIds.has(uuid)) continue;
-
-                    let source;
-                    try {
-                        source = await fromUuid(uuid);
-                    } catch (e) {
-                        source = null;
-                    }
-                    if (!source || source.type !== 'spell') continue;
-
-                    const itemData = foundry.utils.deepClone(source.toObject());
-                    delete itemData._id;
-                    itemData.flags = itemData.flags ?? {};
-                    itemData.flags.core = itemData.flags.core ?? {};
-                    itemData.flags.core.sourceId = uuid;
-
-                    itemData.flags['arkham-horror-rpg-fvtt'] = {
-                        ...(itemData.flags['arkham-horror-rpg-fvtt'] ?? {}),
-                        tomeSourceItemId: this.document.id,
-                        tomeSourceUuid: this.document.uuid,
-                        tomeSourceName: this.document.name
-                    };
-
-                    toCreate.push(itemData);
-                }
-
-                if (toCreate.length > 0) {
-                    await actor.createEmbeddedDocuments('Item', toCreate);
-                    ui.notifications.info(`Learned ${toCreate.length} spell(s) from the Tome.`);
-                } else {
-                    ui.notifications.info('No new spells were learned from this Tome.');
-                }
+                await understandTomeAndLearnSpells({ actor, tome: this.document, notify: true });
             }
         }).render(true);
     }
@@ -549,17 +504,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;
 
-                // Only one tome can be attuned at a time: set others to false, this one true.
-                const updates = [];
-                for (const i of (actor.items?.contents ?? [])) {
-                    if (i.type !== 'tome') continue;
-                    if (i.id === this.document.id) continue;
-                    if (i.system?.attuned) updates.push({ _id: i.id, 'system.attuned': false });
-                }
-
-                updates.push({ _id: this.document.id, 'system.attuned': true });
-                await actor.updateEmbeddedDocuments('Item', updates);
-                ui.notifications.info(`Attuned to ${this.document.name}.`);
+                await attuneTomeExclusive({ actor, tome: this.document, notify: true });
             }
         }).render(true);
     }
@@ -572,10 +517,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             return;
         }
 
-        await this.document.update({
-            'system.understood': false,
-            'system.attuned': false
-        });
+        await clearTomeUnderstandingHelper({ tome: this.document, notify: true });
 
         this.render(false);
     }

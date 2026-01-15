@@ -4,6 +4,7 @@ const { TextEditor, DragDrop } = foundry.applications.ux
 import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
+import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/tome.mjs';
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -622,49 +623,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;
 
-                await tome.update({ 'system.understood': true });
-
-                const uuids = (tome.system?.spellUuids ?? []).filter(u => !!u);
-                if (uuids.length === 0) {
-                    ui.notifications.info('This Tome has no spells to learn.');
-                    return;
-                }
-
-                const existing = (this.actor.items?.contents ?? []).filter(i => i.type === 'spell');
-                const existingSourceIds = new Set(existing.map(i => i.flags?.core?.sourceId).filter(Boolean));
-
-                const toCreate = [];
-                for (const uuid of uuids) {
-                    if (existingSourceIds.has(uuid)) continue;
-
-                    let source;
-                    try {
-                        source = await fromUuid(uuid);
-                    } catch (e) {
-                        source = null;
-                    }
-                    if (!source || source.type !== 'spell') continue;
-
-                    const itemData = foundry.utils.deepClone(source.toObject());
-                    delete itemData._id;
-                    itemData.flags = itemData.flags ?? {};
-                    itemData.flags.core = itemData.flags.core ?? {};
-                    itemData.flags.core.sourceId = uuid;
-                    itemData.flags['arkham-horror-rpg-fvtt'] = {
-                        ...(itemData.flags['arkham-horror-rpg-fvtt'] ?? {}),
-                        tomeSourceItemId: tome.id,
-                        tomeSourceUuid: tome.uuid,
-                        tomeSourceName: tome.name
-                    };
-                    toCreate.push(itemData);
-                }
-
-                if (toCreate.length > 0) {
-                    await this.actor.createEmbeddedDocuments('Item', toCreate);
-                    ui.notifications.info(`Learned ${toCreate.length} spell(s) from the Tome.`);
-                } else {
-                    ui.notifications.info('No new spells were learned from this Tome.');
-                }
+                await understandTomeAndLearnSpells({ actor: this.actor, tome, notify: true });
             }
         }).render(true);
     }
@@ -700,15 +659,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             afterRoll: async ({ outcome }) => {
                 if (!outcome?.isSuccess) return;
 
-                const updates = [];
-                for (const i of (this.actor.items?.contents ?? [])) {
-                    if (i.type !== 'tome') continue;
-                    if (i.id === tome.id) continue;
-                    if (i.system?.attuned) updates.push({ _id: i.id, 'system.attuned': false });
-                }
-                updates.push({ _id: tome.id, 'system.attuned': true });
-                await this.actor.updateEmbeddedDocuments('Item', updates);
-                ui.notifications.info(`Attuned to ${tome.name}.`);
+                await attuneTomeExclusive({ actor: this.actor, tome, notify: true });
             }
         }).render(true);
     }
