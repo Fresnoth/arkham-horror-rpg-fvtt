@@ -182,8 +182,24 @@ export class InjuryTraumaWorkflow {
     const dieFaces = rollMode === "falling" ? 3 : (requestedFaces === 3 ? 3 : 6);
 
     const fallingHeightFt = Number.parseInt(state?.fallingHeightFt) || 0;
+
+    // Validate at the source of truth (workflow), not only in the UI.
+    // This protects against macros/future automation calling the workflow directly.
+    if (rollMode === "falling") {
+      if (rollKind !== "injury") {
+        const msg = "Falling mode only applies to Injury rolls.";
+        warnOnce(`${SYSTEM_ID}|invalidFallingKind`, `[${SYSTEM_ID}] ${msg}`);
+        throw new Error(msg);
+      }
+      if (fallingHeightFt < 10) {
+        const msg = "Falling height must be at least 10 ft.";
+        warnOnce(`${SYSTEM_ID}|invalidFallingHeight`, `[${SYSTEM_ID}] ${msg}`);
+        throw new Error(msg);
+      }
+    }
+
     const numDice = rollMode === "falling"
-      ? Math.max(1, Math.floor(fallingHeightFt / 10))
+      ? Math.floor(fallingHeightFt / 10)
       : 1;
 
     const modifierApplied = rollMode !== "falling";

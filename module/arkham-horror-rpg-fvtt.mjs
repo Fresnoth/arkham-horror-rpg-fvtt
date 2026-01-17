@@ -23,6 +23,8 @@ import * as models from './data/_module.mjs';
 import { setupConfiguration } from './util/configuration.mjs';
 import { registerChatRerollHooks } from './hooks/chat-reroll-hooks.mjs';
 
+import { refreshDicepoolAndPost } from './helpers/dicepool.mjs';
+
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -210,25 +212,7 @@ async function arkhamHorrorResetSceneActorDicePool() {
   for (let token of canvas.tokens.placeables) {
     const actor = token.actor;
     if (actor?.type === 'character' || actor?.type === 'npc') {
-      let oldValue = actor.system.dicepool.value;
-      let newValue = actor.system.dicepool.max - actor.system.damage;
-      await actor.update({ 'system.dicepool.value': newValue });
-
-      const chatVars = {
-        label: 'Dicepool Reset',
-        actorName: actor.name,
-        oldDicePoolValue: oldValue,
-        newDicePoolValue: newValue
-      };
-
-      const html = await foundry.applications.handlebars.renderTemplate(
-        "systems/arkham-horror-rpg-fvtt/templates/chat/dicepool-reset.hbs",
-        chatVars
-      );
-      ChatMessage.create({
-        content: html,
-        speaker: ChatMessage.getSpeaker({ actor }),
-      });
+      await refreshDicepoolAndPost({ actor, label: "Dicepool Reset", healDamage: false });
     }
   }
 }
