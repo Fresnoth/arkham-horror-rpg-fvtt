@@ -1,4 +1,4 @@
-import { rollD6 } from "../helpers/roll-engine.mjs";
+import { rollDice } from "../helpers/roll-engine.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
@@ -42,6 +42,18 @@ function normalizeKind(kind) {
   const k = String(kind ?? "").toLowerCase();
   if (k === "injury" || k === "trauma") return k;
   return "injury";
+}
+
+function normalizeRollMode(mode) {
+  const m = String(mode ?? "standard").toLowerCase();
+  if (m === "falling") return "falling";
+  return "standard";
+}
+
+function normalizeRollSource(source) {
+  const s = String(source ?? "").toLowerCase();
+  if (s === "strain") return "strain";
+  return "";
 }
 
 function lookupFallbackEntry(kind, traumaVariant, total) {
@@ -162,12 +174,27 @@ function resolveFromRollTableByTotal({ rollTable, total }) {
 
 export class InjuryTraumaWorkflow {
   async execute({ actor, state }) {
-    const roll = await rollD6({ actor, numDice: 1 });
-    const dieResult = Number(roll.results?.[0] ?? 0);
-
     const rollKind = normalizeKind(state?.rollKind);
-    const modifier = Number.parseInt(state?.modifier) || 0;
-    const total = dieResult + modifier;
+    const rollMode = normalizeRollMode(state?.rollMode);
+    const rollSource = normalizeRollSource(state?.rollSource);
+
+    const requestedFaces = Number.parseInt(state?.dieFaces) || 6;
+    const dieFaces = rollMode === "falling" ? 3 : (requestedFaces === 3 ? 3 : 6);
+
+    const fallingHeightFt = Number.parseInt(state?.fallingHeightFt) || 0;
+    const numDice = rollMode === "falling"
+      ? Math.max(1, Math.floor(fallingHeightFt / 10))
+      : 1;
+
+    const modifierApplied = rollMode !== "falling";
+    const modifier = modifierApplied ? (Number.parseInt(state?.modifier) || 0) : 0;
+
+    const roll = await rollDice({ actor, numDice, faces: dieFaces });
+    const dieResults = Array.isArray(roll.results) ? roll.results.map(r => Number(r) || 0) : [];
+    const dieTotal = dieResults.reduce((sum, r) => sum + (Number(r) || 0), 0);
+    const dieResult = Number(dieResults?.[0] ?? 0);
+
+    const total = dieTotal + modifier;
 
     const actorCategory = getActorCategory(actor);
     const traumaVariant = getTraumaVariantSetting();
@@ -224,6 +251,15 @@ export class InjuryTraumaWorkflow {
 
     return {
       rollKind,
+      rollMode,
+      rollSource,
+      dieFaces,
+      numDice,
+      dieResults,
+      dieResultsLabel: dieResults.join(", "),
+      dieTotal,
+      modifierApplied,
+      fallingHeightFt: rollMode === "falling" ? fallingHeightFt : null,
       dieResult,
       modifier,
       total,
@@ -242,6 +278,15 @@ export class InjuryTraumaWorkflow {
       actorName: actor?.name ?? "",
       rollKind: outcome.rollKind,
       rollKindLabel,
+      rollMode: outcome.rollMode,
+      rollSource: outcome.rollSource,
+      dieFaces: outcome.dieFaces,
+      numDice: outcome.numDice,
+      dieResults: outcome.dieResults,
+      dieResultsLabel: outcome.dieResultsLabel,
+      dieTotal: outcome.dieTotal,
+      modifierApplied: outcome.modifierApplied,
+      fallingHeightFt: outcome.fallingHeightFt,
       dieResult: outcome.dieResult,
       modifier: outcome.modifier,
       total: outcome.total,

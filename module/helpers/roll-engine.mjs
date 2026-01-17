@@ -9,15 +9,18 @@ export function addShowDicePromise(promises, roll) {
   }
 }
 
-// Core D6 rolling function
-// if rolling separately for horror dice, pass in dicePromises to collect all show dice promises together, see implementation in execute() in skill-roll-workflow.mjs
-export async function rollD6({ actor, numDice, dicePromises } = {}) {
-  const roll = new Roll(`${numDice}d6`, actor.getRollData());
+// Core dice rolling function
+// If rolling separately for horror dice, pass in dicePromises to collect all show dice promises together.
+export async function rollDice({ actor, numDice, faces = 6, dicePromises } = {}) {
+  const n = Number.parseInt(numDice) || 0;
+  const f = Number.parseInt(faces) || 6;
+
+  const roll = new Roll(`${n}d${f}`, actor.getRollData());
   await roll.evaluate();
 
   // Render immediately (old app rendered before awaiting DSN)
   const html = await roll.render();
-  const results = roll.terms[0].results.map(r => r.result);
+  const results = roll.terms?.[0]?.results?.map(r => r.result) ?? [];
 
   if (dicePromises) {
     addShowDicePromise(dicePromises, roll);
@@ -28,6 +31,16 @@ export async function rollD6({ actor, numDice, dicePromises } = {}) {
   }
 
   return { roll, html, results };
+}
+
+// Backwards-compatible D6 wrapper
+export async function rollD6({ actor, numDice, dicePromises } = {}) {
+  return rollDice({ actor, numDice, faces: 6, dicePromises });
+}
+
+// Convenience D3 wrapper
+export async function rollD3({ actor, numDice, dicePromises } = {}) {
+  return rollDice({ actor, numDice, faces: 3, dicePromises });
 }
 
 // Computes dice pools + success threshold exactly like original logic from 13.0.7 ALPHA dice-roll-app.

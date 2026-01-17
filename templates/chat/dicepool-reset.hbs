@@ -1,3 +1,6 @@
 <div>
-    {{actorName}}'s dice pool has been reset from {{oldDicePoolValue}} to {{newDicePoolValue}}.
+    <strong>{{label}}</strong>: {{actorName}}'s dice pool changed from {{oldDicePoolValue}} to {{newDicePoolValue}}.
+    {{#if healedDamage}}
+        (Healed {{healedDamage}} damage)
+    {{/if}}
 </div>

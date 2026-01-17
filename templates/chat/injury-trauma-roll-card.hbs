@@ -1,7 +1,23 @@
 <section class="arkham-roll-card arkham-injury-trauma-card" data-roll-category="injury-trauma" data-roll-kind="{{rollKind}}">
   <header class="arkham-roll-header">
     <div class="arkham-roll-heading">
-      <span class="arkham-roll-kind {{#if (eq rollKind "injury")}}is-injury{{else}}is-trauma{{/if}}">{{rollKindLabel}}</span>
+      <span class="arkham-roll-kind {{#if (eq rollKind "injury")}}is-injury{{else}}is-trauma{{/if}}">
+        {{#if (eq rollMode "falling")}}
+          <i class="fa-solid fa-person-falling arkham-roll-reaction-icon" title="Falling" aria-hidden="true"></i>
+        {{else if (eq rollSource "strain")}}
+          <i class="fa-solid fa-hand-fist arkham-roll-reaction-icon" title="Strain Oneself" aria-hidden="true"></i>
+        {{/if}}
+        {{rollKindLabel}}
+      </span>
+    </div>
+
+    <div class="arkham-roll-subtitle">
+      <span class="arkham-roll-flag is-diff">
+        {{numDice}}d{{dieFaces}}
+        {{#if modifierApplied}}
+          {{#if (gte modifier 0)}}+{{modifier}}{{else}}{{modifier}}{{/if}}
+        {{/if}}
+      </span>
     </div>
   </header>
 
@@ -9,30 +25,62 @@
     {{tableResultName}}
   </div>
 
+  {{#if (eq rollSource "strain")}}
+    <div class="arkham-injury-trauma-description">
+      <strong>Strain Oneself:</strong> apply the resulting injury at end of turn / after 1 complex action.
+    </div>
+  {{/if}}
+
+  {{#if (eq rollMode "falling")}}
+    <div class="arkham-injury-trauma-description">
+      <strong>Falling Injury</strong> — Height: {{fallingHeightFt}} ft
+    </div>
+  {{/if}}
+
   {{#if tableResultDescription}}
     <div class="arkham-injury-trauma-description">
       {{{tableResultDescription}}}
     </div>
   {{/if}}
 
-  <div class="arkham-roll-results">
-    <div class="arkham-roll-meta">
-      <div class="arkham-meta-row">
-        <span class="arkham-meta-label">Die</span>
-        <span class="arkham-meta-value">{{dieResult}}</span>
-      </div>
-      <div class="arkham-meta-row">
-        <span class="arkham-meta-label">Modifier</span>
-        <span class="arkham-meta-value">{{modifier}}</span>
-      </div>
-      <div class="arkham-meta-row">
-        <span class="arkham-meta-label">Total</span>
-        <span class="arkham-meta-value">{{total}}</span>
-      </div>
-      <div class="arkham-meta-row">
-        <span class="arkham-meta-label">Table</span>
-        <span class="arkham-meta-value">{{tableRange}}</span>
+  <details class="arkham-roll-details">
+    <summary class="arkham-roll-details-summary">Roll Details</summary>
+    <div class="arkham-roll-details-body">
+      <div class="arkham-roll-meta">
+        <div class="arkham-meta-row">
+          <span class="arkham-meta-label">Roll</span>
+          <span class="arkham-meta-value">{{numDice}}d{{dieFaces}}</span>
+        </div>
+
+        {{#if (eq numDice 1)}}
+          <div class="arkham-meta-row">
+            <span class="arkham-meta-label">Die</span>
+            <span class="arkham-meta-value">{{dieResult}}</span>
+          </div>
+        {{else}}
+          <div class="arkham-meta-row">
+            <span class="arkham-meta-label">Dice</span>
+            <span class="arkham-meta-value">{{dieResultsLabel}}</span>
+          </div>
+          <div class="arkham-meta-row">
+            <span class="arkham-meta-label">Die Total</span>
+            <span class="arkham-meta-value">{{dieTotal}}</span>
+          </div>
+        {{/if}}
+
+        <div class="arkham-meta-row">
+          <span class="arkham-meta-label">Modifier</span>
+          <span class="arkham-meta-value">{{#if modifierApplied}}{{modifier}}{{else}}—{{/if}}</span>
+        </div>
+        <div class="arkham-meta-row">
+          <span class="arkham-meta-label">Total</span>
+          <span class="arkham-meta-value">{{total}}</span>
+        </div>
+        <div class="arkham-meta-row">
+          <span class="arkham-meta-label">Table</span>
+          <span class="arkham-meta-value">{{tableRange}}</span>
+        </div>
       </div>
     </div>
-  </div>
+  </details>
 </section>

@@ -11,6 +11,10 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     this.rollState = {
       rollKind: options.rollKind ?? "injury",
       modifier: Number.parseInt(options.modifier) || 0,
+      dieFaces: Number.parseInt(options.dieFaces) || 6,
+      rollMode: options.rollMode ?? "standard",
+      fallingHeightFt: Number.parseInt(options.fallingHeightFt) || 10,
+      rollSource: options.rollSource ?? "",
     };
 
     InjuryTraumaRollApp.instance = this;
@@ -48,6 +52,22 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     if (options.actor) this.actor = options.actor;
     if (options.rollKind) this.rollState.rollKind = options.rollKind;
     if (options.modifier !== undefined) this.rollState.modifier = Number.parseInt(options.modifier) || 0;
+
+    // IMPORTANT: This app is a singleton instance.
+    // To avoid state leaking between uses, reset transient UI state every time
+    // unless explicitly overridden by the caller.
+    this.rollState.dieFaces = (options.dieFaces !== undefined)
+      ? (Number.parseInt(options.dieFaces) || 6)
+      : 6;
+    this.rollState.rollMode = (options.rollMode !== undefined)
+      ? String(options.rollMode ?? "standard")
+      : "standard";
+    this.rollState.fallingHeightFt = (options.fallingHeightFt !== undefined)
+      ? (Number.parseInt(options.fallingHeightFt) || 10)
+      : 10;
+    this.rollState.rollSource = (options.rollSource !== undefined)
+      ? String(options.rollSource ?? "")
+      : "";
   }
 
   static getInstance(options = {}) {
@@ -62,12 +82,102 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
+    const rollMode = String(this.rollState.rollMode ?? "standard");
+    const dieFaces = Number.parseInt(this.rollState.dieFaces) || 6;
+    const modifier = Number.parseInt(this.rollState.modifier) || 0;
+    const fallingHeightFt = Number.parseInt(this.rollState.fallingHeightFt) || 10;
+    const rollKind = String(this.rollState.rollKind ?? "injury");
+
+    const isFalling = rollMode === "falling" && rollKind === "injury";
+    const numFallingDice = Math.max(1, Math.floor(fallingHeightFt / 10));
+
+    const formulaHint = isFalling
+      ? `Total = ${numFallingDice}d3 (no modifier)`
+      : `Total = 1d${dieFaces} + modifier`;
+
     return {
       ...context,
       actor: this.actor,
-      rollKind: this.rollState.rollKind,
-      modifier: this.rollState.modifier,
+      rollKind,
+      modifier,
+      dieFaces,
+      rollMode: isFalling ? "falling" : "standard",
+      fallingHeightFt,
+      rollSource: this.rollState.rollSource,
+      formulaHint,
     };
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    const form = this.element?.querySelector?.("form");
+    if (!form) return;
+
+    const updateVisibilityAndHint = () => {
+      const rollKind = String(form.rollKind?.value ?? "injury");
+      const rollMode = String(form.rollMode?.value ?? "standard");
+      const dieFaces = Number.parseInt(form.dieFaces?.value) || 6;
+      const modifierInput = form.modifier;
+      const heightInput = form.fallingHeightFt;
+
+      // Falling only applies to injury; clamp UI to standard if trauma is selected.
+      const fallingAllowed = rollKind === "injury";
+      const fallingOption = form.rollMode?.querySelector?.('option[value="falling"]');
+      if (fallingOption) fallingOption.disabled = !fallingAllowed;
+      if (!fallingAllowed && rollMode === "falling") {
+        form.rollMode.value = "standard";
+      }
+
+      const effectiveMode = String(form.rollMode?.value ?? "standard");
+      const isFalling = effectiveMode === "falling" && rollKind === "injury";
+
+      // Show/hide mode-specific fields.
+      form.querySelectorAll('[data-roll-mode="falling"]').forEach(el => {
+        el.style.display = isFalling ? "" : "none";
+      });
+      form.querySelectorAll('[data-roll-mode="standard"]').forEach(el => {
+        el.style.display = isFalling ? "none" : "";
+      });
+
+      // Falling ignores modifier.
+      if (modifierInput) {
+        modifierInput.disabled = isFalling;
+        if (isFalling) modifierInput.value = 0;
+      }
+
+      // Update hint text.
+      const hint = form.querySelector('[data-role="formulaHint"]');
+      if (hint) {
+        if (isFalling) {
+          const height = Number.parseInt(heightInput?.value) || 0;
+          const n = Math.max(1, Math.floor(height / 10));
+          hint.textContent = `Total = ${n}d3 (no modifier)`;
+        } else {
+          hint.textContent = `Total = 1d${dieFaces} + modifier`;
+        }
+      }
+
+      // Disable roll when falling height is invalid.
+      const rollButton = form.querySelector('button[data-action="clickedRoll"]');
+      if (rollButton) {
+        if (isFalling) {
+          const height = Number.parseInt(heightInput?.value) || 0;
+          rollButton.disabled = height < 10;
+        } else {
+          rollButton.disabled = false;
+        }
+      }
+    };
+
+    // Initial paint.
+    updateVisibilityAndHint();
+
+    // React to changes.
+    form.rollKind?.addEventListener?.("change", updateVisibilityAndHint);
+    form.rollMode?.addEventListener?.("change", updateVisibilityAndHint);
+    form.dieFaces?.addEventListener?.("change", updateVisibilityAndHint);
+    form.fallingHeightFt?.addEventListener?.("input", updateVisibilityAndHint);
   }
 
   static async #handleClickedRoll(event, target) {
@@ -77,14 +187,34 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
   async clickedRollCallback(event, target) {
     event.preventDefault();
 
+    if (!this.actor?.isOwner) {
+      ui.notifications.warn('You do not have permission to roll for this Actor.');
+      return;
+    }
+
     const form = target.form;
     const rollKind = String(form.rollKind?.value ?? "injury");
+    const rollMode = String(form.rollMode?.value ?? "standard");
+    const dieFaces = Number.parseInt(form.dieFaces?.value) || 6;
     const modifier = Number.parseInt(form.modifier?.value) || 0;
+    const fallingHeightFt = Number.parseInt(form.fallingHeightFt?.value) || 0;
+    const rollSource = String(form.rollSource?.value ?? "");
+
+    if (rollMode === "falling") {
+      if (rollKind !== "injury") {
+        ui.notifications.warn('Falling mode only applies to Injury rolls.');
+        return;
+      }
+      if (fallingHeightFt < 10) {
+        ui.notifications.warn('Falling height must be at least 10 ft.');
+        return;
+      }
+    }
 
     const workflow = new InjuryTraumaWorkflow();
     await workflow.run({
       actor: this.actor,
-      state: { rollKind, modifier },
+      state: { rollKind, modifier, dieFaces, rollMode, fallingHeightFt, rollSource },
     });
 
     this.close();

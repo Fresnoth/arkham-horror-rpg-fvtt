@@ -5,6 +5,7 @@ import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/tome.mjs';
+import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -19,6 +20,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         actions: {
             clickedDicePool: this.#handleClickedDicePool,
             clickedClearDicePool: this.#handleClickedClearDicePool,
+            clickedStrainOneself: this.#handleClickedStrainOneself,
             editItem: this.#handleEditItem,
             createItem: this.#handleCreateItem,
             deleteItem: this.#handleDeleteItem,
@@ -541,25 +543,32 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     }
 
     static async #handleClickedRefreshDicePool(event, target) {
-        let oldValue = this.actor.system.dicepool.value;
-        let newValue = this.actor.system.dicepool.max - this.actor.system.damage;
-        await this.actor.update({ 'system.dicepool.value': newValue });
-        const chatVars = {
-            label: 'Dicepool Refresh',
-            actorName: this.actor.name,
-            oldDicePoolValue: oldValue,
-            newDicePoolValue: newValue
-        };
+        await refreshDicepoolAndPost({ actor: this.actor, label: "Dicepool Refresh", healDamage: false });
 
-        const html = await foundry.applications.handlebars.renderTemplate(
-            "systems/arkham-horror-rpg-fvtt/templates/chat/dicepool-reset.hbs",
-            chatVars
-        );
-        ChatMessage.create({
-            content: html,
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        });
+    }
 
+    static async #handleClickedStrainOneself(event, target) {
+        event.preventDefault();
+
+        if (!this.actor?.isOwner) {
+            ui.notifications.warn('You do not have permission to strain for this Actor.');
+            return;
+        }
+
+        const currentDamage = Number(this.actor.system?.damage ?? 0);
+        if (currentDamage <= 0) {
+            ui.notifications.warn('You can only strain when your dice pool maximum is reduced by damage.');
+            return;
+        }
+
+        await refreshDicepoolAndPost({ actor: this.actor, label: "Strain Oneself", healDamage: true });
+
+        InjuryTraumaRollApp.getInstance({
+            actor: this.actor,
+            rollKind: "injury",
+            modifier: 0,
+            rollSource: "strain",
+        }).render(true);
     }
 
     static async #handleClickedRollWithWeapon(event, target) {
