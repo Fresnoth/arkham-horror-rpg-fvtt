@@ -22,6 +22,7 @@ import * as models from './data/_module.mjs';
 
 import { setupConfiguration } from './util/configuration.mjs';
 import { registerChatRerollHooks } from './hooks/chat-reroll-hooks.mjs';
+import { refreshInsightAndPost, spendInsightAndPost, refreshInsight, spendInsight } from './helpers/insight.mjs';
 
 
 /* -------------------------------------------- */
@@ -34,7 +35,11 @@ Hooks.once('init', function () {
   game.arkhamhorrorrpgfvtt = {
     ArkhamHorrorActor,
     ArkhamHorrorItem,
-    arkhamHorrorResetSceneActorDicePool: arkhamHorrorResetSceneActorDicePool
+    arkhamHorrorResetSceneActorDicePool: arkhamHorrorResetSceneActorDicePool,
+    spendInsight,
+    refreshInsight,
+    spendInsightAndPost,
+    refreshInsightAndPost,
   };
 
   // Add custom constants for configuration.
