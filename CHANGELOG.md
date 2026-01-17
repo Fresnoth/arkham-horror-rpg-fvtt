@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.26
+- reroll, roll engine fixes and chat card v2
+
 ## 13.0.25
 - fixed bugs regarding dice roll dialog
 - added all skills to skill select options for weapons & spells
