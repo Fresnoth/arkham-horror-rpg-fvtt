@@ -21,6 +21,7 @@ import { TokenInformationOverlay } from './overlay/token-information.mjs';
 import * as models from './data/_module.mjs';
 
 import { setupConfiguration } from './util/configuration.mjs';
+import { registerChatRerollHooks } from './hooks/chat-reroll-hooks.mjs';
 
 
 /* -------------------------------------------- */
@@ -140,6 +141,7 @@ Hooks.once('init', function () {
   });
   setupConfiguration();
   TokenInformationOverlay.registerHooks();
+  registerChatRerollHooks();
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
 });

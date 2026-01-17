@@ -11,11 +11,19 @@
                 {{#if (eq rollKind "tome-attune")}}
                     <i class="fa-solid fa-book-atlas arkham-roll-reaction-icon" title="{{rollKindLabel}}"></i>
                 {{/if}}
-                {{skillUsed}}
+                {{skillUsed}} {{successOn}}+
             </span>
         </div>
-        <div class="arkham-roll-subtitle">Success on <span class="arkham-emph">{{successOn}}+</span></div>
+        <div class="arkham-roll-subtitle">
+            <span class="arkham-roll-flag is-diff">{{#if (eq successesNeeded 1)}}Normal{{else if (eq successesNeeded 2)}}Difficult{{else if (eq successesNeeded 3)}}Very<br />Difficult{{else}}Difficulty {{successesNeeded}}{{/if}}</span>
+        </div>
     </header>
+
+    {{#if isReroll}}
+        <div class="arkham-reroll-banner">
+            <span class="arkham-reroll-label">Reroll</span>
+        </div>
+    {{/if}}
 
     <div class="arkham-roll-banner {{#if isSuccess}}is-success{{else}}is-failure{{/if}}">
         {{#if isSuccess}}
@@ -27,19 +35,122 @@
 
     <div class="arkham-roll-results">
         <div class="arkham-dice-results">
-            <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
-                {{#each results}}
-                    <span class="dice-result arkham-die {{#if isHorror}}horror-die{{else}}{{#if (gte this.result ../successOn)}}success{{else if (eq this.result 1)}}failure{{/if}}{{/if}}">
-                        {{this.result}}
-                    </span>
-                {{/each}}
+            <div class="arkham-dice-results-row">
+                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                    {{#each results}}
+                        {{#unless isDropped}}
+                            <span class="dice-result arkham-die
+                                {{#if isHorror}}horror-die{{else}}{{#if (gte this.result ../successOn)}}success{{else if (eq this.result 1)}}failure{{/if}}{{/if}}
+                                {{#if isHorror}}{{#if isNat6}}horror-nat6{{/if}}{{#if isNat1}}horror-nat1{{/if}}{{/if}}">
+                                {{this.result}}
+                            </span>
+                        {{/unless}}
+                    {{/each}}
+                </div>
+
+                <button type="button" class="arkham-reroll-icon" data-action="arkham-reroll" title="Reroll dice" aria-label="Reroll dice">
+                    <i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
+        
+        {{#if showRollDetails}}
+        <details class="arkham-roll-details">
+            <summary class="arkham-roll-details-summary">Roll Details</summary>
+            <div class="arkham-roll-details-body">
+                <div class="arkham-roll-flags">
+                    {{#if rollWithAdvantage}}
+                        <span class="arkham-roll-flag is-adv">Advantage</span>
+                    {{/if}}
+                    {{#if rollWithDisadvantage}}
+                        <span class="arkham-roll-flag is-dis">Disadvantage</span>
+                    {{/if}}
+                    {{#if (gte penalty 1)}}
+                        <span class="arkham-roll-flag is-diff">Penalty -{{penalty}}</span>
+                    {{/if}}
+                    {{#if (gte resultModifier 1)}}
+                    <span class="arkham-roll-flag is-diff">Result +{{resultModifier}}</span>
+                    {{/if}}
+                    {{#if (gte bonusDice 1)}}
+                    <span class="arkham-roll-flag is-diff">Bonus Dice: {{bonusDice}}</span>
+                    {{/if}}
+                </div>
+                {{#if rollWithAdvantage}}
+                    <div class="arkham-roll-details-row">
+                        <span class="arkham-roll-details-label">Dropped Dice</span>
+                        <span class="arkham-roll-details-value">
+                            {{#each results}}
+                                {{#if isDropped}}
+                                    <span class="dice-result arkham-die is-dropped {{#if isHorror}}horror-die{{/if}}">{{this.result}}</span>
+                                {{/if}}
+                            {{/each}}
+                        </span>
+                    </div>
+                {{else}}
+                    {{#if rollWithDisadvantage}}
+                        <div class="arkham-roll-details-row">
+                            <span class="arkham-roll-details-label">Dropped Dice</span>
+                            <span class="arkham-roll-details-value">
+                                {{#each results}}
+                                    {{#if isDropped}}
+                                        <span class="dice-result arkham-die is-dropped {{#if isHorror}}horror-die{{/if}}">{{this.result}}</span>
+                                    {{/if}}
+                                {{/each}}
+                            </span>
+                        </div>
+                    {{/if}}
+                {{/if}}
+                {{#if (gte penalty 1)}}
+                <div class="arkham-roll-details-row">
+                    <span class="arkham-roll-details-label">Raw Dice Result</span>
+                </div>
+                    <div class="arkham-roll-results">
+                        <div class="arkham-dice-results">
+                            <div class="arkham-dice-results-row">
+                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                                    {{#each results}}
+                                        {{#unless isDropped}}
+                                            <span class="dice-result arkham-die
+                                                {{#if isHorror}}horror-die{{/if}}
+                                                {{#if isHorror}}{{#if isNat6}}horror-nat6{{/if}}{{#if isNat1}}horror-nat1{{/if}}{{/if}}">
+                                                {{this.rawResult}}
+                                            </span>
+                                        {{/unless}}
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{else if (gte resultModifier 1)}}
+                <div class="arkham-roll-details-row">
+                    <span class="arkham-roll-details-label">Raw Dice Result</span>
+                </div>
+                    <div class="arkham-roll-results">
+                        <div class="arkham-dice-results">
+                            <div class="arkham-dice-results-row">
+                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                                    {{#each results}}
+                                        {{#unless isDropped}}
+                                            <span class="dice-result arkham-die
+                                                {{#if isHorror}}horror-die{{/if}}
+                                                {{#if isHorror}}{{#if isNat6}}horror-nat6{{/if}}{{#if isNat1}}horror-nat1{{/if}}{{/if}}">
+                                                {{this.rawResult}}
+                                            </span>
+                                        {{/unless}}
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+        </details>
+        {{/if}}
 
         <div class="arkham-totals">
             <div class="arkham-total">
                 <span class="arkham-total-label">Successes</span>
-                <span class="arkham-total-value">{{successCount}}</span>
+                <span class="arkham-total-value">{{successCount}}{{#if (gte successesNeeded 2)}} / {{successesNeeded}}{{/if}}</span>
             </div>
             <div class="arkham-total">
                 <span class="arkham-total-label">Failures</span>
@@ -49,26 +160,6 @@
                 <span class="arkham-total-label">Trauma</span>
                 <span class="arkham-total-value">{{horrorFailureCount}}</span>
             </div>
-        </div>
-
-        <div class="arkham-roll-flags">
-            {{#if rollWithAdvantage}}
-                <span class="arkham-roll-flag is-adv">Advantage</span>
-            {{/if}}
-            {{#if rollWithDisadvantage}}
-                <span class="arkham-roll-flag is-dis">Disadvantage</span>
-            {{/if}}
-
-            {{#if (gte penalty 1)}}
-                <span class="arkham-roll-flag is-diff">Penalty -{{penalty}}</span>
-            {{/if}}
-            {{#if (gte resultModifier 1)}}
-                <span class="arkham-roll-flag is-diff">Result +{{resultModifier}}</span>
-            {{/if}}
-
-            <span class="arkham-roll-flag is-diff">
-                {{#if (eq successesNeeded 1)}}Normal{{else if (eq successesNeeded 2)}}Difficult{{else if (eq successesNeeded 3)}}Very Difficult{{else}}Difficulty {{successesNeeded}}{{/if}}
-            </span>
         </div>
 
         {{#if weaponUsed}}
@@ -113,8 +204,11 @@
 
 
         <footer class="arkham-roll-footer">
-            <span class="arkham-roll-footer-left">Dice Pool: {{oldDicePoolValue}} → {{newDicePoolValue}}</span>
-            <span class="arkham-roll-footer-right">Bonus Dice: {{bonusDice}}</span>
+            {{#if isReroll}}
+                <span class="arkham-roll-footer-right">Dice Pool: unchanged (reroll)</span>
+            {{else}}
+                <span class="arkham-roll-footer-right">Dice Pool: {{oldDicePoolValue}} → {{newDicePoolValue}}</span>
+            {{/if}}
         </footer>
     </div>
 </section>

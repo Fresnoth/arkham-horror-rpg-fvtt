@@ -424,8 +424,9 @@ form > nav > a.item.active {
 
 .arkham-roll-header {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 12px;
   padding: 2px 2px 8px;
   border-bottom: 0;
@@ -433,9 +434,84 @@ form > nav > a.item.active {
 
 .arkham-roll-heading {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
+  flex: 0 1 auto;
   min-width: 0;
+}
+
+.arkham-roll-subtitle {
+  flex: 0 0 auto;
+}
+
+.arkham-roll-subtitle .arkham-roll-flag {
+  white-space: normal;
+  text-align: center;
+}
+
+.arkham-reroll-banner {
+  margin: 4px 2px 10px;
+  padding: 6px 10px;
+  border: 1px dashed rgba(20, 16, 10, 0.45);
+  border-radius: 6px;
+  font-family: "Voltaire", sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.arkham-reroll-label {
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.arkham-roll-details {
+  border: 1px solid rgba(20, 16, 10, 0.14);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.arkham-roll-details-summary {
+  cursor: pointer;
+  font-family: "Voltaire", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.arkham-roll-details-body {
+  margin-top: 6px;
+  display: grid;
+  gap: 6px;
+}
+
+.arkham-roll-details-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.arkham-roll-details-label {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.arkham-roll-details-value {
+  font-size: 11px;
+  font-family: "Voltaire", sans-serif;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
 }
 
 .arkham-roll-kind {
@@ -508,15 +584,6 @@ form > nav > a.item.active {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.arkham-roll-subtitle {
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-.arkham-emph {
-  font-weight: 800;
 }
 
 .arkham-roll-meta {
@@ -609,12 +676,42 @@ form > nav > a.item.active {
 .dice-results-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   margin: 0;
-  padding: 8px;
+  padding: 6px;
   border: 1px solid rgba(20, 16, 10, 0.16);
   border-radius: 10px;
   background: transparent;
+}
+
+.arkham-dice-results-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arkham-dice-results-container {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.arkham-reroll-icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 1px solid rgba(20, 16, 10, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(20, 16, 10, 0.9);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.arkham-reroll-icon:hover {
+  border-color: rgba(114, 42, 28, 0.55);
+  background: rgba(114, 42, 28, 0.1);
+  color: #722A1C;
 }
 
 .dice-result.arkham-die {
@@ -647,6 +744,58 @@ form > nav > a.item.active {
   border-color: rgba(0, 0, 0, 0.9);
   background: rgba(10, 10, 10, 0.94) !important;
   color: rgba(255, 255, 255, 0.96) !important;
+}
+.dice-result.arkham-die.is-dropped {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+.dice-result.arkham-die.horror-die.horror-nat6 {
+  color: rgba(60, 220, 120, 0.98) !important;
+}
+.dice-result.arkham-die.horror-die.horror-nat1 {
+  color: rgba(255, 95, 95, 0.98) !important;
+}
+
+.reroll-dice-app .arkham-reroll-meta {
+  display: grid;
+  gap: 4px;
+  font-family: "Voltaire", sans-serif;
+  font-size: 12px;
+}
+.reroll-dice-app .arkham-reroll-dice {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.reroll-dice-app .arkham-reroll-die-row {
+  padding: 6px;
+  border: 1px solid rgba(20, 16, 10, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.reroll-dice-app .arkham-reroll-die {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.reroll-dice-app .arkham-reroll-checkbox {
+  flex: 0 0 auto;
+}
+.reroll-dice-app .arkham-reroll-die-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: "Voltaire", sans-serif;
+  font-size: 12px;
+  opacity: 0.92;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.reroll-dice-app .form-footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .arkham-horror-hint {
@@ -1385,5 +1534,3 @@ li.chat-message.message > .message-content {
 .editor.prosemirror {
   height: 100%;
 }
-
-/*# sourceMappingURL=arkham-horror-rpg-fvtt.css.map */

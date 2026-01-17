@@ -91,63 +91,94 @@ export function calculatePoolsAndThresholds({
   };
 }
 
-//Combines normal + horror results into [{result,isHorror}]
+// Combines normal + horror results into per-die objects.
+// rawResult is the natural d6 face (1-6). result is the displayed/modified face.
 export function collectTaggedResults({ normalResults, horrorResults = [] }) {
   const tagged = [];
-  normalResults.forEach(r => tagged.push({ result: r, isHorror: false }));
-  horrorResults.forEach(r => tagged.push({ result: r, isHorror: true }));
+
+  const pushDie = ({ rawResult, isHorror }) => {
+    const raw = Number(rawResult) || 0;
+    tagged.push({
+      rawResult: raw,
+      result: raw, // modifiers apply later
+      isHorror: !!isHorror,
+      isDropped: false,
+      isNat1: raw === 1,
+      isNat6: raw === 6,
+    });
+  };
+
+  normalResults.forEach(r => pushDie({ rawResult: r, isHorror: false }));
+  horrorResults.forEach(r => pushDie({ rawResult: r, isHorror: true }));
   return tagged;
 }
 
-// Drops highest or lowest die based on advantage/disadvantage flags like original logic from 13.0.7 ALPHA dice-roll-app.
-// Note here that in the future we could use this same function rather than dropping we could tag the dice to show as dropped to the user on chat cards etc.
+// Marks highest or lowest die as dropped based on advantage/disadvantage flags.
+// The die remains in the array (so it can be displayed and/or referenced for rerolls).
 export function applyAdvantageDisadvantageDrop(diceRollResults, { rollWithAdvantage, rollWithDisadvantage }) {
+  const pickIndex = ({ mode }) => {
+    const candidates = diceRollResults
+      .map((d, i) => ({ d, i }))
+      .filter(({ d }) => !d.isDropped);
+    if (candidates.length === 0) return -1;
+
+    const values = candidates.map(({ d }) => Number(d.rawResult ?? d.result) || 0);
+    const target = mode === "min" ? Math.min(...values) : Math.max(...values);
+    const picked = candidates.find(({ d }) => (Number(d.rawResult ?? d.result) || 0) === target);
+    return picked ? picked.i : -1;
+  };
+
   if (rollWithAdvantage) {
-    const minResult = Math.min(...diceRollResults.map(r => r.result));
-    const minIndex = diceRollResults.findIndex(r => r.result === minResult);
-    diceRollResults.splice(minIndex, 1);
+    const idx = pickIndex({ mode: "min" });
+    if (idx >= 0) diceRollResults[idx].isDropped = true;
   }
 
   if (rollWithDisadvantage) {
-    const maxResult = Math.max(...diceRollResults.map(r => r.result));
-    const maxIndex = diceRollResults.findIndex(r => r.result === maxResult);
-    diceRollResults.splice(maxIndex, 1);
+    const idx = pickIndex({ mode: "max" });
+    if (idx >= 0) diceRollResults[idx].isDropped = true;
   }
 }
 
 // Computes final success/failure counts based on modified dice results like original logic from 13.0.7 ALPHA dice-roll-app.
 export function computeSkillOutcome(diceRollResults, { successOn, penalty, successesNeeded, resultModifier }) {
-  // count all results that are >= 6
-  let successCount = diceRollResults.filter(r => r.result >= 6).length;
+  const kept = diceRollResults.filter(r => !r.isDropped);
 
-  // failures (1s) 
-  let failureCount = diceRollResults.filter(r => r.result === 1 && !r.isHorror).length;
-  const horrorFailureCount = diceRollResults.filter(r => r.result === 1 && r.isHorror).length;
+  // count all natural 6s as successes
+  let successCount = kept.filter(r => (r.rawResult ?? r.result) === 6).length;
 
-  // keep 1s and 6s as-is
-  let finalDiceRollResults = diceRollResults.filter(r => r.result === 1 || r.result === 6);
+  // failures (natural 1s)
+  let failureCount = kept.filter(r => (r.rawResult ?? r.result) === 1 && !r.isHorror).length;
+  const horrorFailureCount = kept.filter(r => (r.rawResult ?? r.result) === 1 && r.isHorror).length;
 
-  // remaining dice (not 1 or 6)
-  let tmpDiceRollResults = diceRollResults.filter(r => r.result !== 1 && r.result !== 6);
+  const so = Number.parseInt(successOn) || 0;
+  const p = Number.parseInt(penalty) || 0;
+  const rm = Number.parseInt(resultModifier) || 0;
 
-  // decrease remaining dice by penalty (consistent with original)
-  tmpDiceRollResults = tmpDiceRollResults.map(r => {
-    const modified = (r.result - penalty) + resultModifier;
-    // Clamp to the representable faces for "modified" dice.
-    // We never want penalties/modifiers go below 1 or exceed 6.
-    // Natural 1s and 6s are handled separately above.
-    const clamped = Math.min(6, Math.max(1, modified));
-    return { ...r, result: clamped };
+  // Compute displayed result for every die (including dropped), but only count kept dice.
+  const withDisplayed = diceRollResults.map(r => {
+    const raw = Number(r.rawResult ?? r.result) || 0;
+    const isNat1 = raw === 1;
+    const isNat6 = raw === 6;
+    const displayed = (isNat1 || isNat6)
+      ? raw
+      : Math.min(6, Math.max(1, (raw - p) + rm));
+
+    return {
+      ...r,
+      rawResult: raw,
+      result: displayed,
+      isNat1,
+      isNat6,
+    };
   });
 
-  // append remaining dice
-  finalDiceRollResults = finalDiceRollResults.concat(tmpDiceRollResults);
+  const keptDisplayed = withDisplayed.filter(r => !r.isDropped);
+  const nonNat = keptDisplayed.filter(r => !r.isNat1 && !r.isNat6);
 
   // check success threshold on modified dice now
-  successCount += tmpDiceRollResults.filter(r => r.result >= successOn).length;
-  // failure count was originally only counting non-horror dice 1s, 
-  // but for consistency against success counting should we count all failures or change the chat card label.
-  failureCount += tmpDiceRollResults.filter(r => r.result < successOn).length;
+  successCount += nonNat.filter(r => r.result >= so).length;
+  // count failures on non-natural dice
+  failureCount += nonNat.filter(r => r.result < so).length;
 
   const needed = Number.parseInt(successesNeeded) || 0;
   const isSuccess = successCount >= needed;
@@ -157,7 +188,7 @@ export function computeSkillOutcome(diceRollResults, { successOn, penalty, succe
     successCount,
     failureCount,
     horrorFailureCount,
-    finalDiceRollResults,
+    finalDiceRollResults: withDisplayed,
   };
 }
 

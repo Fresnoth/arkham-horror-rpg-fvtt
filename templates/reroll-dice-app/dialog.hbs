@@ -1,0 +1,36 @@
+<form class="arkham-reroll-form">
+  <div class="arkham-reroll-meta">
+    <div class="arkham-reroll-meta-row"><strong>Success on:</strong> {{successOn}}+</div>
+    <div class="arkham-reroll-meta-row"><strong>Penalty:</strong> {{penalty}}</div>
+    <div class="arkham-reroll-meta-row"><strong>Result Mod:</strong> {{resultModifier}}</div>
+  </div>
+
+  <hr />
+
+  <div class="arkham-reroll-dice" role="list">
+    {{#each dice}}
+      <div class="arkham-reroll-die-row" role="listitem">
+        <label class="arkham-reroll-die">
+          <input class="arkham-reroll-checkbox" type="checkbox" name="rerollDie" value="{{index}}" {{#unless isSelectable}}disabled{{/unless}} />
+          <span class="dice-result arkham-die
+            {{#if isHorror}}horror-die{{else}}{{#if (gte result ../successOn)}}success{{else if (eq result 1)}}failure{{/if}}{{/if}}
+            {{#if isDropped}}is-dropped{{/if}}
+            {{#if isHorror}}{{#if isNat6}}horror-nat6{{/if}}{{#if isNat1}}horror-nat1{{/if}}{{/if}}">
+            {{result}}
+          </span>
+          <span class="arkham-reroll-die-label">
+            {{#if isHorror}}Horror{{else}}Normal{{/if}} — Raw {{rawResult}} → Final {{result}}
+            {{#if isDropped}}(dropped){{/if}}
+            {{#if isForbidden}}(cannot reroll){{/if}}
+          </span>
+        </label>
+      </div>
+    {{/each}}
+  </div>
+
+  <footer class="form-footer">
+    <button type="submit" data-action="clickedReroll">
+      <i class="fa-solid fa-arrow-rotate-right"></i> Reroll Selected
+    </button>
+  </footer>
+</form>

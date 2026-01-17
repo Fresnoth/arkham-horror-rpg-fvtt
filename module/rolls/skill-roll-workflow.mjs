@@ -6,6 +6,7 @@ import {
     computeSkillOutcome,
     applyDicepoolCost,
 } from "../helpers/roll-engine.mjs";
+import { computeShowRollDetails } from "../helpers/roll-details.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
@@ -42,6 +43,7 @@ export class SkillRollWorkflow {
   processSpell({ state, outcome }) {
     let result = {spellUsageSuccess : false};
     if (state.spellToUse) {
+      result.spellUuid = state.spellToUse.uuid;
       if (outcome.successCount >= state.spellToUse.system.difficulty) {
         result.spellUsageSuccess = true;
       }
@@ -56,6 +58,14 @@ export class SkillRollWorkflow {
     // if there are any success return the damage
     let result = {weaponUsageSuccess : false,weaponAmmoUsed: false};
     if (state.weaponToUse) {
+      // Capture ammo snapshot up-front so rerolls can safely reconcile ammo.
+      const ammo = state.weaponToUse.system?.ammunition;
+      const ammoMax = Number(ammo?.max ?? 0);
+      const ammoOld = Number(ammo?.current ?? 0);
+      result.weaponUuid = state.weaponToUse.uuid;
+      result.weaponAmmoOld = ammoOld;
+      result.weaponAmmoNew = ammoOld;
+      result.weaponAmmoSpendReason = null;
       
       if (outcome.successCount > 0) {
         result.weaponUsageSuccess = true;
@@ -71,17 +81,20 @@ export class SkillRollWorkflow {
 
       //page 81 core rule book, if the final dice roll includes a 1, you expend one ammo
       // TODO: check for special rules in the future
-      if(state.weaponToUse.system.ammunition.reloadAfterUsage){
+      if (ammo?.reloadAfterUsage) {
         result.weaponAmmoUsed = true;
+        result.weaponAmmoSpendReason = "reloadAfterUsage";
+        result.weaponAmmoNew = 0;
         state.weaponToUse.update({"system.ammunition.current": 0});
-      }
-      else if(outcome.finalDiceRollResults.some(r => r.result === 1)){
-        if(state.weaponToUse.system.ammunition.max > 0){
-          state.weaponToUse.system.ammunition.current = Math.max(0, state.weaponToUse.system.ammunition.current - 1);
+      } else {
+        const keptDice = (outcome.finalDiceRollResults ?? []).filter(d => !d.isDropped);
+        const hasFinalOne = keptDice.some(d => d.result === 1);
+        if (hasFinalOne && ammoMax > 0) {
           result.weaponAmmoUsed = true;
+          result.weaponAmmoSpendReason = "nat1";
+          result.weaponAmmoNew = Math.max(0, ammoOld - 1);
           // update item
-          state.weaponToUse.update({"system.ammunition.current": state.weaponToUse.system.ammunition.current});
-          //console.log("decreased ammo for weapon" + state.weaponToUse.name);
+          state.weaponToUse.update({"system.ammunition.current": result.weaponAmmoNew});
         }
       }
     }else{
@@ -151,10 +164,13 @@ export class SkillRollWorkflow {
           ? "Tome: Attune"
           : "Complex";
 
+    const showRollDetails = computeShowRollDetails(outcome);
+
     const chatData = {
       rollCategory: "skill",
       rollKind,
       rollKindLabel,
+      showRollDetails,
       diceRollHTML: outcome.diceRollHTML,
       horrorDiceRollHTML: outcome.horrorDiceRollHTML,
       successOn: outcome.successOn,
@@ -181,7 +197,12 @@ export class SkillRollWorkflow {
       weaponInflictInjury: outcome.weaponInflictInjury,
       weaponSpecialRules: outcome.weaponSpecialRules,
       weaponHasSpecialRules: outcome.weaponSpecialRules && outcome.weaponSpecialRules.trim() !== "", // check if weaponSpecialRules is not empty
+      weaponUuid: outcome.weaponUuid,
+      weaponAmmoOld: outcome.weaponAmmoOld,
+      weaponAmmoNew: outcome.weaponAmmoNew,
+      weaponAmmoSpendReason: outcome.weaponAmmoSpendReason,
       spellUsed: outcome.spellUsed,
+      spellUuid: outcome.spellUuid,
       spellSpecialRules: outcome.spellSpecialRules,
       spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "" // check if spellSpecialRules is not empty
     };
