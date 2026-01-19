@@ -129,8 +129,6 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
 
     // Re-render only what changed
     await this.render({ parts: ["tracker", "footer"], force: true });
-    // Refresh side markers
-    // (Optional) If you later expose a system-level API, call it here.
   }
 
   async _endSidePhase() {
@@ -140,17 +138,20 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
     const active = (await combat.getFlag(FLAG_SCOPE, FLAG_ACTIVE)) ?? "investigators";
     const next = active === "investigators" ? "npcs" : "investigators";
 
-    // Optional: when wrapping back to investigators, advance round
-    if (active === "npcs") {
-      await combat.update({ round: combat.round + 1 }); // keep turn as-is; we’re not using it for permission
+    // Only advance the round after BOTH sides have completed their phase.
+    // This means: increment when switching back to the first side.
+    const first = (await combat.getFlag(FLAG_SCOPE, FLAG_FIRST)) ?? "investigators";
+    const shouldAdvanceRound = next === first;
+
+    if (shouldAdvanceRound) {
+      const round = Number(combat.round) || 0;
+      await combat.update({ round: round + 1 });
     }
 
     await combat.setFlag(FLAG_SCOPE, FLAG_ACTIVE, next);
 
     await this.render({ parts: ["tracker", "footer"], force: true });
-    // (Optional) If you later expose a system-level API, call it here.
   }
-
 
   async _promptFirstSide() {
     const { DialogV2 } = foundry.applications.api;

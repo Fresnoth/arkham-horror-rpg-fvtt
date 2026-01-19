@@ -1,6 +1,18 @@
+.combat-group-banner {
+      padding: 4px 6px;
+      border-bottom: 1px solid $c-red;
+}
+
+.combat-group-banner.is-active[data-side="investigators"] {
+      background: rgba($c-blue, 0.30);
+}
+
+.combat-group-banner.is-active[data-side="npcs"] {
+      background: rgba($c-red, 0.30);
+}
+
 .combat-group-title, .token-initiative{
       text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
       font-family: $font-primary;
       font-size: 1.2em;
 }
