@@ -25,7 +25,7 @@
     <div class="grid grid2-col">
         <fieldset>
             <legend>
-                INJURIES &amp; TRAUMA
+                {{localize "ARKHAM_HORROR.LABELS.InjuriesTrauma"}}
                 <a class='item-control' data-action="clickedInjuryTraumaRoll" title="Roll Injury/Trauma">
                     <i class="fa-solid fa-dice"></i>
                 </a>
@@ -82,15 +82,15 @@
     </div>
     <div class="resource-group">
         <!-- Weapons -->
-        <h5 class="quick-label">Weapons</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Weapons"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Skill</div>
-                <div class='item-prop damage-prop'>D</div>
-                <div class='item-prop injury-rating-prop'>IR</div>
-                <div class="item-prop range-prop">Range</div>
-                <div class='item-prop'>Ammunition</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
+                <div class='item-prop damage-prop'>{{localize "ARKHAM_HORROR.PROPS.DamageShort"}}</div>
+                <div class='item-prop injury-rating-prop'>{{localize "ARKHAM_HORROR.PROPS.InjuryRatingShort"}}</div>
+                <div class="item-prop range-prop">{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Ammunition"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='weapon'>
@@ -145,11 +145,11 @@
     </div>
     <div class="resource-group">
         <!-- Protective Equipment -->
-        <h5 class="quick-label">Protective Equipment</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.ProtectiveEquipment"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Costs</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='protective_equipment'>
@@ -199,13 +199,13 @@
     </div>
     <div class="resource-group">
         <!-- Spells -->
-        <h5 class="quick-label">Spells</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Spells"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Skill</div>
-                <div class='item-prop'>Difficulty</div>
-                <div class='item-prop'>Range</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Difficulty"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type='spell'}}' data-type='spell'>
@@ -226,9 +226,9 @@
                     </div>
                     <div class="item-prop clickable" data-action="clickedRollWithSpell" data-item-id="{{item.id}}" data-skill-key="{{item.system.skill}}">{{localize (concat "ARKHAM_HORROR.SKILL." item.system.skill)}} <i class="fa-solid fa-dice"></i></div>
                     <div class='item-prop'>
-                        {{#if (eq item.system.difficulty 1)}}Normal
-                        {{else if (eq item.system.difficulty 2)}}Difficult
-                        {{else if (eq item.system.difficulty 3)}}Very Difficult
+                        {{#if (eq item.system.difficulty 1)}}{{localize "ARKHAM_HORROR.DIFFICULTY.Normal"}}
+                        {{else if (eq item.system.difficulty 2)}}{{localize "ARKHAM_HORROR.DIFFICULTY.Difficult"}}
+                        {{else if (eq item.system.difficulty 3)}}{{localize "ARKHAM_HORROR.DIFFICULTY.VeryDifficult"}}
                         {{/if}}
                     </div>
                     <div class='item-prop'>{{item.system.range}}</div>
@@ -254,12 +254,12 @@
     </div>
     <div class="resource-group">
         <!-- Useful Items -->
-        <h5 class="quick-label">Useful Items</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.UsefulItems"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Costs</div>
-                <div class='item-prop'>Uses</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Uses"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Useful Item'}}' data-type='useful_item'>

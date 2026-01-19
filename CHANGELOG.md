@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 13.0.27
+- spend Insight Logic
+- combat tracker improvements
+- d3 rolling & injury card improvements
+- added more translation strings
+
 ## 13.0.26
 - reroll, roll engine fixes and chat card v2
 

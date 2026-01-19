@@ -97,10 +97,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'character', group: 'sheet', label: 'Character' },
-                    { id: 'mundane_resources', group: 'sheet', label: 'Mundane Resources' },
-                    { id: 'supernatural_resources', group: 'sheet', label: 'Supernatural Resources' },
-                    { id: 'background', group: 'sheet', label: 'Background' }
+                    { id: 'character', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Character' },
+                    { id: 'mundane_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.MundaneResources' },
+                    { id: 'supernatural_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.SupernaturalResources' },
+                    { id: 'background', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Background' }
                 ],
             initial: 'character'
         }

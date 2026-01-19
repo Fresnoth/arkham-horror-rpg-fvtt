@@ -1,20 +1,20 @@
 <fieldset>
     <legend>
-        INSIGHT
-        <a class='item-control' data-action="clickedSpendInsight" title="Spend Insight">
+        {{localize "ARKHAM_HORROR.LABELS.Insight"}}
+        <a class='item-control' data-action="clickedSpendInsight" title="{{localize "ARKHAM_HORROR.ACTIONS.SpendInsight"}}">
             <i class="fa-solid fa-lightbulb"></i>
         </a>
-        <a class='item-control' data-action="clickedRefreshInsight" title="Refresh Insight">
+        <a class='item-control' data-action="clickedRefreshInsight" title="{{localize "ARKHAM_HORROR.ACTIONS.RefreshInsight"}}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
         </a>
     </legend>
 
     <div class="grid grid-2col">
-        <div class="form-group"><label class="styled-label">LIMIT</label>
+        <div class="form-group"><label class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Limit"}}</label>
             <input type="number" name="system.insight.limit" value="{{system.insight.limit}}" data-dtype="Number" class="fancy-input">
         </div>
         <div class="form-group">
-            <label class="styled-label">REMAINING</label>
+            <label class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Remaining"}}</label>
             <input type="number" name="system.insight.remaining" value="{{system.insight.remaining}}"
                 data-dtype="Number" class="fancy-input">
         </div>

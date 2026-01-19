@@ -21,7 +21,52 @@
     },
     "LABELS": {
       "Form": "Data",
-      "Description": "Description"
+      "Description": "Description",
+      "Dicepool": "Würfelpool",
+      "Damage": "Schaden",
+      "Horror": "Horror",
+      "Skills": "Fertigkeiten",
+      "Insight": "Einsicht",
+      "Limit": "Limit",
+      "Remaining": "Verbleibend",
+      "PersonalityTrait": "Persönlichkeitsmerkmal",
+      "InjuriesTrauma": "Verletzungen & Trauma",
+      "Money": "Geld",
+      "Vehicle": "Fahrzeug",
+      "Lodging": "Unterkunft",
+      "LoadCapacity": "Tragfähigkeit (lbs)",
+      "Weapons": "Waffen",
+      "ProtectiveEquipment": "Schutzausrüstung",
+      "UsefulItems":"Nützliche Gegenstände",
+      "Favors":"Gefallen",
+      "Spells":"Zauber",
+      "Tomes":"Bücher",
+      "Relics":"Relikte"
+    },
+    "DIFFICULTY":{
+      "Normal": "Normal (1)",
+      "Difficult": "Schwierig (2)",
+      "VeryDifficult": "Sehr Schwierig (3)"
+    },
+    "PROPS":{
+      "Name":"Name",
+      "Skill":"Fertigkeit",
+      "Damage": "Schaden",
+      "DamageShort": "S",
+      "InjuryRating":"Verletzungsgrad",
+      "InjuryRatingShort":"VG",
+      "Range":"Reichweite",
+      "Ammunition":"Munition",
+      "Costs": "Preis",
+      "Uses":"Verwendungen",
+      "Difficulty":"Schwierigkeit"
+    },
+    "ACTIONS":{
+      "SpendInsight":"Einsicht ausgeben",
+      "RefreshInsight":"Einsicht erneuern",
+      "ClearDicePool":"Zurücksetzen",
+      "StrainOneself":"Sich belasten",
+      "RefreshDicePool":"Erneuern"
     },
     "SKILL": {
       "rangedCombat": "Fernkampf",
@@ -34,13 +79,16 @@
       "knowledge": "Wissen",
       "resolve": "Entschlossenheit",
       "lore": "Lore"
+    },
+    "TABS": {
+      "Character": "Charakter",
+      "NPC": "NPC",
+      "Biography": "Biografie",
+      "Vehicle": "Fahrzeug",
+      "MundaneResources": "Alltägliche Ressourcen",
+      "SupernaturalResources": "Übernatürliche Ressourcen",
+      "Background": "Hintergrund"
     }
-  },
-  "TABS": {
-    "Character": "Charakter",
-    "NPC": "NPC",
-    "Biography": "Biografie",
-    "Vehicle": "Fahrzeug"
   },
   "ITEM": {
     "Weapon": {

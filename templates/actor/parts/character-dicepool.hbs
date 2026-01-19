@@ -1,5 +1,5 @@
 <div class="dicepool-display">
-    <span class="dice-action-icon" data-action="clickedClearDicePool" title="Clear" ><i class="fa-solid fa-x"></i></span>
+    <span class="dice-action-icon" data-action="clickedClearDicePool" title="{{localize "ARKHAM_HORROR.ACTIONS.ClearDicePool"}}" ><i class="fa-solid fa-x"></i></span>
     {{#each system.dicepoolPrepared as |die|}}
         {{#if die.isHorrorDice}}
         <span class="dice-icon dicepool-dice color-d6 {{#if die.used}}used{{/if}}" data-action="clickedDicePool"
@@ -11,6 +11,6 @@
                 alt="Regular Die" /></span>
         {{/if}}
     {{/each}}
-    <span class="dice-action-icon" data-action="clickedStrainOneself" title="Strain Oneself"><i class="fa-solid fa-hand-fist"></i></span>
-    <span class="dice-action-icon" data-action="clickedRefreshDicePool" title="Refresh" ><i class="fa-solid fa-arrow-rotate-right"></i></span>
+    <span class="dice-action-icon" data-action="clickedStrainOneself" title="{{localize "ARKHAM_HORROR.ACTIONS.StrainOneself"}}"><i class="fa-solid fa-hand-fist"></i></span>
+    <span class="dice-action-icon" data-action="clickedRefreshDicePool" title="{{localize "ARKHAM_HORROR.ACTIONS.RefreshDicePool"}}" ><i class="fa-solid fa-arrow-rotate-right"></i></span>
 </div>

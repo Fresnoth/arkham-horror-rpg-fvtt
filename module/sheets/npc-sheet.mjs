@@ -79,8 +79,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'npc', label: 'TABS.NPC', group: 'sheet' },
-                    { id: 'biography', label: 'TABS.Biography', group: 'sheet' }
+                    { id: 'npc', label: 'ARKHAM_HORROR.TABS.NPC', group: 'sheet' },
+                    { id: 'biography', label: 'ARKHAM_HORROR.TABS.Biography', group: 'sheet' }
                 ],
             initial: 'npc'
         }

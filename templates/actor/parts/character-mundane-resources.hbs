@@ -3,24 +3,24 @@
     <div class="resource-group-styled">
         <div class="grid grid-2col">
             <div class="form-group">
-                <label for="money">Money</label>
+                <label for="money">{{localize "ARKHAM_HORROR.LABELS.Money"}}</label>
                 <input type="number" name="system.mundaneResources.money" id="money" class="fancy-input"
                     value="{{system.mundaneResources.money}}" data-dtype="Number">
             </div>
             <div class="form-group">
-                <label for="vehicle">Vehicle</label>
+                <label for="vehicle">{{localize "ARKHAM_HORROR.LABELS.Vehicle"}}</label>
                 <input type="text" name="system.mundaneResources.vehicle" id="vehicle" class="fancy-input"
                     value="{{system.mundaneResources.vehicle}}" data-dtype="String">
             </div>
         </div>
         <div class="grid grid-2col">
             <div class="form-group">
-                <label for="lodging">Lodging</label>
+                <label for="lodging">{{localize "ARKHAM_HORROR.LABELS.Lodging"}}</label>
                 <input type="text" name="system.mundaneResources.lodging" id="lodging" class="fancy-input"
                     value="{{system.mundaneResources.lodging}}" data-dtype="String">
             </div>
             <div class="form-group">
-                <label for="loadCapacity">Load Capacity (lbs)</label>
+                <label for="loadCapacity">{{localize "ARKHAM_HORROR.LABELS.LoadCapacity"}}</label>
                 <input type="text" class="fancy-input" name="system.loadCapacity.current"
                     value="{{system.loadCapacity.current}}" {{#if isAutoLoadCapacityEnabled}}disabled{{/if}}> /
                 <input type="text" class="fancy-input" name="system.loadCapacity.max" id="loadCapacity"
@@ -30,15 +30,15 @@
     </div>
     <div class="resource-group">
         <!-- Weapons -->
-        <h5 class="quick-label">Weapons</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Weapons"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Skill</div>
-                <div class='item-prop damage-prop' title="Damage">D</div>
-                <div class='item-prop injury-rating-prop' title="Injury Rating">IR</div>
-                <div class='item-prop range-prop'>Range</div>
-                <div class='item-prop'>Ammunition</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
+                <div class='item-prop damage-prop' title="{{localize "ARKHAM_HORROR.PROPS.Damage"}}">{{localize "ARKHAM_HORROR.PROPS.DamageShort"}}</div>
+                <div class='item-prop injury-rating-prop' title="{{localize "ARKHAM_HORROR.PROPS.InjuryRating"}}">{{localize "ARKHAM_HORROR.PROPS.InjuryRatingShort"}}</div>
+                <div class='item-prop range-prop'>{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Ammunition"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='weapon'>
@@ -93,11 +93,11 @@
     </div>
     <div class="resource-group">
         <!-- Protective Equipment -->
-        <h5 class="quick-label">Protective Equipment</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.ProtectiveEquipment"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Costs</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='protective_equipment'>
@@ -147,12 +147,12 @@
     </div>
     <div class="resource-group">
         <!-- Useful Items -->
-        <h5 class="quick-label">Useful Items</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.UsefulItems"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Costs</div>
-                <div class='item-prop'>Uses</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Uses"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Useful Item'}}' data-type='useful_item'>
@@ -199,7 +199,7 @@
     </div>
     <div class="resource-group">
         <!-- Favors -->
-        <h5 class="quick-label">Favors</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Favors"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>

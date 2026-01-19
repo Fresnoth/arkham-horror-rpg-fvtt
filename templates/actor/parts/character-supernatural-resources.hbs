@@ -3,13 +3,13 @@
     data-group="{{tabs.supernatural_resources.group}}">
     <div class="resource-group">
         <!-- Spells -->
-        <h5 class="quick-label">Spells</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Spells"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Skill</div>
-                <div class='item-prop'>Difficulty</div>
-                <div class='item-prop'>Range</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Difficulty"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' spell'}}' data-type='spell'>
@@ -39,9 +39,9 @@
                             item.system.skill)}} <i class="fa-solid fa-dice"></i>
                     </div>
                     <div class='item-prop'>
-                        {{#if (eq item.system.difficulty 1)}}Normal
-                        {{else if (eq item.system.difficulty 2)}}Difficult
-                        {{else if (eq item.system.difficulty 3)}}Very Difficult
+                        {{#if (eq item.system.difficulty 1)}}{{localize "ARKHAM_HORROR.DIFFICULTY.Normal"}}
+                        {{else if (eq item.system.difficulty 2)}}{{localize "ARKHAM_HORROR.DIFFICULTY.Difficult"}}
+                        {{else if (eq item.system.difficulty 3)}}{{localize "ARKHAM_HORROR.DIFFICULTY.VeryDifficult"}}
                         {{/if}}
                     </div>
                     <div class='item-prop'>{{item.system.range}}</div>
@@ -67,11 +67,11 @@
     </div>
     <div class="resource-group">
         <!-- Tomes -->
-        <h5 class="quick-label">Tomes</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Tomes"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Rarity</div>
+                <div class='item-prop'>{{localize "ITEM.Tome.rarity"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.understood"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.attuned"}}</div>
                 <div class='item-controls'>
@@ -160,7 +160,7 @@
     </div>
     <div class="resource-group">
         <!-- Relics -->
-        <h5 class="quick-label">Relics</h5>
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Relics"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'Name'}}</div>

@@ -20,7 +20,52 @@
     },
     "LABELS": {
       "Form": "Data",
-      "Description": "Description"
+      "Description": "Description",
+      "Dicepool": "Dicepool",
+      "Damage": "Damage",
+      "Horror": "Horror",
+      "Skills": "Skills",
+      "Insight": "Insight",
+      "Limit": "Limit",
+      "Remaining": "Remaining",
+      "PersonalityTrait": "Personality Trait",
+      "InjuriesTrauma": "Injuries & Trauma",
+      "Money": "Money",
+      "Vehicle": "Vehicle",
+      "Lodging": "Lodging",
+      "LoadCapacity": "Load Capacity (lbs)",
+      "Weapons": "Weapons",
+      "ProtectiveEquipment": "Protective Equipment",
+      "UsefulItems":"Useful Items",
+      "Favors":"Favors",
+      "Spells":"Spells",
+      "Tomes":"Tomes",
+      "Relics":"Relics"
+    },
+    "DIFFICULTY":{
+      "Normal": "Normal (1)",
+      "Difficult": "Difficult (2)",
+      "VeryDifficult": "Very Difficult (3)"
+    },
+    "PROPS":{
+      "Name":"Name",
+      "Skill":"Skill",
+      "Damage": "Damage",
+      "DamageShort": "D",
+      "InjuryRating":"Injury Rating",
+      "InjuryRatingShort":"IR",
+      "Range":"Range",
+      "Ammunition":"Ammunition",
+      "Costs":"Costs",
+      "Uses":"Uses",
+      "Difficulty":"Difficulty"
+    },
+    "ACTIONS": {
+      "SpendInsight": "Spend Insight",
+      "RefreshInsight": "Refresh Insight",
+      "ClearDicePool": "Clear",
+      "StrainOneself": "Strain Oneself",
+      "RefreshDicePool": "Refresh"
     },
     "SKILL": {
       "rangedCombat": "Ranged Combat",
@@ -33,13 +78,18 @@
       "knowledge": "Knowledge",
       "resolve": "Resolve",
       "lore": "Lore"
+    },
+    "TABS": {
+      "Character": "Character",
+      "NPC": "NPC",
+      "Biography": "Biography",
+      "Vehicle": "Vehicle",
+      "MundaneResources": "Mundane Resources",
+      "SupernaturalResources": "Supernatural Resources",
+      "Background": "Background",
+      "NPC": "NPC",
+      "Biography": "Biography"
     }
-  },
-  "TABS": {
-    "Character": "Character",
-    "NPC": "NPC",
-    "Biography": "Biography",
-    "Vehicle": "Vehicle"
   },
   "ITEM": {
     "Weapon": {
@@ -62,6 +112,7 @@
       "cost": "Cost"
     },
     "Tome": {
+      "rarity": "Rarity",
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
       "rarity": "Rarity",
@@ -80,7 +131,7 @@
       "clearUnderstoodButton": "Clear Understood",
       "inaccessibleSpells": "This Tome contains {count} spell(s) you do not have permission to view."
     },
-    "UsefulItem":{
+    "UsefulItem": {
       "uses": "Uses",
       "weight": "Weight",
       "specialRules": "Special Rules"
@@ -95,8 +146,8 @@
       "decliningText": "Declining",
       "losingText": "Losing"
     },
-    "Spell":{
-      "difficulty":"Difficulty"
+    "Spell": {
+      "difficulty": "Difficulty"
     }
   },
   "TYPES": {
