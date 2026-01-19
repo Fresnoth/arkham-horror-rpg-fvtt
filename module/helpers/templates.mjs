@@ -19,6 +19,8 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-injuries.hbs',
     'systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs',
     'systems/arkham-horror-rpg-fvtt/templates/shared/_skill_options.hbs',
+    // Chat cards
+    'systems/arkham-horror-rpg-fvtt/templates/chat/insight-update.hbs',
     // Item partials
     'systems/arkham-horror-rpg-fvtt/templates/item/parts/item-effects.hbs',
   ]);

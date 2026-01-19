@@ -4,8 +4,10 @@ const { TextEditor, DragDrop } = foundry.applications.ux
 import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
+import { SpendInsightApp } from "../apps/spend-insight-app.mjs";
 import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/tome.mjs';
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
+import { refreshInsightAndPost } from "../helpers/insight.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -33,6 +35,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
             clickedRollWithSpell: this.#handleClickedRollWithSpell,
             clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll,
+            clickedSpendInsight: this.#handleClickedSpendInsight,
+            clickedRefreshInsight: this.#handleClickedRefreshInsight,
             understandTomeFromList: this.#handleUnderstandTomeFromList,
             attuneTomeFromList: this.#handleAttuneTomeFromList
         },
@@ -610,6 +614,38 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     static async #handleClickedInjuryTraumaRoll(event, target) {
         event.preventDefault();
         InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
+    }
+
+    static async #handleClickedSpendInsight(event, _target) {
+        event.preventDefault();
+
+        if (!(this.actor?.isOwner || game.user?.isGM)) {
+            ui.notifications.warn("You do not have permission to spend Insight for this actor.");
+            return;
+        }
+
+        if (this.actor?.type !== "character") return;
+
+        const remaining = Number(this.actor.system?.insight?.remaining) || 0;
+        if (remaining <= 0) {
+            ui.notifications.warn(`${this.actor.name} has no Insight remaining.`);
+            return;
+        }
+
+        SpendInsightApp.getInstance({ actor: this.actor }).render(true);
+    }
+
+    static async #handleClickedRefreshInsight(event, _target) {
+        event.preventDefault();
+
+        if (!(this.actor?.isOwner || game.user?.isGM)) {
+            ui.notifications.warn("You do not have permission to refresh Insight for this actor.");
+            return;
+        }
+
+        if (this.actor?.type !== "character") return;
+
+        await refreshInsightAndPost({ actor: this.actor, source: "sheet" });
     }
 
     static async #handleUnderstandTomeFromList(event, target) {

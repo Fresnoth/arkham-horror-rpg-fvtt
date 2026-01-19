@@ -1,0 +1,7 @@
+<div>
+  {{#if (eq action "spend")}}
+    <strong>Insight Spent:</strong> {{actorName}} spent {{spent}} Insight ({{oldRemaining}} → {{newRemaining}}/{{limit}}).
+  {{else}}
+    <strong>Insight Refreshed:</strong> {{actorName}}'s Insight has been refreshed from {{oldRemaining}} to {{newRemaining}}.
+  {{/if}}
+</div>
