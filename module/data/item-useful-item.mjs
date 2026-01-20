@@ -6,6 +6,9 @@ export default class ArkhamHorrorUsefulItem extends ArkhamHorrorItemBase {
     const fields = foundry.data.fields;
     const schema = super.defineSchema();
 
+    // Controls whether this Useful Item should be treated as having Special Rules (default true for backwards compatibility).
+    schema.hasSpecialRules = new fields.BooleanField({ required: true, nullable: false, initial: true });
+
     schema.specialRules = new fields.StringField({ required: true, blank: true });
     schema.cost = new fields.NumberField({ required: true, nullable: false, integer: false, initial: 0, min: 0 });
     schema.uses = new fields.SchemaField({
