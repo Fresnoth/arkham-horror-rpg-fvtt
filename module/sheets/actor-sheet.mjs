@@ -25,6 +25,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedStrainOneself: this.#handleClickedStrainOneself,
             editItem: this.#handleEditItem,
             createItem: this.#handleCreateItem,
+            createOtherEquipment: this.#handleCreateOtherEquipment,
             deleteItem: this.#handleDeleteItem,
             toggleFoldableContent: this.#handleToggleFoldableContent,
             openActorArchetype: this.#handleOpenActorArchetype,
@@ -319,6 +320,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const weapons = [];
         const protectiveEquipments = [];
         const usefulItems = [];
+        const otherEquipment = [];
         const tomes = [];
         const relics = [];
         const injuries = [];
@@ -340,7 +342,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
                 protectiveEquipments.push(i);
             }
             else if (i.type === 'useful_item') {
-                usefulItems.push(i);
+                const hasSpecialRules = i.system?.hasSpecialRules;
+                // Backwards compatibility: treat undefined as true.
+                if (hasSpecialRules === false) otherEquipment.push(i);
+                else usefulItems.push(i);
             }
             else if (i.type === 'tome') {
                 tomes.push(i);
@@ -373,7 +378,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             this.document.system.loadCapacity.current = totalWeight;
         }
 
-        return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, tomes: tomes, relics: relics, injuries: injuries, favors: favors, spells: spells };
+        return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, otherEquipment: otherEquipment, tomes: tomes, relics: relics, injuries: injuries, favors: favors, spells: spells };
     }
 
     /** @inheritDoc */
@@ -430,6 +435,27 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         this._onItemCreate(event, target, actor);
     }
 
+    static async #handleCreateOtherEquipment(event, _target) {
+        event.preventDefault();
+        const actor = this.actor;
+        if (!actor) return;
+
+        const itemData = {
+            name: 'New Equipment',
+            type: 'useful_item',
+            system: {
+                hasSpecialRules: false,
+            }
+        };
+
+        const created = await ArkhamHorrorItem.create(itemData, { parent: actor });
+        try {
+            created?.sheet?.render(true);
+        } catch (e) {
+            // ignore
+        }
+    }
+
     async _onItemCreate(event, target, actor) {
         event.preventDefault();
 
@@ -468,9 +494,13 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     static async #handleToggleFoldableContent(event, target) {
         event.preventDefault();
-        const fcId = target.dataset.fcId;
+        const clickTarget = target instanceof HTMLElement ? target : target?.[0];
+        const fcId = clickTarget?.dataset?.fcId;
+        if (!fcId) return;
 
-        document.querySelectorAll(`.foldable-content[data-fc-id="${fcId}"]`).forEach(fcElement => {
+        const scope = clickTarget?.closest?.('form.application') ?? clickTarget?.closest?.('form') ?? document;
+
+        scope.querySelectorAll(`.foldable-content[data-fc-id="${fcId}"]`).forEach(fcElement => {
             fcElement.classList.toggle('collapsed');
         });
     }
