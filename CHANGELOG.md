@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 13.0.28
+- initial automation for knacks and dice rolls
+- split useful items from other equipment
+  
 ## 13.0.27
 - spend Insight Logic
 - combat tracker improvements
