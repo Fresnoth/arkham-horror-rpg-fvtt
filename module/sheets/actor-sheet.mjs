@@ -11,6 +11,66 @@ import { refreshInsightAndPost } from "../helpers/insight.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
+    static #coerceInputValue(input) {
+        if (!input) return undefined;
+        if (input.type === 'checkbox') return Boolean(input.checked);
+
+        if (input.type === 'number' || input.dataset?.dtype === 'Number') {
+            const raw = input.value;
+            if (raw === '' || raw === null || raw === undefined) return 0;
+            const n = Number(raw);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        return input.value;
+    }
+
+    /**
+     * If the provided Archetype has an open sheet on this client and the current user is a GM,
+     * silently commit relevant form fields to the Archetype document so subsequent policy checks
+     * (like dropping the Archetype or an archetype-knack onto an Actor) use the latest values.
+     */
+    static async #flushOpenArchetypeSheetDraft(archetype) {
+        if (!(game.user?.isGM ?? false)) return;
+        if (!archetype || archetype.type !== 'archetype') return;
+
+        const sheet = archetype.sheet;
+        const form = sheet?.element;
+        if (!form || !(form instanceof HTMLFormElement)) return;
+        if (!sheet.isEditable) return;
+
+        const update = {};
+        const selectors = [
+            'input[name^="system.skillCaps."]',
+            'input[name^="system.knackTiers."]'
+        ];
+
+        const inputs = form.querySelectorAll(selectors.join(', '));
+        for (const input of inputs) {
+            const name = input?.name;
+            if (!name || !name.startsWith('system.')) continue;
+
+            // Only commit tier numeric policy fields; allowedKnacks is managed by explicit update workflows.
+            if (name.startsWith('system.knackTiers.') && !name.endsWith('.maxPurchasable') && !name.endsWith('.xpcost')) {
+                continue;
+            }
+
+            const value = ArkhamHorrorActorSheet.#coerceInputValue(input);
+            const current = foundry.utils.getProperty(archetype, name);
+            if (value === current) continue;
+            update[name] = value;
+        }
+
+        if (Object.keys(update).length === 0) return;
+
+        try {
+            // Persist silently; the actor drop will read from document data.
+            await archetype.update(update, { render: false });
+        } catch (e) {
+            // Best-effort; if it fails, actor drop will use last-saved values.
+        }
+    }
+
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
         classes: ['sheet', 'actor', 'character'],
@@ -151,6 +211,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             return;
         }
 
+        await ArkhamHorrorActorSheet.#flushOpenArchetypeSheetDraft(archetype);
+
         const tierData = archetype.system?.knackTiers?.[tier] ?? {};
         const allowed = (tierData.allowedKnacks ?? []).some(e => e?.uuid === uuid);
         if (!allowed) {
@@ -234,6 +296,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             }
 
             if (dropped?.type === 'archetype') {
+                await ArkhamHorrorActorSheet.#flushOpenArchetypeSheetDraft(dropped);
+
                 const updateData = {
                     'system.archetypeUuid': dropped.uuid,
                     'system.archetype': dropped.name

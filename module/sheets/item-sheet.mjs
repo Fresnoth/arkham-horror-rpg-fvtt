@@ -9,15 +9,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
     #dragDrop // Private field to hold dragDrop handlers
     #dragDropBoundElement
     #tomeInaccessibleWarned = false
-    // Right now need these 4 helpers to be able to force auto save of the archetype document since default
-    // ItemSheetV2 autosave interactions are lagging, when we are qucick change then drag dropping knacks
-    //  onto the actors, without these 4 helpers there can be scenarios where
-    // we change the archetype max knacks for a tier but it doesn't update the policy on the actor and thus
-    // prevents drag dropping which causes a bad UX.  If there is a better way to do this I am open to it.
-    #archetypeAutosaveBoundElement
-    #archetypeAutosaveTimer
-    #archetypeAutosavePending = {}
-    #archetypeAutosaveHandler
 
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
@@ -97,7 +88,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
     constructor(options = {}) {
         super(options)
         this.#dragDrop = this.#createDragDropHandlers()
-        this.#archetypeAutosaveHandler = this.#onArchetypeAutosaveEvent.bind(this)
     }
 
     static async #handleAddKnackRollEffectKey(event, target) {
@@ -163,100 +153,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         this.render(false)
     }
 
-    #bindArchetypeAutosaveHandlers() {
-        if (this.document.type !== 'archetype') return
-        if (!this.isEditable) return
-        if (!(game.user?.isGM ?? false)) return
-
-        if (this.#archetypeAutosaveBoundElement === this.element) return
-
-        this.element.addEventListener('input', this.#archetypeAutosaveHandler, true)
-        this.element.addEventListener('change', this.#archetypeAutosaveHandler, true)
-        this.#archetypeAutosaveBoundElement = this.element
-    }
-
-    #coerceFormValue(target) {
-        if (!target) return undefined
-        if (target.type === 'checkbox') return Boolean(target.checked)
-
-        if (target.type === 'number' || target.dataset?.dtype === 'Number') {
-            // Foundry number fields sometimes allow an empty string while editing; treat that as 0.
-            const raw = target.value
-            if (raw === '' || raw === null || raw === undefined) return 0
-            const n = Number(raw)
-            return Number.isFinite(n) ? n : 0
-        }
-
-        return target.value
-    }
-
-    async #flushArchetypeAutosave() {
-        if (this.document.type !== 'archetype') return
-        if (!this.isEditable) return
-        if (!(game.user?.isGM ?? false)) return
-
-        if (this.#archetypeAutosaveTimer) {
-            clearTimeout(this.#archetypeAutosaveTimer)
-            this.#archetypeAutosaveTimer = null
-        }
-
-        const pending = this.#archetypeAutosavePending
-        this.#archetypeAutosavePending = {}
-        if (!pending || Object.keys(pending).length === 0) return
-
-        try {
-            await this.document.update(pending, { diff: false, render: false })
-        } catch (e) {
-            // No UI noise during close; just best-effort.
-        }
-    }
-
-    #queueArchetypeAutosave(update) {
-        Object.assign(this.#archetypeAutosavePending, update)
-        if (this.#archetypeAutosaveTimer) clearTimeout(this.#archetypeAutosaveTimer)
-
-        // Debounce persistence so typing doesn't spam DB writes.
-        this.#archetypeAutosaveTimer = setTimeout(async () => {
-            this.#archetypeAutosaveTimer = null
-            const pending = this.#archetypeAutosavePending
-            this.#archetypeAutosavePending = {}
-
-            if (!pending || Object.keys(pending).length === 0) return
-
-            try {
-                // Persist without re-rendering the sheet to avoid focus churn.
-                await this.document.update(pending, { diff: false, render: false })
-            } catch (e) {
-                ui.notifications?.warn?.('Failed to auto-save Archetype changes.')
-            }
-        }, 250)
-    }
-
-    #onArchetypeAutosaveEvent(event) {
-        if (this.document.type !== 'archetype') return
-        if (!this.isEditable) return
-        if (!(game.user?.isGM ?? false)) return
-
-        const target = event?.target
-        const name = target?.name
-        if (!name || typeof name !== 'string') return
-        if (!name.startsWith('system.')) return
-
-        const value = this.#coerceFormValue(target)
-        const update = { [name]: value }
-
-        // Immediately update local source so other workflows (like drag/drop) see the latest values
-        // even before the database write completes.
-        // this can create conditions where the DB update fails due to the later Autosave attempt trying to save a diff that is stale or null but it is better for UI/UX responsiveness.
-        // We should probably move away from this architecture long term and rely on a "save button" for archetypes instead of autosave.
-        try {
-            this.document.updateSource(update)
-        } catch (e) {
-            return
-        }
-
-        this.#queueArchetypeAutosave(update)
-    }
 
     /** @inheritDoc */
     _configureRenderParts(options) {
@@ -933,8 +829,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             this.#dragDropBoundElement = this.element;
         }
 
-        this.#bindArchetypeAutosaveHandlers()
-
         // The Knack picker dropdowns are an intermediate UI control.
         // With submitOnChange enabled, changing the dropdown would trigger an auto-submit + re-render,
         // resetting the dropdown value and creating confusing "not saving" behavior.
@@ -956,11 +850,5 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 this.#tomeInaccessibleWarned = true;
             }
         }
-    }
-
-    /** @override */
-    async close(options = {}) {
-        await this.#flushArchetypeAutosave()
-        return super.close(options)
     }
 }
