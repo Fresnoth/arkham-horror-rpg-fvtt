@@ -69,7 +69,54 @@
         <input type="text" id="spell-to-use" name="spellToUse" value="{{spellToUse.name}}" readonly>
     </div>
     {{/if}}
-    <footer class="dialog-footer">
+
+    <footer class="dialog-footer dialog-footer--primary">
         <button type="button" class="roll-button" data-action="clickedRoll"><i class="fa-solid fa-dice"></i> Roll</button>
     </footer>
+
+    {{#if knackChoices}}
+    <hr />
+    <div class="form-group knack-choices">
+        <label>Knacks</label>
+        <div class="notes">Select Knacks to apply. Uses are spent when you roll.</div>
+
+        {{#if knackPreview.hasSelection}}
+        <div class="knack-preview">
+            <div class="knack-preview__title">Selected effects</div>
+            <div class="knack-preview__text">{{knackPreview.text}}</div>
+        </div>
+        {{/if}}
+
+        {{#each knackChoices as |k|}}
+        <div class="flexrow knack-choice-row {{#if k.checked}}is-checked{{/if}} {{#if k.disabled}}is-disabled{{/if}}">
+            <input type="checkbox" name="selectedKnackIds" value="{{k.id}}" {{#if k.checked}}checked{{/if}} {{#if k.disabled}}disabled{{/if}}>
+            <span>
+                Tier {{k.tier}} - {{k.name}}
+                {{#if k.effect}}
+                    <span class="knack-effect">— {{k.effect.text}}</span>
+                {{/if}}
+                {{#if k.availabilityNote}}
+                    <span class="knack-availability">— {{k.availabilityNote}}</span>
+                {{/if}}
+                <small class="notes">
+                    ({{k.frequency}}
+                    {{#if (eq k.frequency "passive")}}
+                    {{else}}
+                        {{#if (eq k.frequency "unlimited")}}
+                        {{else}}
+                            : {{k.remaining}}/{{k.max}}
+                        {{/if}}
+                    {{/if}})
+                </small>
+            </span>
+
+            {{#if k.showRefresh}}
+            <button type="button" class="knack-refresh" data-action="refreshKnackUses" data-item-id="{{k.id}}" title="Refresh uses" aria-label="Refresh uses">
+                <i class="fas fa-rotate-right"></i>
+            </button>
+            {{/if}}
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
 </form>

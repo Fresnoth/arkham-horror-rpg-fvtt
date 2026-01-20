@@ -231,6 +231,133 @@
   }
 }
 
+// Dice roll dialog: tidy up the Knacks selector layout.
+.roll-dialog-container {
+  .dialog-footer--primary {
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+
+  .form-group.knack-choices {
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    > label {
+      flex: 0 0 100%;
+      min-width: 0;
+      margin-bottom: 2px;
+    }
+
+    > .notes {
+      flex: 0 0 100%;
+      margin: 0 0 6px 0;
+      font-size: 0.9em;
+    }
+
+    .knack-choice-row {
+      flex: 0 0 100%;
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      column-gap: 8px;
+      align-items: start;
+      padding: 1px 0;
+    }
+
+    .knack-choice-row + .knack-choice-row {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .knack-choice-row input[type="checkbox"] {
+      margin: 2px 0 0 0;
+    }
+
+    .knack-choice-row span {
+      min-width: 0;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .knack-choice-row small.notes {
+      display: block;
+      margin: 2px 0 0 0;
+      font-size: 0.85em;
+    }
+
+    .knack-choice-row.is-checked {
+      background: rgba(114, 42, 28, 0.10);
+      border-left: 3px solid rgba(114, 42, 28, 0.6);
+      padding-left: 6px;
+    }
+
+    .knack-choice-row.is-disabled {
+      opacity: 0.75;
+    }
+
+    .knack-choice-row.is-disabled input[type="checkbox"] {
+      cursor: not-allowed;
+    }
+
+    .knack-choice-row.is-disabled .knack-availability {
+      color: rgba(114, 42, 28, 0.95);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .knack-refresh {
+      margin-left: 8px;
+      height: 24px;
+      padding: 0 8px;
+      line-height: 22px;
+      font-size: 0.9em;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.2);
+      font-family: $font-primary;
+      cursor: pointer;
+      white-space: nowrap;
+      align-self: start;
+    }
+
+    .knack-refresh:hover {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(0, 0, 0, 0.75);
+      cursor: pointer;
+      align-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .knack-preview {
+      margin: 0 0 6px 0;
+      padding: 4px 6px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 4px;
+    }
+
+    .knack-preview__title {
+      margin-bottom: 2px;
+      color: rgba(114, 42, 28, 1);
+      font-family: $font-primary;
+      font-size: 0.95em;
+    }
+
+    .knack-preview__text {
+      font-size: 0.95em;
+    }
+
+    .knack-effect {
+      margin-left: 6px;
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+  }
+}
+
 .sheet.actor,
 .sheet.item {
   .resource-group {
@@ -255,6 +382,69 @@
     padding:  5px;
     input,select{
       height: 20px;
+    }
+
+    &.knack-sheet {
+      select.knack-multiselect {
+        height: auto;
+        min-height: 120px;
+        padding: 3px 6px;
+        font-size: 1.1em;
+      }
+
+      .knack-picker {
+        width: 100%;
+      }
+
+      .knack-picker__controls {
+        display: grid;
+        grid-template-columns: 1fr 34px;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .knack-picker__select {
+        width: 100%;
+        height: 28px;
+      }
+
+      .knack-picker__add {
+        width: 34px;
+        height: 28px;
+        line-height: 26px;
+        padding: 0;
+        font-weight: 700;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .knack-picker__selected {
+        margin-top: 6px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .knack-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 6px;
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        background: rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+        font-family: $font-tertiary;
+        font-size: 0.95em;
+      }
+
+      .knack-pill__remove {
+        color: rgba(0, 0, 0, 0.75);
+        text-decoration: none;
+      }
+
+      .knack-pill__remove:hover {
+        color: rgba(114, 42, 28, 1);
+      }
     }
   }
 

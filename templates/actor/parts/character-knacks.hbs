@@ -1,12 +1,28 @@
 <fieldset>
-    <legend>KNACKS <a class='item-control item-create' data-action="createItem"
+    <legend>KNACKS
+        <a class='item-control' data-action="resetAllKnackUses" title='Reset Knack Uses'>
+            <i class='fas fa-rotate-right'></i>
+        </a>
+        <a class='item-control item-create' data-action="createItem"
                         title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='knack'>
                         <i class='fas fa-plus'></i>
                     </a></legend>
     {{#each knacks as |knack|}}
     <div class="knack-entry">
         <div>
-            <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="knack{{knack._id}}">Tier {{knack.system.tier}} - {{knack.name}} </strong>
+            <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="knack{{knack._id}}">
+                Tier {{knack.system.tier}} - {{knack.name}}
+                {{#if knack.system.usage}}
+                    <small class="notes">({{knack.system.usage.frequency}}
+                        {{#if (eq knack.system.usage.frequency "oncePerTurn")}}: {{knack.system.usage.remaining}}/{{knack.system.usage.max}}{{/if}}
+                        {{#if (eq knack.system.usage.frequency "oncePerScene")}}: {{knack.system.usage.remaining}}/{{knack.system.usage.max}}{{/if}}
+                        {{#if (eq knack.system.usage.frequency "oncePerSession")}}: {{knack.system.usage.remaining}}/{{knack.system.usage.max}}{{/if}}
+                    )</small>
+                {{/if}}
+            </strong>
+            <a class='item-control' data-action="resetKnackUses" title='Reset This Knack' data-item-id='{{knack._id}}'>
+                <i class='fas fa-rotate-right'></i>
+            </a>
             <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
                 knack'}}' data-item-id='{{knack._id}}'>
                 <i class='fas fa-edit'></i>

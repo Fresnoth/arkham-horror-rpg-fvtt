@@ -30,6 +30,9 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         actions: {
             removeArchetypeKnack: this.#handleRemoveArchetypeKnack,
             removeTomeSpell: this.#handleRemoveTomeSpell,
+            removeKnackGrant: this.#handleRemoveKnackGrant,
+            addKnackRollEffectKey: this.#handleAddKnackRollEffectKey,
+            removeKnackRollEffectKey: this.#handleRemoveKnackRollEffectKey,
             understandTome: this.#handleUnderstandTome,
             attuneTome: this.#handleAttuneTome,
             clearTomeUnderstanding: this.#handleClearTomeUnderstanding,
@@ -95,6 +98,69 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         super(options)
         this.#dragDrop = this.#createDragDropHandlers()
         this.#archetypeAutosaveHandler = this.#onArchetypeAutosaveEvent.bind(this)
+    }
+
+    static async #handleAddKnackRollEffectKey(event, target) {
+        return await this.addKnackRollEffectKey(event, target)
+    }
+
+    static async #handleRemoveKnackRollEffectKey(event, target) {
+        return await this.removeKnackRollEffectKey(event, target)
+    }
+
+    async addKnackRollEffectKey(event, target) {
+        event.preventDefault()
+        if (this.document.type !== 'knack') return
+        if (!this.isEditable) return
+
+        const group = String(target?.dataset?.group ?? '')
+        if (!group) return
+
+        const selectName = group === 'skillKeys' ? '_knackSkillKey' : group === 'rollKinds' ? '_knackRollKind' : null
+        if (!selectName) return
+
+        const select = this.element?.querySelector?.(`select[name="${selectName}"]`)
+        const value = String(select?.value ?? '')
+        if (!value) return
+
+        const path = group === 'skillKeys' ? 'system.rollEffects.skillKeys' : 'system.rollEffects.rollKinds'
+        const current = foundry.utils.getProperty(this.document, path)
+        const arr = Array.isArray(current) ? current.map(String).filter(Boolean) : ['any']
+
+        let next
+        if (value === 'any') {
+            next = ['any']
+        } else {
+            next = arr.filter(v => v !== 'any')
+            if (!next.includes(value)) next.push(value)
+            if (next.length === 0) next = ['any']
+        }
+
+        await this.document.update({ [path]: next })
+        this.render(false)
+    }
+
+    async removeKnackRollEffectKey(event, target) {
+        event.preventDefault()
+        if (this.document.type !== 'knack') return
+        if (!this.isEditable) return
+
+        const group = String(target?.dataset?.group ?? '')
+        const value = String(target?.dataset?.value ?? '')
+        if (!group || !value) return
+
+        const path = group === 'skillKeys' ? 'system.rollEffects.skillKeys' : group === 'rollKinds' ? 'system.rollEffects.rollKinds' : null
+        if (!path) return
+
+        const current = foundry.utils.getProperty(this.document, path)
+        const arr = Array.isArray(current) ? current.map(String).filter(Boolean) : ['any']
+
+        let next = arr.filter(v => v !== value)
+        if (next.length === 0) next = ['any']
+        if (next.includes('any') && next.length > 1) next = ['any']
+
+        await this.document.update({ [path]: next })
+        this.render(false)
     }
 
     #bindArchetypeAutosaveHandlers() {
@@ -336,6 +402,34 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             context.canUnderstand = !!actor && isOwner && !Boolean(this.document.system?.understood);
             context.canAttune = !!actor && isOwner && Boolean(this.document.system?.understood);
         }
+
+        if (this.document.type === 'knack') {
+            const grants = (this.document.system?.grants ?? []).filter(g => g?.type === 'spell' && g?.uuid);
+            const docByUuid = new Map();
+            const resolved = [];
+
+            for (const g of grants) {
+                const uuid = g.uuid;
+                let doc = docByUuid.get(uuid);
+                if (!docByUuid.has(uuid)) {
+                    try {
+                        doc = await fromUuid(uuid);
+                    } catch (e) {
+                        doc = null;
+                    }
+                    docByUuid.set(uuid, doc ?? null);
+                }
+
+                const name = doc?.name ?? uuid;
+                const sourceLabel = doc?.pack
+                    ? (game.packs.get(doc.pack)?.metadata?.label ?? doc.pack)
+                    : (game.world?.title ?? 'World');
+
+                resolved.push({ uuid, name, sourceLabel });
+            }
+
+            context.knackGrants = resolved;
+        }
         return context;
     }
 
@@ -353,6 +447,10 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     static async #handleRemoveTomeSpell(event, target) {
         this.removeTomeSpell(event, target);
+    }
+
+    static async #handleRemoveKnackGrant(event, target) {
+        return await this.removeKnackGrant(event, target);
     }
 
     static async #handleUnderstandTome(event, target) {
@@ -423,6 +521,20 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         const current = (this.document.system?.spellUuids ?? []).filter(u => !!u);
         const next = current.filter(u => u !== uuid);
         await this.document.update({ 'system.spellUuids': next });
+        this.render(false);
+    }
+
+    async removeKnackGrant(event, target) {
+        event.preventDefault();
+        if (this.document.type !== 'knack') return;
+
+        const uuid = target.dataset.uuid;
+        if (!uuid) return;
+
+        const current = (this.document.system?.grants ?? []).filter(g => g?.type === 'spell' && g?.uuid);
+        const next = current.filter(g => g.uuid !== uuid);
+
+        await this.document.update({ 'system.grants': next });
         this.render(false);
     }
 
@@ -562,7 +674,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     /** @override */
     async _processSubmitData(event, form, formData) {
-        // Process the actor data normally
         const result = await super._processSubmitData(event, form, formData)
         return result
     }
@@ -737,6 +848,52 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             return;
         }
 
+        // Knack: store UUID references to dropped spells in grants (no embedding)
+        if (this.document.type === 'knack' && data?.type === 'Item') {
+            // Only accept drops inside the Knack grants section
+            const inGrantSection = !!(event.target?.closest?.('.knack-grants') ?? event.currentTarget?.closest?.('.knack-grants'));
+            if (!inGrantSection) return;
+
+            // Prefer UUID resolution (works for compendium/world)
+            const uuid = data.uuid
+                ?? (data.pack && (data.id || data.documentId)
+                    ? `Compendium.${data.pack}.Item.${data.id ?? data.documentId}`
+                    : null);
+
+            let dropped = null;
+            if (uuid) {
+                try {
+                    dropped = await fromUuid(uuid);
+                } catch (e) {
+                    dropped = null;
+                }
+            }
+
+            // Fallback to Foundry drop helper
+            if (!dropped) {
+                try {
+                    dropped = await Item.fromDropData(data);
+                } catch (e) {
+                    dropped = null;
+                }
+            }
+
+            if (!dropped || dropped.type !== 'spell') {
+                ui.notifications.warn('Only Spell items can be dropped onto a Knack grant list.');
+                return;
+            }
+
+            const current = (this.document.system?.grants ?? []).filter(g => g?.type === 'spell' && g?.uuid);
+            if (current.some(g => g.uuid === dropped.uuid)) {
+                ui.notifications.info('That spell is already granted by this Knack.');
+                return;
+            }
+
+            await this.document.update({ 'system.grants': [...current, { type: 'spell', uuid: dropped.uuid }] });
+            this.render(false);
+            return;
+        }
+
         // Handle different data types
         switch (data.type) {
             // write your cases
@@ -754,6 +911,20 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         }
 
         this.#bindArchetypeAutosaveHandlers()
+
+        // The Knack picker dropdowns are an intermediate UI control.
+        // With submitOnChange enabled, changing the dropdown would trigger an auto-submit + re-render,
+        // resetting the dropdown value and creating confusing "not saving" behavior.
+        if (this.document.type === 'knack') {
+            const root = this.element;
+            const pickerSelects = root?.querySelectorAll?.('.knack-picker__select') ?? [];
+            for (const sel of pickerSelects) {
+                // Capture phase so we stop the form change handler before it submits.
+                sel.addEventListener('change', (event) => {
+                    event.stopImmediatePropagation();
+                }, true);
+            }
+        }
 
         if (this.document.type === 'tome') {
             const inaccessible = Number(context?.inaccessibleSpellCount ?? 0);

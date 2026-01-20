@@ -5,6 +5,14 @@
 // ========================================================================
 
 import { SkillRollWorkflow } from "../rolls/skill-roll-workflow.mjs";
+import {
+  getApplicableKnacksForRoll,
+  getMatchingKnacksForRoll,
+  resolveSelectedKnacks,
+  buildAppliedKnackEffects,
+  spendKnackUses,
+  isApplicableKnackSelection,
+} from "../helpers/knacks.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -44,6 +52,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollWithAdvantage: false,
         rollWithDisadvantage: false,
         modifierAdvantage: 0, // 0 = none, 1 = advantage, 2 = disadvantage, 3 = both, needed for the dialog and reactive updates
+
+        // Knacks (prompt-selectable)
+        selectedKnackIds: [],
+        appliedKnacks: [],
+        knackRerollAllowanceDice: 0,
     };
 
     if(options.spellToUse !== undefined && options.spellToUse !== null){ 
@@ -55,6 +68,9 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     DiceRollApp.instance = this;
+
+    // Used to prevent event listener accumulation across re-renders.
+    this._renderAbortController = null;
   }
 
   /** @inheritDoc */
@@ -77,8 +93,14 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         clickedRoll: this.#handleClickedRoll,
         clickedIncreaseDicePool: this.#handleIncreaseDicePool,
         clickedDecreaseDicePool: this.#handleDecreaseDicePool,
+        refreshKnackUses: this.#handleRefreshKnackUses,
     },
   };
+
+  static async #handleRefreshKnackUses(event, target) {
+    event.preventDefault();
+    await this.refreshKnackUses(event, target);
+  }
 
   /** @override */
   static PARTS = {
@@ -89,13 +111,13 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   setOptions(options = {}) {
-    if (options.actor) this.actor = options.actor;
-    if (options.skillKey) this.skillKey = options.skillKey;
+    if (Object.prototype.hasOwnProperty.call(options, 'actor')) this.actor = options.actor;
+    if (Object.prototype.hasOwnProperty.call(options, 'skillKey')) this.skillKey = options.skillKey;
     if (options.skillCurrent !== undefined) this.skillCurrent = options.skillCurrent;
     if (options.skillMax !== undefined) this.skillMax = options.skillMax;
     if (options.currentDicePool !== undefined) this.currentDicePool = options.currentDicePool;
-    if(options.weaponToUse !== undefined) this.weaponToUse = options.weaponToUse;
-    if(options.spellToUse !== undefined) this.spellToUse = options.spellToUse;
+    if (Object.prototype.hasOwnProperty.call(options, 'weaponToUse')) this.weaponToUse = options.weaponToUse;
+    if (Object.prototype.hasOwnProperty.call(options, 'spellToUse')) this.spellToUse = options.spellToUse;
     this.rollKind = options.rollKind ?? "complex";
     this.afterRoll = options.afterRoll;
     this.successesNeeded = options.successesNeeded;
@@ -119,6 +141,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.penalty = 0;
     this.rollState.resultModifier = 0;
     this.rollState.successesNeeded = 0;
+
+    // Reset knack selection
+    this.rollState.selectedKnackIds = [];
+    this.rollState.appliedKnacks = [];
+    this.rollState.knackRerollAllowanceDice = 0;
 
     if(options.spellToUse !== undefined && options.spellToUse !== null){ 
       options.successesNeeded = options.spellToUse.system.difficulty;
@@ -168,6 +195,101 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       : [];
 
     // Feed template from rollState (no separate context mapping logic)
+    // We show *matching* knacks (even if out of uses) to reduce confusion,
+    // but we only allow selecting those that are currently usable.
+    const matchingKnacks = getMatchingKnacksForRoll({ actor: this.actor, rollState: this.rollState });
+    const applicableKnacks = getApplicableKnacksForRoll({ actor: this.actor, rollState: this.rollState });
+    const applicableIdSet = new Set(applicableKnacks.map(k => String(k.id)));
+    const selectedSet = new Set((this.rollState.selectedKnackIds ?? []).map(String));
+
+    const formatSigned = (n) => {
+      const num = Number(n ?? 0) || 0;
+      return num >= 0 ? `+${num}` : `${num}`;
+    };
+
+    const summarizeKnackModifier = (k) => {
+      const mod = k?.system?.rollEffects?.modifier ?? {};
+      const bonusDice = Number(mod.addBonusDice ?? 0) || 0;
+      const resultMod = Number(mod.resultModifier ?? 0) || 0;
+      const rerollAllow = Number(mod.rerollAllowanceDice ?? 0) || 0;
+      const adv = Boolean(mod.advantage);
+      const disadv = Boolean(mod.disadvantage);
+
+      const parts = [];
+      if (bonusDice) parts.push(`${formatSigned(bonusDice)}d`);
+      if (resultMod) parts.push(`${formatSigned(resultMod)} result`);
+      if (adv && !disadv) parts.push(`Adv`);
+      if (disadv && !adv) parts.push(`Disadv`);
+      if (adv && disadv) parts.push(`Adv+Disadv`);
+      if (rerollAllow) parts.push(`${formatSigned(rerollAllow)} reroll`);
+
+      return {
+        bonusDice,
+        resultMod,
+        rerollAllow,
+        adv,
+        disadv,
+        text: parts.length ? parts.join(", ") : "No roll changes",
+      };
+    };
+
+    const canRefreshKnacks = !!(this.actor?.isOwner || game.user?.isGM);
+
+    const knackChoices = matchingKnacks.map(k => {
+      const usage = k.system?.usage ?? {};
+      const freq = String(usage.frequency ?? "passive");
+      const max = Number(usage.max ?? 0);
+      const remaining = Number(usage.remaining ?? 0);
+
+      const isLimited = !(freq === "passive" || freq === "unlimited");
+      const usable = applicableIdSet.has(String(k.id));
+      const exhausted = isLimited && remaining <= 0;
+      const disabled = !usable;
+      const checked = selectedSet.has(String(k.id)) && usable;
+
+      const showRefresh = canRefreshKnacks && exhausted && max > 0;
+
+      const effect = summarizeKnackModifier(k);
+
+      const availabilityNote = exhausted ? "Out of uses" : null;
+
+      return {
+        id: k.id,
+        name: k.name,
+        tier: Number(k.system?.tier ?? 0),
+        frequency: freq,
+        max,
+        remaining,
+        disabled,
+        checked,
+        exhausted,
+        showRefresh,
+        availabilityNote,
+        effect,
+      };
+    });
+
+    // Live preview: what the currently selected knacks would change.
+    const selectedKnacksForPreview = resolveSelectedKnacks({ actor: this.actor, selectedKnackIds: this.rollState.selectedKnackIds });
+    const preview = buildAppliedKnackEffects({ selectedKnacks: selectedKnacksForPreview });
+    const previewParts = [];
+    if (preview.bonusDiceDelta) previewParts.push(`${formatSigned(preview.bonusDiceDelta)} bonus dice`);
+    if (preview.resultModifierDelta) previewParts.push(`${formatSigned(preview.resultModifierDelta)} result modifier`);
+    if (preview.advantage && !preview.disadvantage) previewParts.push(`Advantage`);
+    if (preview.disadvantage && !preview.advantage) previewParts.push(`Disadvantage`);
+    if (preview.advantage && preview.disadvantage) previewParts.push(`Advantage + Disadvantage`);
+    if (preview.rerollAllowanceDice) previewParts.push(`${formatSigned(preview.rerollAllowanceDice)} reroll allowance dice`);
+
+    const knackPreview = {
+      hasSelection: (this.rollState.selectedKnackIds?.length ?? 0) > 0,
+      text: previewParts.length ? previewParts.join(", ") : "No roll changes",
+      bonusDiceDelta: preview.bonusDiceDelta,
+      resultModifierDelta: preview.resultModifierDelta,
+      advantage: preview.advantage,
+      disadvantage: preview.disadvantage,
+      rerollAllowanceDice: preview.rerollAllowanceDice,
+    };
+
     return {
         ...context,
 
@@ -190,17 +312,65 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         weaponToUse: this.rollState.weaponToUse,
         spellToUse: this.rollState.spellToUse,
 
+        knackChoices,
+        knackPreview,
+
         isSkillSelectable,
         skillChoices
     };
+  }
+
+  async refreshKnackUses(_event, target) {
+    const itemId = target?.dataset?.itemId;
+    if (!itemId) return;
+
+    if (!(this.actor?.isOwner || game.user?.isGM)) {
+      ui.notifications?.warn?.("You do not have permission to refresh knack uses for this actor.");
+      return;
+    }
+
+    const knack = this.actor?.items?.get(itemId);
+    if (!knack || knack.type !== "knack") return;
+
+    const freq = String(knack.system?.usage?.frequency ?? "passive");
+    if (freq === "passive" || freq === "unlimited") return;
+
+    const max = Number(knack.system?.usage?.max ?? 0);
+    if (max <= 0) return;
+
+    await knack.update({ "system.usage.remaining": Math.max(0, max) });
+
+    // Clearing selection avoids confusion if the user was expecting it to auto-apply.
+    // (They can now check it, and the preview will update.)
+    this.rollState.selectedKnackIds = [];
+    this.render({ force: true });
   }
 
   /** @inheritDoc */
   _onRender(context, options) {
     super._onRender(context, options);
 
+    // Reset any previously-bound listeners for this render cycle.
+    try {
+      this._renderAbortController?.abort?.();
+    } catch (e) {
+      // ignore
+    }
+    this._renderAbortController = new AbortController();
+    const signal = this._renderAbortController.signal;
+
     const form = this.element?.querySelector?.('form');
     if (!form) return;
+
+    // Knack checkboxes: re-render so the user can see what will change.
+    // (Must be attached even when there is no selectable Skill dropdown.)
+    const knackBoxes = form.querySelectorAll('input[name="selectedKnackIds"]');
+    for (const box of knackBoxes) {
+      box.addEventListener('change', () => {
+        this.updateRollStateWithForm(form);
+        this.render({ force: true });
+      }, { signal });
+    }
 
     const skillSelect = form.querySelector('select[name="skillKey"]');
     if (!skillSelect) return;
@@ -220,7 +390,8 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       this.rollState.skillMax = Number(skillData?.max ?? 0);
 
       this.render({ force: true });
-    });
+    }, { signal });
+
   }
 
   static async #handleClickedRoll(event, target) {
@@ -232,6 +403,34 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const form = target.form;
 
     this.updateRollStateWithForm(form);
+
+    // Validate knack selection against applicability (prevents stale selection bugs when the user changes skill).
+    if (!isApplicableKnackSelection({ actor: this.actor, rollState: this.rollState, knackIds: this.rollState.selectedKnackIds })) {
+      ui.notifications.warn("One or more selected Knacks no longer apply to this roll.");
+      return;
+    }
+
+    // Apply selected knacks to rollState as deltas.
+    const selectedKnacks = resolveSelectedKnacks({ actor: this.actor, selectedKnackIds: this.rollState.selectedKnackIds });
+    const applied = buildAppliedKnackEffects({ selectedKnacks });
+
+    // Store applied knacks for chat flags.
+    this.rollState.appliedKnacks = applied.appliedKnacks;
+    this.rollState.knackRerollAllowanceDice = applied.rerollAllowanceDice;
+
+    // Apply deltas to numeric modifiers.
+    this.rollState.bonusDice = Number(this.rollState.bonusDice ?? 0) + applied.bonusDiceDelta;
+    this.rollState.resultModifier = Number(this.rollState.resultModifier ?? 0) + applied.resultModifierDelta;
+
+    // Apply advantage/disadvantage if granted by a selected knack.
+    if (applied.advantage) {
+      this.rollState.rollWithAdvantage = true;
+      this.rollState.modifierAdvantage = this.rollState.rollWithDisadvantage ? 3 : 1;
+    }
+    if (applied.disadvantage) {
+      this.rollState.rollWithDisadvantage = true;
+      this.rollState.modifierAdvantage = this.rollState.rollWithAdvantage ? 3 : 2;
+    }
 
     if (this.rollState.rollKind === "reaction" && this.rollState.diceToUse !== 1) {
         ui.notifications.warn("Reaction rolls require 1 die from your pool.");
@@ -251,6 +450,9 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     // Run workflow end-to-end (roll + update actor + post chat)
     const workflow = new SkillRollWorkflow();
     const result = await workflow.run({ actor: this.actor, state: this.rollState });
+
+    // Spend Knack uses only after the roll is executed.
+    await spendKnackUses({ actor: this.actor, selectedKnacks });
 
     if (typeof this.afterRoll === "function") {
       try {
@@ -307,6 +509,19 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         this.rollState.rollWithAdvantage = false;
         this.rollState.rollWithDisadvantage = false;
     }
+
+    // Knack selection (checkbox list)
+    const selected = [];
+    try {
+      const boxes = form.querySelectorAll('input[name="selectedKnackIds"]:checked');
+      for (const b of boxes) {
+        const id = String(b.value ?? "");
+        if (id) selected.push(id);
+      }
+    } catch (e) {
+      // ignore
+    }
+    this.rollState.selectedKnackIds = selected;
   }
 
   static async #handleIncreaseDicePool(event, target) {

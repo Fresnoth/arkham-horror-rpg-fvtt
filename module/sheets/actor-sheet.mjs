@@ -39,6 +39,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedRefreshInsight: this.#handleClickedRefreshInsight,
             understandTomeFromList: this.#handleUnderstandTomeFromList,
             attuneTomeFromList: this.#handleAttuneTomeFromList
+            ,resetKnackUses: this.#handleResetKnackUses
+            ,resetAllKnackUses: this.#handleResetAllKnackUses
         },
         form: {
             submitOnChange: true
@@ -656,6 +658,70 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     static async #handleAttuneTomeFromList(event, target) {
         event.preventDefault();
         await this.attuneTomeFromList(event, target);
+    }
+
+    static async #handleResetKnackUses(event, target) {
+        event.preventDefault();
+        await this.resetKnackUses(event, target);
+    }
+
+    static async #handleResetAllKnackUses(event, target) {
+        event.preventDefault();
+        await this.resetAllKnackUses(event, target);
+    }
+
+    async resetKnackUses(_event, target) {
+        const itemId = target?.dataset?.itemId;
+        if (!itemId) return;
+
+        const knack = this.actor?.items?.get(itemId);
+        if (!knack || knack.type !== 'knack') return;
+
+        // Owner or GM can reset.
+        if (!(this.actor?.isOwner || game.user?.isGM)) {
+            ui.notifications.warn('You do not have permission to reset this actor\'s knacks.');
+            return;
+        }
+
+        const max = Number(knack.system?.usage?.max ?? 0);
+        await knack.update({ 'system.usage.remaining': Math.max(0, max) });
+    }
+
+    async resetAllKnackUses(_event, _target) {
+        if (!(this.actor?.isOwner || game.user?.isGM)) {
+            ui.notifications.warn('You do not have permission to reset this actor\'s knacks.');
+            return;
+        }
+
+        const { DialogV2 } = foundry.applications.api;
+        const choice = await DialogV2.wait({
+            window: { title: 'Reset Knack Uses' },
+            content: `<p>Reset which Knack uses?</p>`,
+            buttons: [
+                { action: 'oncePerTurn', label: 'Once Per Turn', icon: 'fa-solid fa-rotate-right' },
+                { action: 'oncePerScene', label: 'Once Per Scene', icon: 'fa-solid fa-rotate-right' },
+                { action: 'oncePerSession', label: 'Once Per Session', icon: 'fa-solid fa-rotate-right' },
+                { action: 'all', label: 'All', icon: 'fa-solid fa-rotate-right' },
+            ],
+            rejectClose: false,
+        });
+
+        const mode = String(choice ?? '');
+        if (!mode) return;
+
+        const updates = [];
+        for (const i of (this.actor.items?.contents ?? [])) {
+            if (i.type !== 'knack') continue;
+            const freq = String(i.system?.usage?.frequency ?? 'passive');
+            if (mode !== 'all' && freq !== mode) continue;
+
+            const max = Number(i.system?.usage?.max ?? 0);
+            updates.push({ _id: i.id, 'system.usage.remaining': Math.max(0, max) });
+        }
+
+        if (updates.length > 0) {
+            await this.actor.updateEmbeddedDocuments('Item', updates);
+        }
     }
 
     async understandTomeFromList(event, target) {

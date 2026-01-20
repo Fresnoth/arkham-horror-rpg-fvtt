@@ -1,9 +1,161 @@
 <section class="tab {{tabs.form.id}} {{tabs.form.cssClass}} scrollable" id="form" data-tab="{{tabs.form.id}}"
     data-group="{{tabs.form.group}}">
-    <div class="resource-group-styled">
+    <div class="resource-group-styled knack-sheet">
         <div class="form-group">
             <label for="tier" class="styled-label">Tier</label>
             <input type="number" id="tier" name="system.tier" value="{{system.tier}}">
         </div>
+
+        <hr />
+
+        <div class="resource-group knack-grants">
+            <h5 class="quick-label">Grants (Spells/Faith/Intuition)</h5>
+            <p class="notes">Drop Spell items here to have this Knack grant them on acquire.</p>
+
+            {{#if knackGrants}}
+            <ol class='items-list'>
+                <li class='item flexrow items-header'>
+                    <div class='item-name'>Name</div>
+                    <div class='item-prop'>Source</div>
+                    <div class='item-controls'></div>
+                </li>
+                {{#each knackGrants as |spell|}}
+                <li class='item flexrow' data-uuid='{{spell.uuid}}'>
+                    <div class='item-name'>{{spell.name}}</div>
+                    <div class='item-prop'>{{spell.sourceLabel}}</div>
+                    <div class='item-controls'>
+                        <a class='item-control item-edit' data-action="openUuidItem" data-uuid="{{spell.uuid}}" title='{{localize "DOCUMENT.View" type=' spell'}}'>
+                            <i class='fas fa-eye'></i>
+                        </a>
+                        <a class='item-control item-delete' data-action="removeKnackGrant" data-uuid="{{spell.uuid}}" title='{{localize "DOCUMENT.Delete" type=' spell'}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    </div>
+                </li>
+                {{/each}}
+            </ol>
+            {{/if}}
+        </div>
+
+        <hr />
+
+        <h5 class="quick-label">Usage</h5>
+        <div class="form-group">
+            <label for="usage-frequency" class="styled-label">Frequency</label>
+            <select id="usage-frequency" name="system.usage.frequency">
+                <option value="passive" {{#if (eq system.usage.frequency "passive")}}selected{{/if}}>Passive</option>
+                <option value="unlimited" {{#if (eq system.usage.frequency "unlimited")}}selected{{/if}}>Unlimited</option>
+                <option value="oncePerTurn" {{#if (eq system.usage.frequency "oncePerTurn")}}selected{{/if}}>Once Per Turn</option>
+                <option value="oncePerScene" {{#if (eq system.usage.frequency "oncePerScene")}}selected{{/if}}>Once Per Scene</option>
+                <option value="oncePerSession" {{#if (eq system.usage.frequency "oncePerSession")}}selected{{/if}}>Once Per Session</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="usage-max" class="styled-label">Max Uses</label>
+            <input type="number" id="usage-max" name="system.usage.max" value="{{system.usage.max}}" min="0">
+        </div>
+        <div class="form-group">
+            <label for="usage-remaining" class="styled-label">Remaining</label>
+            <input type="number" id="usage-remaining" name="system.usage.remaining" value="{{system.usage.remaining}}" min="0">
+        </div>
+
+        <hr />
+
+        <h5 class="quick-label">Roll Effects (Prompt-Selectable)</h5>
+        <div class="form-group">
+            <label for="roll-effects-enabled" class="styled-label">Enabled</label>
+            <input type="checkbox" id="roll-effects-enabled" name="system.rollEffects.enabled" {{#if system.rollEffects.enabled}}checked{{/if}}>
+        </div>
+
+        <div class="form-group">
+            <label class="styled-label">Applies to Skills</label>
+            <div class="knack-picker" data-group="skillKeys">
+                <div class="knack-picker__controls">
+                    <select class="knack-picker__select" name="_knackSkillKey">
+                        <option value="any">Any</option>
+                        <option value="agility">{{localize "ARKHAM_HORROR.SKILL.agility"}}</option>
+                        <option value="athletics">{{localize "ARKHAM_HORROR.SKILL.athletics"}}</option>
+                        <option value="wits">{{localize "ARKHAM_HORROR.SKILL.wits"}}</option>
+                        <option value="presence">{{localize "ARKHAM_HORROR.SKILL.presence"}}</option>
+                        <option value="intuition">{{localize "ARKHAM_HORROR.SKILL.intuition"}}</option>
+                        <option value="knowledge">{{localize "ARKHAM_HORROR.SKILL.knowledge"}}</option>
+                        <option value="resolve">{{localize "ARKHAM_HORROR.SKILL.resolve"}}</option>
+                        <option value="meleeCombat">{{localize "ARKHAM_HORROR.SKILL.meleeCombat"}}</option>
+                        <option value="rangedCombat">{{localize "ARKHAM_HORROR.SKILL.rangedCombat"}}</option>
+                        <option value="lore">{{localize "ARKHAM_HORROR.SKILL.lore"}}</option>
+                    </select>
+                    <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="skillKeys">+</button>
+                </div>
+                <div class="knack-picker__selected" aria-label="Selected skills">
+                    {{#each system.rollEffects.skillKeys as |k|}}
+                        <span class="knack-pill" data-value="{{k}}">
+                            {{#if (eq k "any")}}
+                                Any
+                            {{else}}
+                                {{localize (concat "ARKHAM_HORROR.SKILL." k)}}
+                            {{/if}}
+                            <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="skillKeys" data-value="{{k}}" title="Remove">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </span>
+                    {{/each}}
+                </div>
+                <div class="notes">“Any” overrides other selections.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="styled-label">Applies to Roll Types</label>
+            <div class="knack-picker" data-group="rollKinds">
+                <div class="knack-picker__controls">
+                    <select class="knack-picker__select" name="_knackRollKind">
+                        <option value="any">Any</option>
+                        <option value="complex">Complex</option>
+                        <option value="reaction">Reaction</option>
+                    </select>
+                    <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="rollKinds">+</button>
+                </div>
+                <div class="knack-picker__selected" aria-label="Selected roll types">
+                    {{#each system.rollEffects.rollKinds as |k|}}
+                        <span class="knack-pill" data-value="{{k}}">
+                            {{#if (eq k "any")}}
+                                Any
+                            {{else}}
+                                {{#if (eq k "complex")}}Complex{{/if}}
+                                {{#if (eq k "reaction")}}Reaction{{/if}}
+                                {{#if (eq k "tome-understand")}}Tome: Understand{{/if}}
+                                {{#if (eq k "tome-attune")}}Tome: Attune{{/if}}
+                            {{/if}}
+                            <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="rollKinds" data-value="{{k}}" title="Remove">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </span>
+                    {{/each}}
+                </div>
+                <div class="notes">“Any” overrides other selections.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="knack-bonus-dice" class="styled-label">Bonus Dice (delta)</label>
+            <input type="number" id="knack-bonus-dice" name="system.rollEffects.modifier.addBonusDice" value="{{system.rollEffects.modifier.addBonusDice}}" min="0">
+        </div>
+        <div class="form-group">
+            <label for="knack-result-mod" class="styled-label">Result Modifier (delta)</label>
+            <input type="number" id="knack-result-mod" name="system.rollEffects.modifier.resultModifier" value="{{system.rollEffects.modifier.resultModifier}}">
+        </div>
+        <div class="form-group">
+            <label class="styled-label">Advantage</label>
+            <input type="checkbox" name="system.rollEffects.modifier.advantage" {{#if system.rollEffects.modifier.advantage}}checked{{/if}}>
+        </div>
+        <div class="form-group">
+            <label class="styled-label">Disadvantage</label>
+            <input type="checkbox" name="system.rollEffects.modifier.disadvantage" {{#if system.rollEffects.modifier.disadvantage}}checked{{/if}}>
+        </div>
+        <div class="form-group">
+            <label for="knack-reroll-allow" class="styled-label">Reroll Allowance (dice)</label>
+            <input type="number" id="knack-reroll-allow" name="system.rollEffects.modifier.rerollAllowanceDice" value="{{system.rollEffects.modifier.rerollAllowanceDice}}" min="0">
+        </div>
+
     </div>
 </section>

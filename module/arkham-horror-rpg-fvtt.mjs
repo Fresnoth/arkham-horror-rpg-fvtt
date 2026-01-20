@@ -24,6 +24,8 @@ import { setupConfiguration } from './util/configuration.mjs';
 import { registerChatRerollHooks } from './hooks/chat-reroll-hooks.mjs';
 import { refreshInsightAndPost, spendInsightAndPost, refreshInsight, spendInsight } from './helpers/insight.mjs';
 
+import { applyKnackGrantsOnAcquire, removeKnackGrantedSpellsOnDelete } from './helpers/knacks.mjs';
+
 import { refreshDicepoolAndPost } from './helpers/dicepool.mjs';
 
 
@@ -149,6 +151,31 @@ Hooks.once('init', function () {
   setupConfiguration();
   TokenInformationOverlay.registerHooks();
   registerChatRerollHooks();
+
+  // Knack spell grants: apply on acquire, remove on delete.
+  // This is intentionally data-driven and does not require special purchase flows.
+  Hooks.on('createItem', async (item) => {
+    try {
+      if (item?.type !== 'knack') return;
+      const actor = item?.parent;
+      if (!actor || !(actor instanceof Actor)) return;
+      await applyKnackGrantsOnAcquire({ actor, knack: item, notify: false });
+    } catch (e) {
+      console.warn('Knack grant apply failed', e);
+    }
+  });
+
+  Hooks.on('preDeleteItem', async (item) => {
+    try {
+      if (item?.type !== 'knack') return;
+      const actor = item?.parent;
+      if (!actor || !(actor instanceof Actor)) return;
+      await removeKnackGrantedSpellsOnDelete({ actor, knack: item, notify: false });
+    } catch (e) {
+      console.warn('Knack grant remove failed', e);
+    }
+  });
+
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
 });
@@ -160,6 +187,11 @@ Hooks.once('init', function () {
 // If you need to add Handlebars helpers, here is a useful example:
 Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
+});
+
+Handlebars.registerHelper('ahIncludes', function (arr, value) {
+  if (!Array.isArray(arr)) return false;
+  return arr.includes(value);
 });
 
 /* -------------------------------------------- */

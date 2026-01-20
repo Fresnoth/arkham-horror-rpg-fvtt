@@ -204,7 +204,11 @@ export class SkillRollWorkflow {
       spellUsed: outcome.spellUsed,
       spellUuid: outcome.spellUuid,
       spellSpecialRules: outcome.spellSpecialRules,
-      spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "" // check if spellSpecialRules is not empty
+      spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "", // check if spellSpecialRules is not empty
+
+      // Knack metadata (prompt-selectable in DiceRollApp)
+      appliedKnacks: Array.isArray(state?.appliedKnacks) ? state.appliedKnacks : [],
+      knackRerollAllowanceDice: Number(state?.knackRerollAllowanceDice ?? 0) || 0,
     };
 
     return { template, chatData };
