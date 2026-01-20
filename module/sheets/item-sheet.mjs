@@ -190,6 +190,27 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         return target.value
     }
 
+    async #flushArchetypeAutosave() {
+        if (this.document.type !== 'archetype') return
+        if (!this.isEditable) return
+        if (!(game.user?.isGM ?? false)) return
+
+        if (this.#archetypeAutosaveTimer) {
+            clearTimeout(this.#archetypeAutosaveTimer)
+            this.#archetypeAutosaveTimer = null
+        }
+
+        const pending = this.#archetypeAutosavePending
+        this.#archetypeAutosavePending = {}
+        if (!pending || Object.keys(pending).length === 0) return
+
+        try {
+            await this.document.update(pending, { diff: false, render: false })
+        } catch (e) {
+            // No UI noise during close; just best-effort.
+        }
+    }
+
     #queueArchetypeAutosave(update) {
         Object.assign(this.#archetypeAutosavePending, update)
         if (this.#archetypeAutosaveTimer) clearTimeout(this.#archetypeAutosaveTimer)
@@ -204,7 +225,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
             try {
                 // Persist without re-rendering the sheet to avoid focus churn.
-                await this.document.update(pending, { diff: true, render: false })
+                await this.document.update(pending, { diff: false, render: false })
             } catch (e) {
                 ui.notifications?.warn?.('Failed to auto-save Archetype changes.')
             }
@@ -226,6 +247,8 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
         // Immediately update local source so other workflows (like drag/drop) see the latest values
         // even before the database write completes.
+        // this can create conditions where the DB update fails due to the later Autosave attempt trying to save a diff that is stale or null but it is better for UI/UX responsiveness.
+        // We should probably move away from this architecture long term and rely on a "save button" for archetypes instead of autosave.
         try {
             this.document.updateSource(update)
         } catch (e) {
@@ -933,5 +956,11 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 this.#tomeInaccessibleWarned = true;
             }
         }
+    }
+
+    /** @override */
+    async close(options = {}) {
+        await this.#flushArchetypeAutosave()
+        return super.close(options)
     }
 }
