@@ -10,7 +10,7 @@
                     {{#each skillCapKeys as |skillKey|}}
                     <div class="form-group" style="margin: 0;">
                         <label for="{{skillKey}}Cap">{{localize (concat "ARKHAM_HORROR.SKILL." skillKey)}}</label>
-                        <div class="form-fields"><input type="number" id="{{skillKey}}Cap" name="system.skillCaps.{{skillKey}}" value="{{lookup ../system.skillCaps skillKey}}" min="0" /></div>
+                        <div class="form-fields"><input type="number" id="{{skillKey}}Cap" name="system.skillCaps.{{skillKey}}" value="{{lookup ../system.skillCaps skillKey}}" min="0" data-dtype="Number"/></div>
                     </div>
                     {{/each}}
                 </div>
