@@ -63,7 +63,10 @@
       "Ammunition":"Ammunition",
       "Costs":"Costs",
       "Uses":"Uses",
-      "Difficulty":"Difficulty"
+      "Difficulty":"Difficulty",
+      "Weight":"Weight",
+      "SpecialRules":"Special Rules",
+      "DefensiveBenefit":"Defensive Benefit"
     },
     "ACTIONS": {
       "SpendInsight": "Spend Insight",

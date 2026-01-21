@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 13.0.29
+- bugfix for archetype saving
+- NPC weakness, knacks improvements
+- default values for archetypes
+
 ## 13.0.28
 - initial automation for knacks and dice rolls
 - split useful items from other equipment

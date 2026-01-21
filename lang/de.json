@@ -64,7 +64,10 @@
       "Ammunition":"Munition",
       "Costs": "Preis",
       "Uses":"Verwendungen",
-      "Difficulty":"Schwierigkeit"
+      "Difficulty":"Schwierigkeit",
+      "Weight":"Gewicht",
+      "SpecialRules":"Spezialregeln",
+      "DefensiveBenefit":"Defensiver Vorteil"
     },
     "ACTIONS":{
       "SpendInsight":"Einsicht ausgeben",
