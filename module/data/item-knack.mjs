@@ -8,6 +8,9 @@ export default class ArkhamHorrorKnack extends ArkhamHorrorItemBase {
     const requiredInteger = { required: true, nullable: false, integer: true };
 
     const DocumentUUIDField = fields.DocumentUUIDField ?? fields.StringField;
+
+    schema.isNPCknack = new fields.BooleanField({ required: true, nullable: false, initial: false });
+    schema.isNPCweakness = new fields.BooleanField({ required: true, nullable: false, initial: false });
     
     schema.tier = new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 });
 

@@ -216,8 +216,23 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     }
 
     async _onDropItem(event, data) {
+        // Prevent NPC-only Knacks from being acquired by Character actors via drag/drop.
+        // We treat both flags as NPC-only markers, since older/edited data might set weakness without setting isNPCknack.
+        const droppedItemType = data?.data?.type;
+        const droppedSystem = data?.data?.system;
+        if (droppedItemType === 'knack' && (droppedSystem?.isNPCknack || droppedSystem?.isNPCweakness)) {
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.NpcKnackDropBlocked'));
+            return false;
+        }
+
         try {
             const dropped = await Item.fromDropData(data);
+
+            if (dropped?.type === 'knack' && (dropped.system?.isNPCknack || dropped.system?.isNPCweakness)) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.NpcKnackDropBlocked'));
+                return false;
+            }
+
             if (dropped?.type === 'archetype') {
                 const updateData = {
                     'system.archetypeUuid': dropped.uuid,

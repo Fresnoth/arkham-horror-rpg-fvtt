@@ -25,12 +25,16 @@
       "Dicepool": "Würfelpool",
       "Damage": "Schaden",
       "Horror": "Horror",
+      "Archetype": "Archetyp",
+      "Profile": "Profil",
+      "Size": "Größe",
       "Skills": "Fertigkeiten",
       "Insight": "Einsicht",
       "Limit": "Limit",
       "Remaining": "Verbleibend",
       "PersonalityTrait": "Persönlichkeitsmerkmal",
       "InjuriesTrauma": "Verletzungen & Trauma",
+      "Weaknesses": "Schwächen",
       "Money": "Geld",
       "Vehicle": "Fahrzeug",
       "Lodging": "Unterkunft",
@@ -69,6 +73,9 @@
       "StrainOneself":"Sich belasten",
       "RefreshDicePool":"Erneuern"
     },
+    "Warnings": {
+      "NpcKnackDropBlocked": "Nur-NPC-Kniffe können nicht zu Charakteren hinzugefügt werden."
+    },
     "SKILL": {
       "rangedCombat": "Fernkampf",
       "meleeCombat": "Nahkampf",
@@ -89,9 +96,27 @@
       "MundaneResources": "Alltägliche Ressourcen",
       "SupernaturalResources": "Übernatürliche Ressourcen",
       "Background": "Hintergrund"
+    },
+    "NPC": {
+      "Profile": {
+        "generic": "Allgemeiner NPC",
+        "named": "Benannter Charakter",
+        "supernatural": "Übernatürliche Kreatur",
+        "monstrosity": "Eldritches Monster"
+      },
+      "Size": {
+        "standard": "Standard",
+        "large": "Groß",
+        "huge": "Riesig",
+        "titanic": "Titanisch"
+      }
     }
   },
   "ITEM": {
+    "Knack": {
+      "isNPCknack": "NPC-Knack",
+      "isNPCweakness": "NPC-Schwäche"
+    },
     "Weapon": {
       "skill": "Fertigkeit",
       "damage": "Schaden",

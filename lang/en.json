@@ -24,12 +24,16 @@
       "Dicepool": "Dicepool",
       "Damage": "Damage",
       "Horror": "Horror",
+      "Archetype": "Archetype",
+      "Profile": "Profile",
+      "Size": "Size",
       "Skills": "Skills",
       "Insight": "Insight",
       "Limit": "Limit",
       "Remaining": "Remaining",
       "PersonalityTrait": "Personality Trait",
       "InjuriesTrauma": "Injuries & Trauma",
+      "Weaknesses": "Weaknesses",
       "Money": "Money",
       "Vehicle": "Vehicle",
       "Lodging": "Lodging",
@@ -68,6 +72,9 @@
       "StrainOneself": "Strain Oneself",
       "RefreshDicePool": "Refresh"
     },
+    "Warnings": {
+      "NpcKnackDropBlocked": "NPC-only Knacks cannot be added to Characters."
+    },
     "SKILL": {
       "rangedCombat": "Ranged Combat",
       "meleeCombat": "Melee Combat",
@@ -87,12 +94,28 @@
       "Vehicle": "Vehicle",
       "MundaneResources": "Mundane Resources",
       "SupernaturalResources": "Supernatural Resources",
-      "Background": "Background",
-      "NPC": "NPC",
-      "Biography": "Biography"
+      "Background": "Background"
+    },
+    "NPC": {
+      "Profile": {
+        "generic": "Generic NPC",
+        "named": "Named Character",
+        "supernatural": "Supernatural Creature",
+        "monstrosity": "Eldritch Monstrosity"
+      },
+      "Size": {
+        "standard": "Standard",
+        "large": "Large",
+        "huge": "Huge",
+        "titanic": "Titanic"
+      }
     }
   },
   "ITEM": {
+    "Knack": {
+      "isNPCknack": "NPC Knack",
+      "isNPCweakness": "NPC Weakness"
+    },
     "Weapon": {
       "skill": "Skill",
       "damage": "Damage",
@@ -113,7 +136,6 @@
       "cost": "Cost"
     },
     "Tome": {
-      "rarity": "Rarity",
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
       "rarity": "Rarity",

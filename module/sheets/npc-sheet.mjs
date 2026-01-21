@@ -15,7 +15,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         tag: 'form',
         position: {
             width: 700,
-            height: 800
+            height: 820
         },
         actions: {
             clickedDicePool: this.#handleClickedDicePool,
@@ -23,6 +23,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             clickedStrainOneself: this.#handleClickedStrainOneself,
             editItem: this.#handleEditItem,
             createItem: this.#handleCreateItem,
+            createNpcKnack: this.#handleCreateNpcKnack,
+            createWeakness: this.#handleCreateWeakness,
             createOtherEquipment: this.#handleCreateOtherEquipment,
             deleteItem: this.#handleDeleteItem,
             toggleFoldableContent: this.#handleToggleFoldableContent,
@@ -139,6 +141,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
     _prepareItems() {
         const knacks = [];
+        const weaknesses = [];
         let personalityTrait = null;
         const weapons = [];
         const protectiveEquipments = [];
@@ -152,7 +155,14 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         let inventory = this.options.document.items;
         for (let i of inventory) {
             if (i.type === 'knack') {
-                knacks.push(i);
+                // Display policy (NPC sheet only): Weaknesses are stored as Knack items and are separated
+                // into their own section via `system.isNPCweakness`.
+                // NOTE: `system.isNPCknack` is NOT used for display here; it exists to mark NPC-only
+                // knacks so Character sheets can reject drag/drop acquisition, and for future organization.
+                // Invariant: Weaknesses should also be NPC knacks.
+                const isWeakness = Boolean(i.system?.isNPCweakness);
+                if (isWeakness) weaknesses.push(i);
+                else knacks.push(i);
             }
             else if (i.type === 'personality_trait') {
                 personalityTrait = i;
@@ -185,8 +195,9 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
         // sort knacks by tier
         knacks.sort((a, b) => a.system.tier - b.system.tier);
+        weaknesses.sort((a, b) => a.system.tier - b.system.tier);
 
-        return { knacks: knacks, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, otherEquipment: otherEquipment, tomes: tomes, relics: relics, injuries: injuries, spells: spells };
+        return { knacks: knacks, weaknesses: weaknesses, personalityTrait: personalityTrait, weapons: weapons, protectiveEquipments: protectiveEquipments, usefulItems: usefulItems, otherEquipment: otherEquipment, tomes: tomes, relics: relics, injuries: injuries, spells: spells };
     }
 
     /** @inheritDoc */
@@ -235,6 +246,50 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         event.preventDefault();
         const actor = this.actor;
         this._onItemCreate(event, target, actor);
+    }
+
+    static async #handleCreateNpcKnack(event, _target) {
+        event.preventDefault();
+        const actor = this.actor;
+        if (!actor) return;
+
+        const itemData = {
+            name: 'New Knack',
+            type: 'knack',
+            system: {
+                isNPCknack: true,
+                isNPCweakness: false,
+            }
+        };
+
+        const created = await ArkhamHorrorItem.create(itemData, { parent: actor });
+        try {
+            created?.sheet?.render(true);
+        } catch (e) {
+            // ignore
+        }
+    }
+
+    static async #handleCreateWeakness(event, _target) {
+        event.preventDefault();
+        const actor = this.actor;
+        if (!actor) return;
+
+        const itemData = {
+            name: 'New Weakness',
+            type: 'knack',
+            system: {
+                isNPCknack: true,
+                isNPCweakness: true,
+            }
+        };
+
+        const created = await ArkhamHorrorItem.create(itemData, { parent: actor });
+        try {
+            created?.sheet?.render(true);
+        } catch (e) {
+            // ignore
+        }
     }
 
     static async #handleCreateOtherEquipment(event, _target) {

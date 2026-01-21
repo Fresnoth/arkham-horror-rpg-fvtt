@@ -22,40 +22,11 @@
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='lore'
         skillData=system.skills.lore label="LORE"}}
     </div>
-    <div class="grid grid2-col">
-        <fieldset>
-            <legend>
-                {{localize "ARKHAM_HORROR.LABELS.InjuriesTrauma"}}
-                <a class='item-control' data-action="clickedInjuryTraumaRoll" title="Roll Injury/Trauma">
-                    <i class="fa-solid fa-dice"></i>
-                </a>
-            </legend>
-            {{#each injuries as |injury|}}
-            <div class="injury-entry">
-                <div>
-                    <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">
-                        {{#if (eq injury.type 'trauma')}}[TRAUMA] {{/if}}
-                        {{#if (eq injury.type 'injury')}}[INJURY] {{/if}}
-                        {{injury.name}}</strong>
-                    <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
-                        injury'}}' data-item-id='{{injury._id}}'>
-                        <i class='fas fa-edit'></i>
-                    </a>
-                    <a class='item-control item-delete' data-action="deleteItem"
-                        title='{{localize "DOCUMENT.Delete" type=' injury'}}' data-item-id='{{injury._id}}'>
-                        <i class='fas fa-trash'></i>
-                    </a>
-                </div>
-                <div class="foldable-content" data-fc-id="injury{{injury._id}}">
-                    {{{injury.system.description}}}
-                </div>
-            </div>
-            {{/each}}
-        </fieldset>
+    <div class="grid grid-2col">
         <div>
             <fieldset>
-                <legend>KNACKS <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='knack'>
+                <legend>KNACKS <a class='item-control item-create' data-action="createNpcKnack"
+                        title='{{localize "DOCUMENT.Create" type=' Item'}}'>
                         <i class='fas fa-plus'></i>
                     </a></legend>
                 {{#each knacks as |knack|}}
@@ -79,6 +50,67 @@
                 {{/each}}
             </fieldset>
         </div>
+
+        <div>
+            <fieldset>
+                <legend>{{localize "ARKHAM_HORROR.LABELS.Weaknesses"}}
+                    <a class='item-control item-create' data-action="createWeakness"
+                        title='{{localize "DOCUMENT.Create" type=' Item'}}'>
+                        <i class='fas fa-plus'></i>
+                    </a>
+                </legend>
+                {{#each weaknesses as |knack|}}
+                <div class="knack-entry">
+                    <div>
+                        <strong class="clickable" data-action="toggleFoldableContent"
+                            data-fc-id="weakness{{knack._id}}">{{knack.name}} </strong>
+                        <a class='item-control item-edit' data-action="editItem"
+                            title='{{localize "DOCUMENT.Update" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            <i class='fas fa-edit'></i>
+                        </a>
+                        <a class='item-control item-delete' data-action="deleteItem"
+                            title='{{localize "DOCUMENT.Delete" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    </div>
+                    <div class="foldable-content" data-fc-id="weakness{{knack._id}}">
+                        {{{knack.system.description}}}
+                    </div>
+                </div>
+                {{/each}}
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    {{localize "ARKHAM_HORROR.LABELS.InjuriesTrauma"}}
+                    <a class='item-control' data-action="clickedInjuryTraumaRoll" title="Roll Injury/Trauma">
+                        <i class="fa-solid fa-dice"></i>
+                    </a>
+                </legend>
+                {{#each injuries as |injury|}}
+                <div class="injury-entry">
+                    <div>
+                        <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">
+                            {{#if (eq injury.type 'trauma')}}[TRAUMA] {{/if}}
+                            {{#if (eq injury.type 'injury')}}[INJURY] {{/if}}
+                            {{injury.name}}</strong>
+                        <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
+                            injury'}}' data-item-id='{{injury._id}}'>
+                            <i class='fas fa-edit'></i>
+                        </a>
+                        <a class='item-control item-delete' data-action="deleteItem"
+                            title='{{localize "DOCUMENT.Delete" type=' injury'}}' data-item-id='{{injury._id}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    </div>
+                    <div class="foldable-content" data-fc-id="injury{{injury._id}}">
+                        {{{injury.system.description}}}
+                    </div>
+                </div>
+                {{/each}}
+            </fieldset>
+        </div>
+
     </div>
     <div class="resource-group">
         <!-- Weapons -->
@@ -351,12 +383,5 @@
             </li>
             {{/each}}
         </ol>
-    </div>
-    <div class="form-group-rich-editor mt-10">
-        <h4>Abilities</h4>
-        <prose-mirror name="system.abilitiesDescription" button="true" editable="{{editable}}" toggled="false"
-            value="{{system.abilitiesDescription}}">
-            {{{abilitiesDescriptionHTML}}}
-        </prose-mirror>
     </div>
 </section>

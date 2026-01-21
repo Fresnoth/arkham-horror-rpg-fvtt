@@ -60,6 +60,19 @@
         </div>
 
         <hr />
+        
+        <h5 class="quick-label">NPC Knack Flags</h5>
+        <div class="form-group">
+            <label for="is-npc-knack" class="styled-label">{{localize "ITEM.Knack.isNPCknack"}}</label>
+            <input type="checkbox" id="is-npc-knack" name="system.isNPCknack" {{#if system.isNPCknack}}checked{{/if}}>
+        </div>
+
+        <div class="form-group">
+            <label for="is-npc-weakness" class="styled-label">{{localize "ITEM.Knack.isNPCweakness"}}</label>
+            <input type="checkbox" id="is-npc-weakness" name="system.isNPCweakness" {{#if system.isNPCweakness}}checked{{/if}}>
+        </div>
+
+        <hr />
 
         <h5 class="quick-label">Roll Effects (Prompt-Selectable)</h5>
         <div class="form-group">

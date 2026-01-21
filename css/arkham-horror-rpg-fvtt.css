@@ -1036,7 +1036,7 @@ li.chat-message.message > .message-content {
   min-height: 220px;
 }
 .system-arkham-horror-rpg-fvtt .sheet-header.npc {
-  min-height: 180px;
+  min-height: 200px;
 }
 .system-arkham-horror-rpg-fvtt .sheet-header .profile-img {
   flex: 0 0 100px;

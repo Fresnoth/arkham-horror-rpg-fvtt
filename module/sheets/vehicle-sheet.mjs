@@ -67,8 +67,8 @@ export class ArkhamHorrorVehicleSheet extends HandlebarsApplicationMixin(ActorSh
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'vehicle', label: 'TABS.Vehicle', group: 'sheet' },
-                    { id: 'biography', label: 'TABS.Biography', group: 'sheet' }
+                    { id: 'vehicle', label: 'ARKHAM_HORROR.TABS.Vehicle', group: 'sheet' },
+                    { id: 'biography', label: 'ARKHAM_HORROR.TABS.Biography', group: 'sheet' }
                 ],
             initial: 'vehicle'
         }

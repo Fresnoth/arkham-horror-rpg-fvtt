@@ -4,29 +4,47 @@
     </div>
 
     <div class="header-fields">
-
-
         {{!-- Edit Mode Layout --}}
         <div class="title">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}"
                     placeholder="{{localize 'MIST_ENGINE.PLACEHOLDERS.Name'}}" /></h1>
-
         </div>
-        <div class="resource-group-styled grid grid-5col">
-            <div class="archetype-entry grid-span-2">
-                <label for="system.archetype" class="styled-label">ARCHETYPE</label>
-                <input type="text" name="system.archetype" value="{{system.archetype}}" style="height: 20px;"/>
+        <div class="resource-group-styled grid grid-8col">
+            <div class="archetype-entry grid-span-5">
+                <label for="system.profile" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Profile"}}</label>
+                <select name="system.profile" style="height: 20px; width: 100%;">
+                    <option value="generic" {{#if (eq system.profile "generic")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Profile.generic"}}</option>
+                    <option value="named" {{#if (eq system.profile "named")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Profile.named"}}</option>
+                    <option value="supernatural" {{#if (eq system.profile "supernatural")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Profile.supernatural"}}</option>
+                    <option value="monstrosity" {{#if (eq system.profile "monstrosity")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Profile.monstrosity"}}</option>
+                </select>
             </div>
-            <div class="archetype-entry">
+            <div class="archetype-entry grid-span-3">
+                <label for="system.size" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Size"}}</label>
+                <select name="system.size" style="height: 20px; width: 100%;">
+                    <option value="standard" {{#if (eq system.size "standard")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Size.standard"}}</option>
+                    <option value="large" {{#if (eq system.size "large")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Size.large"}}</option>
+                    <option value="huge" {{#if (eq system.size "huge")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Size.huge"}}</option>
+                    <option value="titanic" {{#if (eq system.size "titanic")}}selected{{/if}}>{{localize "ARKHAM_HORROR.NPC.Size.titanic"}}</option>
+                </select>
+            </div>
+            <div class="archetype-entry grid-span-2">
+                <label for="system.archetype" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Archetype"}}</label>
+                <input type="text" name="system.archetype" value="{{system.archetype}}" style="height: 20px; width: 100%;" />
+            </div>
+            <div class="header-form-group grid-span-2">
                 <label for="system.dicepool.max" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Dicepool"}}</label>
                 <input type="number" class="small-input" name="system.dicepool.max" value="{{system.dicepool.max}}" data-dtype="Number" />
             </div>
-            <div class="header-form-group"><label>{{localize "ARKHAM_HORROR.LABELS.Damage"}}</label><input type="number" name="system.damage"
-                    value="{{system.damage}}" data-dtype="Number" class="small-input" /></div>
-            <div class="header-form-group"><label>{{localize "ARKHAM_HORROR.LABELS.Horror"}}</label><input type="number" name="system.horror"
-                    value="{{system.horror}}" data-dtype="Number" class="small-input" /></div>
+            <div class="header-form-group grid-span-2"><label>{{localize "ARKHAM_HORROR.LABELS.Damage"}}</label><input type="number" name="system.damage"
+                    value="{{system.damage}}" data-dtype="Number" class="small-input" />
+            </div>
+            <div class="header-form-group grid-span-2"><label>{{localize "ARKHAM_HORROR.LABELS.Horror"}}</label><input type="number" name="system.horror"
+                    value="{{system.horror}}" data-dtype="Number" class="small-input" />
+            </div>
         </div>
         <div class="resource-group-styled dicepool-container">
                 {{> systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-dicepool.hbs}}
         </div>
+    </div>
 </header>
