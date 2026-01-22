@@ -1433,6 +1433,57 @@ li.chat-message.message > .message-content {
   font-size: 1.4em;
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
 }
+.system-arkham-horror-rpg-fvtt .sheet.actor .money-controls-row {
+  align-items: center;
+  gap: 8px;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor .money-controls-row .money-display {
+  display: inline-block;
+  width: 100%;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor .money-controls-row .money-action {
+  flex: 0 0 auto;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .form-group {
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 3px;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .form-group label {
+  flex-basis: auto;
+  min-width: 0;
+  margin-bottom: 4px;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-amount-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-amount-row input {
+  box-sizing: border-box;
+  min-width: 0;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-amount-row input[name=amount] {
+  flex: 1 1 200px;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-balance-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-balance-group label {
+  margin-bottom: 0;
+  flex: 1 1 auto;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-balance-value {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .money-amount-hint {
+  margin-top: 2px;
+}
 .system-arkham-horror-rpg-fvtt .skills-list .skill-row {
   grid-template-columns: 1fr 1fr 40px 40px 18px;
   gap: 6px;
@@ -1712,3 +1763,5 @@ li.chat-message.message > .message-content {
 .editor.prosemirror {
   height: 100%;
 }
+
+/*# sourceMappingURL=arkham-horror-rpg-fvtt.css.map */
