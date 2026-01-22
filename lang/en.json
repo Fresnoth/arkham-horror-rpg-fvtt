@@ -131,7 +131,8 @@
       "Vehicle": "Vehicle",
       "MundaneResources": "Mundane Resources",
       "SupernaturalResources": "Supernatural Resources",
-      "Background": "Background"
+      "Background": "Background",
+      "Abilities": "Other Abilities"
     },
     "NPC": {
       "Profile": {

@@ -68,10 +68,14 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             template: 'systems/arkham-horror-rpg-fvtt/templates/npc/parts/npc-main.hbs',
             scrollable: ['']
         },
+        abilities: {
+            id: 'abilities',
+            template: 'systems/arkham-horror-rpg-fvtt/templates/npc/parts/npc-abilities.hbs'
+        },
         biography: {
             id: 'biography',
             template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-biography.hbs'
-        },
+        }
     }
 
     /**
@@ -83,6 +87,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             tabs:
                 [
                     { id: 'npc', label: 'ARKHAM_HORROR.TABS.NPC', group: 'sheet' },
+                    { id: 'abilities', label: 'ARKHAM_HORROR.TABS.Abilities', group: 'sheet' },
                     { id: 'biography', label: 'ARKHAM_HORROR.TABS.Biography', group: 'sheet' }
                 ],
             initial: 'npc'

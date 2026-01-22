@@ -1588,7 +1588,7 @@ li.chat-message.message > .message-content {
   margin-right: 5px;
   cursor: pointer;
 }
-.system-arkham-horror-rpg-fvtt .tab-biography {
+.system-arkham-horror-rpg-fvtt .tab-biography, .system-arkham-horror-rpg-fvtt .tab-abilities {
   height: 100%;
 }
 .system-arkham-horror-rpg-fvtt .npc-skill-entry input,

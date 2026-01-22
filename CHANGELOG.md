@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.31
+- added other abilities tab to npcs
+  
 ## 13.0.30
 - simple money management for characters
 - technical improvent saving or archetypes
