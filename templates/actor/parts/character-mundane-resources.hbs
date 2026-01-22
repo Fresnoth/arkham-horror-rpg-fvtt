@@ -4,8 +4,18 @@
         <div class="grid grid-2col">
             <div class="form-group">
                 <label for="money">{{localize "ARKHAM_HORROR.LABELS.Money"}}</label>
-                <input type="number" name="system.mundaneResources.money" id="money" class="fancy-input"
-                    value="{{system.mundaneResources.money}}" data-dtype="Number">
+                <div class="flexrow money-controls-row">
+                    <a class="clickable money-action" data-action="adjustMoney" data-mode="add" title="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Add'}}" aria-label="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Add'}}">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                    <span class="fancy-input money-display" id="money">{{moneyDisplay}}</span>
+                    <a class="clickable money-action" data-action="adjustMoney" data-mode="spend" title="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Spend'}}" aria-label="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Spend'}}">
+                        <i class="fa-solid fa-minus"></i>
+                    </a>
+                    <a class="clickable money-action" data-action="adjustMoney" data-mode="set" title="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Set'}}" aria-label="{{localize 'ARKHAM_HORROR.MONEY.Tooltips.Set'}}">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                </div>
             </div>
             <div class="form-group">
                 <label for="vehicle">{{localize "ARKHAM_HORROR.LABELS.Vehicle"}}</label>
@@ -118,7 +128,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{item.system.cost}}</div>
+                    <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=' Item'}}'>
@@ -174,7 +184,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{item.system.cost}}</div>
+                    <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
                     <div class="item-prop"><input type="text" value="{{item.system.uses.current}}"
                             data-item-stat="system.uses.current" class="item-editable-stat ammo_input"> /
                         {{item.system.uses.max}}</div>
@@ -227,7 +237,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{#if item.system.cost}}{{item.system.cost}}{{else}}{{item.system.costs}}{{/if}}</div>
+                    <div class='item-prop'>{{#if item.system.costs}}{{item.system.costs}}{{else}}{{formatCurrency item.system.cost}}{{/if}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=' Item'}}'>

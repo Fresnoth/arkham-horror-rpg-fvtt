@@ -79,6 +79,40 @@
     "Warnings": {
       "NpcKnackDropBlocked": "Nur-NPC-Kniffe können nicht zu Charakteren hinzugefügt werden."
     },
+    "MONEY": {
+      "Actions": {
+        "Add": "Hinzufügen",
+        "Spend": "Ausgeben",
+        "Set": "Setzen"
+      },
+      "Tooltips": {
+        "Add": "Geld hinzufügen",
+        "Spend": "Geld ausgeben",
+        "Set": "Geld setzen"
+      },
+      "WindowTitle": {
+        "Add": "Geld hinzufügen",
+        "Spend": "Geld ausgeben",
+        "Set": "Geld setzen"
+      },
+      "Dialog": {
+        "CurrentBalance": "Aktueller Kontostand",
+        "Amount": "Betrag"
+      },
+      "Hints": {
+        "Amount": "Betrag: {amount}"
+      },
+      "Errors": {
+        "Permission": "Du hast keine Berechtigung, das Geld dieses Akteurs anzupassen.",
+        "InvalidAmount": "Ungültiger Betrag. Bitte eine Zahl mit maximal 2 Dezimalstellen eingeben.",
+        "AmountMustBePositive": "Der Betrag muss größer als $0.00 sein."
+      },
+      "Chat": {
+        "Gained": "{actorName} hat {delta} erhalten. Kontostand: {balance}.",
+        "Spent": "{actorName} hat {delta} ausgegeben. Kontostand: {balance}.",
+        "Set": "{actorName} hat Geld auf {balance} gesetzt."
+      }
+    },
     "SKILL": {
       "rangedCombat": "Fernkampf",
       "meleeCombat": "Nahkampf",

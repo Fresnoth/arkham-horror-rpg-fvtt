@@ -201,7 +201,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{item.system.cost}}</div>
+                    <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=' Item'}}'>
@@ -311,7 +311,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{item.system.cost}}</div>
+                    <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
                     <div class="item-prop"><input type="text" value="{{item.system.uses.current}}"
                             data-item-stat="system.uses.current" class="item-editable-stat ammo_input"> /
                         {{item.system.uses.max}}</div>
@@ -362,7 +362,7 @@
                         </div>
                         <span>{{item.name}}</span>
                     </div>
-                    <div class='item-prop'>{{#if item.system.cost}}{{item.system.cost}}{{else}}{{item.system.costs}}{{/if}}</div>
+                    <div class='item-prop'>{{#if item.system.costs}}{{item.system.costs}}{{else}}{{formatCurrency item.system.cost}}{{/if}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=' Item'}}'>

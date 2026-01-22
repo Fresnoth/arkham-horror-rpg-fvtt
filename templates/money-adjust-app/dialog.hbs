@@ -1,0 +1,20 @@
+<form class="roll-dialog-container scrollable" autocomplete="off">
+  <div class="form-group money-balance-group">
+    <label>{{localize "ARKHAM_HORROR.MONEY.Dialog.CurrentBalance"}}</label>
+    <div class="money-balance-value"><strong>{{currentBalance}}</strong></div>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "ARKHAM_HORROR.MONEY.Dialog.Amount"}}</label>
+    <div class="money-amount-row">
+      <span>$</span>
+      <input type="text" name="amount" value="{{amount}}" inputmode="decimal" autocomplete="off" autofocus />
+    </div>
+  </div>
+
+  <p class="arkham-horror-hint money-amount-hint">{{amountHint}}</p>
+
+  <footer class="dialog-footer">
+    <button type="button" class="roll-button" data-action="clickedConfirm">{{confirmLabel}}</button>
+  </footer>
+</form>

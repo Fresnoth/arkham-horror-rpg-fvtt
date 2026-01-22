@@ -5,6 +5,7 @@ export default class ArkhamHorrorCharacter extends ArkhamHorrorActorBase {
   static defineSchema() {
     const fields = foundry.data.fields;
     const requiredInteger = { required: true, nullable: false, integer: true };
+    const requiredFloat = { required: true, nullable: false, integer: false };
     const schema = super.defineSchema();
 
     schema.insight = new fields.SchemaField({
@@ -32,7 +33,7 @@ export default class ArkhamHorrorCharacter extends ArkhamHorrorActorBase {
     });
 
     schema.mundaneResources = new fields.SchemaField({
-      money: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+      money: new fields.NumberField({ ...requiredFloat, initial: 0, min: 0 }),
       vehicle: new fields.StringField({ required: false, blank: true }),
       lodging: new fields.StringField({ required: false, blank: true })
     });
