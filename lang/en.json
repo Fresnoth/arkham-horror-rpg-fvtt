@@ -78,6 +78,40 @@
     "Warnings": {
       "NpcKnackDropBlocked": "NPC-only Knacks cannot be added to Characters."
     },
+    "MONEY": {
+      "Actions": {
+        "Add": "Add",
+        "Spend": "Spend",
+        "Set": "Set"
+      },
+      "Tooltips": {
+        "Add": "Add money",
+        "Spend": "Spend money",
+        "Set": "Set money"
+      },
+      "WindowTitle": {
+        "Add": "Add Money",
+        "Spend": "Spend Money",
+        "Set": "Set Money"
+      },
+      "Dialog": {
+        "CurrentBalance": "Current balance",
+        "Amount": "Amount"
+      },
+      "Hints": {
+        "Amount": "Amount: {amount}"
+      },
+      "Errors": {
+        "Permission": "You do not have permission to adjust money for this actor.",
+        "InvalidAmount": "Invalid amount. Use a number with up to 2 decimals.",
+        "AmountMustBePositive": "Amount must be greater than $0.00."
+      },
+      "Chat": {
+        "Gained": "{actorName} gained {delta}. Balance: {balance}.",
+        "Spent": "{actorName} spent {delta}. Balance: {balance}.",
+        "Set": "{actorName} set money to {balance}."
+      }
+    },
     "SKILL": {
       "rangedCombat": "Ranged Combat",
       "meleeCombat": "Melee Combat",

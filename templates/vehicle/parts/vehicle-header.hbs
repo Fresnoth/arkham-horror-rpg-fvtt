@@ -33,7 +33,7 @@
         </div>
         <div class="dicepool-container grid grid-3col">
             <div class="header-form-group"><label>Cost:</label><input type="number" name="system.cost"
-                    value="{{system.cost}}" data-dtype="Number" class="large-input" />
+                value="{{system.cost}}" data-dtype="Number" class="large-input" step="0.01" inputmode="decimal" />
             </div>
             <div class="header-form-group"><label>Max Range:</label><input type="number" name="system.maxRange"
                     value="{{system.maxRange}}" data-dtype="Number" class="medium-input" />
@@ -44,4 +44,5 @@
                 / <input type="number" name="system.loadCapacity.max" value="{{system.loadCapacity.max}}"
                     data-dtype="Number" class="medium-input" /></div>
         </div>
+    </div>
 </header>

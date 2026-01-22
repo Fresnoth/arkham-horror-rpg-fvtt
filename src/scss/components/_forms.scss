@@ -467,6 +467,78 @@
   text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
 }
 
+// Character sheet money controls (no inline styles in templates)
+.sheet.actor {
+  .money-controls-row {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .money-controls-row .money-display {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .money-controls-row .money-action {
+    flex: 0 0 auto;
+  }
+}
+
+// Money adjust dialog: override generic roll-dialog-container form-group layout
+// so that the amount inputs stay within the dialog bounds.
+.money-adjust-app {
+  .roll-dialog-container {
+    .form-group {
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 3px;
+    }
+
+    .form-group label {
+      flex-basis: auto;
+      min-width: 0;
+      margin-bottom: 4px;
+    }
+
+    .money-amount-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      min-width: 0;
+
+      input {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      input[name="amount"] {
+        flex: 1 1 200px;
+      }
+    }
+
+    .money-balance-group {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .money-balance-group label {
+      margin-bottom: 0;
+      flex: 1 1 auto;
+    }
+
+    .money-balance-value {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .money-amount-hint {
+      margin-top: 2px;
+    }
+  }
+}
+
 // Character sheet skills: keep the reaction icon in its own fixed-width column
 // instead of consuming a full 1fr grid track.
 .skills-list .skill-row {

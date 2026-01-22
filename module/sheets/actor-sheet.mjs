@@ -5,9 +5,11 @@ import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 import { SpendInsightApp } from "../apps/spend-insight-app.mjs";
+import { MoneyAdjustApp } from "../apps/money-adjust-app.mjs";
 import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/tome.mjs';
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
 import { refreshInsightAndPost } from "../helpers/insight.mjs";
+import { formatCurrency, spendMoney } from "../helpers/money.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -39,9 +41,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedSpendInsight: this.#handleClickedSpendInsight,
             clickedRefreshInsight: this.#handleClickedRefreshInsight,
             understandTomeFromList: this.#handleUnderstandTomeFromList,
-            attuneTomeFromList: this.#handleAttuneTomeFromList
-            ,resetKnackUses: this.#handleResetKnackUses
-            ,resetAllKnackUses: this.#handleResetAllKnackUses
+            attuneTomeFromList: this.#handleAttuneTomeFromList,
+            resetKnackUses: this.#handleResetKnackUses,
+            resetAllKnackUses: this.#handleResetAllKnackUses,
+            adjustMoney: this.#handleAdjustMoney,
         },
         form: {
             submitOnChange: true
@@ -327,8 +330,25 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         // is automatic calculation enabled of the load capacity?
         context.isAutoLoadCapacityEnabled = game.settings.get("arkham-horror-rpg-fvtt", "characterLoadCapacity");
 
+        const rawMoney = context.system?.mundaneResources?.money ?? 0;
+        context.moneyDisplay = formatCurrency(rawMoney);
+
         foundry.utils.mergeObject(context, items);
         return context;
+    }
+
+    static async #handleAdjustMoney(event, target) {
+        event.preventDefault();
+        const actor = this.actor;
+        if (!actor) return;
+
+        if (!(actor.isOwner || game.user?.isGM)) {
+            ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.MONEY.Errors.Permission"));
+            return;
+        }
+
+        const mode = target?.dataset?.mode ?? "add";
+        MoneyAdjustApp.getInstance({ actor, mode }).render({ force: true });
     }
 
     _prepareItems() {
@@ -584,9 +604,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
                 await item.update({ 'system.ammunition.current': maxAmmo });
                 // update the money according to reload cost
                 const reloadCost = item.system.reloadCost;
-                const currentMoney = this.actor.system.mundaneResources.money;
-                const newMoney = currentMoney - reloadCost;
-                await this.actor.update({ 'system.mundaneResources.money': newMoney });
+                await spendMoney(this.actor, Number(reloadCost ?? 0), { postToChat: false });
             }
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);

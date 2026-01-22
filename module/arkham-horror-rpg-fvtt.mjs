@@ -27,6 +27,7 @@ import { refreshInsightAndPost, spendInsightAndPost, refreshInsight, spendInsigh
 import { applyKnackGrantsOnAcquire, removeKnackGrantedSpellsOnDelete } from './helpers/knacks.mjs';
 
 import { refreshDicepoolAndPost } from './helpers/dicepool.mjs';
+import * as money from './helpers/money.mjs';
 
 
 /* -------------------------------------------- */
@@ -44,6 +45,7 @@ Hooks.once('init', function () {
     refreshInsight,
     spendInsightAndPost,
     refreshInsightAndPost,
+    money,
   };
 
   // Add custom constants for configuration.
@@ -192,6 +194,13 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 Handlebars.registerHelper('ahIncludes', function (arr, value) {
   if (!Array.isArray(arr)) return false;
   return arr.includes(value);
+});
+
+Handlebars.registerHelper('formatCurrency', function (value) {
+  // Accept numbers or numeric strings.
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return value;
+  return money.formatCurrency(numeric);
 });
 
 /* -------------------------------------------- */
