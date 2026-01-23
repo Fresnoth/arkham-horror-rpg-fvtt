@@ -5,8 +5,8 @@
       <div class="flexrow">
         <div class="combat-group-title flex1">{{group.label}}</div>
         {{#if @first}}
-          <div class="token-initiative" data-tooltip="Dice Pool">
-            <span class="initiative">DP</span>
+          <div class="token-initiative" data-tooltip="{{localize "ARKHAM_HORROR.LABELS.Dicepool"}}">
+            <span class="initiative">{{localize "ARKHAM_HORROR.ABBR.Dicepool"}}</span>
           </div>
         {{/if}}
       </div>
@@ -35,7 +35,7 @@
           </div>
         </div>
 
-        <div class="token-initiative" data-tooltip="Dicepool">
+        <div class="token-initiative" data-tooltip="{{localize "ARKHAM_HORROR.LABELS.Dicepool"}}">
           <span class="initiative">{{turn.dicepool}}</span>
         </div>
       </li>

@@ -80,7 +80,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     tag: "div",
     window: {
         frame: true,
-        title: "Dice Roll",
+      title: "Dice Roll",
         icon: "fa-solid fa-book-atlas",
         positioned: true,
         resizable: true,
@@ -154,6 +154,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (options.successesNeeded !== undefined) {
       this.rollState.successesNeeded = Number.parseInt(options.successesNeeded) || 0;
     }
+
+    // Set localized window title at runtime (game.i18n is not available during static initialization).
+    this.options.window.title = game?.i18n?.localize
+      ? game.i18n.localize("ARKHAM_HORROR.Apps.DiceRoll.Title")
+      : "Dice Roll";
 
     // Reactions: exactly 1 die from pool (bonus dice and adv/disadv can add rolled dice without costing pool)
     if (this.rollState.rollKind === "reaction") {
@@ -325,7 +330,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (!itemId) return;
 
     if (!(this.actor?.isOwner || game.user?.isGM)) {
-      ui.notifications?.warn?.("You do not have permission to refresh knack uses for this actor.");
+      ui.notifications?.warn?.(game.i18n.localize("ARKHAM_HORROR.Warnings.RefreshKnackUsesPermission"));
       return;
     }
 
@@ -406,7 +411,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Validate knack selection against applicability (prevents stale selection bugs when the user changes skill).
     if (!isApplicableKnackSelection({ actor: this.actor, rollState: this.rollState, knackIds: this.rollState.selectedKnackIds })) {
-      ui.notifications.warn("One or more selected Knacks no longer apply to this roll.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RollKnacksNotApplicable'));
       return;
     }
 
@@ -433,17 +438,17 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     if (this.rollState.rollKind === "reaction" && this.rollState.diceToUse !== 1) {
-        ui.notifications.warn("Reaction rolls require 1 die from your pool.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RollReactionRequiresOneDie'));
         return; // keep dialog open
     }
 
     // If Adv/Disadv selected, you must be rolling at least 1 die
     const baseDice = (this.rollState.diceToUse || 0) + (this.rollState.bonusDice || 0);
     if (this.rollState.modifierAdvantage !== 0 && baseDice <= 0) {
-        ui.notifications.warn("Advantage/Disadvantage requires rolling at least 1 die.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RollAdvDisadvRequiresDie'));
         return; // keep dialog open
     } else if (baseDice <= 0) {
-        ui.notifications.warn("You must roll at least 1 die.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RollMustRollAtLeastOneDie'));
         return; // keep dialog open
     }
     
@@ -462,7 +467,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
           ...result
         });
       } catch (e) {
-        ui.notifications?.warn?.("Post-roll processing failed.");
+        ui.notifications?.warn?.(game.i18n.localize('ARKHAM_HORROR.Warnings.RollPostProcessingFailed'));
       }
     }
 

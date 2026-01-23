@@ -3,7 +3,7 @@
         <div class="arkham-roll-heading">
             <span class="arkham-roll-kind">
                 {{#if (eq rollKind "reaction")}}
-                    <i class="fa-solid fa-arrow-rotate-left arkham-roll-reaction-icon" title="Reaction roll"></i>
+                    <i class="fa-solid fa-arrow-rotate-left arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.RollResult.ReactionRollTooltip"}}"></i>
                 {{/if}}
                 {{#if (eq rollKind "tome-understand")}}
                     <i class="fa-solid fa-book-atlas arkham-roll-reaction-icon" title="{{rollKindLabel}}"></i>
@@ -15,28 +15,33 @@
             </span>
         </div>
         <div class="arkham-roll-subtitle">
-            <span class="arkham-roll-flag is-diff">{{#if (eq successesNeeded 1)}}Normal{{else if (eq successesNeeded 2)}}Difficult{{else if (eq successesNeeded 3)}}Very<br />Difficult{{else}}Difficulty {{successesNeeded}}{{/if}}</span>
+            <span class="arkham-roll-flag is-diff">
+                {{#if (eq successesNeeded 1)}}{{{localize "ARKHAM_HORROR.DIFFICULTY_CHAT.Normal"}}}
+                {{else if (eq successesNeeded 2)}}{{{localize "ARKHAM_HORROR.DIFFICULTY_CHAT.Difficult"}}}
+                {{else if (eq successesNeeded 3)}}{{{localize "ARKHAM_HORROR.DIFFICULTY_CHAT.VeryDifficult"}}}
+                {{else}}{{localize "ARKHAM_HORROR.PROPS.Difficulty"}} {{successesNeeded}}{{/if}}
+            </span>
         </div>
     </header>
 
     {{#if isReroll}}
         <div class="arkham-reroll-banner">
-            <span class="arkham-reroll-label">Reroll</span>
+            <span class="arkham-reroll-label">{{localize "ARKHAM_HORROR.Chat.RollResult.Reroll"}}</span>
         </div>
     {{/if}}
 
     <div class="arkham-roll-banner {{#if isSuccess}}is-success{{else}}is-failure{{/if}}">
         {{#if isSuccess}}
-            SUCCESS
+            {{localize "ARKHAM_HORROR.Chat.RollResult.Success"}}
         {{else}}
-            FAILURE
+            {{localize "ARKHAM_HORROR.Chat.RollResult.Failure"}}
         {{/if}}
     </div>
 
     <div class="arkham-roll-results">
         <div class="arkham-dice-results">
             <div class="arkham-dice-results-row">
-                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="{{localize "ARKHAM_HORROR.Chat.RollResult.HorrorDiceTooltip"}}"{{/if}}>
                     {{#each results}}
                         {{#unless isDropped}}
                             <span class="dice-result arkham-die
@@ -48,7 +53,7 @@
                     {{/each}}
                 </div>
 
-                <button type="button" class="arkham-reroll-icon" data-action="arkham-reroll" title="Reroll dice" aria-label="Reroll dice">
+                <button type="button" class="arkham-reroll-icon" data-action="arkham-reroll" title="{{localize "ARKHAM_HORROR.Chat.RollResult.RerollDice"}}" aria-label="{{localize "ARKHAM_HORROR.Chat.RollResult.RerollDice"}}">
                     <i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i>
                 </button>
             </div>
@@ -56,28 +61,28 @@
         
         {{#if showRollDetails}}
         <details class="arkham-roll-details">
-            <summary class="arkham-roll-details-summary">Roll Details</summary>
+            <summary class="arkham-roll-details-summary">{{localize "ARKHAM_HORROR.Chat.RollResult.RollDetails"}}</summary>
             <div class="arkham-roll-details-body">
                 <div class="arkham-roll-flags">
                     {{#if rollWithAdvantage}}
-                        <span class="arkham-roll-flag is-adv">Advantage</span>
+                        <span class="arkham-roll-flag is-adv">{{localize "ARKHAM_HORROR.Chat.RollResult.Advantage"}}</span>
                     {{/if}}
                     {{#if rollWithDisadvantage}}
-                        <span class="arkham-roll-flag is-dis">Disadvantage</span>
+                        <span class="arkham-roll-flag is-dis">{{localize "ARKHAM_HORROR.Chat.RollResult.Disadvantage"}}</span>
                     {{/if}}
                     {{#if (gte penalty 1)}}
-                        <span class="arkham-roll-flag is-diff">Penalty -{{penalty}}</span>
+                        <span class="arkham-roll-flag is-diff">{{localize "ARKHAM_HORROR.Chat.RollResult.Penalty" penalty=penalty}}</span>
                     {{/if}}
                     {{#if (gte resultModifier 1)}}
-                    <span class="arkham-roll-flag is-diff">Result +{{resultModifier}}</span>
+                    <span class="arkham-roll-flag is-diff">{{localize "ARKHAM_HORROR.Chat.RollResult.Result" resultModifier=resultModifier}}</span>
                     {{/if}}
                     {{#if (gte bonusDice 1)}}
-                    <span class="arkham-roll-flag is-diff">Bonus Dice: {{bonusDice}}</span>
+                    <span class="arkham-roll-flag is-diff">{{localize "ARKHAM_HORROR.Chat.RollResult.BonusDice" bonusDice=bonusDice}}</span>
                     {{/if}}
                 </div>
                 {{#if rollWithAdvantage}}
                     <div class="arkham-roll-details-row">
-                        <span class="arkham-roll-details-label">Dropped Dice</span>
+                        <span class="arkham-roll-details-label">{{localize "ARKHAM_HORROR.Chat.RollResult.DroppedDice"}}</span>
                         <span class="arkham-roll-details-value">
                             {{#each results}}
                                 {{#if isDropped}}
@@ -89,7 +94,7 @@
                 {{else}}
                     {{#if rollWithDisadvantage}}
                         <div class="arkham-roll-details-row">
-                            <span class="arkham-roll-details-label">Dropped Dice</span>
+                            <span class="arkham-roll-details-label">{{localize "ARKHAM_HORROR.Chat.RollResult.DroppedDice"}}</span>
                             <span class="arkham-roll-details-value">
                                 {{#each results}}
                                     {{#if isDropped}}
@@ -102,12 +107,12 @@
                 {{/if}}
                 {{#if (gte penalty 1)}}
                 <div class="arkham-roll-details-row">
-                    <span class="arkham-roll-details-label">Raw Dice Result</span>
+                    <span class="arkham-roll-details-label">{{localize "ARKHAM_HORROR.Chat.RollResult.RawDiceResult"}}</span>
                 </div>
                     <div class="arkham-roll-results">
                         <div class="arkham-dice-results">
                             <div class="arkham-dice-results-row">
-                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="{{localize "ARKHAM_HORROR.Chat.RollResult.HorrorDiceTooltip"}}"{{/if}}>
                                     {{#each results}}
                                         {{#unless isDropped}}
                                             <span class="dice-result arkham-die
@@ -123,12 +128,12 @@
                     </div>
                 {{else if (gte resultModifier 1)}}
                 <div class="arkham-roll-details-row">
-                    <span class="arkham-roll-details-label">Raw Dice Result</span>
+                    <span class="arkham-roll-details-label">{{localize "ARKHAM_HORROR.Chat.RollResult.RawDiceResult"}}</span>
                 </div>
                     <div class="arkham-roll-results">
                         <div class="arkham-dice-results">
                             <div class="arkham-dice-results-row">
-                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="Horror dice are marked in black."{{/if}}>
+                                <div class="dice-results-container arkham-dice-results-container"{{#if horrorDiceUsed}} title="{{localize "ARKHAM_HORROR.Chat.RollResult.HorrorDiceTooltip"}}"{{/if}}>
                                     {{#each results}}
                                         {{#unless isDropped}}
                                             <span class="dice-result arkham-die
@@ -149,15 +154,15 @@
 
         <div class="arkham-totals">
             <div class="arkham-total">
-                <span class="arkham-total-label">Successes</span>
+                <span class="arkham-total-label">{{localize "ARKHAM_HORROR.Chat.RollResult.Successes"}}</span>
                 <span class="arkham-total-value">{{successCount}}{{#if (gte successesNeeded 2)}} / {{successesNeeded}}{{/if}}</span>
             </div>
             <div class="arkham-total">
-                <span class="arkham-total-label">Failures</span>
+                <span class="arkham-total-label">{{localize "ARKHAM_HORROR.Chat.RollResult.Failures"}}</span>
                 <span class="arkham-total-value">{{failureCount}}</span>
             </div>
             <div class="arkham-total">
-                <span class="arkham-total-label">Trauma</span>
+                <span class="arkham-total-label">{{localize "ARKHAM_HORROR.Chat.RollResult.Trauma"}}</span>
                 <span class="arkham-total-value">{{horrorFailureCount}}</span>
             </div>
         </div>
@@ -171,18 +176,18 @@
             
             <div class="arkham-totals-weapon">
                 <div class="arkham-total">
-                    <span class="arkham-total-label">Damage</span>
+                    <span class="arkham-total-label">{{localize "ARKHAM_HORROR.Chat.RollResult.Damage"}}</span>
                     <span class="arkham-total-value">{{weaponDamage}}</span>
                 </div>
                 <div class="arkham-total">
-                    <span class="arkham-total-label">Inflict Injury</span>
+                    <span class="arkham-total-label">{{localize "ARKHAM_HORROR.Chat.RollResult.InflictInjury"}}</span>
                     <span class="arkham-total-value">{{#if weaponInflictInjury}}<i class="fas fa-check"></i>{{else}}<i class="fas fa-times"></i>{{/if}}</span>
                 </div>
             </div>
 
             {{#if weaponHasSpecialRules}}
                 <div class="arkham-weapon-special-rules">
-                    <strong>Special Rules:</strong>
+                    <strong>{{localize "ARKHAM_HORROR.PROPS.SpecialRules"}}:</strong>
                     <p>{{{weaponSpecialRules}}}</p>
                 </div>
             {{/if}}
@@ -196,7 +201,7 @@
             </header>
             {{#if spellHasSpecialRules}}
                 <div class="arkham-weapon-special-rules">
-                    <strong>Special Rules:</strong>
+                    <strong>{{localize "ARKHAM_HORROR.PROPS.SpecialRules"}}:</strong>
                     <p>{{{spellSpecialRules}}}</p>
                 </div>
             {{/if}}
@@ -205,9 +210,9 @@
 
         <footer class="arkham-roll-footer">
             {{#if isReroll}}
-                <span class="arkham-roll-footer-right">Dice Pool: unchanged (reroll)</span>
+                <span class="arkham-roll-footer-right">{{localize "ARKHAM_HORROR.Chat.RollResult.DicePoolUnchangedReroll"}}</span>
             {{else}}
-                <span class="arkham-roll-footer-right">Dice Pool: {{oldDicePoolValue}} → {{newDicePoolValue}}</span>
+                <span class="arkham-roll-footer-right">{{localize "ARKHAM_HORROR.Chat.RollResult.DicePoolChanged" oldDicePoolValue=oldDicePoolValue newDicePoolValue=newDicePoolValue}}</span>
             {{/if}}
         </footer>
     </div>

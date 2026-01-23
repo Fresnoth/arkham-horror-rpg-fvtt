@@ -3,9 +3,9 @@
     <div class="arkham-roll-heading">
       <span class="arkham-roll-kind {{#if (eq rollKind "injury")}}is-injury{{else}}is-trauma{{/if}}">
         {{#if (eq rollMode "falling")}}
-          <i class="fa-solid fa-person-falling arkham-roll-reaction-icon" title="Falling" aria-hidden="true"></i>
+          <i class="fa-solid fa-person-falling arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.FallingTooltip"}}" aria-hidden="true"></i>
         {{else if (eq rollSource "strain")}}
-          <i class="fa-solid fa-hand-fist arkham-roll-reaction-icon" title="Strain Oneself" aria-hidden="true"></i>
+          <i class="fa-solid fa-hand-fist arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.StrainTooltip"}}" aria-hidden="true"></i>
         {{/if}}
         {{rollKindLabel}}
       </span>
@@ -27,13 +27,13 @@
 
   {{#if (eq rollSource "strain")}}
     <div class="arkham-injury-trauma-description">
-      <strong>Strain Oneself:</strong> apply the resulting injury at end of turn / after 1 complex action.
+      <strong>{{localize "ARKHAM_HORROR.ACTIONS.StrainOneself"}}:</strong> {{localize "ARKHAM_HORROR.Chat.InjuryTrauma.StrainNote"}}
     </div>
   {{/if}}
 
   {{#if (eq rollMode "falling")}}
     <div class="arkham-injury-trauma-description">
-      <strong>Falling Injury</strong> — Height: {{fallingHeightFt}} ft
+      <strong>{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.FallingLabel"}}</strong> — {{localize "ARKHAM_HORROR.Chat.InjuryTrauma.HeightLabel"}}: {{fallingHeightFt}} {{localize "ARKHAM_HORROR.UNITS.Ft"}}
     </div>
   {{/if}}
 
@@ -44,40 +44,40 @@
   {{/if}}
 
   <details class="arkham-roll-details">
-    <summary class="arkham-roll-details-summary">Roll Details</summary>
+    <summary class="arkham-roll-details-summary">{{localize "ARKHAM_HORROR.Chat.RollResult.RollDetails"}}</summary>
     <div class="arkham-roll-details-body">
       <div class="arkham-roll-meta">
         <div class="arkham-meta-row">
-          <span class="arkham-meta-label">Roll</span>
+          <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Roll"}}</span>
           <span class="arkham-meta-value">{{numDice}}d{{dieFaces}}</span>
         </div>
 
         {{#if (eq numDice 1)}}
           <div class="arkham-meta-row">
-            <span class="arkham-meta-label">Die</span>
+            <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Die"}}</span>
             <span class="arkham-meta-value">{{dieResult}}</span>
           </div>
         {{else}}
           <div class="arkham-meta-row">
-            <span class="arkham-meta-label">Dice</span>
+            <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Dice"}}</span>
             <span class="arkham-meta-value">{{dieResultsLabel}}</span>
           </div>
           <div class="arkham-meta-row">
-            <span class="arkham-meta-label">Die Total</span>
+            <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.DieTotal"}}</span>
             <span class="arkham-meta-value">{{dieTotal}}</span>
           </div>
         {{/if}}
 
         <div class="arkham-meta-row">
-          <span class="arkham-meta-label">Modifier</span>
+          <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Modifier"}}</span>
           <span class="arkham-meta-value">{{#if modifierApplied}}{{modifier}}{{else}}—{{/if}}</span>
         </div>
         <div class="arkham-meta-row">
-          <span class="arkham-meta-label">Total</span>
+          <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Total"}}</span>
           <span class="arkham-meta-value">{{total}}</span>
         </div>
         <div class="arkham-meta-row">
-          <span class="arkham-meta-label">Table</span>
+          <span class="arkham-meta-label">{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.Table"}}</span>
           <span class="arkham-meta-value">{{tableRange}}</span>
         </div>
       </div>

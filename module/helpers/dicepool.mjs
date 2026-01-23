@@ -3,8 +3,14 @@ import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
 const TEMPLATE = `systems/${SYSTEM_ID}/templates/chat/dicepool-reset.hbs`;
 
-export async function refreshDicepoolAndPost({ actor, label = "Dicepool Refresh", healDamage = false } = {}) {
+export async function refreshDicepoolAndPost({
+  actor,
+  label = game.i18n?.localize?.("ARKHAM_HORROR.DICEPOOL.Chat.Refresh") ?? "Dicepool Refresh",
+  healDamage = false,
+} = {}) {
   if (!actor) throw new Error("refreshDicepoolAndPost requires an actor");
+
+  const safeLabel = typeof label === "string" ? label : String(label ?? "");
 
   const oldDamage = Number(actor.system?.damage ?? 0);
   const oldDicePoolValue = Number(actor.system?.dicepool?.value ?? 0);
@@ -23,7 +29,7 @@ export async function refreshDicepoolAndPost({ actor, label = "Dicepool Refresh"
   const healedDamage = Math.max(0, oldDamage - newDamage);
 
   const chatVars = {
-    label,
+    label: safeLabel,
     actorName: actor.name,
     oldDicePoolValue,
     newDicePoolValue,

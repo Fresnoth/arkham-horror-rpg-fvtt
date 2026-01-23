@@ -1,8 +1,8 @@
 <div class="grid grid-5col skill-row">
     <label class="grid-span-2 skill clickable" data-action="clickSkill" data-skill-key="{{skillKey}}">{{localize (concat "ARKHAM_HORROR.SKILL." skillKey)}}</label>
-    <input type="number" name="system.skills.{{skillKey}}.current" value="{{skillData.current}}" data-dtype="Number" title="Limit" class="fancy-input">
-    <input type="number" name="system.skills.{{skillKey}}.max" value="{{skillData.max}}" data-dtype="Number" title="Max" class="fancy-input">
-    <span class="skill-reaction-icon clickable" data-action="clickSkillReaction" data-skill-key="{{skillKey}}" title="Reaction roll">
+    <input type="number" name="system.skills.{{skillKey}}.current" value="{{skillData.current}}" data-dtype="Number" title="{{localize "ARKHAM_HORROR.LABELS.Limit"}}" class="fancy-input">
+    <input type="number" name="system.skills.{{skillKey}}.max" value="{{skillData.max}}" data-dtype="Number" title="{{localize "ARKHAM_HORROR.LABELS.Max"}}" class="fancy-input">
+    <span class="skill-reaction-icon clickable" data-action="clickSkillReaction" data-skill-key="{{skillKey}}" title="{{localize "ARKHAM_HORROR.Chat.RollResult.ReactionRollTooltip"}}">
         <i class="fa-solid fa-arrow-rotate-left"></i>
     </span>
 </div>

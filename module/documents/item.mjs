@@ -33,7 +33,7 @@ export class ArkhamHorrorItem extends Item {
         if (touchesSpellUuids || touchesDifficulty) {
           deletePath(changed, 'system.spellUuids');
           deletePath(changed, 'system.attunementDifficulty');
-          ui.notifications?.warn?.('Only the GM can modify a Tome\'s spell list or understanding difficulty.');
+          ui.notifications?.warn?.(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeModifySpellListOrDifficultyGmOnly'));
         }
       }
     }

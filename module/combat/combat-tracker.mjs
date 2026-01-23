@@ -28,13 +28,17 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
     const combat = this.viewed;
     if (!combat) return context;
 
+    const localize = game?.i18n?.localize?.bind(game.i18n);
+    const investigatorsLabel = localize ? localize("ARKHAM_HORROR.COMBAT.SideInvestigators") : "Investigators";
+    const npcsLabel = localize ? localize("ARKHAM_HORROR.COMBAT.SideNPCs") : "NPCs";
+
     if (partId === "footer") {
       const active = (await combat.getFlag(FLAG_SCOPE, FLAG_ACTIVE)) ?? null;
       context.side = {
         started: combat.started,
         active,
-        activeLabel: active === "npcs" ? "NPCs" : "Investigators",
-        nextLabel: active === "npcs" ? "Investigators" : "NPCs",
+        activeLabel: active === "npcs" ? npcsLabel : investigatorsLabel,
+        nextLabel: active === "npcs" ? investigatorsLabel : npcsLabel,
         canControl: combat.isOwner
       };
     }
@@ -47,8 +51,8 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
       // Fall back to combatants list so the tracker always shows entries.
       const turns = (combat.turns?.length ? combat.turns : (combat.combatants?.contents ?? []));
       const groups = [
-        { key: "investigators", label: "Investigators", isActive: active === "investigators", entries: [] },
-        { key: "npcs", label: "NPCs", isActive: active === "npcs", entries: [] },
+        { key: "investigators", label: investigatorsLabel, isActive: active === "investigators", entries: [] },
+        { key: "npcs", label: npcsLabel, isActive: active === "npcs", entries: [] },
       ];
 
       for (const combatant of turns) {
@@ -114,7 +118,7 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
     // Use the standard Foundry flow: users add combatants explicitly (toggle token combat state).
     // Starting side combat without combatants is allowed in core, but it doesn't make sense here.
     if ((combat.combatants?.size ?? 0) === 0) {
-      ui.notifications.warn("Add combatants to the encounter first (toggle token combat state), then begin combat.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.CombatAddCombatantsFirst'));
       return;
     }
 
@@ -155,12 +159,17 @@ export class ArkhamHorrorCombatTracker extends foundry.applications.sidebar.tabs
 
   async _promptFirstSide() {
     const { DialogV2 } = foundry.applications.api;
+    const localize = game?.i18n?.localize?.bind(game.i18n);
+    const title = localize ? localize("ARKHAM_HORROR.COMBAT.BeginCombat") : "Begin Combat";
+    const prompt = localize ? localize("ARKHAM_HORROR.COMBAT.FirstSidePrompt") : "Which side goes first?";
+    const investigatorsLabel = localize ? localize("ARKHAM_HORROR.COMBAT.FirstSideInvestigators") : "Investigators";
+    const npcsLabel = localize ? localize("ARKHAM_HORROR.COMBAT.FirstSideNPCs") : "NPCs";
     return DialogV2.wait({
-      window: { title: "Begin Combat" },
-      content: `<p>Which side goes first?</p>`,
+      window: { title },
+      content: `<p>${prompt}</p>`,
       buttons: [
-        { action: "investigators", label: "Investigators", icon: "fa-solid fa-user" },
-        { action: "npcs",          label: "NPCs",          icon: "fa-solid fa-skull" }
+        { action: "investigators", label: investigatorsLabel, icon: "fa-solid fa-user" },
+        { action: "npcs",          label: npcsLabel,          icon: "fa-solid fa-skull" }
       ],
       rejectClose: false
     });

@@ -49,6 +49,11 @@ export class SpendInsightApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Reset transient state each open
     this.insightState.amount = 1;
+
+    // Set localized window title at runtime (game.i18n is not available during static initialization).
+    this.options.window.title = game?.i18n?.localize
+      ? game.i18n.localize("ARKHAM_HORROR.Apps.SpendInsight.Title")
+      : "Spend Insight";
   }
 
   static getInstance(options = {}) {
@@ -114,13 +119,13 @@ export class SpendInsightApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const amount = this.insightState.amount;
 
     if (!Number.isFinite(amount) || amount <= 0) {
-      ui.notifications.warn("Insight spend amount must be at least 1.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.INSIGHT.Errors.AmountAtLeastOne'));
       return;
     }
 
     const remaining = Number(this.actor?.system?.insight?.remaining) || 0;
     if (amount > remaining) {
-      ui.notifications.warn(`${this.actor.name} does not have enough Insight remaining.`);
+      ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.INSIGHT.Errors.InsufficientRemaining', { actorName: this.actor.name }));
       return;
     }
 

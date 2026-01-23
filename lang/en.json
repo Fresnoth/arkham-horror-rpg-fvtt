@@ -6,9 +6,25 @@
       "Vehicle": "ArkhamHorror Vehicle Sheet",
       "NPC": "ArkhamHorror NPC Sheet"
     },
+    "Apps": {
+      "DiceRoll": {
+        "Title": "Dice Roll"
+      },
+      "InjuryTraumaRoll": {
+        "Title": "Injury / Trauma Roll"
+      },
+      "RerollDice": {
+        "Title": "Reroll Dice"
+      },
+      "SpendInsight": {
+        "Title": "Spend Insight"
+      }
+    },
     "Item": {
       "Spell": {
-        "difficulty": "Difficulty"
+        "difficulty": "Difficulty",
+        "SpellLVL": "Spell Level {level}",
+        "AddLVL": "Add Level {level} Spell"
       }
     },
     "Effect": {
@@ -30,6 +46,8 @@
       "Skills": "Skills",
       "Insight": "Insight",
       "Limit": "Limit",
+      "Max": "Max",
+      "Knacks": "Knacks",
       "Remaining": "Remaining",
       "PersonalityTrait": "Personality Trait",
       "InjuriesTrauma": "Injuries & Trauma",
@@ -44,26 +62,164 @@
       "OtherEquipment": "Other Equipment",
       "Favors":"Favors",
       "Spells":"Spells",
+      "Tome": "Tome",
       "Tomes":"Tomes",
       "Relics":"Relics"
+    },
+    "UNITS": {
+      "Ft": "ft"
+    },
+    "TOOLTIPS": {
+      "ExpandSpecialRules": "{itemName} - click to expand special rules",
+      "OpenArchetype": "Open Archetype",
+      "UnusedXP": "Unused XP",
+      "TotalXP": "Total XP"
+    },
+    "TABS": {
+      "Description": "Description",
+      "Attributes": "Attributes",
+      "Effects": "Effects",
+      "Character": "Character",
+      "NPC": "NPC",
+      "Biography": "Biography",
+      "Vehicle": "Vehicle",
+      "MundaneResources": "Mundane Resources",
+      "SupernaturalResources": "Supernatural Resources",
+      "Background": "Background",
+      "Abilities": "Other Abilities"
+    },
+    "VEHICLE": {
+      "Cargo": "Cargo",
+      "AbilitiesDescription": "Abilities / Description"
+    },
+    "WORDS": {
+      "Of": "of"
+    },
+    "ABBR": {
+      "Dicepool": "DP"
+    },
+    "KNACK_SHEET": {
+      "SelectedSkills": "Selected skills",
+      "SelectedRollTypes": "Selected roll types",
+      "Any": "Any",
+      "AnyOverrides": "\"Any\" overrides other selections.",
+      "Grants": "Grants (Spells/Faith/Intuition)",
+      "GrantsHint": "Drop Spell items here to have this Knack grant them on acquire.",
+      "Usage": "Usage",
+      "Frequency": "Frequency",
+      "MaxUses": "Max Uses",
+      "NpcKnackFlags": "NPC Knack Flags",
+      "RollEffectsPromptSelectable": "Roll Effects (Prompt-Selectable)",
+      "Enabled": "Enabled",
+      "AppliesToSkills": "Applies to Skills",
+      "RerollAllowanceDice": "Reroll Allowance (dice)",
+      "AppliesToRollTypes": "Applies to Roll Types",
+      "RollKind": {
+        "Any": "Any",
+        "Complex": "Complex",
+        "Reaction": "Reaction",
+        "TomeUnderstand": "Tome: Understand",
+        "TomeAttune": "Tome: Attune"
+      },
+      "BonusDiceDelta": "Bonus Dice (delta)",
+      "ResultModifierDelta": "Result Modifier (delta)",
+      "Remove": "Remove"
+    },
+    "KNACK_USAGE": {
+      "passive": "Passive",
+      "unlimited": "Unlimited",
+      "oncePerTurn": "Once Per Turn",
+      "oncePerScene": "Once Per Scene",
+      "oncePerSession": "Once Per Session"
+    },
+    "ARCHETYPE": {
+      "SkillCaps": "Skill Caps",
+      "TierPurchaseLimits": "Tier Purchase Limits",
+      "TierMaxLabel": "Tier {tier} Max",
+      "TierXpCostLabel": "Tier {tier} XP Cost",
+      "KnackTiers": "Knack Tiers",
+      "DragDropHint": "Drag & drop Knack Items onto a tier below to add their UUID (no embedding). Click a knack name to view its description."
     },
     "DIFFICULTY":{
       "Normal": "Normal (1)",
       "Difficult": "Difficult (2)",
       "VeryDifficult": "Very Difficult (3)"
     },
+    "DIFFICULTY_CHAT": {
+      "Normal": "Normal",
+      "Difficult": "Difficult",
+      "VeryDifficult": "Very<br />Difficult"
+    },
+    "COMBAT": {
+      "EndActivePhase": "End {label} Phase",
+      "EndPhase": "End Phase",
+      "EndCombat": "End Combat",
+      "BeginCombat": "Begin Combat",
+      "SideInvestigators": "Investigators",
+      "SideNPCs": "NPCs",
+      "FirstSidePrompt": "Which side goes first?",
+      "FirstSideInvestigators": "Investigators",
+      "FirstSideNPCs": "NPCs"
+    },
+    "RARITY": {
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "unique": "Unique"
+    },
+    "BACKGROUND": {
+      "PlaceOfOrigin": "Place of Origin",
+      "FamilyAndFriends": "Family and Friends",
+      "Employment": "Employment",
+      "WeeklySalary": "Weekly Salary",
+      "Biography": "Biography",
+      "FirstSupernaturalEncounter": "First Supernatural Encounter",
+      "NotableEnemies": "Notable Enemies"
+    },
+    "PERSONALITY": {
+      "Positive": "Positive",
+      "Negative": "Negative",
+      "NoneAssigned": "No personality trait assigned. Drag'n'drop one here."
+    },
     "PROPS":{
       "Name":"Name",
+      "Quantity": "Quantity",
       "Skill":"Skill",
+      "Tier": "Tier",
+      "Rarity": "Rarity",
+      "HasSpecialRules": "Has Special Rules",
+      "Passengers": "Passengers",
+      "Fuel": "Fuel",
+      "Cost": "Cost",
+      "MaxRange": "Max Range",
+      "CargoCapacity": "Cargo Capacity",
+      "Weapon": "Weapon",
+      "Spell": "Spell",
       "Damage": "Damage",
       "DamageShort": "D",
       "InjuryRating":"Injury Rating",
       "InjuryRatingShort":"IR",
       "Range":"Range",
+      "Engaged": "Engaged",
       "Ammunition":"Ammunition",
       "Costs":"Costs",
       "Uses":"Uses",
       "Difficulty":"Difficulty",
+      "RollType": "Roll Type",
+      "RollFormula": "Roll Formula",
+      "NumberOfDice": "Number of Dice",
+      "DieSize": "Die Size",
+      "RollModifier": "Roll Modifier",
+      "SuccessOnXPlus": "Success on X+",
+      "BonusDice": "Bonus Dice",
+      "Penalty": "Penalty",
+      "ResultModifier": "Result Modifier",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage",
+      "XP": "XP",
+      "Benefit": "Benefit",
+      "Declining": "Declining",
+      "Losing": "Losing",
       "Weight":"Weight",
       "SpecialRules":"Special Rules",
       "DefensiveBenefit":"Defensive Benefit"
@@ -73,10 +229,277 @@
       "RefreshInsight": "Refresh Insight",
       "ClearDicePool": "Clear",
       "StrainOneself": "Strain Oneself",
-      "RefreshDicePool": "Refresh"
+      "RefreshDicePool": "Refresh",
+      "Roll": "Roll",
+      "ResetAllKnackUses": "Reset Knack Uses",
+      "ResetKnackUses": "Reset This Knack",
+      "ViewEdit": "View/Edit",
+      "Remove": "Remove",
+      "Reload": "Reload",
+      "RollInjuryTrauma": "Roll Injury/Trauma"
+    },
+    "Settings": {
+      "TokenShowDicePools": {
+        "Name": "Show Token Dice Pools",
+        "Hint": "Show Dice Pool on tokens on the canvas."
+      },
+      "TokenShowDamage": {
+        "Name": "Show Token Damage",
+        "Hint": "Show Damage on tokens on the canvas."
+      },
+      "TokenOverlayAbove": {
+        "Name": "Token Overlay Above Token",
+        "Hint": "If enabled, show Dice Pool/Damage above the token instead of below."
+      },
+      "CharacterLoadCapacity": {
+        "Name": "Character Load Capacity",
+        "Hint": "Automatic Load Capacity calculation."
+      },
+      "CharacterInjuryTable": {
+        "Name": "Character Injury Table",
+        "Hint": "Used for rolling injuries."
+      },
+      "CharacterTraumaTableVariant": {
+        "Name": "Character Trauma Table Variant",
+        "Hint": "Choose which character trauma table to use when rolling trauma.",
+        "Choices": {
+          "Standard": "Standard",
+          "NoPersonality": "No-Personality"
+        }
+      },
+      "CharacterTraumaTable": {
+        "Name": "Character Trauma Table",
+        "Hint": "Used for rolling trauma."
+      },
+      "CharacterTraumaTableNoPersonality": {
+        "Name": "Character Trauma Table (No-Personality)",
+        "Hint": "Optional alternate trauma table with fewer entries (no personality trait effects)."
+      },
+      "NpcInjuryTable": {
+        "Name": "NPC Injury Table",
+        "Hint": "Used for rolling injuries."
+      },
+      "NpcTraumaTable": {
+        "Name": "NPC Trauma Table",
+        "Hint": "Used for rolling trauma."
+      }
     },
     "Warnings": {
-      "NpcKnackDropBlocked": "NPC-only Knacks cannot be added to Characters."
+      "NpcKnackDropBlocked": "NPC-only Knacks cannot be added to Characters.",
+
+      "PermissionRollActor": "You do not have permission to roll for this Actor.",
+      "PermissionStrainActor": "You do not have permission to strain for this Actor.",
+      "StrainRequiresDamage": "You can only strain when your dice pool maximum is reduced by damage.",
+
+      "ArchetypeKnackDropInvalid": "Invalid archetype knack drop data.",
+      "ArchetypeRequiredForKnacks": "Set an archetype on this actor before purchasing knacks.",
+      "KnackDifferentArchetype": "This knack belongs to a different archetype.",
+      "ActorArchetypeInvalid": "Actor archetype reference is invalid.",
+      "KnackNotAllowedTier": "That knack is not allowed for Tier {tier} by the actor's archetype.",
+      "KnackTierNotPurchasable": "No Tier {tier} knacks can be purchased for this archetype (max is {maxPurchasable}).",
+      "KnackTierLimitReached": "Tier {tier} knack limit reached ({existingTierCount}/{maxPurchasable}).",
+      "SourceKnackResolveFailed": "Could not resolve the source knack item.",
+
+      "ActorHasNoArchetype": "This actor has no archetype set.",
+      "ActorArchetypeUuidResolveFailed": "Could not resolve actor archetype UUID.",
+      "LinkedDocNotArchetype": "The linked document is not an archetype.",
+      "OpenArchetypeFailed": "Failed to open archetype.",
+
+      "WeaponOutOfAmmo": "{itemName} has no ammunition left! Reload before using it.",
+      "ResetKnackPermission": "You do not have permission to reset this actor's knacks.",
+      "RefreshKnackUsesPermission": "You do not have permission to refresh knack uses for this actor.",
+
+      "MacroOwnedItemsOnly": "You can only create macro buttons for owned Items",
+      "MacroItemNotFound": "Could not find item {itemName}. You may need to delete and recreate this macro.",
+
+      "CombatAddCombatantsFirst": "Add combatants to the encounter first (toggle token combat state), then begin combat.",
+
+      "RerollSelectAtLeastOneDie": "Select at least one die to reroll.",
+
+      "RollKnacksNotApplicable": "One or more selected Knacks no longer apply to this roll.",
+      "RollReactionRequiresOneDie": "Reaction rolls require 1 die from your pool.",
+      "RollAdvDisadvRequiresDie": "Advantage/Disadvantage requires rolling at least 1 die.",
+      "RollMustRollAtLeastOneDie": "You must roll at least 1 die.",
+      "RollPostProcessingFailed": "Post-roll processing failed.",
+
+      "InjuryTraumaFallingModeInjuryOnly": "Falling mode only applies to Injury rolls.",
+      "InjuryTraumaFallingHeightMin": "Falling height must be at least {minFt} ft.",
+
+      "SkillRerollInvalidCard": "That chat card cannot be rerolled.",
+      "SkillRerollActorResolveFailed": "Could not resolve the actor for this roll.",
+      "SkillRerollPermission": "You do not have permission to reroll this roll.",
+      "SkillRerollNoSelectableDice": "No selectable dice were chosen.",
+
+      "RollTableEmptyResultName": "Roll table '{tableName}' has a matching range but an empty result name. Set the RollTable Result Name, or the system will fall back to built-in tables.",
+      "RollTableOverflowAssumption": "Roll table '{tableName}' maxes at {tableMax}; treating top entry as {tableMax}+ for total {total}.",
+
+      "ItemOpenSourceKnackGmOnly": "Only the GM can open/edit source Knack documents from an Archetype.",
+      "ItemUuidResolveFailed": "Could not resolve the dropped UUID.",
+      "ItemNoSheetForDocument": "No sheet available for that document.",
+      "ItemOpenUuidFailed": "Failed to open the UUID document.",
+      "ItemTomeModifySpellsGmOnly": "Only the GM can modify a Tome's spells.",
+      "ItemTomeModifySpellListOrDifficultyGmOnly": "Only the GM can modify a Tome's spell list or understanding difficulty.",
+      "ItemTomeMustBeOwnedToUnderstand": "This Tome must be owned by an Actor to be understood.",
+      "ItemTomeMustBeOwnedToAttune": "This Tome must be owned by an Actor to attune to it.",
+      "ItemTomeMustUnderstandBeforeAttune": "You must understand this Tome before attuning to it.",
+      "ItemTomeClearStateGmOnly": "Only the GM can clear a Tome's understood/attuned state.",
+      "ItemArchetypeModifyAllowedKnacksGmOnly": "Only the GM can modify an Archetype's allowed Knacks.",
+      "ItemArchetypeModifyGmOnly": "Only the GM can modify an Archetype.",
+      "ItemArchetypeDropTierRequired": "Drop the Knack onto a specific tier section.",
+      "ItemArchetypeDropOnlyKnacks": "Only Knack items can be dropped onto an Archetype.",
+      "ItemTomeDropModifyGmOnly": "Only the GM can add or remove spells from a Tome.",
+      "ItemTomeDropOnlySpells": "Only Spell items can be dropped onto a Tome.",
+      "ItemKnackDropOnlySpells": "Only Spell items can be dropped onto a Knack grant list.",
+      "ItemTomeInaccessibleSpells": "This Tome contains {count} spell(s) you do not have permission to view."
+    },
+    "Info": {
+      "KnackAlreadyOwnedUpdated": "Knack already owned; updated tier to match archetype.",
+      "ArchetypeSet": "Archetype set to {archetypeName}.",
+      "TomeAlreadyUnderstood": "This Tome is already understood.",
+      "TomeNoSpellsToLearn": "This Tome has no spells to learn.",
+      "TomeLearnedSpells": "Learned {count} spell(s) from the Tome.",
+      "TomeNoNewSpellsLearned": "No new spells were learned from this Tome.",
+      "TomeAttuned": "Attuned to {tomeName}.",
+      "TomeClearedUnderstanding": "Cleared Tome understanding.",
+      "ArchetypeKnackAlreadyAddedTier": "Knack already added to this tier.",
+      "TomeSpellAlreadyInTome": "That spell is already in this Tome.",
+      "KnackSpellAlreadyGranted": "That spell is already granted by this Knack."
+    },
+    "INSIGHT": {
+      "Errors": {
+        "PermissionSpend": "You do not have permission to spend Insight for this actor.",
+        "PermissionRefresh": "You do not have permission to refresh Insight for this actor.",
+        "OnlyCharacterSpend": "Only character actors can spend Insight.",
+        "OnlyCharacterRefresh": "Only character actors can refresh Insight.",
+        "NoneRemaining": "{actorName} has no Insight remaining.",
+        "InsufficientRemaining": "{actorName} does not have enough Insight remaining.",
+        "AmountAtLeastOne": "Insight spend amount must be at least 1."
+      }
+    },
+    "DICEPOOL": {
+      "Chat": {
+        "Refresh": "Dicepool Refresh",
+        "Reset": "Dicepool Reset"
+      }
+    },
+    "InjuryTrauma": {
+      "Fallback": {
+        "NoMatchingEntry": "No matching table entry",
+        "Trauma": {
+          "SubtleStrangeness": "Subtle Strangeness",
+          "Shocked": "Shocked",
+          "Stunned": "Stunned",
+          "OvercomeByHorror": "Overcome by Horror",
+          "MindUndone": "Mind Undone",
+          "LostForever": "Lost Forever"
+        },
+        "Injury": {
+          "HeavyBlow": "Heavy Blow",
+          "Slowed": "Slowed",
+          "NastyCut": "Nasty Cut",
+          "Concussed": "Concussed",
+          "InjuredArm": "Injured Arm",
+          "InjuredLeg": "Injured Leg",
+          "LossOfASense": "Loss of a Sense",
+          "SeverelyInjured": "Severely Injured",
+          "Comatose": "Comatose",
+          "Dire": "Dire",
+          "Dead": "Dead"
+        }
+      }
+    },
+    "Chat": {
+      "RollResult": {
+        "ReactionRollTooltip": "Reaction roll",
+        "DifficultyFallback": "Difficulty {successesNeeded}",
+        "Reroll": "Reroll",
+        "Success": "SUCCESS",
+        "Failure": "FAILURE",
+        "HorrorDiceHint": "Horror dice are marked in black.",
+        "HorrorDiceTooltip": "Horror dice are marked in black.",
+        "RerollDice": "Reroll dice",
+        "RollDetails": "Roll Details",
+        "Advantage": "Advantage",
+        "Disadvantage": "Disadvantage",
+        "Penalty": "Penalty -{penalty}",
+        "Result": "Result +{resultModifier}",
+        "BonusDice": "Bonus Dice: {bonusDice}",
+        "DroppedDice": "Dropped Dice",
+        "RawDiceResult": "Raw Dice Result",
+        "Successes": "Successes",
+        "Failures": "Failures",
+        "Trauma": "Trauma",
+        "Damage": "Damage",
+        "InflictInjury": "Inflict Injury",
+        "DicePoolUnchangedReroll": "Dice Pool: unchanged (reroll)",
+        "DicePoolChanged": "Dice Pool: {oldDicePoolValue} → {newDicePoolValue}"
+      },
+      "DicepoolReset": {
+        "Changed": "{actorName}'s dice pool changed from {oldDicePoolValue} to {newDicePoolValue}.",
+        "HealedDamage": "Healed {healedDamage} damage"
+      },
+      "Insight": {
+        "LabelSpent": "Insight Spent",
+        "LabelRefreshed": "Insight Refreshed",
+        "Spent": "{actorName} spent {spent} Insight ({oldRemaining} → {newRemaining}/{limit}).",
+        "Refreshed": "{actorName}'s Insight has been refreshed from {oldRemaining} to {newRemaining}."
+      },
+      "InjuryTrauma": {
+        "FallingTooltip": "Falling",
+        "StrainTooltip": "Strain Oneself",
+        "StrainNote": "apply the resulting injury at end of turn / after 1 complex action.",
+        "FallingLabel": "Falling Injury",
+        "HeightLabel": "Height",
+        "Roll": "Roll",
+        "Die": "Die",
+        "Dice": "Dice",
+        "DieTotal": "Die Total",
+        "Modifier": "Modifier",
+        "Total": "Total",
+        "Table": "Table"
+      }
+    },
+    "Dialog": {
+      "ResetKnacks": {
+        "Title": "Reset Knack Uses",
+        "Prompt": "Reset which Knack uses?",
+        "OncePerTurn": "Once Per Turn",
+        "OncePerScene": "Once Per Scene",
+        "OncePerSession": "Once Per Session",
+        "All": "All"
+      },
+      "DiceRoll": {
+        "Knacks": "Knacks",
+        "KnacksHint": "Select Knacks to apply. Uses are spent when you roll.",
+        "SelectedEffects": "Selected effects",
+        "Tier": "Tier {tier}",
+        "RefreshUses": "Refresh uses",
+        "None": "None",
+        "AdvPlusDisadv": "Adv + Disadvantage"
+      },
+      "SpendInsight": {
+        "Remaining": "Remaining: {remaining}/{limit}",
+        "Spend": "Spend"
+      },
+      "InjuryTrauma": {
+        "RollType": "Roll Type",
+        "Mode": "Mode",
+        "Standard": "Standard",
+        "Falling": "Falling",
+        "Die": "Die",
+        "FallingHeightFt": "Falling Height (ft)",
+        "Modifier": "Modifier"
+      },
+      "RerollDice": {
+        "SuccessOn": "Success on",
+        "RerollSelected": "Reroll Selected",
+        "DieTypeHorror": "Horror",
+        "DieTypeNormal": "Normal",
+        "Raw": "Raw",
+        "Final": "Final",
+        "Dropped": "dropped",
+        "CannotReroll": "cannot reroll"
+      }
     },
     "MONEY": {
       "Actions": {
@@ -124,17 +547,24 @@
       "resolve": "Resolve",
       "lore": "Lore"
     },
-    "TABS": {
-      "Character": "Character",
-      "NPC": "NPC",
-      "Biography": "Biography",
-      "Vehicle": "Vehicle",
-      "MundaneResources": "Mundane Resources",
-      "SupernaturalResources": "Supernatural Resources",
-      "Background": "Background",
-      "Abilities": "Other Abilities"
+    "SKILL_SHORT": {
+      "agility": "AGI",
+      "athletics": "ATH",
+      "wits": "WIT",
+      "presence": "PRES",
+      "intuition": "INT",
+      "knowledge": "KNOW",
+      "resolve": "RES",
+      "meleeCombat": "MELEE",
+      "rangedCombat": "RANGED",
+      "lore": "LORE"
     },
     "NPC": {
+      "NewKnack": "New Knack",
+      "NewWeakness": "New Weakness",
+      "NewEquipment": "New Equipment",
+      "Weakness": "Weakness",
+      "Abilities": "Abilities",
       "Profile": {
         "generic": "Generic NPC",
         "named": "Named Character",

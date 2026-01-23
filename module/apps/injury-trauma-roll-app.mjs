@@ -68,6 +68,11 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     this.rollState.rollSource = (options.rollSource !== undefined)
       ? String(options.rollSource ?? "")
       : "";
+
+    // Set localized window title at runtime (game.i18n is not available during static initialization).
+    this.options.window.title = game?.i18n?.localize
+      ? game.i18n.localize("ARKHAM_HORROR.Apps.InjuryTraumaRoll.Title")
+      : "Injury / Trauma Roll";
   }
 
   static getInstance(options = {}) {
@@ -188,7 +193,7 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     event.preventDefault();
 
     if (!this.actor?.isOwner) {
-      ui.notifications.warn('You do not have permission to roll for this Actor.');
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
       return;
     }
 
@@ -202,11 +207,11 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
 
     if (rollMode === "falling") {
       if (rollKind !== "injury") {
-        ui.notifications.warn('Falling mode only applies to Injury rolls.');
+        ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.InjuryTraumaFallingModeInjuryOnly'));
         return;
       }
       if (fallingHeightFt < 10) {
-        ui.notifications.warn('Falling height must be at least 10 ft.');
+        ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.InjuryTraumaFallingHeightMin', { minFt: 10 }));
         return;
       }
     }

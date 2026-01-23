@@ -2,31 +2,31 @@
     data-group="{{tabs.npc.group}}">
     <div class="resource-group-styled grid grid-5col">
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='agility'
-        skillData=system.skills.agility label="AGI"}}
+        skillData=system.skills.agility}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='athletics'
-        skillData=system.skills.athletics label="ATH"}}
+        skillData=system.skills.athletics}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='wits'
-        skillData=system.skills.wits label="WIT"}}
+        skillData=system.skills.wits}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='presence'
-        skillData=system.skills.presence label="PRES"}}
+        skillData=system.skills.presence}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='intuition'
-        skillData=system.skills.intuition label="INT"}}
+        skillData=system.skills.intuition}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='knowledge'
-        skillData=system.skills.knowledge label="KNOW"}}
+        skillData=system.skills.knowledge}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='resolve'
-        skillData=system.skills.resolve label="RES"}}
+        skillData=system.skills.resolve}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='meleeCombat'
-        skillData=system.skills.meleeCombat label="MELEE"}}
+        skillData=system.skills.meleeCombat}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='rangedCombat'
-        skillData=system.skills.rangedCombat label="RANGED"}}
+        skillData=system.skills.rangedCombat}}
         {{> systems/arkham-horror-rpg-fvtt/templates/npc/parts/_skill.hbs skillKey='lore'
-        skillData=system.skills.lore label="LORE"}}
+        skillData=system.skills.lore}}
     </div>
     <div class="grid grid-2col">
         <div>
             <fieldset>
-                <legend>KNACKS <a class='item-control item-create' data-action="createNpcKnack"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}'>
+                <legend>{{localize "ARKHAM_HORROR.LABELS.Knacks"}} <a class='item-control item-create' data-action="createNpcKnack"
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.knack")}}'>
                         <i class='fas fa-plus'></i>
                     </a></legend>
                 {{#each knacks as |knack|}}
@@ -35,11 +35,11 @@
                         <strong class="clickable" data-action="toggleFoldableContent"
                             data-fc-id="knack{{knack._id}}">{{knack.name}} </strong>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.knack")}}' data-item-id='{{knack._id}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.knack")}}' data-item-id='{{knack._id}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -55,7 +55,7 @@
             <fieldset>
                 <legend>{{localize "ARKHAM_HORROR.LABELS.Weaknesses"}}
                     <a class='item-control item-create' data-action="createWeakness"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "ARKHAM_HORROR.NPC.Weakness")}}'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </legend>
@@ -65,11 +65,11 @@
                         <strong class="clickable" data-action="toggleFoldableContent"
                             data-fc-id="weakness{{knack._id}}">{{knack.name}} </strong>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "ARKHAM_HORROR.NPC.Weakness")}}' data-item-id='{{knack._id}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' knack'}}' data-item-id='{{knack._id}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "ARKHAM_HORROR.NPC.Weakness")}}' data-item-id='{{knack._id}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -83,7 +83,7 @@
             <fieldset>
                 <legend>
                     {{localize "ARKHAM_HORROR.LABELS.InjuriesTrauma"}}
-                    <a class='item-control' data-action="clickedInjuryTraumaRoll" title="Roll Injury/Trauma">
+                    <a class='item-control' data-action="clickedInjuryTraumaRoll" title="{{localize "ARKHAM_HORROR.ACTIONS.RollInjuryTrauma"}}" aria-label="{{localize "ARKHAM_HORROR.ACTIONS.RollInjuryTrauma"}}">
                         <i class="fa-solid fa-dice"></i>
                     </a>
                 </legend>
@@ -91,15 +91,14 @@
                 <div class="injury-entry">
                     <div>
                         <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">
-                            {{#if (eq injury.type 'trauma')}}[TRAUMA] {{/if}}
-                            {{#if (eq injury.type 'injury')}}[INJURY] {{/if}}
+                            {{#if (eq injury.type 'trauma')}}[{{localize "TYPES.Item.trauma"}}] {{/if}}
+                            {{#if (eq injury.type 'injury')}}[{{localize "TYPES.Item.injury"}}] {{/if}}
                             {{injury.name}}</strong>
-                        <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
-                            injury'}}' data-item-id='{{injury._id}}'>
+                        <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type=(localize (concat "TYPES.Item." injury.type))}}' data-item-id='{{injury._id}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' injury'}}' data-item-id='{{injury._id}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize (concat "TYPES.Item." injury.type))}}' data-item-id='{{injury._id}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -125,7 +124,7 @@
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Ammunition"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='weapon'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.weapon")}}' data-type='weapon'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -137,7 +136,7 @@
                         data-fc-id="weapon{{item._id}}">
                         <div class='item-image'>
                             <a class='rollable' data-roll-type='item'>
-                                <img src='{{item.img}}' title='{{item.name}} - click to expand special rules' width='24'
+                                <img src='{{item.img}}' title='{{localize "ARKHAM_HORROR.TOOLTIPS.ExpandSpecialRules" itemName=item.name}}' width='24'
                                     height='24' />
                             </a>
                         </div>
@@ -147,27 +146,27 @@
                     <div class='item-prop damage-prop'>{{item.system.damage}}</div>
                     <div class='item-prop injury-rating-prop'>{{item.system.injuryRating}}</div>
                     <div class='item-prop range-prop'>
-                        {{#if (eq item.system.range 0)}}Engaged{{else}}{{item.system.range}}{{/if}}
+                        {{#if (eq item.system.range 0)}}{{localize "ARKHAM_HORROR.PROPS.Engaged"}}{{else}}{{item.system.range}}{{/if}}
                     </div>
                     <div class='item-prop'><input type="text" value="{{item.system.ammunition.current}}"
                             data-item-stat="system.ammunition.current" class="item-editable-stat ammo_input"> /
                         {{item.system.ammunition.max}} <span class="weapon-reload-icon" data-item-id='{{item._id}}'
-                            data-action="clickWeaponReload" title="{reload"><i
+                            data-action="clickWeaponReload" title="{{localize "ARKHAM_HORROR.ACTIONS.Reload"}}" aria-label="{{localize "ARKHAM_HORROR.ACTIONS.Reload"}}"><i
                                 class="fa-solid fa-rotate clickable"></i></span></div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.weapon")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.weapon")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
                 </div>
                 <div class="foldable-content" data-fc-id="weapon{{item._id}}">
                     <div>
-                        <strong>Special Rules:</strong>
+                        <strong>{{localize "ARKHAM_HORROR.PROPS.SpecialRules"}}:</strong>
                         {{{item.system.specialRules}}}
                     </div>
                 </div>
@@ -180,11 +179,11 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.ProtectiveEquipment"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='protective_equipment'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.protective_equipment")}}' data-type='protective_equipment'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -204,11 +203,11 @@
                     <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.protective_equipment")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.protective_equipment")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -216,11 +215,11 @@
                 <div class="foldable-content" data-fc-id="protectiveEquipment{{item._id}}">
                     <div class="grid grid-2col">
                         <div>
-                            <strong>Defensive Benefit:</strong>
+                            <strong>{{localize "ARKHAM_HORROR.PROPS.DefensiveBenefit"}}:</strong>
                             {{{item.system.defensiveBenefit}}}
                         </div>
                         <div>
-                            <strong>Special Rules:</strong>
+                            <strong>{{localize "ARKHAM_HORROR.PROPS.SpecialRules"}}:</strong>
                             {{{item.system.specialRules}}}
                         </div>
                     </div>
@@ -234,13 +233,13 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Spells"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Difficulty"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type='spell'}}' data-type='spell'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.spell")}}' data-type='spell'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -266,11 +265,11 @@
                     <div class='item-prop'>{{item.system.range}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -289,12 +288,12 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.UsefulItems"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Uses"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Useful Item'}}' data-type='useful_item'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.useful_item")}}' data-type='useful_item'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -317,18 +316,18 @@
                         {{item.system.uses.max}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.useful_item")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.useful_item")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
                 </div>
                 <div class="foldable-content" data-fc-id="usefulItem{{item._id}}">
                     <div>
-                        <strong>Special Rules:</strong>
+                        <strong>{{localize "ARKHAM_HORROR.PROPS.SpecialRules"}}:</strong>
                         {{{item.system.specialRules}}}
                     </div>
                 </div>
@@ -341,11 +340,11 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.OtherEquipment"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Costs"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createOtherEquipment"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.useful_item")}}'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -365,18 +364,18 @@
                     <div class='item-prop'>{{#if item.system.costs}}{{item.system.costs}}{{else}}{{formatCurrency item.system.cost}}{{/if}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.useful_item")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.useful_item")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
                 </div>
                 <div class="foldable-content" data-fc-id="otherEquipment{{item._id}}">
                     <div>
-                        <strong>Description:</strong>
+                        <strong>{{localize "ARKHAM_HORROR.LABELS.Description"}}:</strong>
                         {{{item.system.description}}}
                     </div>
                 </div>

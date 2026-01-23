@@ -44,6 +44,11 @@ export class RerollDiceApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (options.message) this.message = options.message;
     if (options.rollFlags) this.rollFlags = options.rollFlags;
     if (typeof options.onConfirm === "function") this.onConfirm = options.onConfirm;
+
+    // Set localized window title at runtime (game.i18n is not available during static initialization).
+    this.options.window.title = game?.i18n?.localize
+      ? game.i18n.localize("ARKHAM_HORROR.Apps.RerollDice.Title")
+      : "Reroll Dice";
   }
 
   static getInstance(options = {}) {
@@ -115,7 +120,7 @@ export class RerollDiceApp extends HandlebarsApplicationMixin(ApplicationV2) {
       .filter(Number.isFinite);
 
     if (selected.length === 0) {
-      ui.notifications.warn("Select at least one die to reroll.");
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RerollSelectAtLeastOneDie'));
       return;
     }
 

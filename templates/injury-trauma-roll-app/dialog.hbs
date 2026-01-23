@@ -1,22 +1,22 @@
 <form class="roll-dialog-container scrollable">
   <div class="form-group">
-    <label>Roll Type</label>
+    <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.RollType"}}</label>
     <select name="rollKind">
-      <option value="injury" {{#if (eq rollKind "injury")}}selected{{/if}}>Injury</option>
-      <option value="trauma" {{#if (eq rollKind "trauma")}}selected{{/if}}>Trauma</option>
+      <option value="injury" {{#if (eq rollKind "injury")}}selected{{/if}}>{{localize "TYPES.Item.injury"}}</option>
+      <option value="trauma" {{#if (eq rollKind "trauma")}}selected{{/if}}>{{localize "TYPES.Item.trauma"}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Mode</label>
+    <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Mode"}}</label>
     <select name="rollMode">
-      <option value="standard" {{#if (eq rollMode "standard")}}selected{{/if}}>Standard</option>
-      <option value="falling" {{#if (eq rollMode "falling")}}selected{{/if}}>Falling</option>
+      <option value="standard" {{#if (eq rollMode "standard")}}selected{{/if}}>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Standard"}}</option>
+      <option value="falling" {{#if (eq rollMode "falling")}}selected{{/if}}>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Falling"}}</option>
     </select>
   </div>
 
   <div class="form-group" data-roll-mode="standard">
-    <label>Die</label>
+    <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Die"}}</label>
     <select name="dieFaces">
       <option value="6" {{#if (eq dieFaces 6)}}selected{{/if}}>d6</option>
       <option value="3" {{#if (eq dieFaces 3)}}selected{{/if}}>d3</option>
@@ -24,12 +24,12 @@
   </div>
 
   <div class="form-group" data-roll-mode="falling">
-    <label>Falling Height (ft)</label>
+    <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.FallingHeightFt"}}</label>
     <input type="number" name="fallingHeightFt" value="{{fallingHeightFt}}" min="10" step="1" />
   </div>
 
   <div class="form-group">
-    <label>Modifier</label>
+    <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Modifier"}}</label>
     <input type="number" name="modifier" value="{{modifier}}" step="1" />
   </div>
 
@@ -38,6 +38,6 @@
   <p class="arkham-horror-hint" data-role="formulaHint">{{formulaHint}}</p>
 
   <footer class="dialog-footer">
-    <button type="button" class="roll-button" data-action="clickedRoll"><i class="fa-solid fa-dice"></i> Roll</button>
+    <button type="button" class="roll-button" data-action="clickedRoll"><i class="fa-solid fa-dice"></i> {{localize "ARKHAM_HORROR.ACTIONS.Roll"}}</button>
   </footer>
 </form>

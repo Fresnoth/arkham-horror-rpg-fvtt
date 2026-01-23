@@ -6,33 +6,33 @@ const SYSTEM_ID = "arkham-horror-rpg-fvtt";
 const FALLBACK_TABLES = {
   trauma: {
     standard: [
-      { min: 1, max: 2, rangeLabel: "1–2", result: "Subtle Strangeness" },
-      { min: 3, max: 3, rangeLabel: "3", result: "Shocked" },
-      { min: 4, max: 4, rangeLabel: "4", result: "Stunned" },
-      { min: 5, max: 7, rangeLabel: "5–7", result: "Overcome by Horror" },
-      { min: 8, max: 10, rangeLabel: "8–10", result: "Mind Undone" },
-      { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", result: "Lost Forever" },
+      { min: 1, max: 2, rangeLabel: "1–2", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.SubtleStrangeness" },
+      { min: 3, max: 3, rangeLabel: "3", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.Shocked" },
+      { min: 4, max: 4, rangeLabel: "4", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.Stunned" },
+      { min: 5, max: 7, rangeLabel: "5–7", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.OvercomeByHorror" },
+      { min: 8, max: 10, rangeLabel: "8–10", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.MindUndone" },
+      { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.LostForever" },
     ],
     noPersonality: [
-      { min: 1, max: 2, rangeLabel: "1–2", result: "Subtle Strangeness" },
-      { min: 3, max: 4, rangeLabel: "3–4", result: "Shocked" },
-      { min: 5, max: 7, rangeLabel: "5–7", result: "Stunned" },
-      { min: 8, max: 10, rangeLabel: "8–10", result: "Mind Undone" },
-      { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", result: "Lost Forever" },
+      { min: 1, max: 2, rangeLabel: "1–2", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.SubtleStrangeness" },
+      { min: 3, max: 4, rangeLabel: "3–4", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.Shocked" },
+      { min: 5, max: 7, rangeLabel: "5–7", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.Stunned" },
+      { min: 8, max: 10, rangeLabel: "8–10", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.MindUndone" },
+      { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Trauma.LostForever" },
     ],
   },
   injury: [
-    { min: 1, max: 1, rangeLabel: "1", result: "Heavy Blow" },
-    { min: 2, max: 2, rangeLabel: "2", result: "Slowed" },
-    { min: 3, max: 3, rangeLabel: "3", result: "Nasty Cut" },
-    { min: 4, max: 4, rangeLabel: "4", result: "Concussed" },
-    { min: 5, max: 5, rangeLabel: "5", result: "Injured Arm" },
-    { min: 6, max: 6, rangeLabel: "6", result: "Injured Leg" },
-    { min: 7, max: 7, rangeLabel: "7", result: "Loss of a Sense" },
-    { min: 8, max: 8, rangeLabel: "8", result: "Severely Injured" },
-    { min: 9, max: 9, rangeLabel: "9", result: "Comatose" },
-    { min: 10, max: 10, rangeLabel: "10", result: "Dire" },
-    { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", result: "Dead" },
+    { min: 1, max: 1, rangeLabel: "1", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.HeavyBlow" },
+    { min: 2, max: 2, rangeLabel: "2", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.Slowed" },
+    { min: 3, max: 3, rangeLabel: "3", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.NastyCut" },
+    { min: 4, max: 4, rangeLabel: "4", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.Concussed" },
+    { min: 5, max: 5, rangeLabel: "5", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.InjuredArm" },
+    { min: 6, max: 6, rangeLabel: "6", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.InjuredLeg" },
+    { min: 7, max: 7, rangeLabel: "7", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.LossOfASense" },
+    { min: 8, max: 8, rangeLabel: "8", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.SeverelyInjured" },
+    { min: 9, max: 9, rangeLabel: "9", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.Comatose" },
+    { min: 10, max: 10, rangeLabel: "10", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.Dire" },
+    { min: 11, max: Number.POSITIVE_INFINITY, rangeLabel: "11+", resultKey: "ARKHAM_HORROR.InjuryTrauma.Fallback.Injury.Dead" },
   ],
 };
 
@@ -64,6 +64,12 @@ function lookupFallbackEntry(kind, traumaVariant, total) {
   }
   const entries = FALLBACK_TABLES.injury;
   return entries.find(e => t >= e.min && t <= e.max) ?? null;
+}
+
+function localizeFallbackResultName(entry) {
+  const key = entry?.resultKey;
+  if (!key) return game.i18n.localize("ARKHAM_HORROR.InjuryTrauma.Fallback.NoMatchingEntry");
+  return game.i18n.localize(key);
 }
 
 function warnOnce(key, message) {
@@ -187,12 +193,12 @@ export class InjuryTraumaWorkflow {
     // This protects against macros/future automation calling the workflow directly.
     if (rollMode === "falling") {
       if (rollKind !== "injury") {
-        const msg = "Falling mode only applies to Injury rolls.";
+        const msg = game.i18n.localize("ARKHAM_HORROR.Warnings.InjuryTraumaFallingModeInjuryOnly");
         warnOnce(`${SYSTEM_ID}|invalidFallingKind`, `[${SYSTEM_ID}] ${msg}`);
         throw new Error(msg);
       }
       if (fallingHeightFt < 10) {
-        const msg = "Falling height must be at least 10 ft.";
+        const msg = game.i18n.format("ARKHAM_HORROR.Warnings.InjuryTraumaFallingHeightMin", { minFt: 10 });
         warnOnce(`${SYSTEM_ID}|invalidFallingHeight`, `[${SYSTEM_ID}] ${msg}`);
         throw new Error(msg);
       }
@@ -228,14 +234,20 @@ export class InjuryTraumaWorkflow {
       if (resolved?.missingName) {
         warnOnce(
           `${SYSTEM_ID}|missingName|${primaryTableId}`,
-          `[${SYSTEM_ID}] RollTable '${table?.name ?? primaryTableId}' has a matching range but empty result name. Set the RollTable Result Name, or the system will fall back to built-in tables.`
+          game.i18n.format("ARKHAM_HORROR.Warnings.RollTableEmptyResultName", {
+            tableName: table?.name ?? primaryTableId,
+          })
         );
         resolved = null;
       }
       if (resolved?.usedOverflowAssumption) {
         warnOnce(
           `${SYSTEM_ID}|overflow|${primaryTableId}`,
-          `[${SYSTEM_ID}] RollTable '${table?.name ?? primaryTableId}' maxes at ${resolved.tableMax}; treating top entry as ${resolved.tableMax}+ for total ${total}.`
+          game.i18n.format("ARKHAM_HORROR.Warnings.RollTableOverflowAssumption", {
+            tableName: table?.name ?? primaryTableId,
+            tableMax: resolved.tableMax,
+            total,
+          })
         );
       }
     }
@@ -247,14 +259,20 @@ export class InjuryTraumaWorkflow {
       if (resolved?.missingName) {
         warnOnce(
           `${SYSTEM_ID}|missingName|${characterFallbackTableId}`,
-          `[${SYSTEM_ID}] RollTable '${table?.name ?? characterFallbackTableId}' has a matching range but empty result name. Set the RollTable Result Name, or the system will fall back to built-in tables.`
+          game.i18n.format("ARKHAM_HORROR.Warnings.RollTableEmptyResultName", {
+            tableName: table?.name ?? characterFallbackTableId,
+          })
         );
         resolved = null;
       }
       if (resolved?.usedOverflowAssumption) {
         warnOnce(
           `${SYSTEM_ID}|overflow|${characterFallbackTableId}`,
-          `[${SYSTEM_ID}] RollTable '${table?.name ?? characterFallbackTableId}' maxes at ${resolved.tableMax}; treating top entry as ${resolved.tableMax}+ for total ${total}.`
+          game.i18n.format("ARKHAM_HORROR.Warnings.RollTableOverflowAssumption", {
+            tableName: table?.name ?? characterFallbackTableId,
+            tableMax: resolved.tableMax,
+            total,
+          })
         );
       }
     }
@@ -263,7 +281,7 @@ export class InjuryTraumaWorkflow {
     const fallbackEntry = lookupFallbackEntry(rollKind, traumaVariant, total);
     const entry = resolved
       ? { rangeLabel: resolved.rangeLabel, resultName: resolved.resultName, resultDescription: resolved.resultDescription }
-      : { rangeLabel: fallbackEntry?.rangeLabel, resultName: fallbackEntry?.result, resultDescription: "" };
+      : { rangeLabel: fallbackEntry?.rangeLabel, resultName: localizeFallbackResultName(fallbackEntry), resultDescription: "" };
 
     return {
       rollKind,
@@ -280,7 +298,7 @@ export class InjuryTraumaWorkflow {
       modifier,
       total,
       tableRange: entry?.rangeLabel ?? "—",
-      tableResultName: entry?.resultName ?? "No matching table entry",
+      tableResultName: entry?.resultName ?? game.i18n.localize("ARKHAM_HORROR.InjuryTrauma.Fallback.NoMatchingEntry"),
       tableResultDescription: entry?.resultDescription ?? "",
     };
   }
@@ -288,7 +306,7 @@ export class InjuryTraumaWorkflow {
   buildChat({ actor, outcome }) {
     const template = `systems/${SYSTEM_ID}/templates/chat/injury-trauma-roll-card.hbs`;
 
-    const rollKindLabel = outcome.rollKind === "trauma" ? "Trauma" : "Injury";
+    const rollKindLabel = game.i18n.localize(`TYPES.Item.${outcome.rollKind === "trauma" ? "trauma" : "injury"}`);
 
     const chatData = {
       actorName: actor?.name ?? "",

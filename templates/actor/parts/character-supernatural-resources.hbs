@@ -6,13 +6,13 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Spells"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Skill"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Difficulty"}}</div>
                 <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Range"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' spell'}}' data-type='spell'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.spell")}}' data-type='spell'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -47,11 +47,11 @@
                     <div class='item-prop'>{{item.system.range}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type='Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -70,13 +70,13 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Tomes"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.rarity"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.understood"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.attuned"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='tome'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.tome")}}' data-type='tome'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -94,16 +94,16 @@
                     </div>
                     <div class='item-prop'>
                         {{#if item.system.rarity.common}}
-                        Common
+                        {{localize "ARKHAM_HORROR.RARITY.common"}}
                         {{/if}}
                         {{#if item.system.rarity.rare}}
-                        Rare
+                        {{localize "ARKHAM_HORROR.RARITY.rare"}}
                         {{/if}}
                         {{#if item.system.rarity.unique}}
-                        Unique
+                        {{localize "ARKHAM_HORROR.RARITY.unique"}}
                         {{/if}}
                         {{#if item.system.rarity.uncommon}}
-                        Uncommon
+                        {{localize "ARKHAM_HORROR.RARITY.uncommon"}}
                         {{/if}}
                     </div>
                     <div class='item-prop'>
@@ -140,11 +140,11 @@
                     </div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type='Item'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.tome")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type='Item'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.tome")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>
@@ -164,11 +164,11 @@
         <h5 class="quick-label">{{localize "ARKHAM_HORROR.LABELS.Relics"}}</h5>
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
-                <div class='item-prop'>Rarity</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
+                <div class='item-prop'>{{localize "ARKHAM_HORROR.PROPS.Rarity"}}</div>
                 <div class='item-controls'>
                     <a class='item-control item-create' data-action="createItem"
-                        title='{{localize "DOCUMENT.Create" type=' Item'}}' data-type='relic'>
+                        title='{{localize "DOCUMENT.Create" type=(localize "TYPES.Item.relic")}}' data-type='relic'>
                         <i class='fas fa-plus'></i>
                     </a>
                 </div>
@@ -186,25 +186,25 @@
                     </div>
                     <div class='item-prop'>
                         {{#if item.system.rarity.common}}
-                        Common
+                        {{localize "ARKHAM_HORROR.RARITY.common"}}
                         {{/if}}
                         {{#if item.system.rarity.rare}}
-                        Rare
+                        {{localize "ARKHAM_HORROR.RARITY.rare"}}
                         {{/if}}
                         {{#if item.system.rarity.unique}}
-                        Unique
+                        {{localize "ARKHAM_HORROR.RARITY.unique"}}
                         {{/if}}
                         {{#if item.system.rarity.uncommon}}
-                        Uncommon
+                        {{localize "ARKHAM_HORROR.RARITY.uncommon"}}
                         {{/if}}
                     </div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
-                            title='{{localize "DOCUMENT.Update" type=' relic'}}'>
+                            title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.relic")}}'>
                             <i class='fas fa-edit'></i>
                         </a>
                         <a class='item-control item-delete' data-action="deleteItem"
-                            title='{{localize "DOCUMENT.Delete" type=' relic'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.relic")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     </div>

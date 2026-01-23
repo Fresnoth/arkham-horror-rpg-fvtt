@@ -259,7 +259,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         if (!actor) return;
 
         const itemData = {
-            name: 'New Knack',
+            name: game.i18n.localize('ARKHAM_HORROR.NPC.NewKnack'),
             type: 'knack',
             system: {
                 isNPCknack: true,
@@ -281,7 +281,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         if (!actor) return;
 
         const itemData = {
-            name: 'New Weakness',
+            name: game.i18n.localize('ARKHAM_HORROR.NPC.NewWeakness'),
             type: 'knack',
             system: {
                 isNPCknack: true,
@@ -303,7 +303,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         if (!actor) return;
 
         const itemData = {
-            name: 'New Equipment',
+            name: game.i18n.localize('ARKHAM_HORROR.NPC.NewEquipment'),
             type: 'useful_item',
             system: {
                 hasSpecialRules: false,
@@ -326,7 +326,9 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         // Grab any data associated with this control.
         const data = duplicate(target.dataset);
         // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
+        const name = game.i18n.format('DOCUMENT.New', {
+            type: game.i18n.localize(`TYPES.Item.${type}`)
+        });
         // Prepare the item object.
 
         const itemData = {
@@ -418,24 +420,32 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
     }
 
     static async #handleClickedRefreshDicePool(event, target) {
-        await refreshDicepoolAndPost({ actor: this.actor, label: "Dicepool Refresh", healDamage: false });
+        await refreshDicepoolAndPost({
+            actor: this.actor,
+            label: game.i18n.localize("ARKHAM_HORROR.DICEPOOL.Chat.Refresh"),
+            healDamage: false,
+        });
     }
 
     static async #handleClickedStrainOneself(event, target) {
         event.preventDefault();
 
         if (!this.actor?.isOwner) {
-            ui.notifications.warn('You do not have permission to strain for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionStrainActor'));
             return;
         }
 
         const currentDamage = Number(this.actor.system?.damage ?? 0);
         if (currentDamage <= 0) {
-            ui.notifications.warn('You can only strain when your dice pool maximum is reduced by damage.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.StrainRequiresDamage'));
             return;
         }
 
-        await refreshDicepoolAndPost({ actor: this.actor, label: "Strain Oneself", healDamage: true });
+        await refreshDicepoolAndPost({
+            actor: this.actor,
+            label: game.i18n.localize("ARKHAM_HORROR.ACTIONS.StrainOneself"),
+            healDamage: true,
+        });
 
         InjuryTraumaRollApp.getInstance({
             actor: this.actor,

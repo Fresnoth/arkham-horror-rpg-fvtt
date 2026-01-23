@@ -20,7 +20,9 @@ function buildInsightChatFlags({
     [SYSTEM_ID]: {
       schemaVersion: 1,
       rollCategory: "insight",
-      label: safeAction === "refresh" ? "Refresh Insight" : "Spend Insight",
+      label: game.i18n.localize(
+        safeAction === "refresh" ? "ARKHAM_HORROR.ACTIONS.RefreshInsight" : "ARKHAM_HORROR.ACTIONS.SpendInsight"
+      ),
       action: safeAction,
       spent: safeAction === "spend" ? asSafeInteger(spent, 0) : 0,
       oldRemaining: asSafeInteger(oldRemaining, 0),
@@ -129,7 +131,7 @@ export async function spendInsightAndPost({ actor, amount = 1, rollMode = "roll"
   }
 
   if (!(actor.isOwner || game.user?.isGM)) {
-    ui.notifications.warn("You do not have permission to spend Insight for this actor.");
+    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.INSIGHT.Errors.PermissionSpend"));
     return {
       ok: false,
       reason: "permission",
@@ -142,13 +144,15 @@ export async function spendInsightAndPost({ actor, amount = 1, rollMode = "roll"
   }
 
   if (actor.type !== "character") {
-    ui.notifications.warn("Only character actors can spend Insight.");
+    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.INSIGHT.Errors.OnlyCharacterSpend"));
     return await spendInsight(actor, amount);
   }
 
   const remaining = getInsightRemaining(actor);
   if (remaining <= 0) {
-    ui.notifications.warn(`${actor.name} has no Insight remaining.`);
+    ui.notifications.warn(
+      game.i18n.format("ARKHAM_HORROR.INSIGHT.Errors.NoneRemaining", { actorName: actor.name })
+    );
     return {
       ok: false,
       reason: "none",
@@ -163,11 +167,15 @@ export async function spendInsightAndPost({ actor, amount = 1, rollMode = "roll"
   const result = await spendInsight(actor, amount);
   if (!result.ok) {
     if (result.reason === "insufficient") {
-      ui.notifications.warn(`${actor.name} does not have enough Insight remaining.`);
+      ui.notifications.warn(
+        game.i18n.format("ARKHAM_HORROR.INSIGHT.Errors.InsufficientRemaining", { actorName: actor.name })
+      );
     } else if (result.reason === "amount") {
-      ui.notifications.warn("Insight spend amount must be at least 1.");
+      ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.INSIGHT.Errors.AmountAtLeastOne"));
     } else {
-      ui.notifications.warn(`${actor.name} has no Insight remaining.`);
+      ui.notifications.warn(
+        game.i18n.format("ARKHAM_HORROR.INSIGHT.Errors.NoneRemaining", { actorName: actor.name })
+      );
     }
     return result;
   }
@@ -206,7 +214,7 @@ export async function refreshInsightAndPost({ actor, rollMode = "roll", source =
   }
 
   if (!(actor.isOwner || game.user?.isGM)) {
-    ui.notifications.warn("You do not have permission to refresh Insight for this actor.");
+    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.INSIGHT.Errors.PermissionRefresh"));
     return {
       ok: false,
       reason: "permission",
@@ -217,7 +225,7 @@ export async function refreshInsightAndPost({ actor, rollMode = "roll", source =
   }
 
   if (actor.type !== "character") {
-    ui.notifications.warn("Only character actors can refresh Insight.");
+    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.INSIGHT.Errors.OnlyCharacterRefresh"));
     return await refreshInsight(actor);
   }
 

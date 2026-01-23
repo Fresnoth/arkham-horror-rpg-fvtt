@@ -399,7 +399,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         // Archetype knacks are UUID references (not embedded). Opening their sheets for players is risky because it
         // can lead to editing the source document (world/compendium) rather than an owned copy.
         if (this.document.type === 'archetype' && !(game.user?.isGM ?? false)) {
-            ui.notifications.warn('Only the GM can open/edit source Knack documents from an Archetype.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemOpenSourceKnackGmOnly'));
             return;
         }
         const uuid = target.dataset.uuid;
@@ -408,7 +408,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         try {
             const doc = await fromUuid(uuid);
             if (!doc) {
-                ui.notifications.warn('Could not resolve the dropped UUID.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemUuidResolveFailed'));
                 return;
             }
             if (doc.sheet) {
@@ -420,9 +420,9 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 }
                 return;
             }
-            ui.notifications.warn('No sheet available for that document.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemNoSheetForDocument'));
         } catch (e) {
-            ui.notifications.warn('Failed to open the UUID document.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemOpenUuidFailed'));
         }
     }
 
@@ -430,7 +430,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         event.preventDefault();
         if (this.document.type !== 'tome') return;
         if (!(game.user?.isGM ?? false)) {
-            ui.notifications.warn('Only the GM can modify a Tome\'s spells.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeModifySpellsGmOnly'));
             return;
         }
 
@@ -462,15 +462,15 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         if (this.document.type !== 'tome') return;
         const actor = this.document.actor;
         if (!actor) {
-            ui.notifications.warn('This Tome must be owned by an Actor to be understood.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeMustBeOwnedToUnderstand'));
             return;
         }
         if (!actor.isOwner) {
-            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
             return;
         }
         if (Boolean(this.document.system?.understood)) {
-            ui.notifications.info('This Tome is already understood.');
+            ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.TomeAlreadyUnderstood'));
             return;
         }
 
@@ -505,15 +505,15 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         if (this.document.type !== 'tome') return;
         const actor = this.document.actor;
         if (!actor) {
-            ui.notifications.warn('This Tome must be owned by an Actor to attune to it.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeMustBeOwnedToAttune'));
             return;
         }
         if (!actor.isOwner) {
-            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
             return;
         }
         if (!Boolean(this.document.system?.understood)) {
-            ui.notifications.warn('You must understand this Tome before attuning to it.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeMustUnderstandBeforeAttune'));
             return;
         }
 
@@ -544,7 +544,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         event.preventDefault();
         if (this.document.type !== 'tome') return;
         if (!(game.user?.isGM ?? false)) {
-            ui.notifications.warn("Only the GM can clear a Tome's understood/attuned state.");
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeClearStateGmOnly'));
             return;
         }
 
@@ -557,7 +557,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         event.preventDefault();
         if (this.document.type !== 'archetype') return;
         if (!(game.user?.isGM ?? false)) {
-            ui.notifications.warn('Only the GM can modify an Archetype\'s allowed Knacks.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemArchetypeModifyAllowedKnacksGmOnly'));
             return;
         }
 
@@ -575,7 +575,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     async #addKnackUuidToTier(tier, uuid) {
         if (!(game.user?.isGM ?? false)) {
-            ui.notifications.warn('Only the GM can modify an Archetype\'s allowed Knacks.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemArchetypeModifyAllowedKnacksGmOnly'));
             return;
         }
         const structuredPath = `system.knackTiers.${tier}.allowedKnacks`;
@@ -583,7 +583,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         const currentStructured = foundry.utils.getProperty(this.document, structuredPath) ?? [];
 
         if (currentStructured.some(e => e?.uuid === uuid)) {
-            ui.notifications.info("Knack already added to this tier.");
+            ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.ArchetypeKnackAlreadyAddedTier'));
             return;
         }
 
@@ -693,7 +693,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         // Archetype: only store UUID references to dropped knacks (no embedding)
         if (this.document.type === 'archetype' && data?.type === 'Item') {
             if (!(game.user?.isGM ?? false)) {
-                ui.notifications.warn('Only the GM can modify an Archetype.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemArchetypeModifyGmOnly'));
                 return;
             }
 
@@ -701,13 +701,13 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
                 ?? event.currentTarget?.closest?.('.archetype-tier-drop');
             const tier = Number(tierEl?.dataset?.archetypeTier);
             if (!tier) {
-                ui.notifications.warn('Drop the Knack onto a specific tier section.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemArchetypeDropTierRequired'));
                 return;
             }
 
             const dropped = await Item.fromDropData(data);
             if (!dropped || dropped.type !== 'knack') {
-                ui.notifications.warn('Only Knack items can be dropped onto an Archetype.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemArchetypeDropOnlyKnacks'));
                 return;
             }
 
@@ -719,7 +719,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         // Tome: store UUID references to dropped spells (no embedding)
         if (this.document.type === 'tome' && data?.type === 'Item') {
             if (!(game.user?.isGM ?? false)) {
-                ui.notifications.warn('Only the GM can add or remove spells from a Tome.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeDropModifyGmOnly'));
                 return;
             }
 
@@ -752,13 +752,13 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             }
 
             if (!dropped || dropped.type !== 'spell') {
-                ui.notifications.warn('Only Spell items can be dropped onto a Tome.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeDropOnlySpells'));
                 return;
             }
 
             const current = (this.document.system?.spellUuids ?? []).filter(u => !!u);
             if (current.includes(dropped.uuid)) {
-                ui.notifications.info('That spell is already in this Tome.');
+                ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.TomeSpellAlreadyInTome'));
                 return;
             }
 
@@ -798,13 +798,13 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             }
 
             if (!dropped || dropped.type !== 'spell') {
-                ui.notifications.warn('Only Spell items can be dropped onto a Knack grant list.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemKnackDropOnlySpells'));
                 return;
             }
 
             const current = (this.document.system?.grants ?? []).filter(g => g?.type === 'spell' && g?.uuid);
             if (current.some(g => g.uuid === dropped.uuid)) {
-                ui.notifications.info('That spell is already granted by this Knack.');
+                ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.KnackSpellAlreadyGranted'));
                 return;
             }
 
@@ -846,7 +846,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         if (this.document.type === 'tome') {
             const inaccessible = Number(context?.inaccessibleSpellCount ?? 0);
             if (inaccessible > 0 && !(game.user?.isGM ?? false) && !this.#tomeInaccessibleWarned) {
-                ui.notifications.warn(`This Tome contains ${inaccessible} spell(s) you do not have permission to view.`);
+                ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.ItemTomeInaccessibleSpells', { count: inaccessible }));
                 this.#tomeInaccessibleWarned = true;
             }
         }

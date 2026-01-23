@@ -1,7 +1,7 @@
 <div>
   {{#if (eq action "spend")}}
-    <strong>Insight Spent:</strong> {{actorName}} spent {{spent}} Insight ({{oldRemaining}} → {{newRemaining}}/{{limit}}).
+    <strong>{{localize "ARKHAM_HORROR.Chat.Insight.LabelSpent"}}:</strong> {{localize "ARKHAM_HORROR.Chat.Insight.Spent" actorName=actorName spent=spent oldRemaining=oldRemaining newRemaining=newRemaining limit=limit}}
   {{else}}
-    <strong>Insight Refreshed:</strong> {{actorName}}'s Insight has been refreshed from {{oldRemaining}} to {{newRemaining}}.
+    <strong>{{localize "ARKHAM_HORROR.Chat.Insight.LabelRefreshed"}}:</strong> {{localize "ARKHAM_HORROR.Chat.Insight.Refreshed" actorName=actorName oldRemaining=oldRemaining newRemaining=newRemaining}}
   {{/if}}
 </div>

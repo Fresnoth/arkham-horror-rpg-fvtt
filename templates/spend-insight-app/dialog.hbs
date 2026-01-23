@@ -1,6 +1,6 @@
 <form class="roll-dialog-container scrollable">
   <div class="form-group">
-    <label>Spend Insight</label>
+    <label>{{localize "ARKHAM_HORROR.ACTIONS.SpendInsight"}}</label>
     <div class="flexrow">
       <button class="button-dicepool-rolldialog" data-action="clickedDecreaseSpend" {{#if (lte max 1)}}disabled{{/if}}>-</button>
       <input type="number" name="amount" value="{{amount}}" min="1" max="{{max}}" step="1" autofocus /> /
@@ -9,9 +9,9 @@
     </div>
   </div>
 
-  <p class="arkham-horror-hint">Remaining: {{remaining}}/{{limit}}</p>
+  <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.Dialog.SpendInsight.Remaining" remaining=remaining limit=limit}}</p>
 
   <footer class="dialog-footer">
-    <button type="button" class="roll-button" data-action="clickedSpend"><i class="fa-solid fa-lightbulb"></i> Spend</button>
+    <button type="button" class="roll-button" data-action="clickedSpend"><i class="fa-solid fa-lightbulb"></i> {{localize "ARKHAM_HORROR.Dialog.SpendInsight.Spend"}}</button>
   </footer>
 </form>

@@ -1,7 +1,7 @@
 export function setupConfiguration() {
     game.settings.register("arkham-horror-rpg-fvtt", "tokenShowDicePools", {
-        name: "Show Token Dice Pools",
-        hint: "Show Dice Pool on tokens on the canvas.",
+        name: "ARKHAM_HORROR.Settings.TokenShowDicePools.Name",
+        hint: "ARKHAM_HORROR.Settings.TokenShowDicePools.Hint",
         scope: "world",
         config: true,
         type: Boolean,
@@ -9,8 +9,8 @@ export function setupConfiguration() {
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "tokenShowDamage", {
-        name: "Show Token Damage",
-        hint: "Show Damage on tokens on the canvas.",
+        name: "ARKHAM_HORROR.Settings.TokenShowDamage.Name",
+        hint: "ARKHAM_HORROR.Settings.TokenShowDamage.Hint",
         scope: "world",
         config: true,
         type: Boolean,
@@ -18,8 +18,8 @@ export function setupConfiguration() {
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "tokenOverlayAbove", {
-        name: "Token Overlay Above Token",
-        hint: "If enabled, show Dice Pool/Damage above the token instead of below.",
+        name: "ARKHAM_HORROR.Settings.TokenOverlayAbove.Name",
+        hint: "ARKHAM_HORROR.Settings.TokenOverlayAbove.Hint",
         scope: "world",
         config: true,
         type: Boolean,
@@ -27,8 +27,8 @@ export function setupConfiguration() {
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "characterLoadCapacity", {
-        name: "Character Load Capacity",
-        hint: "Automatic Load Capacity calculation",
+        name: "ARKHAM_HORROR.Settings.CharacterLoadCapacity.Name",
+        hint: "ARKHAM_HORROR.Settings.CharacterLoadCapacity.Hint",
         scope: "world",
         config: true,
         type: Boolean,
@@ -36,8 +36,8 @@ export function setupConfiguration() {
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "characterInjuryTable", {
-        name: "Character Injury Table",
-        hint: "Used for rolling injuries",
+        name: "ARKHAM_HORROR.Settings.CharacterInjuryTable.Name",
+        hint: "ARKHAM_HORROR.Settings.CharacterInjuryTable.Hint",
         scope: "world",
         config: true,
         type: String,
@@ -53,21 +53,21 @@ export function setupConfiguration() {
     });
     
     game.settings.register("arkham-horror-rpg-fvtt", "characterTraumaTableVariant", {
-        name: "Character Trauma Table Variant",
-        hint: "Choose which character trauma table to use when rolling trauma.",
+        name: "ARKHAM_HORROR.Settings.CharacterTraumaTableVariant.Name",
+        hint: "ARKHAM_HORROR.Settings.CharacterTraumaTableVariant.Hint",
         scope: "world",
         config: true,
         type: String,
         choices: {
-            standard: "Standard",
-            noPersonality: "No-Personality",
+            standard: "ARKHAM_HORROR.Settings.CharacterTraumaTableVariant.Choices.Standard",
+            noPersonality: "ARKHAM_HORROR.Settings.CharacterTraumaTableVariant.Choices.NoPersonality",
         },
         default: "standard"
     });
     
     game.settings.register("arkham-horror-rpg-fvtt", "characterHorrorTable", {
-        name: "Character Trauma Table",
-        hint: "Used for rolling trauma",
+        name: "ARKHAM_HORROR.Settings.CharacterTraumaTable.Name",
+        hint: "ARKHAM_HORROR.Settings.CharacterTraumaTable.Hint",
         scope: "world",
         config: true,
         type: String,
@@ -85,8 +85,8 @@ export function setupConfiguration() {
 
 
     game.settings.register("arkham-horror-rpg-fvtt", "characterHorrorTableNoPersonality", {
-        name: "Character Trauma Table (No-Personality)",
-        hint: "Optional alternate trauma table with fewer entries (no personality trait effects).",
+        name: "ARKHAM_HORROR.Settings.CharacterTraumaTableNoPersonality.Name",
+        hint: "ARKHAM_HORROR.Settings.CharacterTraumaTableNoPersonality.Hint",
         scope: "world",
         config: true,
         type: String,
@@ -102,8 +102,8 @@ export function setupConfiguration() {
     });
 
     game.settings.register("arkham-horror-rpg-fvtt", "npcInjuryTable", {
-        name: "NPC Injury Table",
-        hint: "Used for rolling injuries",
+        name: "ARKHAM_HORROR.Settings.NpcInjuryTable.Name",
+        hint: "ARKHAM_HORROR.Settings.NpcInjuryTable.Hint",
         scope: "world",
         config: true,
         type: String,
@@ -118,8 +118,8 @@ export function setupConfiguration() {
         default: ""
     });
     game.settings.register("arkham-horror-rpg-fvtt", "npcHorrorTable", {
-        name: "NPC Trauma Table",
-        hint: "Used for rolling trauma",
+        name: "ARKHAM_HORROR.Settings.NpcTraumaTable.Name",
+        hint: "ARKHAM_HORROR.Settings.NpcTraumaTable.Hint",
         scope: "world",
         config: true,
         type: String,

@@ -6,18 +6,18 @@
         {{!-- Edit Mode Layout --}}
         <div class="title">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" class="fancy-input"
-                    placeholder="{{localize 'MIST_ENGINE.PLACEHOLDERS.Name'}}" /></h1>
+                    placeholder="{{localize "ARKHAM_HORROR.PROPS.Name"}}" /></h1>
 
         </div>
         <div class="resource-group-styled other">
             <div class="archetype-entry">
-                <label for="system.archetype" class="styled-label">ARCHETYPE</label>
+                <label for="system.archetype" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Archetype"}}</label>
                 {{#if system.archetypeUuid}}
                 <div class="form-fields" style="display:flex; gap:6px; align-items:center;">
                     <input type="text" name="system.archetype" value="{{system.archetype}}" readonly
-                        data-action="openActorArchetype" title="Open Archetype" style="flex:1; cursor:pointer;"
+                        data-action="openActorArchetype" title="{{localize "ARKHAM_HORROR.TOOLTIPS.OpenArchetype"}}" style="flex:1; cursor:pointer;"
                         class="fancy-input" />
-                    <a class="item-control" data-action="openActorArchetype" title="Open Archetype">
+                    <a class="item-control" data-action="openActorArchetype" title="{{localize "ARKHAM_HORROR.TOOLTIPS.OpenArchetype"}}" aria-label="{{localize "ARKHAM_HORROR.TOOLTIPS.OpenArchetype"}}">
                         <i class="fas fa-up-right-from-square"></i>
                     </a>
                 </div>
@@ -28,12 +28,12 @@
             <div class="xp">
                 <div class="grid grid-4col">
                     <div class="header-form-group">
-                        <label for="system.xp.total" class="styled-label">XP:</label>
+                        <label for="system.xp.total" class="styled-label">{{localize "ARKHAM_HORROR.PROPS.XP"}}:</label>
                         <input type="number" name="system.xp.unused" value="{{system.xp.unused}}" data-dtype="Number"
-                            class="medium-input fancy-input" title="Unused XP" />
-                        of
+                            class="medium-input fancy-input" title="{{localize "ARKHAM_HORROR.TOOLTIPS.UnusedXP"}}" />
+                        {{localize "ARKHAM_HORROR.WORDS.Of"}}
                         <input type="number" name="system.xp.total" value="{{system.xp.total}}" data-dtype="Number"
-                            class="medium-input fancy-input" title="Total XP" />
+                            class="medium-input fancy-input" title="{{localize "ARKHAM_HORROR.TOOLTIPS.TotalXP"}}" />
                     </div>
                     <div class="header-form-group">
                         <label for="system.dicepool.max" class="header-label">{{localize "ARKHAM_HORROR.LABELS.Dicepool" }}:</label>

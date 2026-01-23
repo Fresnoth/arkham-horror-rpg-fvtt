@@ -194,23 +194,23 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const sourceArchetypeUuid = data?.archetypeUuid;
 
         if (!uuid || !tier || tier < 1 || tier > 4) {
-            ui.notifications.warn('Invalid archetype knack drop data.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeKnackDropInvalid'));
             return;
         }
 
         const actorArchetypeUuid = this.document.system?.archetypeUuid;
         if (!actorArchetypeUuid) {
-            ui.notifications.warn('Set an archetype on this actor before purchasing knacks.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeRequiredForKnacks'));
             return;
         }
         if (sourceArchetypeUuid && actorArchetypeUuid !== sourceArchetypeUuid) {
-            ui.notifications.warn('This knack belongs to a different archetype.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.KnackDifferentArchetype'));
             return;
         }
 
         const archetype = await fromUuid(actorArchetypeUuid);
         if (!archetype || archetype.type !== 'archetype') {
-            ui.notifications.warn('Actor archetype reference is invalid.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ActorArchetypeInvalid'));
             return;
         }
 
@@ -219,13 +219,13 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const tierData = archetype.system?.knackTiers?.[tier] ?? {};
         const allowed = (tierData.allowedKnacks ?? []).some(e => e?.uuid === uuid);
         if (!allowed) {
-            ui.notifications.warn(`That knack is not allowed for Tier ${tier} by the actor's archetype.`);
+            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.KnackNotAllowedTier', { tier }));
             return;
         }
 
         const maxPurchasable = Number(archetype.system?.knackTiers?.[tier]?.maxPurchasable ?? 0);
         if (maxPurchasable <= 0) {
-            ui.notifications.warn(`No Tier ${tier} knacks can be purchased for this archetype (max is ${maxPurchasable}).`);
+            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.KnackTierNotPurchasable', { tier, maxPurchasable }));
             return;
         }
 
@@ -237,7 +237,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             .length;
 
         if (existingTierCount >= maxPurchasable) {
-            ui.notifications.warn(`Tier ${tier} knack limit reached (${existingTierCount}/${maxPurchasable}).`);
+            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.KnackTierLimitReached', { tier, existingTierCount, maxPurchasable }));
             return;
         }
 
@@ -252,13 +252,13 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
                 [`flags.arkham-horror-rpg-fvtt.archetypeUuid`]: actorArchetypeUuid,
                 [`flags.arkham-horror-rpg-fvtt.archetypeTier`]: tier
             });
-            ui.notifications.info('Knack already owned; updated tier to match archetype.');
+            ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.KnackAlreadyOwnedUpdated'));
             return;
         }
 
         const source = await fromUuid(uuid);
         if (!source || source.type !== 'knack') {
-            ui.notifications.warn('Could not resolve the source knack item.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.SourceKnackResolveFailed'));
             return;
         }
 
@@ -325,7 +325,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
                 }
 
                 await this.document.update(updateData);
-                ui.notifications.info(`Archetype set to ${dropped.name}.`);
+                ui.notifications.info(game.i18n.format('ARKHAM_HORROR.Info.ArchetypeSet', { archetypeName: dropped.name }));
                 return;
             }
         } catch (e) {
@@ -542,7 +542,9 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         if (!actor) return;
 
         const itemData = {
-            name: 'New Equipment',
+            name: game.i18n.format('DOCUMENT.New', {
+                type: game.i18n.localize('TYPES.Item.useful_item')
+            }),
             type: 'useful_item',
             system: {
                 hasSpecialRules: false,
@@ -565,7 +567,9 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         // Grab any data associated with this control.
         const data = duplicate(target.dataset);
         // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
+        const name = game.i18n.format('DOCUMENT.New', {
+            type: game.i18n.localize(`TYPES.Item.${type}`)
+        });
         // Prepare the item object.
 
         const itemData = {
@@ -614,23 +618,23 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     async openActorArchetype(event, target) {
         const uuid = this.document.system?.archetypeUuid;
         if (!uuid) {
-            ui.notifications.warn('This actor has no archetype set.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ActorHasNoArchetype'));
             return;
         }
 
         try {
             const doc = await fromUuid(uuid);
             if (!doc) {
-                ui.notifications.warn('Could not resolve actor archetype UUID.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ActorArchetypeUuidResolveFailed'));
                 return;
             }
             if (doc.type !== 'archetype') {
-                ui.notifications.warn('The linked document is not an archetype.');
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.LinkedDocNotArchetype'));
                 return;
             }
             doc.sheet?.render(true);
         } catch (e) {
-            ui.notifications.warn('Failed to open archetype.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.OpenArchetypeFailed'));
         }
     }
 
@@ -676,7 +680,11 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
     }
 
     static async #handleClickedRefreshDicePool(event, target) {
-        await refreshDicepoolAndPost({ actor: this.actor, label: "Dicepool Refresh", healDamage: false });
+        await refreshDicepoolAndPost({
+            actor: this.actor,
+            label: game.i18n.localize("ARKHAM_HORROR.DICEPOOL.Chat.Refresh"),
+            healDamage: false,
+        });
 
     }
 
@@ -684,17 +692,21 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         event.preventDefault();
 
         if (!this.actor?.isOwner) {
-            ui.notifications.warn('You do not have permission to strain for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionStrainActor'));
             return;
         }
 
         const currentDamage = Number(this.actor.system?.damage ?? 0);
         if (currentDamage <= 0) {
-            ui.notifications.warn('You can only strain when your dice pool maximum is reduced by damage.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.StrainRequiresDamage'));
             return;
         }
 
-        await refreshDicepoolAndPost({ actor: this.actor, label: "Strain Oneself", healDamage: true });
+        await refreshDicepoolAndPost({
+            actor: this.actor,
+            label: game.i18n.localize("ARKHAM_HORROR.ACTIONS.StrainOneself"),
+            healDamage: true,
+        });
 
         InjuryTraumaRollApp.getInstance({
             actor: this.actor,
@@ -711,7 +723,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         if (item) {
             // check if the weapon has ammo
             if( item.system.ammunition.max > 0 && item.system.ammunition.current <= 0){
-                ui.notifications.warn(`${item.name} has no ammunition left! Reload before using it.`);
+                ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.WeaponOutOfAmmo', { itemName: item.name }));
                 return;
             }
             
@@ -749,7 +761,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         event.preventDefault();
 
         if (!(this.actor?.isOwner || game.user?.isGM)) {
-            ui.notifications.warn("You do not have permission to spend Insight for this actor.");
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.INSIGHT.Errors.PermissionSpend'));
             return;
         }
 
@@ -757,7 +769,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
         const remaining = Number(this.actor.system?.insight?.remaining) || 0;
         if (remaining <= 0) {
-            ui.notifications.warn(`${this.actor.name} has no Insight remaining.`);
+            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.INSIGHT.Errors.NoneRemaining', { actorName: this.actor.name }));
             return;
         }
 
@@ -768,7 +780,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         event.preventDefault();
 
         if (!(this.actor?.isOwner || game.user?.isGM)) {
-            ui.notifications.warn("You do not have permission to refresh Insight for this actor.");
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.INSIGHT.Errors.PermissionRefresh'));
             return;
         }
 
@@ -806,7 +818,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
         // Owner or GM can reset.
         if (!(this.actor?.isOwner || game.user?.isGM)) {
-            ui.notifications.warn('You do not have permission to reset this actor\'s knacks.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ResetKnackPermission'));
             return;
         }
 
@@ -816,19 +828,19 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     async resetAllKnackUses(_event, _target) {
         if (!(this.actor?.isOwner || game.user?.isGM)) {
-            ui.notifications.warn('You do not have permission to reset this actor\'s knacks.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ResetKnackPermission'));
             return;
         }
 
         const { DialogV2 } = foundry.applications.api;
         const choice = await DialogV2.wait({
-            window: { title: 'Reset Knack Uses' },
-            content: `<p>Reset which Knack uses?</p>`,
+            window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.Title') },
+            content: `<p>${game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.Prompt')}</p>`,
             buttons: [
-                { action: 'oncePerTurn', label: 'Once Per Turn', icon: 'fa-solid fa-rotate-right' },
-                { action: 'oncePerScene', label: 'Once Per Scene', icon: 'fa-solid fa-rotate-right' },
-                { action: 'oncePerSession', label: 'Once Per Session', icon: 'fa-solid fa-rotate-right' },
-                { action: 'all', label: 'All', icon: 'fa-solid fa-rotate-right' },
+                { action: 'oncePerTurn', label: game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.OncePerTurn'), icon: 'fa-solid fa-rotate-right' },
+                { action: 'oncePerScene', label: game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.OncePerScene'), icon: 'fa-solid fa-rotate-right' },
+                { action: 'oncePerSession', label: game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.OncePerSession'), icon: 'fa-solid fa-rotate-right' },
+                { action: 'all', label: game.i18n.localize('ARKHAM_HORROR.Dialog.ResetKnacks.All'), icon: 'fa-solid fa-rotate-right' },
             ],
             rejectClose: false,
         });
@@ -856,11 +868,11 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const tome = this.actor.items.get(itemId);
         if (!tome || tome.type !== 'tome') return;
         if (!this.actor.isOwner) {
-            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
             return;
         }
         if (Boolean(tome.system?.understood)) {
-            ui.notifications.info('This Tome is already understood.');
+            ui.notifications.info(game.i18n.localize('ARKHAM_HORROR.Info.TomeAlreadyUnderstood'));
             return;
         }
 
@@ -894,11 +906,11 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const tome = this.actor.items.get(itemId);
         if (!tome || tome.type !== 'tome') return;
         if (!this.actor.isOwner) {
-            ui.notifications.warn('You do not have permission to roll for this Actor.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
             return;
         }
         if (!Boolean(tome.system?.understood)) {
-            ui.notifications.warn('You must understand this Tome before attuning to it.');
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemTomeMustUnderstandBeforeAttune'));
             return;
         }
 

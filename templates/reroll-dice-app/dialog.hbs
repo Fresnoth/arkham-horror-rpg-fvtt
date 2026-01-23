@@ -1,8 +1,8 @@
 <form class="arkham-reroll-form">
   <div class="arkham-reroll-meta">
-    <div class="arkham-reroll-meta-row"><strong>Success on:</strong> {{successOn}}+</div>
-    <div class="arkham-reroll-meta-row"><strong>Penalty:</strong> {{penalty}}</div>
-    <div class="arkham-reroll-meta-row"><strong>Result Mod:</strong> {{resultModifier}}</div>
+    <div class="arkham-reroll-meta-row"><strong>{{localize "ARKHAM_HORROR.Dialog.RerollDice.SuccessOn"}}:</strong> {{successOn}}+</div>
+    <div class="arkham-reroll-meta-row"><strong>{{localize "ARKHAM_HORROR.PROPS.Penalty"}}:</strong> {{penalty}}</div>
+    <div class="arkham-reroll-meta-row"><strong>{{localize "ARKHAM_HORROR.PROPS.ResultModifier"}}:</strong> {{resultModifier}}</div>
   </div>
 
   <hr />
@@ -19,9 +19,9 @@
             {{result}}
           </span>
           <span class="arkham-reroll-die-label">
-            {{#if isHorror}}Horror{{else}}Normal{{/if}} — Raw {{rawResult}} → Final {{result}}
-            {{#if isDropped}}(dropped){{/if}}
-            {{#if isForbidden}}(cannot reroll){{/if}}
+            {{#if isHorror}}{{localize "ARKHAM_HORROR.Dialog.RerollDice.DieTypeHorror"}}{{else}}{{localize "ARKHAM_HORROR.Dialog.RerollDice.DieTypeNormal"}}{{/if}} — {{localize "ARKHAM_HORROR.Dialog.RerollDice.Raw"}} {{rawResult}} → {{localize "ARKHAM_HORROR.Dialog.RerollDice.Final"}} {{result}}
+            {{#if isDropped}}({{localize "ARKHAM_HORROR.Dialog.RerollDice.Dropped"}}){{/if}}
+            {{#if isForbidden}}({{localize "ARKHAM_HORROR.Dialog.RerollDice.CannotReroll"}}){{/if}}
           </span>
         </label>
       </div>
@@ -30,7 +30,7 @@
 
   <footer class="form-footer">
     <button type="submit" data-action="clickedReroll">
-      <i class="fa-solid fa-arrow-rotate-right"></i> Reroll Selected
+      <i class="fa-solid fa-arrow-rotate-right"></i> {{localize "ARKHAM_HORROR.Dialog.RerollDice.RerollSelected"}}
     </button>
   </footer>
 </form>

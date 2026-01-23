@@ -1,7 +1,13 @@
 <div class="npc-skill-entry flexrow">
-    <label class="npc-skill clickable" data-action="clickSkill" data-skill-key="{{skillKey}}">{{label}}</label>
-    <input type="number" name="system.skills.{{skillKey}}.current" value="{{skillData.current}}" data-dtype="Number" title="Limit">
-    <div class="skill-reaction-icon clickable" data-action="clickSkillReaction" data-skill-key="{{skillKey}}" title="Reaction roll">
+    <label class="npc-skill clickable" data-action="clickSkill" data-skill-key="{{skillKey}}">
+        {{#if label}}
+            {{label}}
+        {{else}}
+            {{localize (concat "ARKHAM_HORROR.SKILL_SHORT." skillKey)}}
+        {{/if}}
+    </label>
+    <input type="number" name="system.skills.{{skillKey}}.current" value="{{skillData.current}}" data-dtype="Number" title="{{localize "ARKHAM_HORROR.LABELS.Limit"}}">
+    <div class="skill-reaction-icon clickable" data-action="clickSkillReaction" data-skill-key="{{skillKey}}" title="{{localize "ARKHAM_HORROR.Chat.RollResult.ReactionRollTooltip"}}">
         <i class="fa-solid fa-arrow-rotate-left"></i>
     </div>
 </div>

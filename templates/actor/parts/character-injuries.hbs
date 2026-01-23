@@ -1,7 +1,7 @@
 <fieldset>
     <legend>
         {{localize "ARKHAM_HORROR.LABELS.InjuriesTrauma"}}
-        <a class='item-control' data-action="clickedInjuryTraumaRoll" title="Roll Injury/Trauma">
+        <a class='item-control' data-action="clickedInjuryTraumaRoll" title="{{localize "ARKHAM_HORROR.ACTIONS.RollInjuryTrauma"}}" aria-label="{{localize "ARKHAM_HORROR.ACTIONS.RollInjuryTrauma"}}">
             <i class="fa-solid fa-dice"></i>
         </a>
     </legend>
@@ -9,15 +9,13 @@
     <div class="injury-entry">
         <div>
             <strong class="clickable" data-action="toggleFoldableContent" data-fc-id="injury{{injury._id}}">
-                {{#if (eq injury.type 'trauma')}}[TRAUMA] {{/if}}
-                {{#if (eq injury.type 'injury')}}[INJURY] {{/if}}
+                {{#if (eq injury.type 'trauma')}}[{{localize "TYPES.Item.trauma"}}] {{/if}}
+                {{#if (eq injury.type 'injury')}}[{{localize "TYPES.Item.injury"}}] {{/if}}
                 {{injury.name}}</strong>
-            <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type='
-                injury'}}' data-item-id='{{injury._id}}'>
+            <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type=(localize (concat "TYPES.Item." injury.type))}}' aria-label='{{localize "DOCUMENT.Update" type=(localize (concat "TYPES.Item." injury.type))}}' data-item-id='{{injury._id}}'>
                 <i class='fas fa-edit'></i>
             </a>
-            <a class='item-control item-delete' data-action="deleteItem" title='{{localize "DOCUMENT.Delete" type='
-                injury'}}' data-item-id='{{injury._id}}'>
+            <a class='item-control item-delete' data-action="deleteItem" title='{{localize "DOCUMENT.Delete" type=(localize (concat "TYPES.Item." injury.type))}}' aria-label='{{localize "DOCUMENT.Delete" type=(localize (concat "TYPES.Item." injury.type))}}' data-item-id='{{injury._id}}'>
                 <i class='fas fa-trash'></i>
             </a>
         </div>

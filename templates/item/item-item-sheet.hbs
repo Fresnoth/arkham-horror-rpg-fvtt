@@ -11,11 +11,11 @@
           name='name'
           type='text'
           value='{{item.name}}'
-          placeholder='Name'
+          placeholder='{{localize "ARKHAM_HORROR.PROPS.Name"}}'
         /></h1>
       <div class='grid grid-2col'>
         <div class='resource'>
-          <label class='resource-label'>Quantity</label>
+          <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.Quantity"}}</label>
           <input
             type='text'
             name='system.quantity'
@@ -24,7 +24,7 @@
           />
         </div>
         <div class='resource'>
-          <label class='resource-label'>Weight</label>
+          <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.Weight"}}</label>
           <input
             type='text'
             name='system.weight'
@@ -38,8 +38,8 @@
 
   {{! Sheet Tab Navigation }}
   <nav class='sheet-tabs tabs' data-group='primary'>
-    <a class='item' data-tab='description'>Description</a>
-    <a class='item' data-tab='attributes'>Attributes</a>
+    <a class='item' data-tab='description'>{{localize "ARKHAM_HORROR.TABS.Description"}}</a>
+    <a class='item' data-tab='attributes'>{{localize "ARKHAM_HORROR.TABS.Attributes"}}</a>
   </nav>
 
   {{! Sheet Body }}
@@ -61,11 +61,11 @@
     <div class='tab attributes' data-group='primary' data-tab='attributes'>
       {{! As you add new fields, add them in here! }}
       <div class='resource'>
-        <label class='resource-label'>Roll Formula:</label>
+        <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.RollFormula"}}:</label>
         <span>{{system.formula}}</span>
         <div class='grid grid-4col'>
           <div class='grid-span-1'>
-            <label class='resource-label'>Number of Dice</label>
+            <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.NumberOfDice"}}</label>
             <input
               type='text'
               name='system.roll.diceNum'
@@ -74,7 +74,7 @@
             />
           </div>
           <div class='grid-span-1'>
-            <label class='resource-label'>Die Size</label>
+            <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.DieSize"}}</label>
             <input
               type='text'
               name='system.roll.diceSize'
@@ -83,7 +83,7 @@
             />
           </div>
           <div class='grid-span-2'>
-            <label class='resource-label'>Roll Modifier</label>
+            <label class='resource-label'>{{localize "ARKHAM_HORROR.PROPS.RollModifier"}}</label>
             <input
               type='text'
               name='system.roll.diceBonus'

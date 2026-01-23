@@ -50,7 +50,7 @@ async function createActorSpellCopiesFromUuids({ actor, tome, uuids }) {
  */
 export async function understandTomeAndLearnSpells({ actor, tome, notify = true }) {
   if (Boolean(tome?.system?.understood)) {
-    if (notify) ui.notifications?.info?.("This Tome is already understood.");
+    if (notify) ui.notifications?.info?.(game.i18n.localize("ARKHAM_HORROR.Info.TomeAlreadyUnderstood"));
     return { alreadyUnderstood: true, createdCount: 0 };
   }
 
@@ -59,7 +59,7 @@ export async function understandTomeAndLearnSpells({ actor, tome, notify = true 
   await tome.update({ "system.understood": true });
 
   if (uuids.length === 0) {
-    if (notify) ui.notifications?.info?.("This Tome has no spells to learn.");
+    if (notify) ui.notifications?.info?.(game.i18n.localize("ARKHAM_HORROR.Info.TomeNoSpellsToLearn"));
     return { alreadyUnderstood: false, createdCount: 0, hadNoSpells: true };
   }
 
@@ -67,9 +67,9 @@ export async function understandTomeAndLearnSpells({ actor, tome, notify = true 
 
   if (notify) {
     if (createdCount > 0) {
-      ui.notifications?.info?.(`Learned ${createdCount} spell(s) from the Tome.`);
+      ui.notifications?.info?.(game.i18n.format("ARKHAM_HORROR.Info.TomeLearnedSpells", { count: createdCount }));
     } else {
-      ui.notifications?.info?.("No new spells were learned from this Tome.");
+      ui.notifications?.info?.(game.i18n.localize("ARKHAM_HORROR.Info.TomeNoNewSpellsLearned"));
     }
   }
 
@@ -91,7 +91,7 @@ export async function attuneTomeExclusive({ actor, tome, notify = true }) {
   updates.push({ _id: tome.id, "system.attuned": true });
   await actor.updateEmbeddedDocuments("Item", updates);
 
-  if (notify) ui.notifications?.info?.(`Attuned to ${tome.name}.`);
+  if (notify) ui.notifications?.info?.(game.i18n.format("ARKHAM_HORROR.Info.TomeAttuned", { tomeName: tome.name }));
   return { updatedCount: updates.length };
 }
 
@@ -105,5 +105,5 @@ export async function clearTomeUnderstanding({ tome, notify = true }) {
     "system.attuned": false,
   });
 
-  if (notify) ui.notifications?.info?.("Cleared Tome understanding.");
+  if (notify) ui.notifications?.info?.(game.i18n.localize("ARKHAM_HORROR.Info.TomeClearedUnderstanding"));
 }

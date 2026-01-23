@@ -1,6 +1,6 @@
 <div>
-    <strong>{{label}}</strong>: {{actorName}}'s dice pool changed from {{oldDicePoolValue}} to {{newDicePoolValue}}.
+    <strong>{{label}}</strong>: {{localize "ARKHAM_HORROR.Chat.DicepoolReset.Changed" actorName=actorName oldDicePoolValue=oldDicePoolValue newDicePoolValue=newDicePoolValue}}
     {{#if healedDamage}}
-        (Healed {{healedDamage}} damage)
+        ({{localize "ARKHAM_HORROR.Chat.DicepoolReset.HealedDamage" healedDamage=healedDamage}})
     {{/if}}
 </div>

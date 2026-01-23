@@ -6,10 +6,25 @@
       "Vehicle": "ArkhamHorror Vehicle Sheet",
       "NPC": "ArkhamHorror NPC Sheet"
     },
+    "Apps": {
+      "DiceRoll": {
+        "Title": "Würfelwurf"
+      },
+      "InjuryTraumaRoll": {
+        "Title": "Verletzung-/Trauma-Wurf"
+      },
+      "RerollDice": {
+        "Title": "Würfel neu würfeln"
+      },
+      "SpendInsight": {
+        "Title": "Einsicht ausgeben"
+      }
+    },
     "Item": {
       "Spell": {
-        "SpellLVL": "Level {level} Spells",
-        "AddLVL": "Add LVL {level}"
+        "difficulty": "Schwierigkeit",
+        "SpellLVL": "Zaubergrad {level}",
+        "AddLVL": "Grad {level} hinzufügen"
       }
     },
     "Effect": {
@@ -31,6 +46,8 @@
       "Skills": "Fertigkeiten",
       "Insight": "Einsicht",
       "Limit": "Limit",
+      "Max": "Max",
+      "Knacks": "Kniffe",
       "Remaining": "Verbleibend",
       "PersonalityTrait": "Persönlichkeitsmerkmal",
       "InjuriesTrauma": "Verletzungen & Trauma",
@@ -45,26 +62,164 @@
       "OtherEquipment": "Andere Ausrüstung",
       "Favors":"Gefallen",
       "Spells":"Zauber",
+      "Tome": "Foliant",
       "Tomes":"Bücher",
       "Relics":"Relikte"
+    },
+    "UNITS": {
+      "Ft": "ft"
+    },
+    "TOOLTIPS": {
+      "ExpandSpecialRules": "{itemName} - klicken, um Spezialregeln zu erweitern",
+      "OpenArchetype": "Archetyp öffnen",
+      "UnusedXP": "Ungenutzte EP",
+      "TotalXP": "Gesamt-EP"
+    },
+    "TABS": {
+      "Description": "Beschreibung",
+      "Attributes": "Attribute",
+      "Effects": "Effekte",
+      "Character": "Charakter",
+      "NPC": "NPC",
+      "Biography": "Biografie",
+      "Vehicle": "Fahrzeug",
+      "MundaneResources": "Alltägliche Ressourcen",
+      "SupernaturalResources": "Übernatürliche Ressourcen",
+      "Background": "Hintergrund",
+      "Abilities": "Andere Fähigkeiten"
+    },
+    "VEHICLE": {
+      "Cargo": "Ladung",
+      "AbilitiesDescription": "Fähigkeiten / Beschreibung"
+    },
+    "WORDS": {
+      "Of": "von"
+    },
+    "ABBR": {
+      "Dicepool": "WP"
+    },
+    "KNACK_SHEET": {
+      "SelectedSkills": "Ausgewählte Fertigkeiten",
+      "SelectedRollTypes": "Ausgewählte Wurftypen",
+      "Any": "Beliebig",
+      "AnyOverrides": "\"Beliebig\" überschreibt andere Auswahlen.",
+      "Grants": "Gewährt (Zauber/Glaube/Intuition)",
+      "GrantsHint": "Ziehe Zauber-Items hierher, damit dieser Kniff sie beim Erwerb gewährt.",
+      "Usage": "Nutzung",
+      "Frequency": "Häufigkeit",
+      "MaxUses": "Max. Verwendungen",
+      "NpcKnackFlags": "NPC-Kniff-Flags",
+      "RollEffectsPromptSelectable": "Wurf-Effekte (auswählbar im Dialog)",
+      "Enabled": "Aktiviert",
+      "AppliesToSkills": "Gilt für Fertigkeiten",
+      "RerollAllowanceDice": "Wiederholungswurf-Kontingent (Würfel)",
+      "AppliesToRollTypes": "Gilt für Wurftypen",
+      "RollKind": {
+        "Any": "Beliebig",
+        "Complex": "Komplex",
+        "Reaction": "Reaktion",
+        "TomeUnderstand": "Foliant: Verstehen",
+        "TomeAttune": "Foliant: Einstimmen"
+      },
+      "BonusDiceDelta": "Bonuswürfel (Delta)",
+      "ResultModifierDelta": "Ergebnis-Modifikator (Delta)",
+      "Remove": "Entfernen"
+    },
+    "KNACK_USAGE": {
+      "passive": "Passiv",
+      "unlimited": "Unbegrenzt",
+      "oncePerTurn": "Einmal pro Runde",
+      "oncePerScene": "Einmal pro Szene",
+      "oncePerSession": "Einmal pro Sitzung"
+    },
+    "ARCHETYPE": {
+      "SkillCaps": "Fertigkeitsobergrenzen",
+      "TierPurchaseLimits": "Stufen-Kauflimits",
+      "TierMaxLabel": "Stufe {tier} Max",
+      "TierXpCostLabel": "Stufe {tier} EP-Kosten",
+      "KnackTiers": "Kniff-Stufen",
+      "DragDropHint": "Ziehe Kniff-Items per Drag & Drop auf eine Stufe unten, um ihre UUID hinzuzufügen (ohne Einbettung). Klicke auf einen Kniff-Namen, um die Beschreibung anzuzeigen."
     },
     "DIFFICULTY":{
       "Normal": "Normal (1)",
       "Difficult": "Schwierig (2)",
       "VeryDifficult": "Sehr Schwierig (3)"
     },
+    "DIFFICULTY_CHAT": {
+      "Normal": "Normal",
+      "Difficult": "Schwierig",
+      "VeryDifficult": "Sehr<br />Schwierig"
+    },
+    "COMBAT": {
+      "EndActivePhase": "Phase {label} beenden",
+      "EndPhase": "Phase beenden",
+      "EndCombat": "Kampf beenden",
+      "BeginCombat": "Kampf beginnen",
+      "SideInvestigators": "Ermittler",
+      "SideNPCs": "NSCs",
+      "FirstSidePrompt": "Welche Seite beginnt?",
+      "FirstSideInvestigators": "Ermittler",
+      "FirstSideNPCs": "NSCs"
+    },
+    "RARITY": {
+      "common": "Häufig",
+      "uncommon": "Ungewöhnlich",
+      "rare": "Selten",
+      "unique": "Einzigartig"
+    },
+    "BACKGROUND": {
+      "PlaceOfOrigin": "Herkunftsort",
+      "FamilyAndFriends": "Familie und Freunde",
+      "Employment": "Beschäftigung",
+      "WeeklySalary": "Wöchentliches Gehalt",
+      "Biography": "Biografie",
+      "FirstSupernaturalEncounter": "Erste übernatürliche Begegnung",
+      "NotableEnemies": "Bemerkenswerte Feinde"
+    },
+    "PERSONALITY": {
+      "Positive": "Positiv",
+      "Negative": "Negativ",
+      "NoneAssigned": "Kein Persönlichkeitstrait zugewiesen. Ziehe per Drag & Drop einen hierher."
+    },
     "PROPS":{
       "Name":"Name",
+      "Quantity": "Menge",
       "Skill":"Fertigkeit",
+      "Tier": "Stufe",
+      "Rarity": "Seltenheit",
+      "HasSpecialRules": "Hat Spezialregeln",
+      "Passengers": "Passagiere",
+      "Fuel": "Treibstoff",
+      "Cost": "Kosten",
+      "MaxRange": "Max. Reichweite",
+      "CargoCapacity": "Ladekapazität",
+      "Weapon": "Waffe",
+      "Spell": "Zauber",
       "Damage": "Schaden",
       "DamageShort": "S",
       "InjuryRating":"Verletzungsgrad",
       "InjuryRatingShort":"VG",
       "Range":"Reichweite",
+      "Engaged": "Nahkampf",
       "Ammunition":"Munition",
       "Costs": "Preis",
       "Uses":"Verwendungen",
       "Difficulty":"Schwierigkeit",
+      "RollType": "Wurftyp",
+      "RollFormula": "Wurf-Formel",
+      "NumberOfDice": "Anzahl Würfel",
+      "DieSize": "Würfelgröße",
+      "RollModifier": "Wurfmodifikator",
+      "SuccessOnXPlus": "Erfolg bei X+",
+      "BonusDice": "Bonuswürfel",
+      "Penalty": "Malus",
+      "ResultModifier": "Ergebnis-Modifikator",
+      "Advantage": "Vorteil",
+      "Disadvantage": "Nachteil",
+      "XP": "EP",
+      "Benefit": "Vorteil",
+      "Declining": "Abnehmend",
+      "Losing": "Verlieren",
       "Weight":"Gewicht",
       "SpecialRules":"Spezialregeln",
       "DefensiveBenefit":"Defensiver Vorteil"
@@ -74,10 +229,277 @@
       "RefreshInsight":"Einsicht erneuern",
       "ClearDicePool":"Zurücksetzen",
       "StrainOneself":"Sich belasten",
-      "RefreshDicePool":"Erneuern"
+      "RefreshDicePool":"Erneuern",
+      "Roll": "Würfeln",
+      "ResetAllKnackUses": "Kniff-Verwendungen zurücksetzen",
+      "ResetKnackUses": "Diesen Kniff zurücksetzen",
+      "ViewEdit": "Ansehen/Bearbeiten",
+      "Remove": "Entfernen",
+      "Reload": "Nachladen",
+      "RollInjuryTrauma": "Verletzung/Trauma würfeln"
+    },
+    "Settings": {
+      "TokenShowDicePools": {
+        "Name": "Würfelpool bei Tokens anzeigen",
+        "Hint": "Zeigt den Würfelpool bei Tokens auf der Leinwand an."
+      },
+      "TokenShowDamage": {
+        "Name": "Schaden bei Tokens anzeigen",
+        "Hint": "Zeigt den Schaden bei Tokens auf der Leinwand an."
+      },
+      "TokenOverlayAbove": {
+        "Name": "Token-Overlay über dem Token",
+        "Hint": "Wenn aktiviert, werden Würfelpool/Schaden über dem Token statt darunter angezeigt."
+      },
+      "CharacterLoadCapacity": {
+        "Name": "Tragfähigkeit des Charakters",
+        "Hint": "Automatische Berechnung der Tragfähigkeit."
+      },
+      "CharacterInjuryTable": {
+        "Name": "Verletzungstabelle (Charakter)",
+        "Hint": "Wird für Verletzungswürfe verwendet."
+      },
+      "CharacterTraumaTableVariant": {
+        "Name": "Traumatabelle-Variante (Charakter)",
+        "Hint": "Wähle aus, welche Traumatabelle für Traumawürfe verwendet wird.",
+        "Choices": {
+          "Standard": "Standard",
+          "NoPersonality": "Ohne Persönlichkeit"
+        }
+      },
+      "CharacterTraumaTable": {
+        "Name": "Traumatabelle (Charakter)",
+        "Hint": "Wird für Traumawürfe verwendet."
+      },
+      "CharacterTraumaTableNoPersonality": {
+        "Name": "Traumatabelle (Charakter, ohne Persönlichkeit)",
+        "Hint": "Optionale alternative Traumatabelle mit weniger Einträgen (ohne Effekte des Persönlichkeitsmerkmals)."
+      },
+      "NpcInjuryTable": {
+        "Name": "Verletzungstabelle (NPC)",
+        "Hint": "Wird für Verletzungswürfe verwendet."
+      },
+      "NpcTraumaTable": {
+        "Name": "Traumatabelle (NPC)",
+        "Hint": "Wird für Traumawürfe verwendet."
+      }
     },
     "Warnings": {
-      "NpcKnackDropBlocked": "Nur-NPC-Kniffe können nicht zu Charakteren hinzugefügt werden."
+      "NpcKnackDropBlocked": "Nur-NPC-Kniffe können nicht zu Charakteren hinzugefügt werden.",
+
+      "PermissionRollActor": "Du hast keine Berechtigung, für diesen Akteur zu würfeln.",
+      "PermissionStrainActor": "Du hast keine Berechtigung, diesen Akteur zu belasten.",
+      "StrainRequiresDamage": "Du kannst dich nur belasten, wenn dein Würfelpool-Maximum durch Schaden reduziert ist.",
+
+      "ArchetypeKnackDropInvalid": "Ungültige Drag&Drop-Daten für einen Archetypen-Kniff.",
+      "ArchetypeRequiredForKnacks": "Lege zuerst einen Archetypen auf diesen Akteur fest, bevor Kniffe gekauft werden.",
+      "KnackDifferentArchetype": "Dieser Kniff gehört zu einem anderen Archetypen.",
+      "ActorArchetypeInvalid": "Die Archetypen-Referenz des Akteurs ist ungültig.",
+      "KnackNotAllowedTier": "Dieser Kniff ist für Stufe {tier} im Archetypen des Akteurs nicht erlaubt.",
+      "KnackTierNotPurchasable": "Für Stufe {tier} können keine Kniffe gekauft werden (Maximum: {maxPurchasable}).",
+      "KnackTierLimitReached": "Limit für Stufe {tier} erreicht ({existingTierCount}/{maxPurchasable}).",
+      "SourceKnackResolveFailed": "Der Quell-Kniff konnte nicht aufgelöst werden.",
+
+      "ActorHasNoArchetype": "Dieser Akteur hat keinen Archetypen festgelegt.",
+      "ActorArchetypeUuidResolveFailed": "Die Archetypen-UUID des Akteurs konnte nicht aufgelöst werden.",
+      "LinkedDocNotArchetype": "Das verknüpfte Dokument ist kein Archetyp.",
+      "OpenArchetypeFailed": "Archetyp konnte nicht geöffnet werden.",
+
+      "WeaponOutOfAmmo": "{itemName} hat keine Munition mehr! Bitte nachladen, bevor es verwendet wird.",
+      "ResetKnackPermission": "Du hast keine Berechtigung, die Kniffe dieses Akteurs zurückzusetzen.",
+      "RefreshKnackUsesPermission": "Du hast keine Berechtigung, die Kniff-Verwendungen dieses Akteurs zu erneuern.",
+
+      "MacroOwnedItemsOnly": "Du kannst Makro-Buttons nur für besessene Gegenstände erstellen",
+      "MacroItemNotFound": "Gegenstand {itemName} konnte nicht gefunden werden. Du musst dieses Makro eventuell löschen und neu erstellen.",
+
+      "CombatAddCombatantsFirst": "Füge zuerst Kampfteilnehmer zum Encounter hinzu (Token-Kampfstatus umschalten) und beginne dann den Kampf.",
+
+      "RerollSelectAtLeastOneDie": "Wähle mindestens einen Würfel zum erneuten Würfeln aus.",
+
+      "RollKnacksNotApplicable": "Ein oder mehrere ausgewählte Kniffe gelten nicht mehr für diesen Wurf.",
+      "RollReactionRequiresOneDie": "Reaktionswürfe erfordern 1 Würfel aus deinem Pool.",
+      "RollAdvDisadvRequiresDie": "Vorteil/Nachteil erfordert mindestens 1 gewürfelten Würfel.",
+      "RollMustRollAtLeastOneDie": "Du musst mindestens 1 Würfel würfeln.",
+      "RollPostProcessingFailed": "Nachbearbeitung nach dem Wurf ist fehlgeschlagen.",
+
+      "InjuryTraumaFallingModeInjuryOnly": "Der Fallmodus gilt nur für Verletzungswürfe.",
+      "InjuryTraumaFallingHeightMin": "Die Fallhöhe muss mindestens {minFt} ft betragen.",
+
+      "SkillRerollInvalidCard": "Diese Chatkarte kann nicht erneut gewürfelt werden.",
+      "SkillRerollActorResolveFailed": "Der Akteur für diesen Wurf konnte nicht aufgelöst werden.",
+      "SkillRerollPermission": "Du hast keine Berechtigung, diesen Wurf erneut zu würfeln.",
+      "SkillRerollNoSelectableDice": "Es wurden keine neu würfelbaren Würfel ausgewählt.",
+
+      "RollTableEmptyResultName": "Würfeltabelle '{tableName}' hat zwar einen passenden Bereich, aber einen leeren Ergebnisnamen. Lege einen Namen für das Würfeltabellen-Ergebnis fest, sonst verwendet das System die eingebauten Fallback-Tabellen.",
+      "RollTableOverflowAssumption": "Würfeltabelle '{tableName}' endet bei {tableMax}; behandle den obersten Eintrag als {tableMax}+ für Gesamt {total}.",
+
+      "ItemOpenSourceKnackGmOnly": "Nur die SL kann Quell-Kniff-Dokumente aus einem Archetypen öffnen/bearbeiten.",
+      "ItemUuidResolveFailed": "Die abgelegte UUID konnte nicht aufgelöst werden.",
+      "ItemNoSheetForDocument": "Für dieses Dokument ist kein Sheet verfügbar.",
+      "ItemOpenUuidFailed": "Das UUID-Dokument konnte nicht geöffnet werden.",
+      "ItemTomeModifySpellsGmOnly": "Nur die SL kann die Zauber eines Folianten ändern.",
+      "ItemTomeModifySpellListOrDifficultyGmOnly": "Nur die SL kann die Zauberliste oder den Verständnis-Schwierigkeitsgrad eines Folianten ändern.",
+      "ItemTomeMustBeOwnedToUnderstand": "Dieser Foliant muss einem Akteur gehören, um verstanden zu werden.",
+      "ItemTomeMustBeOwnedToAttune": "Dieser Foliant muss einem Akteur gehören, um darauf eingestimmt zu werden.",
+      "ItemTomeMustUnderstandBeforeAttune": "Du musst diesen Folianten verstehen, bevor du dich darauf einstimmen kannst.",
+      "ItemTomeClearStateGmOnly": "Nur die SL kann den verstanden/eingestimmt-Status eines Folianten zurücksetzen.",
+      "ItemArchetypeModifyAllowedKnacksGmOnly": "Nur die SL kann die erlaubten Kniffe eines Archetyps ändern.",
+      "ItemArchetypeModifyGmOnly": "Nur die SL kann einen Archetypen ändern.",
+      "ItemArchetypeDropTierRequired": "Lege den Kniff auf eine konkrete Stufe ab.",
+      "ItemArchetypeDropOnlyKnacks": "Auf einen Archetypen können nur Kniff-Gegenstände abgelegt werden.",
+      "ItemTomeDropModifyGmOnly": "Nur die SL kann Zauber zu einem Folianten hinzufügen oder entfernen.",
+      "ItemTomeDropOnlySpells": "Auf einen Folianten können nur Zauber abgelegt werden.",
+      "ItemKnackDropOnlySpells": "Auf die Kniff-Gewährungsliste können nur Zauber abgelegt werden.",
+      "ItemTomeInaccessibleSpells": "Dieser Foliant enthält {count} Zauber, die du nicht ansehen darfst."
+    },
+    "Info": {
+      "KnackAlreadyOwnedUpdated": "Kniff bereits vorhanden; Stufe wurde an den Archetypen angepasst.",
+      "ArchetypeSet": "Archetyp auf {archetypeName} gesetzt.",
+      "TomeAlreadyUnderstood": "Dieser Foliant ist bereits verstanden.",
+      "TomeNoSpellsToLearn": "Dieser Foliant enthält keine Zauber, die gelernt werden können.",
+      "TomeLearnedSpells": "Aus dem Folianten {count} Zauber gelernt.",
+      "TomeNoNewSpellsLearned": "Aus diesem Folianten wurden keine neuen Zauber gelernt.",
+      "TomeAttuned": "Auf {tomeName} eingestimmt.",
+      "TomeClearedUnderstanding": "Verständnis des Folianten zurückgesetzt.",
+      "ArchetypeKnackAlreadyAddedTier": "Kniff wurde dieser Stufe bereits hinzugefügt.",
+      "TomeSpellAlreadyInTome": "Dieser Zauber ist bereits in diesem Folianten.",
+      "KnackSpellAlreadyGranted": "Dieser Zauber wird von diesem Kniff bereits gewährt."
+    },
+    "INSIGHT": {
+      "Errors": {
+        "PermissionSpend": "Du hast keine Berechtigung, für diesen Akteur Einsicht auszugeben.",
+        "PermissionRefresh": "Du hast keine Berechtigung, für diesen Akteur Einsicht zu erneuern.",
+        "OnlyCharacterSpend": "Nur Charakter-Akteure können Einsicht ausgeben.",
+        "OnlyCharacterRefresh": "Nur Charakter-Akteure können Einsicht erneuern.",
+        "NoneRemaining": "{actorName} hat keine Einsicht mehr.",
+        "InsufficientRemaining": "{actorName} hat nicht genug verbleibende Einsicht.",
+        "AmountAtLeastOne": "Die auszugebende Einsicht muss mindestens 1 betragen."
+      }
+    },
+    "DICEPOOL": {
+      "Chat": {
+        "Refresh": "Würfelpool erneuern",
+        "Reset": "Würfelpool zurücksetzen"
+      }
+    },
+    "InjuryTrauma": {
+      "Fallback": {
+        "NoMatchingEntry": "Kein passender Tabelleneintrag",
+        "Trauma": {
+          "SubtleStrangeness": "Subtile Seltsamkeit",
+          "Shocked": "Schockiert",
+          "Stunned": "Benommen",
+          "OvercomeByHorror": "Vom Grauen überwältigt",
+          "MindUndone": "Verstand zerrüttet",
+          "LostForever": "Für immer verloren"
+        },
+        "Injury": {
+          "HeavyBlow": "Schwerer Schlag",
+          "Slowed": "Verlangsamt",
+          "NastyCut": "Übler Schnitt",
+          "Concussed": "Gehirnerschütterung",
+          "InjuredArm": "Verletzter Arm",
+          "InjuredLeg": "Verletztes Bein",
+          "LossOfASense": "Verlust eines Sinns",
+          "SeverelyInjured": "Schwer verletzt",
+          "Comatose": "Komatös",
+          "Dire": "Kritisch",
+          "Dead": "Tot"
+        }
+      }
+    },
+    "Chat": {
+      "RollResult": {
+        "ReactionRollTooltip": "Reaktionswurf",
+        "DifficultyFallback": "Schwierigkeit {successesNeeded}",
+        "Reroll": "Neu würfeln",
+        "Success": "ERFOLG",
+        "Failure": "MISSERFOLG",
+        "HorrorDiceHint": "Horrorwürfel sind schwarz markiert.",
+        "HorrorDiceTooltip": "Horrorwürfel sind schwarz markiert.",
+        "RerollDice": "Würfel neu würfeln",
+        "RollDetails": "Wurfdetails",
+        "Advantage": "Vorteil",
+        "Disadvantage": "Nachteil",
+        "Penalty": "Malus -{penalty}",
+        "Result": "Ergebnis +{resultModifier}",
+        "BonusDice": "Bonuswürfel: {bonusDice}",
+        "DroppedDice": "Fallengelassene Würfel",
+        "RawDiceResult": "Unverändertes Würfelergebnis",
+        "Successes": "Erfolge",
+        "Failures": "Fehlschläge",
+        "Trauma": "Trauma",
+        "Damage": "Schaden",
+        "InflictInjury": "Verletzung zufügen",
+        "DicePoolUnchangedReroll": "Würfelpool: unverändert (neu gewürfelt)",
+        "DicePoolChanged": "Würfelpool: {oldDicePoolValue} → {newDicePoolValue}"
+      },
+      "DicepoolReset": {
+        "Changed": "Würfelpool von {actorName} änderte sich von {oldDicePoolValue} auf {newDicePoolValue}.",
+        "HealedDamage": "{healedDamage} Schaden geheilt"
+      },
+      "Insight": {
+        "LabelSpent": "Einsicht ausgegeben",
+        "LabelRefreshed": "Einsicht erneuert",
+        "Spent": "{actorName} gab {spent} Einsicht aus ({oldRemaining} → {newRemaining}/{limit}).",
+        "Refreshed": "{actorName}s Einsicht wurde von {oldRemaining} auf {newRemaining} erneuert."
+      },
+      "InjuryTrauma": {
+        "FallingTooltip": "Fallen",
+        "StrainTooltip": "Sich belasten",
+        "StrainNote": "Wende die resultierende Verletzung am Ende des Zuges / nach 1 komplexen Aktion an.",
+        "FallingLabel": "Sturzverletzung",
+        "HeightLabel": "Höhe",
+        "Roll": "Wurf",
+        "Die": "Würfel",
+        "Dice": "Würfel",
+        "DieTotal": "Würfelsumme",
+        "Modifier": "Modifikator",
+        "Total": "Gesamt",
+        "Table": "Tabelle"
+      }
+    },
+    "Dialog": {
+      "ResetKnacks": {
+        "Title": "Kniff-Verwendungen zurücksetzen",
+        "Prompt": "Welche Kniff-Verwendungen zurücksetzen?",
+        "OncePerTurn": "Einmal pro Zug",
+        "OncePerScene": "Einmal pro Szene",
+        "OncePerSession": "Einmal pro Sitzung",
+        "All": "Alle"
+      },
+      "DiceRoll": {
+        "Knacks": "Kniffe",
+        "KnacksHint": "Wähle Kniffe aus, die angewendet werden sollen. Verwendungen werden beim Würfeln ausgegeben.",
+        "SelectedEffects": "Ausgewählte Effekte",
+        "Tier": "Stufe {tier}",
+        "RefreshUses": "Verwendungen erneuern",
+        "None": "Keine",
+        "AdvPlusDisadv": "Vorteil + Nachteil"
+      },
+      "SpendInsight": {
+        "Remaining": "Verbleibend: {remaining}/{limit}",
+        "Spend": "Ausgeben"
+      },
+      "InjuryTrauma": {
+        "RollType": "Wurftyp",
+        "Mode": "Modus",
+        "Standard": "Standard",
+        "Falling": "Fallen",
+        "Die": "Würfel",
+        "FallingHeightFt": "Fallhöhe (ft)",
+        "Modifier": "Modifikator"
+      },
+      "RerollDice": {
+        "SuccessOn": "Erfolg bei",
+        "RerollSelected": "Ausgewählte neu würfeln",
+        "DieTypeHorror": "Horror",
+        "DieTypeNormal": "Normal",
+        "Raw": "Roh",
+        "Final": "Final",
+        "Dropped": "fallen gelassen",
+        "CannotReroll": "nicht neu würfelbar"
+      }
     },
     "MONEY": {
       "Actions": {
@@ -125,16 +547,24 @@
       "resolve": "Entschlossenheit",
       "lore": "Lore"
     },
-    "TABS": {
-      "Character": "Charakter",
-      "NPC": "NPC",
-      "Biography": "Biografie",
-      "Vehicle": "Fahrzeug",
-      "MundaneResources": "Alltägliche Ressourcen",
-      "SupernaturalResources": "Übernatürliche Ressourcen",
-      "Background": "Hintergrund"
+    "SKILL_SHORT": {
+      "agility": "AGI",
+      "athletics": "ATH",
+      "wits": "WIT",
+      "presence": "PRES",
+      "intuition": "INT",
+      "knowledge": "KNOW",
+      "resolve": "RES",
+      "meleeCombat": "MELEE",
+      "rangedCombat": "RANGED",
+      "lore": "LORE"
     },
     "NPC": {
+      "NewKnack": "Neuer Kniff",
+      "NewWeakness": "Neue Schwäche",
+      "NewEquipment": "Neue Ausrüstung",
+      "Weakness": "Schwäche",
+      "Abilities": "Fähigkeiten",
       "Profile": {
         "generic": "Allgemeiner NPC",
         "named": "Benannter Charakter",
@@ -164,7 +594,9 @@
       "specialRules": "Spezialregeln",
       "ammunitionMax": "Maximale Munition",
       "reloadCost": "Nachladekosten",
-      "weight": "Gewicht"
+      "weight": "Gewicht",
+      "reloadAfterUsage": "Nach Gebrauch nachladen",
+      "isRelic": "Relikt"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Defensiver Vorteil",
@@ -174,11 +606,26 @@
     "Tome": {
       "alternativeNames": "Alternative Names",
       "knowledgeBonus": "Knowledge Bonus",
-      "rarity": "Rarity"
+      "rarity": "Rarity",
+      "spells": "Zauber",
+      "source": "Quelle",
+      "dropSpellHint": "(SL: ziehe einen Zauber hierher)",
+      "dropSpellTarget": "Lege Zauber-Items auf diesen Folianten (nur SL).",
+      "attunementDifficulty": "Schwierigkeit: Verstehen",
+      "difficultyNormal": "Normal (1)",
+      "difficultyDifficult": "Schwierig (2)",
+      "difficultyVeryDifficult": "Sehr Schwierig (3)",
+      "understood": "Verstanden",
+      "attuned": "Eingestimmt",
+      "understandButton": "Verstehen",
+      "attuneButton": "Einstimmen",
+      "clearUnderstoodButton": "Verstanden zurücksetzen",
+      "inaccessibleSpells": "Dieser Foliant enthält {count} Zauber, die du nicht ansehen darfst."
     },
     "UsefulItem":{
       "uses": "Uses",
-      "weight": "Weight"
+      "weight": "Weight",
+      "specialRules": "Spezialregeln"
     },
     "PersonalityTrait": {
       "positive": "Positive Trait",
@@ -189,6 +636,9 @@
       "benefit": "Benefit",
       "decliningText": "Declining",
       "losingText": "Losing"
+    },
+    "Spell": {
+      "difficulty": "Schwierigkeit"
     }
   },
   "TYPES": {

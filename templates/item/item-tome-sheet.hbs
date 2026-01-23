@@ -8,12 +8,12 @@
         </div>
         <div class="form-group">
             <label for="rarity">{{localize "ITEM.Tome.rarity"}}</label>
-            Common<input type="checkbox" id="rarity" name="system.rarity.common" {{#if
+            {{localize "ARKHAM_HORROR.RARITY.common"}}<input type="checkbox" id="rarity" name="system.rarity.common" {{#if
                 system.rarity.common}}checked{{/if}} />
-            Uncommon<input type="checkbox" id="rarity" name="system.rarity.uncommon" {{#if
+            {{localize "ARKHAM_HORROR.RARITY.uncommon"}}<input type="checkbox" id="rarity" name="system.rarity.uncommon" {{#if
                 system.rarity.uncommon}}checked{{/if}} />
-            Rare<input type="checkbox" id="rarity" name="system.rarity.rare" {{#if system.rarity.rare}}checked{{/if}} />
-            Unique<input type="checkbox" id="rarity" name="system.rarity.unique" {{#if
+            {{localize "ARKHAM_HORROR.RARITY.rare"}}<input type="checkbox" id="rarity" name="system.rarity.rare" {{#if system.rarity.rare}}checked{{/if}} />
+            {{localize "ARKHAM_HORROR.RARITY.unique"}}<input type="checkbox" id="rarity" name="system.rarity.unique" {{#if
                 system.rarity.unique}}checked{{/if}} />
         </div>
 
@@ -89,7 +89,7 @@
 
         <ol class='items-list'>
             <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize "ARKHAM_HORROR.PROPS.Name"}}</div>
                 <div class='item-prop'>{{localize "ITEM.Tome.source"}}</div>
                 <div class='item-controls'></div>
             </li>
@@ -104,12 +104,12 @@
                     <div class='item-prop'>{{spell.sourceLabel}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="openUuidItem" data-uuid="{{spell.uuid}}"
-                            title='{{localize "DOCUMENT.View" type=' spell'}}'>
+                            title='{{localize "DOCUMENT.View" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-eye'></i>
                         </a>
                         {{#if ../isGM}}
                         <a class='item-control item-delete' data-action="removeTomeSpell" data-uuid="{{spell.uuid}}"
-                            title='{{localize "DOCUMENT.Delete" type=' spell'}}'>
+                            title='{{localize "DOCUMENT.Delete" type=(localize "TYPES.Item.spell")}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                         {{/if}}

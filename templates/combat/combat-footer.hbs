@@ -1,19 +1,19 @@
 <nav class="combat-controls" data-tooltip-direction="UP">
   {{#if side.canControl}}
     {{#if side.started}}
-      <button type="button" class="combat-control combat-control-lg" data-action="endSidePhase" data-tooltip="End {{side.activeLabel}} Phase">
+      <button type="button" class="combat-control combat-control-lg" data-action="endSidePhase" data-tooltip="{{localize "ARKHAM_HORROR.COMBAT.EndActivePhase" label=side.activeLabel}}">
         <i class="fa-solid fa-check" inert></i>
-        <span>End Phase</span>
+        <span>{{localize "ARKHAM_HORROR.COMBAT.EndPhase"}}</span>
       </button>
 
-      <button type="button" class="combat-control combat-control-lg" data-action="endCombat" data-tooltip="End Combat">
+      <button type="button" class="combat-control combat-control-lg" data-action="endCombat" data-tooltip="{{localize "ARKHAM_HORROR.COMBAT.EndCombat"}}">
         <i class="fa-solid fa-flag-checkered" inert></i>
-        <span>End Combat</span>
+        <span>{{localize "ARKHAM_HORROR.COMBAT.EndCombat"}}</span>
       </button>
     {{else}}
       <button type="button" class="combat-control combat-control-lg" data-action="beginSideCombat">
         <i class="fa-solid fa-swords" inert></i>
-        <span>Begin Combat</span>
+        <span>{{localize "ARKHAM_HORROR.COMBAT.BeginCombat"}}</span>
       </button>
     {{/if}}
   {{/if}}

@@ -54,7 +54,7 @@ export class MoneyAdjustApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const mode = this.mode === "spend" ? "spend" : this.mode === "set" ? "set" : "add";
     const titleKey = mode === "spend" ? "ARKHAM_HORROR.MONEY.WindowTitle.Spend" : mode === "set" ? "ARKHAM_HORROR.MONEY.WindowTitle.Set" : "ARKHAM_HORROR.MONEY.WindowTitle.Add";
-    this.options.window.title = game.i18n.localize(titleKey);
+    this.options.window.title = game?.i18n?.localize ? game.i18n.localize(titleKey) : "Money";
 
     // reset each open
     this.moneyState.amountRaw = "0.00";

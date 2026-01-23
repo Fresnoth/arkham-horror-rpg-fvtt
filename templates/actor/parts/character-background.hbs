@@ -1,24 +1,24 @@
 <section class="tab {{tabs.background.id}} {{tabs.background.cssClass}} scrollable" id="background" data-tab="{{tabs.background.id}}" data-group="{{tabs.background.group}}">
     <div class="resource-group-styled">
 <div class="form-group">
-    <label for="placeOfOrigin">Place of Origin</label>
+    <label for="placeOfOrigin">{{localize "ARKHAM_HORROR.BACKGROUND.PlaceOfOrigin"}}</label>
     <input type="text" name="system.background.placeOfOrigin" id="placeOfOrigin" value="{{system.background.placeOfOrigin}}">
 </div>
 <div class="form-group">
-    <label for="familyAndFriends">Family and Friends</label>
+    <label for="familyAndFriends">{{localize "ARKHAM_HORROR.BACKGROUND.FamilyAndFriends"}}</label>
     <input type="text" name="system.background.familyAndFriends" id="familyAndFriends" value="{{system.background.familyAndFriends}}">
 </div>
 <div class="form-group">
-    <label for="employment">Employment</label>
+    <label for="employment">{{localize "ARKHAM_HORROR.BACKGROUND.Employment"}}</label>
     <input type="text" name="system.background.employment" id="employment" value="{{system.background.employment}}">
 </div>
 <div class="form-group">
-    <label for="weeklySalary">Weekly Salary</label>
+    <label for="weeklySalary">{{localize "ARKHAM_HORROR.BACKGROUND.WeeklySalary"}}</label>
     <input type="number" name="system.background.weeklySalary" id="weeklySalary" value="{{system.background.weeklySalary}}" data-dtype="Number">
 </div>
 </div>
 <div class="form-group-editor mt-10">
-    <h5>Biography</h5>
+    <h5>{{localize "ARKHAM_HORROR.BACKGROUND.Biography"}}</h5>
     <prose-mirror name="system.biography" button="true" editable="{{editable}}" toggled="false"
             value="{{system.biography}}">
             {{{biographyHTML}}}
@@ -26,14 +26,14 @@
 </div>
 
 <div class="form-group-editor mt-10">
-    <h5>First Supernatural Encounter</h5>
+    <h5>{{localize "ARKHAM_HORROR.BACKGROUND.FirstSupernaturalEncounter"}}</h5>
     <prose-mirror name="system.background.firstSupernaturalEncounter" button="true" editable="{{editable}}" toggled="false"
             value="{{system.background.firstSupernaturalEncounter}}">
             {{{firstSupernaturalEncounterHTML}}}
         </prose-mirror>
 </div>
 <div class="form-group-editor mt-10">
-    <h5>Notable Enemies</h5>
+    <h5>{{localize "ARKHAM_HORROR.BACKGROUND.NotableEnemies"}}</h5>
     <prose-mirror name="system.background.notableEnemies" button="true" editable="{{editable}}" toggled="false"
             value="{{system.background.notableEnemies}}">
             {{{notableEnemiesHTML}}}

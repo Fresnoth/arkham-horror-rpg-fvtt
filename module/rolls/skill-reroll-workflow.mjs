@@ -35,16 +35,16 @@ export class SkillRerollWorkflow {
   static fromMessage({ message, actor = null, selectedIndices = [] } = {}) {
     const rollFlags = message?.flags?.[SYSTEM_ID];
     if (!rollFlags || rollFlags.rollCategory !== "skill") {
-      throw new Error("That chat card cannot be rerolled.");
+      throw new Error(game.i18n.localize("ARKHAM_HORROR.Warnings.SkillRerollInvalidCard"));
     }
 
     const resolvedActor = actor ?? resolveActorFromMessage(message);
     if (!resolvedActor) {
-      throw new Error("Could not resolve the actor for this roll.");
+      throw new Error(game.i18n.localize("ARKHAM_HORROR.Warnings.SkillRerollActorResolveFailed"));
     }
 
     if (!canUserReroll({ actor: resolvedActor })) {
-      throw new Error("You do not have permission to reroll this roll.");
+      throw new Error(game.i18n.localize("ARKHAM_HORROR.Warnings.SkillRerollPermission"));
     }
 
     return new SkillRerollWorkflow({
@@ -72,7 +72,7 @@ export class SkillRerollWorkflow {
       .filter(({ d, idx }) => chosen.has(idx) && isSelectable(d));
 
     if (targets.length === 0) {
-      throw new Error("No selectable dice were chosen.");
+      throw new Error(game.i18n.localize("ARKHAM_HORROR.Warnings.SkillRerollNoSelectableDice"));
     }
 
     const normalIndices = targets.filter((x) => !x.d.isHorror).map((x) => x.idx);
