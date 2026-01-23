@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.32
+- massive localization sweep
+  
 ## 13.0.31
 - added other abilities tab to npcs
   

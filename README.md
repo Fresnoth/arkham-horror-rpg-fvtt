@@ -5,7 +5,6 @@
 This is an unoffical system implementation for Foundry VTT of the Arkham Horror RPG. The [Arkham Horror RPG](https://www.edge-studio.net/categories-games/arkham/) is made by EDGE Studio.
 
 
-
 This Foundry VTT implementation has no rules text, items or whatsoever from the official books. You need to create
 everything on your own. This system provides only the necessary sheets and item types for FoundryVTT to play Arkham Horror RPG via Foundry VTT.
 
@@ -14,8 +13,12 @@ everything on your own. This system provides only the necessary sheets and item 
 - npc sheets
 - vehicle sheets
 - item types: weapons, protective equipment, useful items, relics, tomes, injuries, spells, favors, knacks, trauma, archetypes
-- basic dice rolling
-  
+- basic dice rolling, rerolling dice etc
+
+## Languages
+ - english
+ - german (fan translated)
+
 ## ToDo
 - bug fixing
 - styling
@@ -35,3 +38,6 @@ everything on your own. This system provides only the necessary sheets and item 
     * [Alegreya](https://huertatipografica.com/en/fonts/alegreya-ht-pro), by Huerta Tipografica, licensed under [SIL OFL 1.1](https://fonts.google.com/specimen/Alegreya/license)
     * [Teutonic](https://online-fonts.com/fonts/teutonic), by Peter Wiegel, licensed under SIL OFL 1.1
 * This system is using icons from [Game Icons.net](https://game-icons.net/) licensed under CC BY 4.0
+
+## World example with user filled data
+![Example Screenshot](example_screenshot_13030.webp)
