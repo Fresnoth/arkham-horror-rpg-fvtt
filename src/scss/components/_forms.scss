@@ -648,6 +648,37 @@
   height: 100%;
 }
 
+// Personality trait sheet stacks two editors; the generic 100% height causes overlap.
+// Important: only set display when active so we don't break Foundry's tab hiding.
+.personality-trait-form.active {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.personality-trait-form .form-group-rich-editor > h4 {
+  margin: 0 0 5px;
+}
+
+.personality-trait-form .form-group-rich-editor {
+  height: auto;
+}
+
+// Foundry's ProseMirror markup uses an .editor wrapper; globally we set it to 100% height
+// for single-editor tabs, but here we need it to size to content to avoid overlap.
+.personality-trait-form .editor,
+.personality-trait-form .editor.prosemirror {
+  height: auto;
+}
+
+.personality-trait-form prose-mirror {
+  display: block;
+}
+
+.personality-trait-form prose-mirror .editor-content {
+  min-height: 120px;
+}
+
 .roll-button {
   margin: 5px;
   margin-top: 25px;
