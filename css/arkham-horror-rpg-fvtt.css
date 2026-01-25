@@ -1575,6 +1575,27 @@ li.chat-message.message > .message-content {
 .system-arkham-horror-rpg-fvtt .form-group-rich-editor {
   height: 100%;
 }
+.system-arkham-horror-rpg-fvtt .personality-trait-form.active {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.system-arkham-horror-rpg-fvtt .personality-trait-form .form-group-rich-editor > h4 {
+  margin: 0 0 5px;
+}
+.system-arkham-horror-rpg-fvtt .personality-trait-form .form-group-rich-editor {
+  height: auto;
+}
+.system-arkham-horror-rpg-fvtt .personality-trait-form .editor,
+.system-arkham-horror-rpg-fvtt .personality-trait-form .editor.prosemirror {
+  height: auto;
+}
+.system-arkham-horror-rpg-fvtt .personality-trait-form prose-mirror {
+  display: block;
+}
+.system-arkham-horror-rpg-fvtt .personality-trait-form prose-mirror .editor-content {
+  min-height: 120px;
+}
 .system-arkham-horror-rpg-fvtt .roll-button {
   margin: 5px;
   margin-top: 25px;

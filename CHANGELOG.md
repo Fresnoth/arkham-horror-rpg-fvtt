@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.33
+- styling fixes for personality traits
+
 ## 13.0.32
 - massive localization sweep
   
