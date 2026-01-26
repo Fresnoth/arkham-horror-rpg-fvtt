@@ -18,6 +18,16 @@
     border-bottom: 0;
 }
 
+// Weapon/spell name header rows only: ensure the title area is width-constrained
+// so long item names can ellipsize instead of overflowing the chat card.
+.arkham-roll-header--item-name {
+    overflow: hidden;
+}
+
+.arkham-roll-header--item-name .arkham-roll-heading {
+    flex: 1 1 auto;
+}
+
 .arkham-roll-heading {
     display: flex;
     align-items: center;
@@ -113,6 +123,25 @@
     font-weight: 800;
     letter-spacing: 1.2px;
     text-transform: uppercase;
+    white-space: nowrap;
+}
+
+// Weapon/spell names in chat can be arbitrarily long.
+// Ellipsis is applied to the inner text node because `text-overflow` is unreliable on flex containers.
+.arkham-roll-kind--item-name {
+    max-width: 100%;
+    min-width: 0;
+}
+
+.arkham-roll-kind.arkham-roll-kind--item-name {
+    width: 100%;
+}
+
+.arkham-roll-kind--item-name .arkham-roll-kind__text {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 

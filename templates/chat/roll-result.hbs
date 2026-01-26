@@ -168,9 +168,9 @@
         </div>
 
         {{#if weaponUsed}}
-            <header class="arkham-roll-header">
+            <header class="arkham-roll-header arkham-roll-header--item-name">
                 <div class="arkham-roll-heading">
-                    <span class="arkham-roll-kind">{{weaponUsed.name}}</span>
+                    <span class="arkham-roll-kind arkham-roll-kind--item-name" title="{{weaponUsed.name}}"><span class="arkham-roll-kind__text">{{weaponUsed.name}}</span></span>
                 </div>
             </header>
             
@@ -194,9 +194,9 @@
         {{/if}}
 
         {{#if spellUsed}}
-            <header class="arkham-roll-header">
+            <header class="arkham-roll-header arkham-roll-header--item-name">
                 <div class="arkham-roll-heading">
-                    <span class="arkham-roll-kind">{{spellUsed.name}}</span>
+                    <span class="arkham-roll-kind arkham-roll-kind--item-name" title="{{spellUsed.name}}"><span class="arkham-roll-kind__text">{{spellUsed.name}}</span></span>
                 </div>
             </header>
             {{#if spellHasSpecialRules}}
