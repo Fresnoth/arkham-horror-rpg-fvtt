@@ -73,50 +73,68 @@
     <footer class="dialog-footer dialog-footer--primary">
         <button type="button" class="roll-button" data-action="clickedRoll"><i class="fa-solid fa-dice"></i> {{localize "ARKHAM_HORROR.ACTIONS.Roll"}}</button>
     </footer>
+    
+    {{#if injuryImpact.hasAny}}
+    <details class="arkham-roll-details">
+        <summary class="arkham-roll-details-summary">
+            {{localize "ARKHAM_HORROR.Dialog.DiceRoll.InjuriesAffectingRoll"}}: -{{injuryImpact.penalty}} ({{localize "ARKHAM_HORROR.Dialog.DiceRoll.TotalPenalty"}}: {{totalPenalty}})
+        </summary>
+        <div class="arkham-roll-details-body">
+            <div class="notes">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.InjuriesAutoAppliedHint"}}</div>
+            <ul class="arkham-injury-impact-list">
+                {{#each injuryImpact.entries as |e|}}
+                    <li>{{e.name}} (x{{e.count}}) — {{localize "ARKHAM_HORROR.Dialog.DiceRoll.PenaltyMinus" penalty=e.penalty}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </details>
+    {{/if}}
 
     {{#if knackChoices}}
-    <hr />
-    <div class="form-group knack-choices">
-        <label>{{localize "ARKHAM_HORROR.LABELS.Knacks"}}</label>
-        <div class="notes">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.KnacksHint"}}</div>
+    <details class="arkham-roll-details" data-role="knacksDetails">
+        <summary class="arkham-roll-details-summary">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.KnacksAffectingRoll" selected=knackSummary.selected available=knackSummary.available}}</summary>
+        <div class="arkham-roll-details-body">
+            <div class="notes">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.KnacksHint"}}</div>
 
-        {{#if knackPreview.hasSelection}}
-        <div class="knack-preview">
-            <div class="knack-preview__title">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.SelectedEffects"}}</div>
-            <div class="knack-preview__text">{{knackPreview.text}}</div>
-        </div>
-        {{/if}}
-
-        {{#each knackChoices as |k|}}
-        <div class="flexrow knack-choice-row {{#if k.checked}}is-checked{{/if}} {{#if k.disabled}}is-disabled{{/if}}">
-            <input type="checkbox" name="selectedKnackIds" value="{{k.id}}" {{#if k.checked}}checked{{/if}} {{#if k.disabled}}disabled{{/if}}>
-            <span>
-                {{localize "ARKHAM_HORROR.Dialog.DiceRoll.Tier" tier=k.tier}} - {{k.name}}
-                {{#if k.effect}}
-                    <span class="knack-effect">— {{k.effect.text}}</span>
-                {{/if}}
-                {{#if k.availabilityNote}}
-                    <span class="knack-availability">— {{k.availabilityNote}}</span>
-                {{/if}}
-                <small class="notes">
-                    ({{k.frequency}}
-                    {{#if (eq k.frequency "passive")}}
-                    {{else}}
-                        {{#if (eq k.frequency "unlimited")}}
-                        {{else}}
-                            : {{k.remaining}}/{{k.max}}
-                        {{/if}}
-                    {{/if}})
-                </small>
-            </span>
-
-            {{#if k.showRefresh}}
-            <button type="button" class="knack-refresh" data-action="refreshKnackUses" data-item-id="{{k.id}}" title="{{localize "ARKHAM_HORROR.Dialog.DiceRoll.RefreshUses"}}" aria-label="{{localize "ARKHAM_HORROR.Dialog.DiceRoll.RefreshUses"}}">
-                <i class="fas fa-rotate-right"></i>
-            </button>
+            {{#if knackPreview.hasSelection}}
+            <div class="knack-preview">
+                <div class="knack-preview__title">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.SelectedEffects"}}</div>
+                <ul class="arkham-injury-impact-list arkham-knack-preview-list">
+                    {{#each knackPreview.entries as |t|}}
+                        <li>{{t}}</li>
+                    {{/each}}
+                </ul>
+            </div>
             {{/if}}
+
+            <ul class="arkham-injury-impact-list arkham-knack-impact-list">
+                {{#each knackChoices as |k|}}
+                <li class="arkham-knack-impact-item {{#if k.checked}}is-checked{{/if}} {{#if k.disabled}}is-disabled{{/if}}">
+                    <label class="arkham-knack-impact-main">
+                        <input type="checkbox" name="selectedKnackIds" value="{{k.id}}" {{#if k.checked}}checked{{/if}} {{#if k.disabled}}disabled{{/if}}>
+                        <span class="arkham-knack-impact-name">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.Tier" tier=k.tier}} - {{k.name}}</span>
+                    </label>
+
+                    {{#if k.effect}}
+                    <span class="arkham-knack-impact-effect">{{k.effect.text}}</span>
+                    {{/if}}
+
+                    <small class="arkham-knack-impact-meta">
+                        ({{k.useText}}){{#if k.availabilityNote}} — {{k.availabilityNote}}{{/if}}
+                    </small>
+
+                    {{#if k.showRefresh}}
+                    <button type="button" class="knack-refresh" data-action="refreshKnackUses" data-item-id="{{k.id}}" title="{{localize "ARKHAM_HORROR.Dialog.DiceRoll.RefreshUses"}}" aria-label="{{localize "ARKHAM_HORROR.Dialog.DiceRoll.RefreshUses"}}">
+                        <i class="fas fa-rotate-right"></i>
+                    </button>
+                    {{/if}}
+                </li>
+                {{/each}}
+            </ul>
         </div>
-        {{/each}}
-    </div>
+    </details>
     {{/if}}
+
 </form>
+
+ 

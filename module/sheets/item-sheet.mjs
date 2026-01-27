@@ -100,13 +100,18 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     async addKnackRollEffectKey(event, target) {
         event.preventDefault()
-        if (this.document.type !== 'knack') return
+        if (this.document.type !== 'knack' && this.document.type !== 'injury') return
         if (!this.isEditable) return
 
         const group = String(target?.dataset?.group ?? '')
         if (!group) return
 
-        const selectName = group === 'skillKeys' ? '_knackSkillKey' : group === 'rollKinds' ? '_knackRollKind' : null
+        const type = String(this.document.type ?? '')
+        const selectName = group === 'skillKeys'
+            ? (type === 'injury' ? '_injurySkillKey' : '_knackSkillKey')
+            : group === 'rollKinds'
+                ? (type === 'injury' ? '_injuryRollKind' : '_knackRollKind')
+                : null
         if (!selectName) return
 
         const select = this.element?.querySelector?.(`select[name="${selectName}"]`)
@@ -132,7 +137,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     async removeKnackRollEffectKey(event, target) {
         event.preventDefault()
-        if (this.document.type !== 'knack') return
+        if (this.document.type !== 'knack' && this.document.type !== 'injury') return
         if (!this.isEditable) return
 
         const group = String(target?.dataset?.group ?? '')

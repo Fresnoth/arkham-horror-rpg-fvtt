@@ -73,7 +73,8 @@
       "ExpandSpecialRules": "{itemName} - klicken, um Spezialregeln zu erweitern",
       "OpenArchetype": "Archetyp öffnen",
       "UnusedXP": "Ungenutzte EP",
-      "TotalXP": "Gesamt-EP"
+      "TotalXP": "Gesamt-EP",
+      "ToggleItemActive": "Aktiv umschalten"
     },
     "TABS": {
       "Description": "Beschreibung",
@@ -124,6 +125,20 @@
       "BonusDiceDelta": "Bonuswürfel (Delta)",
       "ResultModifierDelta": "Ergebnis-Modifikator (Delta)",
       "Remove": "Entfernen"
+    },
+    "INJURY_SHEET": {
+      "Active": "Aktiv",
+      "RollEffectsAutomatic": "Wurf-Effekte (automatische Mali)",
+      "Enabled": "Aktiviert",
+      "AppliesToSkills": "Gilt für Fertigkeiten",
+      "AppliesToRollTypes": "Gilt für Wurftypen",
+      "PenaltyPerDie": "Malus (pro Würfel)",
+      "PenaltyHint": "Wird automatisch als Malus auf passende Würfe angewendet. Doppelte Verletzungen stapeln nicht; alle Instanzen müssen geheilt werden, um den Effekt zu entfernen."
+    },
+    "TRAUMA_SHEET": {
+      "Active": "Aktiv",
+      "TraumaRollModifier": "Erhöht Trauma-Würfe",
+      "TraumaRollModifierHint": "Wenn aktiviert, fügt dieses Trauma zukünftigen Trauma-Würfen +1 hinzu (Verletzungswürfe sind nicht betroffen)."
     },
     "KNACK_USAGE": {
       "passive": "Passiv",
@@ -470,12 +485,32 @@
       },
       "DiceRoll": {
         "Knacks": "Kniffe",
+        "KnacksAffectingRoll": "Kniffe, die für diesen Wurf anwendbar sind ({selected}/{available} ausgewählt)",
         "KnacksHint": "Wähle Kniffe aus, die angewendet werden sollen. Verwendungen werden beim Würfeln ausgegeben.",
         "SelectedEffects": "Ausgewählte Effekte",
+        "OutOfUses": "Keine Verwendungen übrig",
+        "NoRollChanges": "Keine Änderungen",
+        "PreviewBonusDice": "{dice} Bonuswürfel",
+        "PreviewResultModifier": "{mod} Ergebnis-Modifikator",
+        "PreviewAdvantage": "Vorteil",
+        "PreviewDisadvantage": "Nachteil",
+        "PreviewAdvantagePlusDisadvantage": "Vorteil + Nachteil",
+        "PreviewRerollAllowanceOne": "{count} Neuwurf-Würfel",
+        "PreviewRerollAllowanceMany": "{count} Neuwurf-Würfel",
+        "KnackEffectResult": "{mod} Ergebnis",
+        "KnackEffectAdv": "Vorteil",
+        "KnackEffectDisadv": "Nachteil",
+        "KnackEffectAdvPlusDisadv": "Vorteil+Nachteil",
+        "KnackEffectRerollDieOne": "{count} Neuwurf-Würfel",
+        "KnackEffectRerollDieMany": "{count} Neuwurf-Würfel",
         "Tier": "Stufe {tier}",
         "RefreshUses": "Verwendungen erneuern",
         "None": "Keine",
-        "AdvPlusDisadv": "Vorteil + Nachteil"
+        "AdvPlusDisadv": "Vorteil + Nachteil",
+        "InjuriesAffectingRoll": "Verletzungen, die diesen Wurf beeinflussen",
+        "TotalPenalty": "Gesamtmalus",
+        "InjuriesAutoAppliedHint": "Diese Mali werden automatisch von aktiven Verletzungen angewendet (Doppelte stapeln nicht).",
+        "PenaltyMinus": "Malus -{penalty}"
       },
       "SpendInsight": {
         "Remaining": "Verbleibend: {remaining}/{limit}",
@@ -488,7 +523,10 @@
         "Falling": "Fallen",
         "Die": "Würfel",
         "FallingHeightFt": "Fallhöhe (ft)",
-        "Modifier": "Modifikator"
+        "Modifier": "Modifikator",
+        "InjuriesAffectingModifier": "Verletzungen, die diesen Wurf beeinflussen (Modifikator: +{modifier})",
+        "TraumasAffectingModifier": "Traumata, die diesen Wurf beeinflussen (Modifikator: +{modifier})",
+        "AddsModifier": "fügt +{modifier} hinzu"
       },
       "RerollDice": {
         "SuccessOn": "Erfolg bei",

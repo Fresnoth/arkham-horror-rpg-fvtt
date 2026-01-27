@@ -1,4 +1,5 @@
 import { InjuryTraumaWorkflow } from "../rolls/injury-trauma-workflow.mjs";
+import { getInjuryCountSummary, getTraumaRollModifierSummary } from "../helpers/injuries.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -16,6 +17,9 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
       fallingHeightFt: Number.parseInt(options.fallingHeightFt) || 10,
       rollSource: options.rollSource ?? "",
     };
+
+    this._injurySummary = getInjuryCountSummary(this.actor);
+    this._traumaSummary = getTraumaRollModifierSummary(this.actor);
 
     InjuryTraumaRollApp.instance = this;
   }
@@ -51,7 +55,21 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
   setOptions(options = {}) {
     if (options.actor) this.actor = options.actor;
     if (options.rollKind) this.rollState.rollKind = options.rollKind;
-    if (options.modifier !== undefined) this.rollState.modifier = Number.parseInt(options.modifier) || 0;
+
+    this._injurySummary = getInjuryCountSummary(this.actor);
+    this._traumaSummary = getTraumaRollModifierSummary(this.actor);
+
+    if (options.modifier !== undefined) {
+      this.rollState.modifier = Number.parseInt(options.modifier) || 0;
+    } else {
+      // Default modifier behavior:
+      // - Injury roll: modifier = total active injuries (instances)
+      // - Trauma roll: modifier = number of enabled traumas (instances)
+      const kind = String(this.rollState.rollKind ?? "injury");
+      this.rollState.modifier = kind === "trauma"
+        ? (Number(this._traumaSummary?.modifier ?? 0) || 0)
+        : (Number(this._injurySummary?.total ?? 0) || 0);
+    }
 
     // IMPORTANT: This app is a singleton instance.
     // To avoid state leaking between uses, reset transient UI state every time
@@ -93,6 +111,13 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     const fallingHeightFt = Number.parseInt(this.rollState.fallingHeightFt) || 10;
     const rollKind = String(this.rollState.rollKind ?? "injury");
 
+    const injurySummary = this._injurySummary ?? getInjuryCountSummary(this.actor);
+    const traumaSummary = this._traumaSummary ?? getTraumaRollModifierSummary(this.actor);
+
+    const injuryAutoModifier = Number(injurySummary?.total ?? 0) || 0;
+    const traumaAutoModifier = Number(traumaSummary?.modifier ?? 0) || 0;
+    const autoModifier = rollKind === "trauma" ? traumaAutoModifier : injuryAutoModifier;
+
     const isFalling = rollMode === "falling" && rollKind === "injury";
     const numFallingDice = Math.max(1, Math.floor(fallingHeightFt / 10));
 
@@ -105,6 +130,11 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
       actor: this.actor,
       rollKind,
       modifier,
+      autoModifier,
+      injuryAutoModifier,
+      traumaAutoModifier,
+      injurySummary,
+      traumaSummary,
       dieFaces,
       rollMode: isFalling ? "falling" : "standard",
       fallingHeightFt,
@@ -119,7 +149,7 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     const form = this.element?.querySelector?.("form");
     if (!form) return;
 
-    const updateVisibilityAndHint = () => {
+    const updateVisibilityAndHint = ({ rollKindChanged = false } = {}) => {
       const rollKind = String(form.rollKind?.value ?? "injury");
       const rollMode = String(form.rollMode?.value ?? "standard");
       const dieFaces = Number.parseInt(form.dieFaces?.value) || 6;
@@ -137,6 +167,21 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
       const effectiveMode = String(form.rollMode?.value ?? "standard");
       const isFalling = effectiveMode === "falling" && rollKind === "injury";
 
+      // Show only the relevant contributor details block.
+      // When Falling mode is active, hide contributors because modifier is ignored.
+      const injuryDetails = form.querySelector?.('[data-role="injuryContrib"]');
+      const traumaDetails = form.querySelector?.('[data-role="traumaContrib"]');
+      if (injuryDetails) {
+        const show = !isFalling && rollKind === "injury";
+        injuryDetails.open = show ? injuryDetails.open : false;
+        injuryDetails.style.display = show ? "" : "none";
+      }
+      if (traumaDetails) {
+        const show = !isFalling && rollKind === "trauma";
+        traumaDetails.open = show ? traumaDetails.open : false;
+        traumaDetails.style.display = show ? "" : "none";
+      }
+
       // Show/hide mode-specific fields.
       form.querySelectorAll('[data-roll-mode="falling"]').forEach(el => {
         el.style.display = isFalling ? "" : "none";
@@ -149,6 +194,13 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
       if (modifierInput) {
         modifierInput.disabled = isFalling;
         if (isFalling) modifierInput.value = 0;
+      }
+
+      // Switching between Injury/Trauma should snap the modifier to the item-derived default.
+      if (modifierInput && rollKindChanged && !isFalling) {
+        const autoInjury = Number(this._injurySummary?.total ?? 0) || 0;
+        const autoTrauma = Number(this._traumaSummary?.modifier ?? 0) || 0;
+        modifierInput.value = rollKind === "trauma" ? autoTrauma : autoInjury;
       }
 
       // Update hint text.
@@ -179,10 +231,10 @@ export class InjuryTraumaRollApp extends HandlebarsApplicationMixin(ApplicationV
     updateVisibilityAndHint();
 
     // React to changes.
-    form.rollKind?.addEventListener?.("change", updateVisibilityAndHint);
-    form.rollMode?.addEventListener?.("change", updateVisibilityAndHint);
-    form.dieFaces?.addEventListener?.("change", updateVisibilityAndHint);
-    form.fallingHeightFt?.addEventListener?.("input", updateVisibilityAndHint);
+    form.rollKind?.addEventListener?.("change", () => updateVisibilityAndHint({ rollKindChanged: true }));
+    form.rollMode?.addEventListener?.("change", () => updateVisibilityAndHint());
+    form.dieFaces?.addEventListener?.("change", () => updateVisibilityAndHint());
+    form.fallingHeightFt?.addEventListener?.("input", () => updateVisibilityAndHint());
   }
 
   static async #handleClickedRoll(event, target) {

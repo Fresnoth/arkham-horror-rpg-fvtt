@@ -89,6 +89,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             createItem: this.#handleCreateItem,
             createOtherEquipment: this.#handleCreateOtherEquipment,
             deleteItem: this.#handleDeleteItem,
+            toggleItemActive: this.#handleToggleItemActive,
             toggleFoldableContent: this.#handleToggleFoldableContent,
             openActorArchetype: this.#handleOpenActorArchetype,
             clickSkill: this.#handleSkillClicked,
@@ -610,6 +611,21 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         });
     }
 
+    static async #handleToggleItemActive(event, target) {
+        event.preventDefault();
+        const clickTarget = target instanceof HTMLElement ? target : target?.[0];
+        const itemId = clickTarget?.dataset?.itemId;
+        if (!itemId) return;
+
+        const item = this.actor?.items?.get?.(itemId);
+        if (!item) return;
+
+        // Backwards compatibility: if system.active is missing, treat as active.
+        const current = item.system?.active;
+        const isActive = current === undefined ? true : Boolean(current);
+        await item.update({ 'system.active': !isActive });
+    }
+
     static async #handleOpenActorArchetype(event, target) {
         event.preventDefault();
         await this.openActorArchetype(event, target);
@@ -711,7 +727,6 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         InjuryTraumaRollApp.getInstance({
             actor: this.actor,
             rollKind: "injury",
-            modifier: 0,
             rollSource: "strain",
         }).render(true);
     }
@@ -754,7 +769,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     static async #handleClickedInjuryTraumaRoll(event, target) {
         event.preventDefault();
-        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
+        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury" }).render(true);
     }
 
     static async #handleClickedSpendInsight(event, _target) {

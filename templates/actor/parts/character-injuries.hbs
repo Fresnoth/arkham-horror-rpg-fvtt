@@ -12,6 +12,9 @@
                 {{#if (eq injury.type 'trauma')}}[{{localize "TYPES.Item.trauma"}}] {{/if}}
                 {{#if (eq injury.type 'injury')}}[{{localize "TYPES.Item.injury"}}] {{/if}}
                 {{injury.name}}</strong>
+            <a class='item-control item-toggle-active' data-action="toggleItemActive" title="{{localize 'ARKHAM_HORROR.TOOLTIPS.ToggleItemActive'}}" aria-label="{{localize 'ARKHAM_HORROR.TOOLTIPS.ToggleItemActive'}}" data-item-id='{{injury._id}}'>
+                <i class='fa-solid {{#unless (eq injury.system.active false)}}fa-toggle-on{{else}}fa-toggle-off{{/unless}}'></i>
+            </a>
             <a class='item-control item-edit' data-action="editItem" title='{{localize "DOCUMENT.Update" type=(localize (concat "TYPES.Item." injury.type))}}' aria-label='{{localize "DOCUMENT.Update" type=(localize (concat "TYPES.Item." injury.type))}}' data-item-id='{{injury._id}}'>
                 <i class='fas fa-edit'></i>
             </a>

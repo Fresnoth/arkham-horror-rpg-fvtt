@@ -1,3 +1,99 @@
 <section class="tab {{tabs.form.id}} {{tabs.form.cssClass}} scrollable" id="form" data-tab="{{tabs.form.id}}"
     data-group="{{tabs.form.group}}">
+
+    <div class="resource-group-styled knack-sheet">
+
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.Active"}}</label>
+            <input type="checkbox" name="system.active" {{#if system.active}}checked{{/if}}>
+        </div>
+
+        <hr />
+
+        <h5 class="quick-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.RollEffectsAutomatic"}}</h5>
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.Enabled"}}</label>
+            <input type="checkbox" name="system.rollEffects.enabled" {{#if system.rollEffects.enabled}}checked{{/if}}>
+        </div>
+
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.AppliesToSkills"}}</label>
+            <div class="knack-picker" data-group="skillKeys">
+                <div class="knack-picker__controls">
+                    <select class="knack-picker__select" name="_injurySkillKey">
+                        <option value="any">{{localize "ARKHAM_HORROR.KNACK_SHEET.Any"}}</option>
+                        <option value="agility">{{localize "ARKHAM_HORROR.SKILL.agility"}}</option>
+                        <option value="athletics">{{localize "ARKHAM_HORROR.SKILL.athletics"}}</option>
+                        <option value="wits">{{localize "ARKHAM_HORROR.SKILL.wits"}}</option>
+                        <option value="presence">{{localize "ARKHAM_HORROR.SKILL.presence"}}</option>
+                        <option value="intuition">{{localize "ARKHAM_HORROR.SKILL.intuition"}}</option>
+                        <option value="knowledge">{{localize "ARKHAM_HORROR.SKILL.knowledge"}}</option>
+                        <option value="resolve">{{localize "ARKHAM_HORROR.SKILL.resolve"}}</option>
+                        <option value="meleeCombat">{{localize "ARKHAM_HORROR.SKILL.meleeCombat"}}</option>
+                        <option value="rangedCombat">{{localize "ARKHAM_HORROR.SKILL.rangedCombat"}}</option>
+                        <option value="lore">{{localize "ARKHAM_HORROR.SKILL.lore"}}</option>
+                    </select>
+                    <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="skillKeys">+</button>
+                </div>
+                <div class="knack-picker__selected" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.SelectedSkills"}}">
+                    {{#each system.rollEffects.skillKeys as |k|}}
+                        <span class="knack-pill" data-value="{{k}}">
+                            {{#if (eq k "any")}}
+                                {{localize "ARKHAM_HORROR.KNACK_SHEET.Any"}}
+                            {{else}}
+                                {{localize (concat "ARKHAM_HORROR.SKILL." k)}}
+                            {{/if}}
+                            <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="skillKeys" data-value="{{k}}" title="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </span>
+                    {{/each}}
+                </div>
+                <div class="notes">{{localize "ARKHAM_HORROR.KNACK_SHEET.AnyOverrides"}}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.AppliesToRollTypes"}}</label>
+            <div class="knack-picker" data-group="rollKinds">
+                <div class="knack-picker__controls">
+                    <select class="knack-picker__select" name="_injuryRollKind">
+                        <option value="any">{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Any"}}</option>
+                        <option value="complex">{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Complex"}}</option>
+                        <option value="reaction">{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Reaction"}}</option>
+                        <option value="tome-understand">{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.TomeUnderstand"}}</option>
+                        <option value="tome-attune">{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.TomeAttune"}}</option>
+                    </select>
+                    <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="rollKinds">+</button>
+                </div>
+                <div class="knack-picker__selected" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.SelectedRollTypes"}}">
+                    {{#each system.rollEffects.rollKinds as |k|}}
+                        <span class="knack-pill" data-value="{{k}}">
+                            {{#if (eq k "any")}}
+                                {{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Any"}}
+                            {{else}}
+                                {{#if (eq k "complex")}}{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Complex"}}{{/if}}
+                                {{#if (eq k "reaction")}}{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.Reaction"}}{{/if}}
+                                {{#if (eq k "tome-understand")}}{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.TomeUnderstand"}}{{/if}}
+                                {{#if (eq k "tome-attune")}}{{localize "ARKHAM_HORROR.KNACK_SHEET.RollKind.TomeAttune"}}{{/if}}
+                            {{/if}}
+                            <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="rollKinds" data-value="{{k}}" title="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </span>
+                    {{/each}}
+                </div>
+                <div class="notes">{{localize "ARKHAM_HORROR.KNACK_SHEET.AnyOverrides"}}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.INJURY_SHEET.PenaltyPerDie"}}</label>
+            <input type="number" name="system.rollEffects.modifier.penalty" value="{{system.rollEffects.modifier.penalty}}" min="0" step="1">
+        </div>
+        <div class="notes">{{localize "ARKHAM_HORROR.INJURY_SHEET.PenaltyHint"}}</div>
+
+    </div>
 </section>
+
+ 

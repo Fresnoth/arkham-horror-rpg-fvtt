@@ -73,7 +73,8 @@
       "ExpandSpecialRules": "{itemName} - click to expand special rules",
       "OpenArchetype": "Open Archetype",
       "UnusedXP": "Unused XP",
-      "TotalXP": "Total XP"
+      "TotalXP": "Total XP",
+      "ToggleItemActive": "Toggle Active"
     },
     "TABS": {
       "Description": "Description",
@@ -124,6 +125,20 @@
       "BonusDiceDelta": "Bonus Dice (delta)",
       "ResultModifierDelta": "Result Modifier (delta)",
       "Remove": "Remove"
+    },
+    "INJURY_SHEET": {
+      "Active": "Active",
+      "RollEffectsAutomatic": "Roll Effects (Automatic Penalties)",
+      "Enabled": "Enabled",
+      "AppliesToSkills": "Applies to Skills",
+      "AppliesToRollTypes": "Applies to Roll Types",
+      "PenaltyPerDie": "Penalty (per die)",
+      "PenaltyHint": "Automatically applies as a penalty on matching rolls. Duplicates of the same injury do not stack; all instances must be healed to remove the effect."
+    },
+    "TRAUMA_SHEET": {
+      "Active": "Active",
+      "TraumaRollModifier": "Adds to Trauma rolls",
+      "TraumaRollModifierHint": "When enabled, this Trauma adds +1 to future Trauma rolls (injury rolls are unaffected)."
     },
     "KNACK_USAGE": {
       "passive": "Passive",
@@ -470,12 +485,32 @@
       },
       "DiceRoll": {
         "Knacks": "Knacks",
+        "KnacksAffectingRoll": "Knacks applicable to this roll ({selected}/{available} selected)",
         "KnacksHint": "Select Knacks to apply. Uses are spent when you roll.",
         "SelectedEffects": "Selected effects",
+        "OutOfUses": "Out of uses",
+        "NoRollChanges": "No roll changes",
+        "PreviewBonusDice": "{dice} bonus dice",
+        "PreviewResultModifier": "{mod} result modifier",
+        "PreviewAdvantage": "Advantage",
+        "PreviewDisadvantage": "Disadvantage",
+        "PreviewAdvantagePlusDisadvantage": "Advantage + Disadvantage",
+        "PreviewRerollAllowanceOne": "{count} reroll allowance die",
+        "PreviewRerollAllowanceMany": "{count} reroll allowance dice",
+        "KnackEffectResult": "{mod} result",
+        "KnackEffectAdv": "Adv",
+        "KnackEffectDisadv": "Disadv",
+        "KnackEffectAdvPlusDisadv": "Adv+Disadv",
+        "KnackEffectRerollDieOne": "{count} reroll die",
+        "KnackEffectRerollDieMany": "{count} reroll dice",
         "Tier": "Tier {tier}",
         "RefreshUses": "Refresh uses",
         "None": "None",
-        "AdvPlusDisadv": "Adv + Disadvantage"
+        "AdvPlusDisadv": "Adv + Disadvantage",
+        "InjuriesAffectingRoll": "Injuries affecting this roll",
+        "TotalPenalty": "Total penalty",
+        "InjuriesAutoAppliedHint": "These penalties are applied automatically from active injuries (duplicates do not stack).",
+        "PenaltyMinus": "Penalty -{penalty}"
       },
       "SpendInsight": {
         "Remaining": "Remaining: {remaining}/{limit}",
@@ -488,7 +523,10 @@
         "Falling": "Falling",
         "Die": "Die",
         "FallingHeightFt": "Falling Height (ft)",
-        "Modifier": "Modifier"
+        "Modifier": "Modifier",
+        "InjuriesAffectingModifier": "Injuries affecting this roll (modifier: +{modifier})",
+        "TraumasAffectingModifier": "Traumas affecting this roll (modifier: +{modifier})",
+        "AddsModifier": "adds +{modifier}"
       },
       "RerollDice": {
         "SuccessOn": "Success on",
