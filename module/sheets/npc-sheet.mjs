@@ -27,6 +27,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             createWeakness: this.#handleCreateWeakness,
             createOtherEquipment: this.#handleCreateOtherEquipment,
             deleteItem: this.#handleDeleteItem,
+            toggleItemActive: this.#handleToggleItemActive,
             toggleFoldableContent: this.#handleToggleFoldableContent,
             clickSkill: this.#handleSkillClicked,
             clickSkillReaction: this.#handleSkillReactionClicked,
@@ -232,7 +233,7 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
     static async #handleClickedInjuryTraumaRoll(event, target) {
         event.preventDefault();
-        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury", modifier: 0 }).render(true);
+        InjuryTraumaRollApp.getInstance({ actor: this.actor, rollKind: "injury" }).render(true);
     }
 
     static async #handleEditItem(event, target) {
@@ -369,6 +370,21 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         });
     }
 
+    static async #handleToggleItemActive(event, target) {
+        event.preventDefault();
+        const clickTarget = target instanceof HTMLElement ? target : target?.[0];
+        const itemId = clickTarget?.dataset?.itemId;
+        if (!itemId) return;
+
+        const item = this.actor?.items?.get?.(itemId);
+        if (!item) return;
+
+        // Backwards compatibility: if system.active is missing, treat as active.
+        const current = item.system?.active;
+        const isActive = current === undefined ? true : Boolean(current);
+        await item.update({ 'system.active': !isActive });
+    }
+
     static async #handleSkillClicked(event, target) {
         event.preventDefault();
         const skillKey = target.dataset.skillKey;        
@@ -450,7 +466,6 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         InjuryTraumaRollApp.getInstance({
             actor: this.actor,
             rollKind: "injury",
-            modifier: 0,
             rollSource: "strain",
         }).render(true);
     }

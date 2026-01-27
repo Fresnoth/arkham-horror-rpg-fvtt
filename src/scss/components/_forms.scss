@@ -238,6 +238,117 @@
     margin-bottom: 6px;
   }
 
+  .arkham-roll-details {
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 10px);
+    margin: 6px 5px;
+  }
+
+  .arkham-roll-details-body > .notes {
+    margin: 0;
+    font-size: 11px;
+    opacity: 0.85;
+    line-height: 1.2;
+  }
+
+  .arkham-injury-impact-list {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    display: grid;
+    gap: 4px;
+    font-size: 0.95em;
+  }
+
+  .arkham-injury-impact-list li {
+    padding: 2px 6px;
+    border-left: 3px solid rgba(114, 42, 28, 0.35);
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 3px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .arkham-knack-impact-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "main refresh"
+      "effect effect"
+      "meta meta";
+    gap: 2px 8px;
+    align-items: start;
+  }
+
+  .arkham-knack-impact-main {
+    grid-area: main;
+    display: inline-flex;
+    gap: 6px;
+    align-items: start;
+    min-width: 0;
+  }
+
+  .arkham-knack-impact-main input[type="checkbox"] {
+    margin: 2px 0 0 0;
+  }
+
+  .arkham-knack-impact-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .arkham-knack-impact-effect {
+    grid-area: effect;
+    font-size: 0.9em;
+    opacity: 0.9;
+    text-align: left;
+    padding-left: 22px;
+    overflow-wrap: anywhere;
+  }
+
+  .arkham-knack-impact-meta {
+    grid-area: meta;
+    display: block;
+    font-size: 0.85em;
+    opacity: 0.85;
+    padding-left: 22px;
+  }
+
+  .arkham-knack-impact-item .knack-refresh {
+    grid-area: refresh;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .arkham-knack-impact-item.is-checked {
+    background: rgba(114, 42, 28, 0.10);
+    border-left-color: rgba(114, 42, 28, 0.6);
+  }
+
+  .arkham-knack-impact-item.is-disabled {
+    opacity: 0.75;
+  }
+
+  .knack-preview {
+    margin: 0 0 6px 0;
+    padding: 4px 6px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+  }
+
+  .knack-preview__title {
+    margin-bottom: 2px;
+    color: rgba(114, 42, 28, 1);
+    font-family: $font-primary;
+    font-size: 0.95em;
+  }
+
+  .arkham-knack-preview-list {
+    font-size: 0.92em;
+  }
+
   .form-group.knack-choices {
     flex-wrap: wrap;
     align-items: stretch;

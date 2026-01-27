@@ -1,3 +1,20 @@
 <section class="tab {{tabs.form.id}} {{tabs.form.cssClass}} scrollable" id="form" data-tab="{{tabs.form.id}}"
     data-group="{{tabs.form.group}}">
+
+    <div class="resource-group-styled">
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.TRAUMA_SHEET.Active"}}</label>
+            <input type="checkbox" name="system.active" {{#if system.active}}checked{{/if}}>
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+            <label class="styled-label">{{localize "ARKHAM_HORROR.TRAUMA_SHEET.TraumaRollModifier"}}</label>
+            <input type="checkbox" name="system.traumaRollModifier.enabled" {{#if system.traumaRollModifier.enabled}}checked{{/if}}>
+        </div>
+        <div class="notes">{{localize "ARKHAM_HORROR.TRAUMA_SHEET.TraumaRollModifierHint"}}</div>
+    </div>
 </section>
+
+ 

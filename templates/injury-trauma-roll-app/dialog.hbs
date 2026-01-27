@@ -28,10 +28,36 @@
     <input type="number" name="fallingHeightFt" value="{{fallingHeightFt}}" min="10" step="1" />
   </div>
 
-  <div class="form-group">
+  <div class="form-group" data-roll-mode="standard">
     <label>{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.Modifier"}}</label>
     <input type="number" name="modifier" value="{{modifier}}" step="1" />
   </div>
+
+  {{#if injurySummary.hasAny}}
+    <details class="arkham-roll-details" data-role="injuryContrib">
+      <summary class="arkham-roll-details-summary">{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.InjuriesAffectingModifier" modifier=injuryAutoModifier}}</summary>
+      <div class="arkham-roll-details-body">
+        <ul class="arkham-injury-impact-list">
+          {{#each injurySummary.entries as |e|}}
+            <li>{{e.name}} (x{{e.count}})</li>
+          {{/each}}
+        </ul>
+      </div>
+    </details>
+  {{/if}}
+
+  {{#if traumaSummary.hasAny}}
+    <details class="arkham-roll-details" data-role="traumaContrib">
+      <summary class="arkham-roll-details-summary">{{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.TraumasAffectingModifier" modifier=traumaAutoModifier}}</summary>
+      <div class="arkham-roll-details-body">
+        <ul class="arkham-injury-impact-list">
+          {{#each traumaSummary.entries as |e|}}
+            <li>{{e.name}} (x{{e.count}}) — {{localize "ARKHAM_HORROR.Dialog.InjuryTrauma.AddsModifier" modifier=e.modifier}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </details>
+  {{/if}}
 
   <input type="hidden" name="rollSource" value="{{rollSource}}" />
 

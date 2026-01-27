@@ -13,6 +13,7 @@ import {
   spendKnackUses,
   isApplicableKnackSelection,
 } from "../helpers/knacks.mjs";
+import { getInjuryImpactForSkillRoll } from "../helpers/injuries.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -199,6 +200,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         }))
       : [];
 
+    const injuryImpact = getInjuryImpactForSkillRoll({ actor: this.actor, rollState: this.rollState });
+    const manualPenalty = Number(this.rollState.penalty ?? 0) || 0;
+    const totalPenalty = manualPenalty + (Number(injuryImpact?.penalty ?? 0) || 0);
+
     // Feed template from rollState (no separate context mapping logic)
     // We show *matching* knacks (even if out of uses) to reduce confusion,
     // but we only allow selecting those that are currently usable.
@@ -212,6 +217,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       return num >= 0 ? `+${num}` : `${num}`;
     };
 
+    const formatSignedDice = (n, faces = 6) => {
+      const num = Number(n ?? 0) || 0;
+      return `${formatSigned(num)}d${faces}`;
+    };
+
     const summarizeKnackModifier = (k) => {
       const mod = k?.system?.rollEffects?.modifier ?? {};
       const bonusDice = Number(mod.addBonusDice ?? 0) || 0;
@@ -221,12 +231,18 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       const disadv = Boolean(mod.disadvantage);
 
       const parts = [];
-      if (bonusDice) parts.push(`${formatSigned(bonusDice)}d`);
-      if (resultMod) parts.push(`${formatSigned(resultMod)} result`);
-      if (adv && !disadv) parts.push(`Adv`);
-      if (disadv && !adv) parts.push(`Disadv`);
-      if (adv && disadv) parts.push(`Adv+Disadv`);
-      if (rerollAllow) parts.push(`${formatSigned(rerollAllow)} reroll`);
+      if (bonusDice) parts.push(`${formatSignedDice(bonusDice, 6)}`);
+      if (resultMod) parts.push(game.i18n.format("ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectResult", { mod: formatSigned(resultMod) }));
+      if (adv && !disadv) parts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectAdv"));
+      if (disadv && !adv) parts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectDisadv"));
+      if (adv && disadv) parts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectAdvPlusDisadv"));
+      if (rerollAllow) {
+        const abs = Math.abs(rerollAllow);
+        const key = abs === 1
+          ? "ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectRerollDieOne"
+          : "ARKHAM_HORROR.Dialog.DiceRoll.KnackEffectRerollDieMany";
+        parts.push(game.i18n.format(key, { count: formatSigned(rerollAllow) }));
+      }
 
       return {
         bonusDice,
@@ -234,7 +250,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rerollAllow,
         adv,
         disadv,
-        text: parts.length ? parts.join(", ") : "No roll changes",
+        text: parts.length ? parts.join(", ") : game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.NoRollChanges"),
       };
     };
 
@@ -247,6 +263,10 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       const remaining = Number(usage.remaining ?? 0);
 
       const isLimited = !(freq === "passive" || freq === "unlimited");
+      const frequencyLabel = game.i18n?.localize
+        ? game.i18n.localize(`ARKHAM_HORROR.KNACK_USAGE.${freq}`)
+        : freq;
+      const useText = isLimited ? `${frequencyLabel}: ${remaining}/${max}` : frequencyLabel;
       const usable = applicableIdSet.has(String(k.id));
       const exhausted = isLimited && remaining <= 0;
       const disabled = !usable;
@@ -256,13 +276,17 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
       const effect = summarizeKnackModifier(k);
 
-      const availabilityNote = exhausted ? "Out of uses" : null;
+      const availabilityNote = exhausted
+        ? game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.OutOfUses")
+        : null;
 
       return {
         id: k.id,
         name: k.name,
         tier: Number(k.system?.tier ?? 0),
         frequency: freq,
+        frequencyLabel,
+        useText,
         max,
         remaining,
         disabled,
@@ -274,20 +298,36 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       };
     });
 
+    const knackSummary = {
+      available: knackChoices.length,
+      selected: knackChoices.filter(k => k.checked).length,
+    };
+
     // Live preview: what the currently selected knacks would change.
     const selectedKnacksForPreview = resolveSelectedKnacks({ actor: this.actor, selectedKnackIds: this.rollState.selectedKnackIds });
     const preview = buildAppliedKnackEffects({ selectedKnacks: selectedKnacksForPreview });
     const previewParts = [];
-    if (preview.bonusDiceDelta) previewParts.push(`${formatSigned(preview.bonusDiceDelta)} bonus dice`);
-    if (preview.resultModifierDelta) previewParts.push(`${formatSigned(preview.resultModifierDelta)} result modifier`);
-    if (preview.advantage && !preview.disadvantage) previewParts.push(`Advantage`);
-    if (preview.disadvantage && !preview.advantage) previewParts.push(`Disadvantage`);
-    if (preview.advantage && preview.disadvantage) previewParts.push(`Advantage + Disadvantage`);
-    if (preview.rerollAllowanceDice) previewParts.push(`${formatSigned(preview.rerollAllowanceDice)} reroll allowance dice`);
+    if (preview.bonusDiceDelta) {
+      previewParts.push(game.i18n.format("ARKHAM_HORROR.Dialog.DiceRoll.PreviewBonusDice", { dice: formatSignedDice(preview.bonusDiceDelta, 6) }));
+    }
+    if (preview.resultModifierDelta) {
+      previewParts.push(game.i18n.format("ARKHAM_HORROR.Dialog.DiceRoll.PreviewResultModifier", { mod: formatSigned(preview.resultModifierDelta) }));
+    }
+    if (preview.advantage && !preview.disadvantage) previewParts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.PreviewAdvantage"));
+    if (preview.disadvantage && !preview.advantage) previewParts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.PreviewDisadvantage"));
+    if (preview.advantage && preview.disadvantage) previewParts.push(game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.PreviewAdvantagePlusDisadvantage"));
+    if (preview.rerollAllowanceDice) {
+      const n = Number(preview.rerollAllowanceDice ?? 0) || 0;
+      const key = Math.abs(n) === 1
+        ? "ARKHAM_HORROR.Dialog.DiceRoll.PreviewRerollAllowanceOne"
+        : "ARKHAM_HORROR.Dialog.DiceRoll.PreviewRerollAllowanceMany";
+      previewParts.push(game.i18n.format(key, { count: formatSigned(n) }));
+    }
 
     const knackPreview = {
       hasSelection: (this.rollState.selectedKnackIds?.length ?? 0) > 0,
-      text: previewParts.length ? previewParts.join(", ") : "No roll changes",
+      text: previewParts.length ? previewParts.join(", ") : game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.NoRollChanges"),
+      entries: previewParts.length ? previewParts : [game.i18n.localize("ARKHAM_HORROR.Dialog.DiceRoll.NoRollChanges")],
       bonusDiceDelta: preview.bonusDiceDelta,
       resultModifierDelta: preview.resultModifierDelta,
       advantage: preview.advantage,
@@ -308,6 +348,8 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         currentDicePool: this.rollState.currentDicePool,
         diceToUse: this.rollState.diceToUse,
         penalty: this.rollState.penalty,
+        totalPenalty,
+        injuryImpact,
         bonus_dice: this.rollState.bonusDice, // bonus_dice match form field name so this populates 0 correctly now
         resultModifier: this.rollState.resultModifier,
         successesNeeded: this.rollState.successesNeeded,
@@ -318,6 +360,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         spellToUse: this.rollState.spellToUse,
 
         knackChoices,
+        knackSummary,
         knackPreview,
 
         isSkillSelectable,
@@ -348,6 +391,15 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     // Clearing selection avoids confusion if the user was expecting it to auto-apply.
     // (They can now check it, and the preview will update.)
     this.rollState.selectedKnackIds = [];
+
+    // Preserve whether the Knacks dropdown was open before rerender.
+    try {
+      const details = this.element?.querySelector?.('[data-role="knacksDetails"]');
+      this._knacksDetailsWasOpen = !!details?.open;
+    } catch (e) {
+      // ignore
+    }
+
     this.render({ force: true });
   }
 
@@ -366,6 +418,23 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const form = this.element?.querySelector?.('form');
     if (!form) return;
+
+    // Restore UI state from the previous render cycle.
+    const knacksDetails = form.querySelector?.('[data-role="knacksDetails"]');
+    if (knacksDetails && typeof this._knacksDetailsWasOpen === "boolean") {
+      knacksDetails.open = this._knacksDetailsWasOpen;
+    }
+
+    // Keep the stored state in sync when the user manually opens/closes the dropdown.
+    if (knacksDetails) {
+      knacksDetails.addEventListener(
+        "toggle",
+        () => {
+          this._knacksDetailsWasOpen = !!knacksDetails.open;
+        },
+        { signal }
+      );
+    }
 
     // Knack checkboxes: re-render so the user can see what will change.
     // (Must be attached even when there is no selectable Skill dropdown.)
@@ -451,10 +520,21 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.RollMustRollAtLeastOneDie'));
         return; // keep dialog open
     }
+
+    // Apply automatic injury penalties (do NOT overwrite the user-entered penalty field).
+    const injuryImpact = getInjuryImpactForSkillRoll({ actor: this.actor, rollState: this.rollState });
+    const manualPenalty = Number(this.rollState.penalty ?? 0) || 0;
+    const injuryPenalty = Number(injuryImpact?.penalty ?? 0) || 0;
+    const stateForRoll = {
+      ...this.rollState,
+      penalty: manualPenalty + injuryPenalty,
+      injuryPenalty,
+      appliedInjuries: Array.isArray(injuryImpact?.entries) ? injuryImpact.entries : [],
+    };
     
     // Run workflow end-to-end (roll + update actor + post chat)
     const workflow = new SkillRollWorkflow();
-    const result = await workflow.run({ actor: this.actor, state: this.rollState });
+    const result = await workflow.run({ actor: this.actor, state: stateForRoll });
 
     // Spend Knack uses only after the roll is executed.
     await spendKnackUses({ actor: this.actor, selectedKnacks });
@@ -463,7 +543,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       try {
         await this.afterRoll({
           actor: this.actor,
-          state: this.rollState,
+          state: stateForRoll,
           ...result
         });
       } catch (e) {
@@ -475,6 +555,14 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   updateRollStateWithForm(form){
+    // Preserve whether the Knacks dropdown is expanded so rerenders don't surprise the user.
+    try {
+      const details = form?.querySelector?.('[data-role="knacksDetails"]');
+      if (details) this._knacksDetailsWasOpen = !!details.open;
+    } catch (e) {
+      // ignore
+    }
+
     // If a skill selector is present, allow it to update skillKey.
     // NOTE: the default (non-selector) UI uses a read-only localized label, so do not read that.
     if (form.skillKey && form.skillKey.tagName === 'SELECT') {
