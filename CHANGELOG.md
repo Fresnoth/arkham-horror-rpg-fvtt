@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 13.0.34
+- fix issue with roll card breaking chat box on long weapon or spell names
+- feature injury trauma automation
+
 ## 13.0.33
 - styling fixes for personality traits
 
