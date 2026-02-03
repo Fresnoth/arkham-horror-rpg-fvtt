@@ -1,0 +1,716 @@
+{
+  "ARKHAM_HORROR": {
+    "SheetLabels": {
+      "Actor": "Fiche de personnage – Horreur à Arkham",
+      "Item": "Fiche d’objet – Horreur à Arkham",
+      "Vehicle": "Fiche de véhicule – Horreur à Arkham",
+      "NPC": "Fiche de PNJ – Horreur à Arkham"
+    },
+    "Apps": {
+      "DiceRoll": {
+        "Title": "Jet de dés"
+      },
+      "InjuryTraumaRoll": {
+        "Title": "Jet de blessure / traumatisme"
+      },
+      "RerollDice": {
+        "Title": "Relancer les dés"
+      },
+      "SpendInsight": {
+        "Title": "Dépenser de la lucidité"
+      }
+    },
+    "Item": {
+      "Spell": {
+        "difficulty": "Difficulté",
+        "SpellLVL": "Sort de rang {level}",
+        "AddLVL": "Ajouter un sort de rang {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Activer / désactiver l’effet",
+      "Temporary": "Effets temporaires",
+      "Passive": "Effets passifs",
+      "Inactive": "Effets inactifs"
+
+    },
+    "LABELS": {
+      "Form": "Données",
+      "Description": "Description",
+      "Dicepool": "R. de dés",
+      "Damage": "Dégâts",
+      "Horror": "Horreur",
+      "Archetype": "Archétype",
+      "Profile": "Profil",
+      "Size": "Taille",
+      "Skills": "Compétences",
+      "Insight": "Lucidité",
+      "Limit": "Plafond",
+      "Max": "Max.",
+      "Knacks": "Dons",
+      "Remaining": "Restante",
+      "PersonalityTrait": "Trait de personnalité",
+      "InjuriesTrauma": "Blessures et traumatismes",
+      "Weaknesses": "Faiblesses",
+      "Money": "Argent",
+      "Vehicle": "Véhicule",
+      "Lodging": "Logement",
+      "LoadCapacity": "Capacité de charge",
+      "Weapons": "Armes",
+      "ProtectiveEquipment": "Équipement de protection",
+      "UsefulItems": "Objets utiles",
+      "OtherEquipment": "Autre équipement",
+      "Favors": "Faveurs",
+      "Spells": "Sorts",
+      "Tome": "Ouvrage occulte",
+      "Tomes": "Ouvrages occultes",
+      "Relics": "Reliques"
+    },
+    "UNITS": {
+      "Ft": "m"
+    },
+    "TOOLTIPS": {
+      "ExpandSpecialRules": "{itemName} – cliquer pour afficher les règles spéciales",
+      "OpenArchetype": "Ouvrir l’archétype",
+      "UnusedXP": "PX non utilisés",
+      "TotalXP": "Total de PX",
+      "ToggleItemActive": "Activer / désactiver"
+    },
+    "TABS": {
+      "Description": "Description",
+      "Attributes": "Attributs",
+      "Effects": "Effets",
+      "Character": "Personnage",
+      "NPC": "PNJ",
+      "Biography": "Biographie",
+      "Vehicle": "Véhicule",
+      "MundaneResources": "Ressources ordinaires",
+      "SupernaturalResources": "Ressources surnaturelles",
+      "Background": "Historique",
+      "Abilities": "Autres capacités"
+
+    },
+    "VEHICLE": {
+      "Cargo": "Chargement",
+      "AbilitiesDescription": "Capacités / Description"
+    },
+    "WORDS": {
+      "Of": "de"
+    },
+    "ABBR": {
+      "Dicepool": "RD"
+    },
+    "KNACK_SHEET": {
+      "SelectedSkills": "Compétences sélectionnées",
+      "SelectedRollTypes": "Types de jets sélectionnés",
+      "Any": "Au choix",
+      "AnyOverrides": "« Au choix » remplace les autres sélections.",
+      "Grants": "Accorde (Sorts / Foi / Intuition)",
+      "GrantsHint": "Déposez ici des objets Sort afin que ce don les accorde lors de son acquisition.",
+      "Usage": "Utilisation",
+      "Frequency": "Fréquence",
+      "MaxUses": "Utilisations max.",
+      "NpcKnackFlags": "Marqueurs de don de PNJ",
+      "RollEffectsPromptSelectable": "Effets de jet (choix à l’utilisation)",
+      "Enabled": "Actif",
+      "AppliesToSkills": "S’applique aux compétences",
+      "RerollAllowanceDice": "Dés autorisés à la relance",
+      "AppliesToRollTypes": "S’applique aux types de jets",
+      "RollKind": {
+        "Any": "Au choix",
+        "Complex": "Complexe",
+        "Reaction": "Réaction",
+        "TomeUnderstand": "Ouvrage occulte : Comprendre",
+        "TomeAttune": "Ouvrage occulte : Harmoniser"
+      },
+      "BonusDiceDelta": "Dés bonus",
+      "ResultModifierDelta": "Modificateur de résultat",
+      "Remove": "Retirer"
+    },
+    "INJURY_SHEET": {
+      "Active": "Active",
+      "RollEffectsAutomatic": "Effets de jet (pénalités automatiques)",
+      "Enabled": "Actif",
+      "AppliesToSkills": "S’applique aux compétences",
+      "AppliesToRollTypes": "S’applique aux types de jets",
+      "PenaltyPerDie": "Pénalité par dé",
+      "PenaltyHint": "S’applique automatiquement comme pénalité aux jets concernés. Les blessures identiques ne se cumulent pas ; toutes les occurrences doivent être soignées pour supprimer l’effet."
+    },
+    "TRAUMA_SHEET": {
+      "Active": "Actif",
+      "TraumaRollModifier": "Ajoute aux jets de traumatisme",
+      "TraumaRollModifierHint": "Lorsqu’il est actif, ce traumatisme ajoute +1 aux futurs jets de traumatisme. Les jets de blessure ne sont pas affectés."
+    },
+    "KNACK_USAGE": {
+      "passive": "Passif",
+      "unlimited": "Illimité",
+      "oncePerTurn": "Une fois par tour",
+      "oncePerScene": "Une fois par scène",
+      "oncePerSession": "Une fois par session"
+
+    },
+    "ARCHETYPE": {
+      "SkillCaps": "Plafonds de compétences",
+      "TierPurchaseLimits": "Limites d’achat par rang",
+      "TierMaxLabel": "Max. rang {tier}",
+      "TierXpCostLabel": "Coût en PX du rang {tier}",
+      "KnackTiers": "Rangs de dons",
+      "DragDropHint": "Glissez-déposez des dons sur un rang ci-dessous pour ajouter leur UUID. Cliquez sur le nom d’un don pour afficher sa description."
+    },
+    "DIFFICULTY":{
+      "Normal": "Normal (1)",
+      "Difficult": "Difficile (2)",
+      "VeryDifficult": "Très difficile (3)"
+    },
+    "DIFFICULTY_CHAT": {
+      "Normal": "Normal",
+      "Difficult": "Difficile",
+      "VeryDifficult": "Très<br />difficile"
+    },
+    "COMBAT": {
+      "EndActivePhase": "Fin de la phase {label}",
+      "EndPhase": "Fin de la phase",
+      "EndCombat": "Fin du combat",
+      "BeginCombat": "Début du combat",
+      "SideInvestigators": "Investigateurs",
+      "SideNPCs": "PNJ",
+      "FirstSidePrompt": "Quel camp agit en premier ?",
+      "FirstSideInvestigators": "Investigateurs",
+      "FirstSideNPCs": "PNJ"
+    },
+    "RARITY": {
+      "common": "Commun",
+      "uncommon": "Peu commun",
+      "rare": "Rare",
+      "unique": "Unique"
+    },
+    "BACKGROUND": {
+      "PlaceOfOrigin": "Lieu de naissance",
+      "FamilyAndFriends": "Famille et amis",
+      "Employment": "Emploi",
+      "WeeklySalary": "Salaire hebdomadaire",
+      "Biography": "Biographie",
+      "FirstSupernaturalEncounter": "Première expérience surnaturelle",
+      "NotableEnemies": "Ennemis notables"
+    },
+    "PERSONALITY": {
+      "Positive": "Positif",
+      "Negative": "Négatif",
+      "NoneAssigned": "Aucun trait de personnalité assigné. Glissez-déposez-en un ici."
+    },
+    "PROPS":{
+      "Name":"Nom",
+      "Quantity": "Quantité",
+      "Skill":"Compétence",
+      "Tier": "Rang",
+      "Rarity": "Rareté",
+      "HasSpecialRules": "Règles spéciales",
+      "Passengers": "Passagers",
+      "Fuel": "Carburant",
+      "Cost": "Coût",
+      "MaxRange": "Portée maximale",
+      "CargoCapacity": "Capacité de chargement",
+      "Weapon": "Arme",
+      "Spell": "Sort",
+      "Damage": "Dégâts",
+      "DamageShort": "D",
+      "InjuryRating":"Seuil de blessure",
+      "InjuryRatingShort":"SB",
+      "Range":"Portée",
+      "Engaged": "Engagé",
+      "Ammunition":"Munitions",
+      "Costs":"Coûts",
+      "Uses":"Utilisations",
+      "Difficulty":"Difficulté",
+      "RollType": "Type de jet",
+      "RollFormula": "Formule de jet",
+      "NumberOfDice": "Nombre de dés",
+      "DieSize": "Type de dé",
+      "RollModifier": "Modificateur de jet",
+      "SuccessOnXPlus": "Réussite sur X+",
+      "BonusDice": "Dés bonus",
+      "Penalty": "Pénalité",
+      "ResultModifier": "Modificateur de résultat",
+      "Advantage": "Avantage",
+      "Disadvantage": "Désavantage",
+      "XP": "PX",
+      "Benefit": "Bénéfice",
+      "Declining": "Déclin",
+      "Losing": "Perte",
+      "Weight":"Poids",
+      "SpecialRules":"Règles spéciales",
+      "DefensiveBenefit":"Bénéfice défensif"
+
+    },
+    "ACTIONS": {
+      "SpendInsight": "Dépenser de la lucidité",
+      "RefreshInsight": "Récupérer de la lucidité",
+      "ClearDicePool": "Vider",
+      "StrainOneself": "Se dépasser",
+      "RefreshDicePool": "Rafraîchir",
+      "Roll": "Lancer",
+      "ResetAllKnackUses": "Réinitialiser les utilisations des dons",
+      "ResetKnackUses": "Réinitialiser ce don",
+      "ViewEdit": "Voir / Modifier",
+      "Remove": "Retirer",
+      "Reload": "Recharger",
+      "RollInjuryTrauma": "Jet de blessure / traumatisme"
+    },
+    "Settings": {
+      "TokenShowDicePools": {
+        "Name": "Afficher les réserves de dés sur les pions",
+        "Hint": "Affiche la réserve de dés sur les pions dans la scène."
+      },
+      "TokenShowDamage": {
+        "Name": "Afficher les dégâts sur les pions",
+        "Hint": "Affiche les dégâts sur les pions dans la scène."
+      },
+      "TokenOverlayAbove": {
+        "Name": "Affichage au-dessus du pion",
+        "Hint": "Si activé, affiche la réserve de dés et les dégâts au-dessus du pion plutôt qu’en dessous."
+      },
+      "CharacterLoadCapacity": {
+        "Name": "Capacité de charge du personnage",
+        "Hint": "Calcul automatique de la capacité de charge."
+      },
+      "CharacterInjuryTable": {
+        "Name": "Table de blessures du personnage",
+        "Hint": "Utilisée pour les jets de blessure."
+      },
+      "CharacterTraumaTableVariant": {
+        "Name": "Variante de table de traumatismes du personnage",
+        "Hint": "Choisissez la table de traumatismes à utiliser lors des jets de traumatisme.",
+        "Choices": {
+          "Standard": "Standard",
+          "NoPersonality": "Sans trait de personnalité"
+        }
+      },
+      "CharacterTraumaTable": {
+        "Name": "Table de traumatismes du personnage",
+        "Hint": "Utilisée pour les jets de traumatisme."
+      },
+      "CharacterTraumaTableNoPersonality": {
+        "Name": "Table de traumatismes du personnage sans trait de personnalité",
+        "Hint": "Table alternative optionnelle avec moins d’entrées, sans effets liés aux traits de personnalité."
+      },
+      "NpcInjuryTable": {
+        "Name": "Table de blessures des PNJ",
+        "Hint": "Utilisée pour les jets de blessure."
+      },
+      "NpcTraumaTable": {
+        "Name": "Table de traumatismes des PNJ",
+        "Hint": "Utilisée pour les jets de traumatisme."
+      }
+
+    },
+    "Warnings": {
+      "NpcKnackDropBlocked": "Les dons réservés aux PNJ ne peuvent pas être ajoutés aux personnages.",
+
+      "PermissionRollActor": "Vous n’avez pas l’autorisation d’effectuer des jets pour cet acteur.",
+      "PermissionStrainActor": "Vous n’avez pas l’autorisation de vous dépasser avec cet acteur.",
+      "StrainRequiresDamage": "Vous ne pouvez vous dépasser que lorsque le maximum de votre réserve de dés est réduit par des dégâts.",
+
+      "ArchetypeKnackDropInvalid": "Données de dépôt de don d’archétype invalides.",
+      "ArchetypeRequiredForKnacks": "Définissez un archétype pour cet acteur avant d’acheter des dons.",
+      "KnackDifferentArchetype": "Ce don appartient à un autre archétype.",
+      "ActorArchetypeInvalid": "La référence d’archétype de l’acteur est invalide.",
+      "KnackNotAllowedTier": "Ce don n’est pas autorisé au rang {tier} par l’archétype de l’acteur.",
+      "KnackTierNotPurchasable": "Aucun don de rang {tier} ne peut être acheté pour cet archétype (maximum {maxPurchasable}).",
+      "KnackTierLimitReached": "Limite de dons de rang {tier} atteinte ({existingTierCount}/{maxPurchasable}).",
+      "SourceKnackResolveFailed": "Impossible de résoudre le don source.",
+
+      "ActorHasNoArchetype": "Cet acteur n’a pas d’archétype défini.",
+      "ActorArchetypeUuidResolveFailed": "Impossible de résoudre l’UUID de l’archétype de l’acteur.",
+      "LinkedDocNotArchetype": "Le document lié n’est pas un archétype.",
+      "OpenArchetypeFailed": "Échec de l’ouverture de l’archétype.",
+
+      "WeaponOutOfAmmo": "{itemName} n’a plus de munitions ! Rechargez avant de l’utiliser.",
+      "ResetKnackPermission": "Vous n’avez pas l’autorisation de réinitialiser les dons de cet acteur.",
+      "RefreshKnackUsesPermission": "Vous n’avez pas l’autorisation de rafraîchir les utilisations de dons de cet acteur.",
+
+      "MacroOwnedItemsOnly": "Vous ne pouvez créer des boutons de macro que pour des objets possédés",
+      "MacroItemNotFound": "Impossible de trouver l’objet {itemName}. Vous devrez peut-être supprimer puis recréer cette macro.",
+
+      "CombatAddCombatantsFirst": "Ajoutez d’abord des combattants à la rencontre (activer l’état de combat des pions), puis lancez le combat.",
+
+      "RerollSelectAtLeastOneDie": "Sélectionnez au moins un dé à relancer.",
+
+      "RollKnacksNotApplicable": "Un ou plusieurs dons sélectionnés ne s’appliquent plus à ce jet.",
+      "RollReactionRequiresOneDie": "Les jets de réaction nécessitent 1 dé de votre réserve.",
+      "RollAdvDisadvRequiresDie": "L’avantage ou le désavantage nécessite de lancer au moins 1 dé.",
+      "RollMustRollAtLeastOneDie": "Vous devez lancer au moins 1 dé.",
+      "RollPostProcessingFailed": "Le traitement après le jet a échoué.",
+
+      "InjuryTraumaFallingModeInjuryOnly": "Le mode chute s’applique uniquement aux jets de blessure.",
+      "InjuryTraumaFallingHeightMin": "La hauteur de chute doit être d’au moins {minFt} m.",
+
+      "SkillRerollInvalidCard": "Cette carte de discussion ne peut pas être relancée.",
+      "SkillRerollActorResolveFailed": "Impossible de résoudre l’acteur pour ce jet.",
+      "SkillRerollPermission": "Vous n’avez pas l’autorisation de relancer ce jet.",
+      "SkillRerollNoSelectableDice": "Aucun dé sélectionnable n’a été choisi.",
+
+      "RollTableEmptyResultName": "La table de jets « {tableName} » possède une plage correspondante mais un nom de résultat vide. Définissez le nom du résultat ou le système utilisera les tables intégrées.",
+      "RollTableOverflowAssumption": "La table de jets « {tableName} » s’arrête à {tableMax} ; l’entrée supérieure est traitée comme {tableMax}+ pour un total de {total}.",
+
+      "ItemOpenSourceKnackGmOnly": "Seul le MJ peut ouvrir ou modifier les documents de dons source depuis un archétype.",
+      "ItemUuidResolveFailed": "Impossible de résoudre l’UUID déposé.",
+      "ItemNoSheetForDocument": "Aucune fiche disponible pour ce document.",
+      "ItemOpenUuidFailed": "Échec de l’ouverture du document UUID.",
+      "ItemTomeModifySpellsGmOnly": "Seul le MJ peut modifier les sorts d’un ouvrage occulte.",
+      "ItemTomeModifySpellListOrDifficultyGmOnly": "Seul le MJ peut modifier la liste de sorts ou la difficulté de compréhension d’un ouvrage occulte.",
+      "ItemTomeMustBeOwnedToUnderstand": "Cet ouvrage occulte doit être possédé par un acteur pour être compris.",
+      "ItemTomeMustBeOwnedToAttune": "Cet ouvrage occulte doit être possédé par un acteur pour pouvoir s’y harmoniser.",
+      "ItemTomeMustUnderstandBeforeAttune": "Vous devez comprendre cet ouvrage occulte avant de vous y harmoniser.",
+      "ItemTomeClearStateGmOnly": "Seul le MJ peut réinitialiser l’état compris/harmonisé d’un ouvrage occulte.",
+      "ItemArchetypeModifyAllowedKnacksGmOnly": "Seul le MJ peut modifier les dons autorisés d’un archétype.",
+      "ItemArchetypeModifyGmOnly": "Seul le MJ peut modifier un archétype.",
+      "ItemArchetypeDropTierRequired": "Déposez le don sur une section de rang spécifique.",
+      "ItemArchetypeDropOnlyKnacks": "Seuls les dons peuvent être déposés sur un archétype.",
+      "ItemTomeDropModifyGmOnly": "Seul le MJ peut ajouter ou retirer des sorts d’un ouvrage occulte.",
+      "ItemTomeDropOnlySpells": "Seuls des sorts peuvent être déposés sur un ouvrage occulte.",
+      "ItemKnackDropOnlySpells": "Seuls des sorts peuvent être déposés dans la liste de dons accordés.",
+      "ItemTomeInaccessibleSpells": "Cet ouvrage occulte contient {count} sort(s) que vous n’avez pas l’autorisation de consulter."
+
+    },
+    "Info": {
+      "KnackAlreadyOwnedUpdated": "Don déjà possédé ; rang mis à jour pour correspondre à l’archétype.",
+      "ArchetypeSet": "Archétype défini sur {archetypeName}.",
+      "TomeAlreadyUnderstood": "Cet ouvrage occulte est déjà compris.",
+      "TomeNoSpellsToLearn": "Cet ouvrage occulte ne contient aucun sort à apprendre.",
+      "TomeLearnedSpells": "{count} sort(s) appris depuis l’ouvrage occulte.",
+      "TomeNoNewSpellsLearned": "Aucun nouveau sort n’a été appris depuis cet ouvrage occulte.",
+      "TomeAttuned": "Harmonisé avec {tomeName}.",
+      "TomeClearedUnderstanding": "Compréhension de l’ouvrage occulte réinitialisée.",
+      "ArchetypeKnackAlreadyAddedTier": "Ce don est déjà ajouté à ce rang.",
+      "TomeSpellAlreadyInTome": "Ce sort est déjà présent dans cet ouvrage occulte.",
+      "KnackSpellAlreadyGranted": "Ce sort est déjà accordé par ce don."
+    },
+    "INSIGHT": {
+      "Errors": {
+        "PermissionSpend": "Vous n’avez pas l’autorisation de dépenser de la lucidité pour cet acteur.",
+        "PermissionRefresh": "Vous n’avez pas l’autorisation de récupérer de la lucidité pour cet acteur.",
+        "OnlyCharacterSpend": "Seuls les personnages peuvent dépenser de la lucidité.",
+        "OnlyCharacterRefresh": "Seuls les personnages peuvent récupérer de la lucidité.",
+        "NoneRemaining": "{actorName} n’a plus de lucidité disponible.",
+        "InsufficientRemaining": "{actorName} n’a pas assez de lucidité disponible.",
+        "AmountAtLeastOne": "Le montant de lucidité dépensé doit être d’au moins 1."
+      }
+    },
+    "DICEPOOL": {
+      "Chat": {
+        "Refresh": "Rafraîchissement de la réserve de dés",
+        "Reset": "Réinitialisation de la réserve de dés"
+      }
+    },
+    "InjuryTrauma": {
+      "Fallback": {
+        "NoMatchingEntry": "Aucune entrée correspondante",
+        "Trauma": {
+          "SubtleStrangeness": "Étrangeté subtile",
+          "Shocked": "Choqué",
+          "Stunned": "Sonné",
+          "OvercomeByHorror": "Submergé par l’horreur",
+          "MindUndone": "Esprit brisé",
+          "LostForever": "Perdu à jamais"
+        },
+        "Injury": {
+          "HeavyBlow": "Coup violent",
+          "Slowed": "Ralenti",
+          "NastyCut": "Sale coupure",
+          "Concussed": "Commotionné",
+          "InjuredArm": "Bras blessé",
+          "InjuredLeg": "Jambe blessée",
+          "LossOfASense": "Perte d’un sens",
+          "SeverelyInjured": "Gravement blessé",
+          "Comatose": "Comateux",
+          "Dire": "Critique",
+          "Dead": "Mort"
+
+        }
+      }
+    },
+    "Chat": {
+      "RollResult": {
+        "ReactionRollTooltip": "Jet de réaction",
+        "DifficultyFallback": "Difficulté {successesNeeded}",
+        "Reroll": "Relancer",
+        "Success": "RÉUSSITE",
+        "Failure": "ÉCHEC",
+        "HorrorDiceHint": "Les dés d’horreur sont marqués en noir.",
+        "HorrorDiceTooltip": "Les dés d’horreur sont marqués en noir.",
+        "RerollDice": "Relancer les dés",
+        "RollDetails": "Détails du jet",
+        "Advantage": "Avantage",
+        "Disadvantage": "Désavantage",
+        "Penalty": "Pénalité -{penalty}",
+        "Result": "Résultat +{resultModifier}",
+        "BonusDice": "Dés bonus : {bonusDice}",
+        "DroppedDice": "Dés écartés",
+        "RawDiceResult": "Résultat brut des dés",
+        "Successes": "Réussites",
+        "Failures": "Échecs",
+        "Trauma": "Traumatisme",
+        "Damage": "Dégâts",
+        "InflictInjury": "Infliger une blessure",
+        "DicePoolUnchangedReroll": "Réserve de dés : inchangée (relance)",
+        "DicePoolChanged": "Réserve de dés : {oldDicePoolValue} → {newDicePoolValue}"
+      },
+      "DicepoolReset": {
+        "Changed": "La réserve de dés de {actorName} est passée de {oldDicePoolValue} à {newDicePoolValue}.",
+        "HealedDamage": "{healedDamage} dégât(s) soigné(s)"
+      },
+      "Insight": {
+        "LabelSpent": "Lucidité dépensée",
+        "LabelRefreshed": "Lucidité récupérée",
+        "Spent": "{actorName} a dépensé {spent} lucidité ({oldRemaining} → {newRemaining}/{limit}).",
+        "Refreshed": "La lucidité de {actorName} a été récupérée ({oldRemaining} → {newRemaining})."
+      },
+      "InjuryTrauma": {
+        "FallingTooltip": "Chute",
+        "StrainTooltip": "Se dépasser",
+        "StrainNote": "appliquer la blessure résultante à la fin du tour / après 1 action complexe.",
+        "FallingLabel": "Blessure de chute",
+        "HeightLabel": "Hauteur",
+        "Roll": "Jet",
+        "Die": "Dé",
+        "Dice": "Dés",
+        "DieTotal": "Total du dé",
+        "Modifier": "Modificateur",
+        "Total": "Total",
+        "Table": "Table"
+
+      }
+    },
+    "Dialog": {
+      "ResetKnacks": {
+        "Title": "Réinitialiser les utilisations des dons",
+        "Prompt": "Quelles utilisations de dons réinitialiser ?",
+        "OncePerTurn": "Une fois par tour",
+        "OncePerScene": "Une fois par scène",
+        "OncePerSession": "Une fois par session",
+        "All": "Toutes"
+      },
+      "DiceRoll": {
+        "Knacks": "Dons",
+        "KnacksAffectingRoll": "Dons applicables à ce jet ({selected}/{available} sélectionnés)",
+        "KnacksHint": "Sélectionnez les dons à appliquer. Les utilisations sont dépensées lors du jet.",
+        "SelectedEffects": "Effets sélectionnés",
+        "OutOfUses": "Plus d’utilisations",
+        "NoRollChanges": "Aucune modification du jet",
+        "PreviewBonusDice": "{dice} dés bonus",
+        "PreviewResultModifier": "{mod} modificateur de résultat",
+        "PreviewAdvantage": "Avantage",
+        "PreviewDisadvantage": "Désavantage",
+        "PreviewAdvantagePlusDisadvantage": "Avantage + Désavantage",
+        "PreviewRerollAllowanceOne": "{count} dé de relance autorisé",
+        "PreviewRerollAllowanceMany": "{count} dés de relance autorisés",
+        "KnackEffectResult": "{mod} résultat",
+        "KnackEffectAdv": "Avantage",
+        "KnackEffectDisadv": "Désavantage",
+        "KnackEffectAdvPlusDisadv": "Avantage + Désavantage",
+        "KnackEffectRerollDieOne": "{count} dé de relance",
+        "KnackEffectRerollDieMany": "{count} dés de relance",
+        "Tier": "Rang {tier}",
+        "RefreshUses": "Récupérer les utilisations",
+        "None": "Aucun",
+        "AdvPlusDisadv": "Avantage + Désavantage",
+        "InjuriesAffectingRoll": "Blessures affectant ce jet",
+        "TotalPenalty": "Pénalité totale",
+        "InjuriesAutoAppliedHint": "Ces pénalités sont appliquées automatiquement par les blessures actives (les doublons ne se cumulent pas).",
+        "PenaltyMinus": "Pénalité -{penalty}"
+      },
+      "SpendInsight": {
+        "Remaining": "Restante : {remaining}/{limit}",
+        "Spend": "Dépenser"
+      },
+      "InjuryTrauma": {
+        "RollType": "Type de jet",
+        "Mode": "Mode",
+        "Standard": "Standard",
+        "Falling": "Chute",
+        "Die": "Dé",
+        "FallingHeightFt": "Hauteur de chute",
+        "Modifier": "Modificateur",
+        "InjuriesAffectingModifier": "Blessures affectant ce jet (modificateur : +{modifier})",
+        "TraumasAffectingModifier": "Traumatismes affectant ce jet (modificateur : +{modifier})",
+        "AddsModifier": "ajoute +{modifier}"
+      },
+      "RerollDice": {
+        "SuccessOn": "Réussite sur",
+        "RerollSelected": "Relancer la sélection",
+        "DieTypeHorror": "Horreur",
+        "DieTypeNormal": "Normal",
+        "Raw": "Brut",
+        "Final": "Final",
+        "Dropped": "écarté",
+        "CannotReroll": "ne peut pas être relancé"
+
+      }
+    },
+    "MONEY": {
+      "Actions": {
+        "Add": "Ajouter",
+        "Spend": "Dépenser",
+        "Set": "Définir"
+      },
+      "Tooltips": {
+        "Add": "Ajouter de l’argent",
+        "Spend": "Dépenser de l’argent",
+        "Set": "Définir l’argent"
+      },
+      "WindowTitle": {
+        "Add": "Ajouter de l’argent",
+        "Spend": "Dépenser de l’argent",
+        "Set": "Définir l’argent"
+      },
+      "Dialog": {
+        "CurrentBalance": "Solde actuel",
+        "Amount": "Montant"
+      },
+      "Hints": {
+        "Amount": "Montant : {amount}"
+      },
+      "Errors": {
+        "Permission": "Vous n’avez pas l’autorisation de modifier l’argent de cet acteur.",
+        "InvalidAmount": "Montant invalide. Utilisez un nombre avec jusqu’à deux décimales.",
+        "AmountMustBePositive": "Le montant doit être supérieur à 0."
+      },
+      "Chat": {
+        "Gained": "{actorName} a gagné {delta}. Solde : {balance}.",
+        "Spent": "{actorName} a dépensé {delta}. Solde : {balance}.",
+        "Set": "{actorName} a défini son argent à {balance}."
+      }
+    },
+    "SKILL": {
+      "rangedCombat": "Combat à distance",
+      "meleeCombat": "Corps à corps",
+      "agility": "Agilité",
+      "athletics": "Athlétisme",
+      "wits": "Méninges",
+      "presence": "Présence",
+      "intuition": "Intuition",
+      "knowledge": "Culture",
+      "resolve": "Sang-froid",
+      "lore": "Mystères"
+    },
+    "SKILL_SHORT": {
+      "agility": "AGI",
+      "athletics": "ATH",
+      "wits": "MEN",
+      "presence": "PRES",
+      "intuition": "INTU",
+      "knowledge": "CULT",
+      "resolve": "SFR",
+      "meleeCombat": "CAC",
+      "rangedCombat": "DIST",
+      "lore": "MYST"
+
+    },
+  "NPC": {
+      "NewKnack": "Nouveau don",
+      "NewWeakness": "Nouvelle faiblesse",
+      "NewEquipment": "Nouvel équipement",
+      "Weakness": "Faiblesse",
+      "Abilities": "Capacités",
+      "Profile": {
+        "generic": "PNJ générique",
+        "named": "Personnage nommé",
+        "supernatural": "Créature surnaturelle",
+        "monstrosity": "Monstruosité indicible"
+      },
+      "Size": {
+        "standard": "Standard",
+        "large": "Grande",
+        "huge": "Énorme",
+        "titanic": "Titanesque"
+      }
+    }
+  },
+  "ITEM": {
+    "Knack": {
+      "isNPCknack": "Don de PNJ",
+      "isNPCweakness": "Faiblesse de PNJ"
+    },
+    "Weapon": {
+      "skill": "Compétence",
+      "damage": "Dégâts",
+      "range": "Portée",
+      "injuryRating": "Seuil de blessure",
+      "ammunition": "Munitions",
+      "cost": "Coût",
+      "specialRules": "Règles spéciales",
+      "ammunitionMax": "Munitions max.",
+      "reloadCost": "Coût de rechargement",
+      "weight": "Poids",
+      "reloadAfterUsage": "Recharger après utilisation",
+      "isRelic": "Relique"
+    },
+    "ProtectiveEquipment": {
+      "defensiveBenefit": "Bénéfice défensif",
+      "specialRules": "Règles spéciales",
+      "cost": "Coût"
+    },
+    "Tome": {
+      "alternativeNames": "Noms alternatifs",
+      "knowledgeBonus": "Bonus de culture",
+      "rarity": "Rareté",
+      "spells": "Sorts",
+      "source": "Source",
+      "dropSpellHint": "MJ : glissez un sort ici",
+      "dropSpellTarget": "Déposez des sorts sur cet ouvrage occulte",
+      "attunementDifficulty": "Difficulté de compréhension",
+      "difficultyNormal": "Normal (1)",
+      "difficultyDifficult": "Difficile (2)",
+      "difficultyVeryDifficult": "Très difficile (3)",
+      "understood": "Compris",
+      "attuned": "Harmonisé",
+      "understandButton": "Comprendre",
+      "attuneButton": "Harmoniser",
+      "clearUnderstoodButton": "Réinitialiser la compréhension",
+      "inaccessibleSpells": "Cet ouvrage occulte contient {count} sort(s) que vous n’avez pas l’autorisation de consulter."
+
+    },
+    "UsefulItem": {
+      "uses": "Utilisations",
+      "weight": "Poids",
+      "specialRules": "Règles spéciales"
+    },
+    "PersonalityTrait": {
+      "positive": "Trait positif",
+      "negative": "Trait négatif"
+    },
+    "Favor": {
+      "xp": "Coût en PX",
+      "benefit": "Bénéfice",
+      "decliningText": "Déclin",
+      "losingText": "Perte"
+    },
+    "Spell": {
+      "difficulty": "Difficulté"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Personnage",
+      "npc": "PNJ",
+      "vehicle": "Véhicule"
+    },
+    "Item": {
+      "item": "Objet",
+      "feature": "Caractéristique",
+      "spell": "Sort",
+      "knack": "Don",
+      "personality_trait": "Trait de personnalité",
+      "weapon": "Arme",
+      "protective_equipment": "Équipement de protection",
+      "useful_item": "Objet utile",
+      "tome": "Ouvrage occulte",
+      "relic": "Relique",
+      "injury": "Blessure",
+      "trauma": "Traumatisme",
+      "favor": "Faveur",
+      "archetype": "Archétype"
+    }
+  }
+}

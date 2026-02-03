@@ -18,6 +18,7 @@ everything on your own. This system provides only the necessary sheets and item 
 ## Languages
  - english
  - german (fan translated)
+ - french (fan translated)
 
 ## ToDo
 - bug fixing

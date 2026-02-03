@@ -24,7 +24,7 @@
       "thumbnail": "systems/arkham-horror-rpg-fvtt/assets/anvil-impact.png"
     }
   ],
-  "version": "13.0.34",
+  "version": "13.0.35",
   "compatibility": {
     "minimum": 13,
     "verified": "13"
@@ -41,6 +41,11 @@
       "lang": "de",
       "name": "Deutsch",
       "path": "lang/de.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
     }
   ],
   "packs": [],

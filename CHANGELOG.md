@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.35
+- added french fan translation
+  
 ## 13.0.34
 - fix issue with roll card breaking chat box on long weapon or spell names
 - feature injury trauma automation
