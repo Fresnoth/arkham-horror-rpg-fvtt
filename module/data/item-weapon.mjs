@@ -15,7 +15,8 @@ export default class ArkhamHorrorWeapon extends ArkhamHorrorItemBase {
     schema.ammunition = new fields.SchemaField({
       max: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
       current: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
-      reloadAfterUsage: new fields.BooleanField({ required: true, initial: false })
+      reloadAfterUsage: new fields.BooleanField({ required: true, initial: false }),
+      decreaseAfterUsage: new fields.BooleanField({ required: true, initial: false })
     });
     schema.cost = new fields.NumberField({ ...requiredFloat, initial: 0, min: 0 });
     schema.reloadCost = new fields.NumberField({ ...requiredFloat, initial: 0, min: 0 });

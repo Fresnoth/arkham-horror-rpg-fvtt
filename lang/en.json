@@ -634,7 +634,8 @@
       "reloadCost": "Reload Cost",
       "weight": "Weight",
       "reloadAfterUsage": "Reload After Usage",
-      "isRelic": "Relic"
+      "isRelic": "Relic",
+      "decreaseAfterUsage": "Decrease Ammunition After Usage"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Defensive Benefit",

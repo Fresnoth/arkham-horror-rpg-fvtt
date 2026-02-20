@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 13.0.36
+- added property for weapons to decrease ammunition after every usage
+
 ## 13.0.35
 - added french fan translation
   

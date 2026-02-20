@@ -86,6 +86,12 @@ export class SkillRollWorkflow {
         result.weaponAmmoSpendReason = "reloadAfterUsage";
         result.weaponAmmoNew = 0;
         state.weaponToUse.update({"system.ammunition.current": 0});
+      }
+      else if(ammo?.decreaseAfterUsage){
+        result.weaponAmmoUsed = true;
+        result.weaponAmmoSpendReason = "decreaseAfterUsage";
+        result.weaponAmmoNew = Math.max(0, ammoOld - 1);
+        state.weaponToUse.update({"system.ammunition.current": result.weaponAmmoNew});
       } else {
         const keptDice = (outcome.finalDiceRollResults ?? []).filter(d => !d.isDropped);
         const hasFinalOne = keptDice.some(d => d.result === 1);
