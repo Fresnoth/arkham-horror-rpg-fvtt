@@ -11,7 +11,8 @@ export default class ArkhamHorrorActorBase extends ArkhamHorrorDataModel {
 
     schema.dicepool = new fields.SchemaField({
       value: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-      max: new fields.NumberField({ ...requiredInteger, initial: 6 })
+      max: new fields.NumberField({ ...requiredInteger, initial: 6 }),
+      horrorInPool: new fields.NumberField({ required: false, nullable: true, integer: true, initial: null })
     });
 
     schema.damage = new fields.NumberField({ ...requiredInteger, initial: 0 });
@@ -69,14 +70,40 @@ export default class ArkhamHorrorActorBase extends ArkhamHorrorDataModel {
 
     prepareDerivedData() {
     this.dicepoolPrepared = [];
-    let presentDicePoolMax = Math.max(0, this.dicepool.max - this.damage);
+    const presentDicePoolMax = Math.max(0, this.dicepool.max - this.damage);
 
     // dice pool value is max presentDicepool max
     this.dicepool.value = Math.min(this.dicepool.value,presentDicePoolMax);
 
+    const horrorLimit = Math.max(0, Number(this.horror) || 0);
+    const rawHorrorInPool = this.dicepool.horrorInPool;
+    const storedHorrorInPool = (rawHorrorInPool === null || rawHorrorInPool === undefined)
+      ? Number.NaN
+      : Number(rawHorrorInPool);
+    const hasStoredHorrorInPool = Number.isFinite(storedHorrorInPool);
+    const fallbackHorrorInPool = Math.min(horrorLimit, this.dicepool.value);
+    const effectiveHorrorInPool = hasStoredHorrorInPool ? storedHorrorInPool : fallbackHorrorInPool;
+
+    this.dicepool.horrorInPool = Math.max(0, Math.min(effectiveHorrorInPool, this.dicepool.value, horrorLimit));
+
+    const horrorSlots = Math.min(horrorLimit, presentDicePoolMax);
+    const activeHorrorDice = Math.max(0, Math.min(this.dicepool.horrorInPool, this.dicepool.value));
+    const spentHorrorDice = Math.max(0, horrorSlots - activeHorrorDice);
+
     for (let i = 1; i <= presentDicePoolMax; i++) {
-      let isHorrorDice = (i <= this.horror);
-      this.dicepoolPrepared.push({ index: i, max: presentDicePoolMax, used: i > this.dicepool.value,isHorrorDice:isHorrorDice });
+      const used = i > this.dicepool.value;
+      let isHorrorDice = false;
+
+      if (!used) {
+        // Active dice reflect actual in-pool composition.
+        isHorrorDice = i <= activeHorrorDice;
+      } else {
+        // Used dice reflect what has been spent from horror capacity first.
+        const usedIndex = i - this.dicepool.value;
+        isHorrorDice = usedIndex <= spentHorrorDice;
+      }
+
+      this.dicepoolPrepared.push({ index: i, max: presentDicePoolMax, used, isHorrorDice });
     }
   }
 }

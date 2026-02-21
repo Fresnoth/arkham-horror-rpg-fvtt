@@ -49,6 +49,7 @@ export function calculatePoolsAndThresholds({
   skillCurrent,
   currentDicePool,
   diceToUse,
+  selectedHorrorDice,
   penalty,
   bonusDice,
   resultModifier,
@@ -58,13 +59,27 @@ export function calculatePoolsAndThresholds({
   const skillCurrentNum = Number.parseInt(skillCurrent) || 0;
   const currentDicePoolNum = Number.parseInt(currentDicePool) || 0;
   const diceToUseNum = Number.parseInt(diceToUse) || 0;
-  const numHorrorDice = Number.parseInt(actor.system.horror) || 0;
+  const horrorLimit = Number.parseInt(actor.system.horror) || 0;
+  const storedHorrorInPool = Number.parseInt(actor.system?.dicepool?.horrorInPool);
+  const fallbackHorrorInPool = Math.min(horrorLimit, currentDicePoolNum);
+  const numHorrorDice = Number.isFinite(storedHorrorInPool)
+    ? Math.max(0, Math.min(storedHorrorInPool, currentDicePoolNum, horrorLimit))
+    : fallbackHorrorInPool;
 
   let successOn = skillCurrentNum;
   let diceToRoll = diceToUseNum;
   let horrorDiceToRoll = 0;
+  const numRegularDice = Math.max(0, currentDicePoolNum - numHorrorDice);
+  const minRequiredHorror = Math.max(0, diceToUseNum - numRegularDice);
+  const maxAllowedHorror = Math.min(numHorrorDice, diceToUseNum);
 
-  if (numHorrorDice >= currentDicePoolNum) {
+  const explicitHorror = selectedHorrorDice !== undefined && selectedHorrorDice !== null;
+  if (explicitHorror) {
+    const requestedHorror = Math.max(0, Number.parseInt(selectedHorrorDice) || 0);
+    const clampedMin = Math.min(minRequiredHorror, maxAllowedHorror);
+    horrorDiceToRoll = Math.max(clampedMin, Math.min(requestedHorror, maxAllowedHorror));
+    diceToRoll = Math.max(0, diceToUseNum - horrorDiceToRoll);
+  } else if (numHorrorDice >= currentDicePoolNum) {
     horrorDiceToRoll = diceToUseNum;
     diceToRoll = 0;
   } else {

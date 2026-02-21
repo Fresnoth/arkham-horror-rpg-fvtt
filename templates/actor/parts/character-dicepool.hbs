@@ -1,16 +1,17 @@
 <div class="dicepool-display">
-    <span class="dice-action-icon" data-action="clickedClearDicePool" title="{{localize "ARKHAM_HORROR.ACTIONS.ClearDicePool"}}" ><i class="fa-solid fa-x"></i></span>
+    <span class="dice-action-icon" data-action="clickedClearDicePool" title="{{localize "ARKHAM_HORROR.ACTIONS.DiscardAllDice"}}" ><i class="fa-solid fa-x"></i></span>
+    <span class="dice-action-icon" data-action="clickedDiscardDie" title="{{localize "ARKHAM_HORROR.ACTIONS.DiscardDie"}}"><i class="fa-solid fa-minus"></i></span>
+    <span class="dice-action-icon" data-action="clickedStrainOneself" title="{{localize "ARKHAM_HORROR.ACTIONS.StrainOneself"}}"><i class="fa-solid fa-hand-fist"></i></span>
     {{#each system.dicepoolPrepared as |die|}}
         {{#if die.isHorrorDice}}
-        <span class="dice-icon dicepool-dice color-d6 {{#if die.used}}used{{/if}}" data-action="clickedDicePool"
-            data-die-index="{{die.index}}"><img src="systems/arkham-horror-rpg-fvtt/assets/icons/icon-horror.svg"
+        <span class="dice-icon dicepool-dice color-d6 {{#if die.used}}used{{/if}}" data-action="clickedDicePool" data-die-index="{{die.index}}"><img src="systems/arkham-horror-rpg-fvtt/assets/icons/icon-horror.svg"
                 alt="Horror Die" /></span>
         {{else}}
-        <span class="dice-icon dicepool-dice color-d6 {{#if die.used}}used{{/if}}" data-action="clickedDicePool"
-            data-die-index="{{die.index}}"><img src="systems/arkham-horror-rpg-fvtt/assets/icons/icon-dice-d6.svg"
+        <span class="dice-icon dicepool-dice color-d6 {{#if die.used}}used{{/if}}" data-action="clickedDicePool" data-die-index="{{die.index}}"><img src="systems/arkham-horror-rpg-fvtt/assets/icons/icon-dice-d6.svg"
                 alt="Regular Die" /></span>
         {{/if}}
     {{/each}}
-    <span class="dice-action-icon" data-action="clickedStrainOneself" title="{{localize "ARKHAM_HORROR.ACTIONS.StrainOneself"}}"><i class="fa-solid fa-hand-fist"></i></span>
+    <span class="dice-action-icon" data-action="clickedSpendRegularDie" title="{{localize "ARKHAM_HORROR.ACTIONS.SpendRegularDie"}}"><i class="fa-solid fa-dice" aria-hidden="true"></i></span>
+    <span class="dice-action-icon" data-action="clickedSpendHorrorDie" title="{{localize "ARKHAM_HORROR.ACTIONS.SpendHorrorDie"}}"><i class="fa-solid fa-skull" aria-hidden="true"></i></span>
     <span class="dice-action-icon" data-action="clickedRefreshDicePool" title="{{localize "ARKHAM_HORROR.ACTIONS.RefreshDicePool"}}" ><i class="fa-solid fa-arrow-rotate-right"></i></span>
 </div>

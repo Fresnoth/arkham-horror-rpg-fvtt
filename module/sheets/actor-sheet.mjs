@@ -10,6 +10,8 @@ import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/to
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
 import { refreshInsightAndPost } from "../helpers/insight.mjs";
 import { formatCurrency, spendMoney } from "../helpers/money.mjs";
+import { discardAllDice, discardDice, spendSimpleActionDie } from "../api/resources/index.mjs";
+import { setValue as setDicepoolValue } from "../api/dicepool/index.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -83,6 +85,9 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         },
         actions: {
             clickedDicePool: this.#handleClickedDicePool,
+            clickedDiscardDie: this.#handleClickedDiscardDie,
+            clickedSpendRegularDie: this.#handleClickedSpendRegularDie,
+            clickedSpendHorrorDie: this.#handleClickedSpendHorrorDie,
             clickedClearDicePool: this.#handleClickedClearDicePool,
             clickedStrainOneself: this.#handleClickedStrainOneself,
             editItem: this.#handleEditItem,
@@ -506,17 +511,99 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     static async #handleClickedDicePool(event, target) {
         event.preventDefault();
-        const element = event.currentTarget;
-        const dieIndex = target.dataset.dieIndex;
+        const dieIndex = Number.parseInt(target.dataset.dieIndex) || 0;
+        const newValue = Math.max(0, dieIndex);
 
-        let newValue = dieIndex;
-        if (newValue < 0) newValue = 0;
-        this.actor.update({ 'system.dicepool.value': newValue });
+        try {
+            const outcome = await setDicepoolValue(this.actor, { value: newValue });
+            if (!outcome?.ok) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
+            }
+        } catch (_error) {
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.SimpleActionSpendFailed'));
+        }
+    }
+
+    static #notifySimpleSpendFailure(reason) {
+        const reasonMap = {
+            PERMISSION_DENIED: 'ARKHAM_HORROR.Warnings.PermissionRollActor',
+            INSUFFICIENT_HORROR: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientHorror',
+            INSUFFICIENT_REGULAR: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientRegular',
+            INSUFFICIENT_DICEPOOL: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientDicepool',
+            INSUFFICIENT_RESOURCE: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientDicepool',
+            AMOUNT_INVALID: 'ARKHAM_HORROR.Warnings.SimpleActionInvalidAmount',
+            HORROR_EXCEEDS_TOTAL: 'ARKHAM_HORROR.Warnings.SimpleActionInvalidHorrorSplit',
+        };
+
+        const key = reasonMap[String(reason ?? '')] ?? 'ARKHAM_HORROR.Warnings.SimpleActionSpendFailed';
+        ui.notifications.warn(game.i18n.localize(key));
+    }
+
+    static async #handleClickedDiscardDie(event, _target) {
+        event.preventDefault();
+
+        const outcome = await discardDice(this.actor, {
+            amount: 1,
+            context: 'discard',
+            postChat: true,
+            chatVisibility: 'public',
+            source: 'sheet',
+        });
+
+        if (!outcome?.ok) {
+            ArkhamHorrorActorSheet.#notifySimpleSpendFailure(outcome?.reason);
+        }
+    }
+
+    static async #handleClickedSpendRegularDie(event, _target) {
+        event.preventDefault();
+
+        const outcome = await spendSimpleActionDie(this.actor, {
+            dieType: 'regular',
+            context: 'simple',
+            postChat: true,
+            chatVisibility: 'public',
+            source: 'sheet',
+        });
+
+        if (!outcome?.ok) {
+            ArkhamHorrorActorSheet.#notifySimpleSpendFailure(outcome?.reason);
+        }
+    }
+
+    static async #handleClickedSpendHorrorDie(event, _target) {
+        event.preventDefault();
+
+        const outcome = await spendSimpleActionDie(this.actor, {
+            dieType: 'horror',
+            context: 'simple',
+            postChat: true,
+            chatVisibility: 'public',
+            source: 'sheet',
+        });
+
+        if (!outcome?.ok) {
+            ArkhamHorrorActorSheet.#notifySimpleSpendFailure(outcome?.reason);
+        }
     }
 
     static async #handleClickedClearDicePool(event, target) {
         event.preventDefault();
-        this.actor.update({ 'system.dicepool.value': 0 });
+        const currentPool = Number.parseInt(this.actor?.system?.dicepool?.value) || 0;
+        if (currentPool <= 0) {
+            return;
+        }
+
+        const outcome = await discardAllDice(this.actor, {
+            context: 'discard',
+            postChat: true,
+            chatVisibility: 'public',
+            source: 'sheet',
+        });
+
+        if (!outcome?.ok) {
+            ArkhamHorrorActorSheet.#notifySimpleSpendFailure(outcome?.reason);
+        }
     }
 
     static async #handleEditItem(event, target) {

@@ -247,6 +247,10 @@
       "SpendInsight": "Dépenser de la lucidité",
       "RefreshInsight": "Récupérer de la lucidité",
       "ClearDicePool": "Vider",
+      "DiscardDie": "Défausser un dé",
+      "DiscardAllDice": "Défausser tous les dés",
+      "SpendRegularDie": "Dépenser un dé normal",
+      "SpendHorrorDie": "Dépenser un dé d’horreur",
       "StrainOneself": "Se dépasser",
       "RefreshDicePool": "Rafraîchir",
       "Roll": "Lancer",
@@ -340,7 +344,14 @@
       "RollReactionRequiresOneDie": "Les jets de réaction nécessitent 1 dé de votre réserve.",
       "RollAdvDisadvRequiresDie": "L’avantage ou le désavantage nécessite de lancer au moins 1 dé.",
       "RollMustRollAtLeastOneDie": "Vous devez lancer au moins 1 dé.",
+      "RollSpendFailed": "Impossible de dépenser les dés pour ce jet.",
       "RollPostProcessingFailed": "Le traitement après le jet a échoué.",
+      "SimpleActionInsufficientHorror": "Vous n’avez pas assez de dés d’horreur à dépenser.",
+      "SimpleActionInsufficientRegular": "Vous n’avez pas assez de dés normaux à dépenser.",
+      "SimpleActionInsufficientDicepool": "Votre réserve de dés est insuffisante.",
+      "SimpleActionInvalidAmount": "Montant invalide pour une action simple.",
+      "SimpleActionInvalidHorrorSplit": "Le nombre de dés d’horreur utilisés est invalide pour ce jet.",
+      "SimpleActionSpendFailed": "Échec de la dépense pour l’action simple.",
 
       "InjuryTraumaFallingModeInjuryOnly": "Le mode chute s’applique uniquement aux jets de blessure.",
       "InjuryTraumaFallingHeightMin": "La hauteur de chute doit être d’au moins {minFt} m.",
@@ -460,11 +471,21 @@
         "Changed": "La réserve de dés de {actorName} est passée de {oldDicePoolValue} à {newDicePoolValue}.",
         "HealedDamage": "{healedDamage} dégât(s) soigné(s)"
       },
+      "DicepoolDiscard": {
+        "Label": "Défausse de réserve de dés",
+        "Spent": "{actorName} a défaussé {amount} dés (normaux : {discardedRegular}, horreur : {discardedHorror}) ({oldDicePoolValue} → {newDicePoolValue})."
+      },
       "Insight": {
         "LabelSpent": "Lucidité dépensée",
         "LabelRefreshed": "Lucidité récupérée",
         "Spent": "{actorName} a dépensé {spent} lucidité ({oldRemaining} → {newRemaining}/{limit}).",
         "Refreshed": "La lucidité de {actorName} a été récupérée ({oldRemaining} → {newRemaining})."
+      },
+      "SimpleAction": {
+        "Label": "Action simple",
+        "Spent": "{actorName} a dépensé {amount} {dieTypeLabel} ({oldDicePoolValue} → {newDicePoolValue} réserve de dés).",
+        "DieTypeHorror": "dé d’horreur",
+        "DieTypeRegular": "dé normal"
       },
       "InjuryTrauma": {
         "FallingTooltip": "Chute",
@@ -515,6 +536,8 @@
         "RefreshUses": "Récupérer les utilisations",
         "None": "Aucun",
         "AdvPlusDisadv": "Avantage + Désavantage",
+        "HorrorDiceToUse": "Dés d’horreur",
+        "HorrorDiceToUseHint": "Dés d’horreur disponibles : {available}. Maximum pour ce jet : {max}.",
         "InjuriesAffectingRoll": "Blessures affectant ce jet",
         "TotalPenalty": "Pénalité totale",
         "InjuriesAutoAppliedHint": "Ces pénalités sont appliquées automatiquement par les blessures actives (les doublons ne se cumulent pas).",

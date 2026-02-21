@@ -233,6 +233,43 @@
 
 // Dice roll dialog: tidy up the Knacks selector layout.
 .roll-dialog-container {
+  .roll-resource-row {
+    > label {
+      flex: 0 0 130px;
+      min-width: 130px;
+    }
+  }
+
+  .roll-resource-controls {
+    flex: 1 1 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 10px minmax(0, 1fr) 36px;
+    align-items: center;
+    column-gap: 4px;
+
+    > input[type="number"] {
+      width: auto;
+      max-width: none;
+      min-width: 0;
+      text-align: center;
+    }
+
+    > .button-dicepool-rolldialog {
+      width: 36px;
+      min-width: 36px;
+      max-width: 36px;
+      padding: 0;
+      text-align: center;
+    }
+  }
+
+  .roll-resource-separator {
+    width: 10px;
+    text-align: center;
+    line-height: 1;
+  }
+
   .dialog-footer--primary {
     margin-top: 10px;
     margin-bottom: 6px;
@@ -736,7 +773,8 @@
   justify-content: center;
 
   .dicepool-dice {
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }
 
@@ -803,6 +841,12 @@
   margin-left: 5px;
   margin-right: 5px;
   cursor: pointer;
+
+  img {
+    height: 24px;
+    width: 24px;
+    display: block;
+  }
 }
 
 .tab-biography, .tab-abilities {

@@ -243,6 +243,10 @@
       "SpendInsight": "Spend Insight",
       "RefreshInsight": "Refresh Insight",
       "ClearDicePool": "Clear",
+      "DiscardDie": "Discard Die",
+      "DiscardAllDice": "Discard All Dice",
+      "SpendRegularDie": "Spend Regular Die",
+      "SpendHorrorDie": "Spend Horror Die",
       "StrainOneself": "Strain Oneself",
       "RefreshDicePool": "Refresh",
       "Roll": "Roll",
@@ -335,7 +339,14 @@
       "RollReactionRequiresOneDie": "Reaction rolls require 1 die from your pool.",
       "RollAdvDisadvRequiresDie": "Advantage/Disadvantage requires rolling at least 1 die.",
       "RollMustRollAtLeastOneDie": "You must roll at least 1 die.",
+      "RollSpendFailed": "Failed to spend dice for this roll.",
       "RollPostProcessingFailed": "Post-roll processing failed.",
+      "SimpleActionInsufficientHorror": "You do not have enough horror dice to spend.",
+      "SimpleActionInsufficientRegular": "You do not have enough regular dice to spend.",
+      "SimpleActionInsufficientDicepool": "You do not have enough dice in your pool.",
+      "SimpleActionInvalidAmount": "Simple Action spend amount is invalid.",
+      "SimpleActionInvalidHorrorSplit": "Horror dice to use is invalid for this roll.",
+      "SimpleActionSpendFailed": "Simple Action spend failed.",
 
       "InjuryTraumaFallingModeInjuryOnly": "Falling mode only applies to Injury rolls.",
       "InjuryTraumaFallingHeightMin": "Falling height must be at least {minFt} ft.",
@@ -453,11 +464,21 @@
         "Changed": "{actorName}'s dice pool changed from {oldDicePoolValue} to {newDicePoolValue}.",
         "HealedDamage": "Healed {healedDamage} damage"
       },
+      "DicepoolDiscard": {
+        "Label": "Dicepool Discard",
+        "Spent": "{actorName} discarded {amount} dice (regular: {discardedRegular}, horror: {discardedHorror}) ({oldDicePoolValue} → {newDicePoolValue})."
+      },
       "Insight": {
         "LabelSpent": "Insight Spent",
         "LabelRefreshed": "Insight Refreshed",
         "Spent": "{actorName} spent {spent} Insight ({oldRemaining} → {newRemaining}/{limit}).",
         "Refreshed": "{actorName}'s Insight has been refreshed from {oldRemaining} to {newRemaining}."
+      },
+      "SimpleAction": {
+        "Label": "Simple Action",
+        "Spent": "{actorName} spent {amount} {dieTypeLabel} ({oldDicePoolValue} → {newDicePoolValue} dice pool).",
+        "DieTypeHorror": "Horror Die",
+        "DieTypeRegular": "Regular Die"
       },
       "InjuryTrauma": {
         "FallingTooltip": "Falling",
@@ -507,6 +528,8 @@
         "RefreshUses": "Refresh uses",
         "None": "None",
         "AdvPlusDisadv": "Adv + Disadvantage",
+        "HorrorDiceToUse": "Horror Dice",
+        "HorrorDiceToUseHint": "Available horror dice: {available}. Max for this roll: {max}.",
         "InjuriesAffectingRoll": "Injuries affecting this roll",
         "TotalPenalty": "Total penalty",
         "InjuriesAutoAppliedHint": "These penalties are applied automatically from active injuries (duplicates do not stack).",

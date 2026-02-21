@@ -14,6 +14,7 @@ import {
   isApplicableKnackSelection,
 } from "../helpers/knacks.mjs";
 import { getInjuryImpactForSkillRoll } from "../helpers/injuries.mjs";
+import { getHorrorSpendBounds } from "../helpers/dicepool-state.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -45,6 +46,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         rollKind: this.rollKind,
 
         diceToUse: 0,
+        horrorDiceToUse: 0,
         penalty: 0,
         bonusDice: 0,
         resultModifier: 0,
@@ -94,6 +96,8 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         clickedRoll: this.#handleClickedRoll,
         clickedIncreaseDicePool: this.#handleIncreaseDicePool,
         clickedDecreaseDicePool: this.#handleDecreaseDicePool,
+      clickedIncreaseHorrorDice: this.#handleIncreaseHorrorDice,
+      clickedDecreaseHorrorDice: this.#handleDecreaseHorrorDice,
         refreshKnackUses: this.#handleRefreshKnackUses,
     },
   };
@@ -138,6 +142,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.rollWithDisadvantage = false;
     this.rollState.modifierAdvantage = 0;
     this.rollState.diceToUse = 0;
+    this.rollState.horrorDiceToUse = 0;
     this.rollState.bonusDice = 0;
     this.rollState.penalty = 0;
     this.rollState.resultModifier = 0;
@@ -165,6 +170,12 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (this.rollState.rollKind === "reaction") {
       const pool = Number.parseInt(this.rollState.currentDicePool) || 0;
       this.rollState.diceToUse = pool > 0 ? 1 : 0;
+      const bounds = getHorrorSpendBounds(this.actor, {
+        currentDicePool: pool,
+        diceToUse: this.rollState.diceToUse,
+        horrorDiceToUse: 0,
+      });
+      this.rollState.horrorDiceToUse = this.rollState.diceToUse > 0 ? Math.min(bounds.availableHorror, 1) : 0;
     }
   }
 
@@ -182,6 +193,16 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const rollKind = this.rollState.rollKind ?? "complex";
     const isReaction = rollKind === "reaction";
+    const showHorrorSelector = rollKind === "complex" || rollKind === "reaction";
+    const bounds = getHorrorSpendBounds(this.actor, {
+      currentDicePool: this.rollState.currentDicePool,
+      diceToUse: this.rollState.diceToUse,
+      horrorDiceToUse: this.rollState.horrorDiceToUse,
+    });
+    const availableHorror = bounds.availableHorror;
+    const minHorrorDiceToUse = bounds.minHorrorDiceToUse;
+    const maxHorrorDiceToUse = bounds.maxHorrorDiceToUse;
+    this.rollState.horrorDiceToUse = bounds.clampedHorrorDiceToUse;
 
     const rollKindLabel = rollKind === "reaction"
       ? "Reaction"
@@ -347,6 +368,11 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         skillMax: this.rollState.skillMax,
         currentDicePool: this.rollState.currentDicePool,
         diceToUse: this.rollState.diceToUse,
+        horrorDiceToUse: this.rollState.horrorDiceToUse,
+        availableHorror,
+        minHorrorDiceToUse,
+        maxHorrorDiceToUse,
+        showHorrorSelector,
         penalty: this.rollState.penalty,
         totalPenalty,
         injuryImpact,
@@ -511,6 +537,12 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return; // keep dialog open
     }
 
+    const horrorDiceToUse = Number(this.rollState.horrorDiceToUse ?? 0) || 0;
+    if (horrorDiceToUse < 0 || horrorDiceToUse > this.rollState.diceToUse) {
+      ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.SimpleActionInvalidHorrorSplit'));
+      return;
+    }
+
     // If Adv/Disadv selected, you must be rolling at least 1 die
     const baseDice = (this.rollState.diceToUse || 0) + (this.rollState.bonusDice || 0);
     if (this.rollState.modifierAdvantage !== 0 && baseDice <= 0) {
@@ -536,8 +568,16 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const workflow = new SkillRollWorkflow();
     const result = await workflow.run({ actor: this.actor, state: stateForRoll });
 
+    if (result?.ok === false) {
+      return;
+    }
+
     // Spend Knack uses only after the roll is executed.
-    await spendKnackUses({ actor: this.actor, selectedKnacks });
+    try {
+      await spendKnackUses({ actor: this.actor, selectedKnacks });
+    } catch (_error) {
+      ui.notifications?.warn?.(game.i18n.localize('ARKHAM_HORROR.Warnings.RollPostProcessingFailed'));
+    }
 
     if (typeof this.afterRoll === "function") {
       try {
@@ -576,6 +616,7 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     // Update rollState FROM UI once
     this.rollState.skillCurrent = Number.parseInt(form.skillCurrent.value) || 0;
     this.rollState.diceToUse = Number.parseInt(form.diceToUse.value) || 0;
+    this.rollState.horrorDiceToUse = Number.parseInt(form.horrorDiceToUse?.value) || 0;
     this.rollState.penalty = Number.parseInt(form.penalty.value) || 0;
     this.rollState.bonusDice = Number.parseInt(form.bonus_dice.value) || 0;
     this.rollState.resultModifier = Number.parseInt(form.resultModifier?.value) || 0;
@@ -586,6 +627,13 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const pool = Number.parseInt(this.rollState.currentDicePool) || 0;
         this.rollState.diceToUse = pool > 0 ? 1 : 0;
     }
+
+    const bounds = getHorrorSpendBounds(this.actor, {
+      currentDicePool: this.rollState.currentDicePool,
+      diceToUse: this.rollState.diceToUse,
+      horrorDiceToUse: this.rollState.horrorDiceToUse,
+    });
+    this.rollState.horrorDiceToUse = bounds.clampedHorrorDiceToUse;
 
     // Advantage / disadvantage selector logic (same as original intent)
     this.rollState.modifierAdvantage = Number.parseInt(form.advantageModifier.value) || 0;
@@ -646,6 +694,42 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState.diceToUse -= 1;
     if(this.rollState.diceToUse < 0){
       this.rollState.diceToUse = 0;
+    }
+
+    this.render({ force: true });
+  }
+
+  static async #handleIncreaseHorrorDice(event, _target) {
+    event.preventDefault();
+    this.updateRollStateWithForm(event.target.form);
+
+    const bounds = getHorrorSpendBounds(this.actor, {
+      currentDicePool: this.rollState.currentDicePool,
+      diceToUse: this.rollState.diceToUse,
+      horrorDiceToUse: this.rollState.horrorDiceToUse,
+    });
+
+    this.rollState.horrorDiceToUse += 1;
+    if (this.rollState.horrorDiceToUse > bounds.maxHorrorDiceToUse) {
+      this.rollState.horrorDiceToUse = bounds.maxHorrorDiceToUse;
+    }
+
+    this.render({ force: true });
+  }
+
+  static async #handleDecreaseHorrorDice(event, _target) {
+    event.preventDefault();
+    this.updateRollStateWithForm(event.target.form);
+
+    const bounds = getHorrorSpendBounds(this.actor, {
+      currentDicePool: this.rollState.currentDicePool,
+      diceToUse: this.rollState.diceToUse,
+      horrorDiceToUse: this.rollState.horrorDiceToUse,
+    });
+
+    this.rollState.horrorDiceToUse -= 1;
+    if (this.rollState.horrorDiceToUse < bounds.minHorrorDiceToUse) {
+      this.rollState.horrorDiceToUse = bounds.minHorrorDiceToUse;
     }
 
     this.render({ force: true });

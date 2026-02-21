@@ -14,13 +14,17 @@ export async function refreshDicepoolAndPost({
 
   const oldDamage = Number(actor.system?.damage ?? 0);
   const oldDicePoolValue = Number(actor.system?.dicepool?.value ?? 0);
+  const oldHorrorInPool = Number(actor.system?.dicepool?.horrorInPool ?? 0);
   const dicePoolMax = Number(actor.system?.dicepool?.max ?? 0);
+  const horrorLimit = Number(actor.system?.horror ?? 0);
 
   const newDamage = healDamage ? 0 : oldDamage;
   const newDicePoolValue = Math.max(0, dicePoolMax - newDamage);
+  const newHorrorInPool = Math.max(0, Math.min(horrorLimit, newDicePoolValue));
 
   const updateData = {
     "system.dicepool.value": newDicePoolValue,
+    "system.dicepool.horrorInPool": newHorrorInPool,
   };
   if (healDamage && oldDamage !== 0) updateData["system.damage"] = 0;
 
@@ -33,6 +37,8 @@ export async function refreshDicepoolAndPost({
     actorName: actor.name,
     oldDicePoolValue,
     newDicePoolValue,
+    oldHorrorInPool,
+    newHorrorInPool,
     healedDamage,
   };
 
@@ -51,5 +57,7 @@ export async function refreshDicepoolAndPost({
     healedDamage,
     oldDicePoolValue,
     newDicePoolValue,
+    oldHorrorInPool,
+    newHorrorInPool,
   };
 }

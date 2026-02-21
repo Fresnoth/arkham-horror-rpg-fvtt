@@ -5,6 +5,7 @@ import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
+import { setValue as setDicepoolValue } from "../api/dicepool/index.mjs";
 
 export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
@@ -218,17 +219,22 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
     static async #handleClickedDicePool(event, target) {
         event.preventDefault();
-        const element = event.currentTarget;
-        const dieIndex = target.dataset.dieIndex;
-        
-        let newValue = dieIndex;
-        if (newValue < 0) newValue = 0;
-        this.actor.update({ 'system.dicepool.value': newValue });
+        const dieIndex = Number.parseInt(target.dataset.dieIndex) || 0;
+
+        const newValue = Math.max(0, dieIndex);
+        try {
+            const outcome = await setDicepoolValue(this.actor, { value: newValue });
+            if (!outcome?.ok) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionRollActor'));
+            }
+        } catch (_error) {
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.SimpleActionSpendFailed'));
+        }
     }
 
     static async #handleClickedClearDicePool(event, target) {
         event.preventDefault();
-        this.actor.update({ 'system.dicepool.value': 0 });
+        this.actor.update({ 'system.dicepool.value': 0, 'system.dicepool.horrorInPool': 0 });
     }
 
     static async #handleClickedInjuryTraumaRoll(event, target) {

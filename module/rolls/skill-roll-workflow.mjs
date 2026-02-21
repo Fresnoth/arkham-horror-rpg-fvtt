@@ -1,16 +1,15 @@
-import { 
-    rollD6, 
+import {
+    rollD6,
     calculatePoolsAndThresholds,
     collectTaggedResults,
     applyAdvantageDisadvantageDrop,
     computeSkillOutcome,
-    applyDicepoolCost,
 } from "../helpers/roll-engine.mjs";
 import { computeShowRollDetails } from "../helpers/roll-details.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
+import { spendRollCost } from "../api/resources/index.mjs";
 
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
-
 
 export class SkillRollWorkflow {
   async plan({ actor, state }) {
@@ -19,6 +18,7 @@ export class SkillRollWorkflow {
       skillCurrent: state.skillCurrent,
       currentDicePool: state.currentDicePool,
       diceToUse: state.diceToUse,
+      selectedHorrorDice: state.horrorDiceToUse,
       penalty: state.penalty,
       bonusDice: state.bonusDice,
       resultModifier: state.resultModifier,
@@ -28,20 +28,19 @@ export class SkillRollWorkflow {
   }
 
   async execute({ actor, plan }) {
-    // roll horror separately (so we can render separate HTML and tag)
     const dicePromises = [];
     const horror = plan.horrorDiceToRoll > 0
       ? await rollD6({ actor, numDice: plan.horrorDiceToRoll, dicePromises })
       : null;
 
     const normal = await rollD6({ actor, numDice: plan.diceToRoll, dicePromises });
-    
+
     await Promise.all(dicePromises);
     return { normal, horror };
   }
 
   processSpell({ state, outcome }) {
-    let result = {spellUsageSuccess : false};
+    let result = { spellUsageSuccess: false };
     if (state.spellToUse) {
       result.spellUuid = state.spellToUse.uuid;
       if (outcome.successCount >= state.spellToUse.system.difficulty) {
@@ -53,12 +52,9 @@ export class SkillRollWorkflow {
     return result;
   }
 
-  processWeapon({ state, outcome }) {
-    // Implement weapon-specific logic here
-    // if there are any success return the damage
-    let result = {weaponUsageSuccess : false,weaponAmmoUsed: false};
+  async processWeapon({ state, outcome }) {
+    let result = { weaponUsageSuccess: false, weaponAmmoUsed: false };
     if (state.weaponToUse) {
-      // Capture ammo snapshot up-front so rerolls can safely reconcile ammo.
       const ammo = state.weaponToUse.system?.ammunition;
       const ammoMax = Number(ammo?.max ?? 0);
       const ammoOld = Number(ammo?.current ?? 0);
@@ -66,32 +62,37 @@ export class SkillRollWorkflow {
       result.weaponAmmoOld = ammoOld;
       result.weaponAmmoNew = ammoOld;
       result.weaponAmmoSpendReason = null;
-      
+
       if (outcome.successCount > 0) {
         result.weaponUsageSuccess = true;
         result.weaponDamage = state.weaponToUse.system.damage;
-      }else{
+      } else {
         result.weaponDamage = 0;
       }
-      if(outcome.successCount >= state.weaponToUse.system.injuryRating && state.weaponToUse.system.injuryRating > 0){
+      if (outcome.successCount >= state.weaponToUse.system.injuryRating && state.weaponToUse.system.injuryRating > 0) {
         result.weaponInflictInjury = true;
       }
       result.weaponSpecialRules = state.weaponToUse.system.specialRules;
       result.weaponUsed = state.weaponToUse;
 
-      //page 81 core rule book, if the final dice roll includes a 1, you expend one ammo
-      // TODO: check for special rules in the future
       if (ammo?.reloadAfterUsage) {
         result.weaponAmmoUsed = true;
         result.weaponAmmoSpendReason = "reloadAfterUsage";
         result.weaponAmmoNew = 0;
-        state.weaponToUse.update({"system.ammunition.current": 0});
-      }
-      else if(ammo?.decreaseAfterUsage){
+        try {
+          await state.weaponToUse.update({ "system.ammunition.current": 0 });
+        } catch (_error) {
+          result.weaponAmmoSyncFailed = true;
+        }
+      } else if (ammo?.decreaseAfterUsage) {
         result.weaponAmmoUsed = true;
         result.weaponAmmoSpendReason = "decreaseAfterUsage";
         result.weaponAmmoNew = Math.max(0, ammoOld - 1);
-        state.weaponToUse.update({"system.ammunition.current": result.weaponAmmoNew});
+        try {
+          await state.weaponToUse.update({ "system.ammunition.current": result.weaponAmmoNew });
+        } catch (_error) {
+          result.weaponAmmoSyncFailed = true;
+        }
       } else {
         const keptDice = (outcome.finalDiceRollResults ?? []).filter(d => !d.isDropped);
         const hasFinalOne = keptDice.some(d => d.result === 1);
@@ -99,24 +100,26 @@ export class SkillRollWorkflow {
           result.weaponAmmoUsed = true;
           result.weaponAmmoSpendReason = "nat1";
           result.weaponAmmoNew = Math.max(0, ammoOld - 1);
-          // update item
-          state.weaponToUse.update({"system.ammunition.current": result.weaponAmmoNew});
+          try {
+            await state.weaponToUse.update({ "system.ammunition.current": result.weaponAmmoNew });
+          } catch (_error) {
+            result.weaponAmmoSyncFailed = true;
+          }
         }
       }
-    }else{
+    } else {
       result.weaponUsed = false;
     }
 
     return result;
   }
 
-  computeOutcome({ state, plan, exec }) {
+  async computeOutcome({ state, plan, exec }) {
     const diceRollResults = collectTaggedResults({
       normalResults: exec.normal.results,
       horrorResults: exec.horror ? exec.horror.results : [],
     });
 
-    
     applyAdvantageDisadvantageDrop(diceRollResults, {
       rollWithAdvantage: plan.rollWithAdvantage,
       rollWithDisadvantage: plan.rollWithDisadvantage,
@@ -129,10 +132,8 @@ export class SkillRollWorkflow {
       resultModifier: plan.resultModifier,
     });
 
-    outcome = { ...outcome, ...this.processWeapon({ state, outcome }) };
+    outcome = { ...outcome, ...await this.processWeapon({ state, outcome }) };
     outcome = { ...outcome, ...this.processSpell({ state, outcome }) };
-    
-
 
     return {
       ...outcome,
@@ -151,11 +152,28 @@ export class SkillRollWorkflow {
     };
   }
 
-  async applyEffects({ actor, outcome }) {
-    // subtract used dice from actor's dicepool
-    const dicepoolDelta = await applyDicepoolCost(actor, outcome.diceToUse);
-    outcome.oldDicePoolValue = dicepoolDelta.oldDicePoolValue;
-    outcome.newDicePoolValue = dicepoolDelta.newDicePoolValue;
+  async applyEffects({ actor, state, outcome }) {
+    const spendOutcome = await spendRollCost(actor, {
+      totalDiceCost: outcome.diceToUse,
+      horrorDiceCost: outcome.horrorDiceToRoll,
+      context: state?.rollKind ?? "complex",
+      source: "workflow",
+    });
+
+    if (!spendOutcome?.ok) {
+      ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.Warnings.RollSpendFailed"));
+      const current = Number(actor.system?.dicepool?.value ?? 0);
+      outcome.oldDicePoolValue = current;
+      outcome.newDicePoolValue = current;
+      return {
+        ok: false,
+        reason: String(spendOutcome?.reason ?? "ROLL_SPEND_FAILED"),
+      };
+    }
+
+    outcome.oldDicePoolValue = Number(spendOutcome.before?.dicepool ?? actor.system?.dicepool?.value ?? 0);
+    outcome.newDicePoolValue = Number(spendOutcome.after?.dicepool ?? actor.system?.dicepool?.value ?? 0);
+    return { ok: true, reason: null };
   }
 
   buildChat({ state, outcome }) {
@@ -202,7 +220,7 @@ export class SkillRollWorkflow {
       weaponDamage: outcome.weaponDamage,
       weaponInflictInjury: outcome.weaponInflictInjury,
       weaponSpecialRules: outcome.weaponSpecialRules,
-      weaponHasSpecialRules: outcome.weaponSpecialRules && outcome.weaponSpecialRules.trim() !== "", // check if weaponSpecialRules is not empty
+      weaponHasSpecialRules: outcome.weaponSpecialRules && outcome.weaponSpecialRules.trim() !== "",
       weaponUuid: outcome.weaponUuid,
       weaponAmmoOld: outcome.weaponAmmoOld,
       weaponAmmoNew: outcome.weaponAmmoNew,
@@ -210,9 +228,8 @@ export class SkillRollWorkflow {
       spellUsed: outcome.spellUsed,
       spellUuid: outcome.spellUuid,
       spellSpecialRules: outcome.spellSpecialRules,
-      spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "", // check if spellSpecialRules is not empty
+      spellHasSpecialRules: outcome.spellSpecialRules && outcome.spellSpecialRules.trim() !== "",
 
-      // Knack metadata (prompt-selectable in DiceRollApp)
       appliedKnacks: Array.isArray(state?.appliedKnacks) ? state.appliedKnacks : [],
       knackRerollAllowanceDice: Number(state?.knackRerollAllowanceDice ?? 0) || 0,
     };
@@ -222,26 +239,30 @@ export class SkillRollWorkflow {
 
   async post({ actor, state, outcome }) {
     const { template, chatData } = this.buildChat({ state, outcome });
-    //destructure chatData to separate diceRollHTML and horrorDiceRollHTML from the rest of the flags 
-    // so we aren't passing rendered content strings to every roll
     const { diceRollHTML, horrorDiceRollHTML, ...flagsData } = chatData;
     const flags = {
-      [SYSTEM_ID]: flagsData
+      [SYSTEM_ID]: flagsData,
     };
-    // render and post chat message new method
-    return createArkhamHorrorChatCard({ actor, template, chatVars: chatData, flags });
-    }
 
-  /**
-   * Convenience method: run end-to-end without an external orchestrator.
-   * (Optional; remove if you prefer a shared RollOrchestrator.)
-   */
+    return createArkhamHorrorChatCard({ actor, template, chatVars: chatData, flags });
+  }
+
   async run({ actor, state }) {
     const plan = await this.plan({ actor, state });
     const exec = await this.execute({ actor, plan });
-    const outcome = this.computeOutcome({ state, plan, exec });
-    await this.applyEffects({ actor, outcome });
+    const outcome = await this.computeOutcome({ state, plan, exec });
+    const effects = await this.applyEffects({ actor, state, outcome });
+    if (!effects?.ok) {
+      return {
+        ok: false,
+        reason: effects?.reason ?? "ROLL_SPEND_FAILED",
+        plan,
+        exec,
+        outcome,
+      };
+    }
+
     const posted = await this.post({ actor, state, outcome });
-    return { plan, exec, outcome, ...posted };
+    return { ok: true, reason: null, plan, exec, outcome, ...posted };
   }
 }

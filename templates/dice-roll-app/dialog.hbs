@@ -1,13 +1,26 @@
 <form class="roll-dialog-container scrollable">
-    <div class="form-group">
+    <div class="form-group roll-resource-row">
         <label for="dicepool">{{localize "ARKHAM_HORROR.LABELS.Dicepool"}}</label>
-        <div class="flexrow">
+        <div class="flexrow roll-resource-controls">
             <button class="button-dicepool-rolldialog" data-action="clickedDecreaseDicePool" {{#if isReaction}}disabled{{/if}}>-</button>
-            <input type="number" id="dicepool" name="diceToUse" value="{{diceToUse}}" min="0" {{#if isReaction}}readonly{{/if}}> / 
+            <input type="number" id="dicepool" name="diceToUse" value="{{diceToUse}}" min="0" {{#if isReaction}}readonly{{/if}}>
+            <span class="roll-resource-separator">/</span>
             <input type="number" name="currentDicePool" value="{{currentDicePool}}" min="0" readonly>
             <button class="button-dicepool-rolldialog" data-action="clickedIncreaseDicePool" {{#if isReaction}}disabled{{/if}}>+</button>
         </div>
     </div>
+    {{#if showHorrorSelector}}
+    <div class="form-group roll-resource-row">
+        <label for="horror-dice-to-use">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.HorrorDiceToUse"}}</label>
+        <div class="flexrow roll-resource-controls">
+            <button class="button-dicepool-rolldialog" data-action="clickedDecreaseHorrorDice">-</button>
+            <input type="number" id="horror-dice-to-use" name="horrorDiceToUse" value="{{horrorDiceToUse}}" min="{{minHorrorDiceToUse}}" max="{{maxHorrorDiceToUse}}">
+            <span class="roll-resource-separator">/</span>
+            <input type="number" name="availableHorror" value="{{availableHorror}}" min="0" readonly>
+            <button class="button-dicepool-rolldialog" data-action="clickedIncreaseHorrorDice">+</button>
+        </div>
+    </div>
+    {{/if}}
     <div class="form-group">
         <label for="roll-kind">{{localize "ARKHAM_HORROR.PROPS.RollType"}}</label>
         <input type="text" id="roll-kind" name="rollKindLabel" value="{{rollKindLabel}}" readonly>

@@ -243,6 +243,10 @@
       "SpendInsight":"Einsicht ausgeben",
       "RefreshInsight":"Einsicht erneuern",
       "ClearDicePool":"Zurücksetzen",
+      "DiscardDie": "Würfel verwerfen",
+      "DiscardAllDice": "Alle Würfel verwerfen",
+      "SpendRegularDie": "Normalen Würfel ausgeben",
+      "SpendHorrorDie": "Horrorwürfel ausgeben",
       "StrainOneself":"Sich belasten",
       "RefreshDicePool":"Erneuern",
       "Roll": "Würfeln",
@@ -335,7 +339,14 @@
       "RollReactionRequiresOneDie": "Reaktionswürfe erfordern 1 Würfel aus deinem Pool.",
       "RollAdvDisadvRequiresDie": "Vorteil/Nachteil erfordert mindestens 1 gewürfelten Würfel.",
       "RollMustRollAtLeastOneDie": "Du musst mindestens 1 Würfel würfeln.",
+      "RollSpendFailed": "Die Würfelkosten für diesen Wurf konnten nicht ausgegeben werden.",
       "RollPostProcessingFailed": "Nachbearbeitung nach dem Wurf ist fehlgeschlagen.",
+      "SimpleActionInsufficientHorror": "Du hast nicht genug Horrorwürfel zum Ausgeben.",
+      "SimpleActionInsufficientRegular": "Du hast nicht genug normale Würfel zum Ausgeben.",
+      "SimpleActionInsufficientDicepool": "Du hast nicht genug Würfel im Pool.",
+      "SimpleActionInvalidAmount": "Ungültiger Betrag für eine einfache Aktion.",
+      "SimpleActionInvalidHorrorSplit": "Die Anzahl der eingesetzten Horrorwürfel ist für diesen Wurf ungültig.",
+      "SimpleActionSpendFailed": "Ausgeben für einfache Aktion fehlgeschlagen.",
 
       "InjuryTraumaFallingModeInjuryOnly": "Der Fallmodus gilt nur für Verletzungswürfe.",
       "InjuryTraumaFallingHeightMin": "Die Fallhöhe muss mindestens {minFt} ft betragen.",
@@ -453,11 +464,21 @@
         "Changed": "Würfelpool von {actorName} änderte sich von {oldDicePoolValue} auf {newDicePoolValue}.",
         "HealedDamage": "{healedDamage} Schaden geheilt"
       },
+      "DicepoolDiscard": {
+        "Label": "Würfelpool verwerfen",
+        "Spent": "{actorName} hat {amount} Würfel verworfen (normal: {discardedRegular}, Horror: {discardedHorror}) ({oldDicePoolValue} → {newDicePoolValue})."
+      },
       "Insight": {
         "LabelSpent": "Einsicht ausgegeben",
         "LabelRefreshed": "Einsicht erneuert",
         "Spent": "{actorName} gab {spent} Einsicht aus ({oldRemaining} → {newRemaining}/{limit}).",
         "Refreshed": "{actorName}s Einsicht wurde von {oldRemaining} auf {newRemaining} erneuert."
+      },
+      "SimpleAction": {
+        "Label": "Einfache Aktion",
+        "Spent": "{actorName} hat {amount} {dieTypeLabel} ausgegeben ({oldDicePoolValue} → {newDicePoolValue} Würfelpool).",
+        "DieTypeHorror": "Horrorwürfel",
+        "DieTypeRegular": "Normaler Würfel"
       },
       "InjuryTrauma": {
         "FallingTooltip": "Fallen",
@@ -507,6 +528,8 @@
         "RefreshUses": "Verwendungen erneuern",
         "None": "Keine",
         "AdvPlusDisadv": "Vorteil + Nachteil",
+        "HorrorDiceToUse": "Horrorwürfel",
+        "HorrorDiceToUseHint": "Verfügbare Horrorwürfel: {available}. Maximum für diesen Wurf: {max}.",
         "InjuriesAffectingRoll": "Verletzungen, die diesen Wurf beeinflussen",
         "TotalPenalty": "Gesamtmalus",
         "InjuriesAutoAppliedHint": "Diese Mali werden automatisch von aktiven Verletzungen angewendet (Doppelte stapeln nicht).",

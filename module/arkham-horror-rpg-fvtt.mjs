@@ -28,6 +28,10 @@ import { applyKnackGrantsOnAcquire, removeKnackGrantedSpellsOnDelete } from './h
 
 import { refreshDicepoolAndPost } from './helpers/dicepool.mjs';
 import * as money from './helpers/money.mjs';
+import { resourcesApi } from './api/resources/index.mjs';
+import { rollsApi } from './api/rolls/index.mjs';
+import { insightApi } from './api/insight/index.mjs';
+import { dicepoolApi } from './api/dicepool/index.mjs';
 
 
 /* -------------------------------------------- */
@@ -46,6 +50,19 @@ Hooks.once('init', function () {
     spendInsightAndPost,
     refreshInsightAndPost,
     money,
+    api: {
+      version: "v1",
+      capabilities: {
+        resources: resourcesApi.version,
+        rolls: rollsApi.version,
+        insight: insightApi.version,
+        dicepool: dicepoolApi.version,
+      },
+      resources: resourcesApi,
+      rolls: rollsApi,
+      insight: insightApi,
+      dicepool: dicepoolApi,
+    },
   };
 
   // Add custom constants for configuration.
