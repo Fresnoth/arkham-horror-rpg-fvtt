@@ -667,7 +667,8 @@
       "reloadCost": "Coût de rechargement",
       "weight": "Poids",
       "reloadAfterUsage": "Recharger après utilisation",
-      "isRelic": "Relique"
+      "isRelic": "Relique",
+      "decreaseAfterUsage": "Diminuer les munitions après utilisation"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Bénéfice défensif",

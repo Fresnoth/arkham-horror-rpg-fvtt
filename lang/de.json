@@ -657,7 +657,8 @@
       "reloadCost": "Nachladekosten",
       "weight": "Gewicht",
       "reloadAfterUsage": "Nach Gebrauch nachladen",
-      "isRelic": "Relikt"
+      "isRelic": "Relikt",
+      "decreaseAfterUsage": "Munition nach Gebrauch verringern"
     },
     "ProtectiveEquipment": {
       "defensiveBenefit": "Defensiver Vorteil",

@@ -28,6 +28,7 @@ export class SkillRollWorkflow {
   }
 
   async execute({ actor, plan }) {
+    // Roll horror separately so chat rendering can keep normal and horror dice visually distinct.
     const dicePromises = [];
     const horror = plan.horrorDiceToRoll > 0
       ? await rollD6({ actor, numDice: plan.horrorDiceToRoll, dicePromises })
@@ -53,6 +54,7 @@ export class SkillRollWorkflow {
   }
 
   async processWeapon({ state, outcome }) {
+    // Capture ammo snapshot up-front so rerolls and chat metadata stay consistent.
     let result = { weaponUsageSuccess: false, weaponAmmoUsed: false };
     if (state.weaponToUse) {
       const ammo = state.weaponToUse.system?.ammunition;
@@ -76,6 +78,7 @@ export class SkillRollWorkflow {
       result.weaponUsed = state.weaponToUse;
 
       if (ammo?.reloadAfterUsage) {
+        // Weapon property: force full reload after each usage.
         result.weaponAmmoUsed = true;
         result.weaponAmmoSpendReason = "reloadAfterUsage";
         result.weaponAmmoNew = 0;
@@ -85,6 +88,7 @@ export class SkillRollWorkflow {
           result.weaponAmmoSyncFailed = true;
         }
       } else if (ammo?.decreaseAfterUsage) {
+        // Weapon property: consume one ammo per usage regardless of final die faces.
         result.weaponAmmoUsed = true;
         result.weaponAmmoSpendReason = "decreaseAfterUsage";
         result.weaponAmmoNew = Math.max(0, ammoOld - 1);
@@ -94,6 +98,7 @@ export class SkillRollWorkflow {
           result.weaponAmmoSyncFailed = true;
         }
       } else {
+        // Core Rulebook p.81: if the final kept roll contains a natural 1, expend one ammo.
         const keptDice = (outcome.finalDiceRollResults ?? []).filter(d => !d.isDropped);
         const hasFinalOne = keptDice.some(d => d.result === 1);
         if (hasFinalOne && ammoMax > 0) {
@@ -153,6 +158,7 @@ export class SkillRollWorkflow {
   }
 
   async applyEffects({ actor, state, outcome }) {
+    // Resource spend is authoritative: if dicepool spend fails, do not post the roll.
     const spendOutcome = await spendRollCost(actor, {
       totalDiceCost: outcome.diceToUse,
       horrorDiceCost: outcome.horrorDiceToRoll,
