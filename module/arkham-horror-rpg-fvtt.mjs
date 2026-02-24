@@ -229,6 +229,20 @@ Hooks.once('ready', function () {
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
 });
 
+Hooks.on("renderPause", (_, html) => {
+  html
+    .find("img")
+    .attr("src", "/systems/arkham-horror-rpg-fvtt/assets/images/pause.webp")
+    .removeAttr("class");
+});
+
+Hooks.on("renderGamePause", (_, html) => {
+  const img = html.querySelector("img");
+  if (!img) return;
+  img.src = "/systems/arkham-horror-rpg-fvtt/assets/images/pause.webp";
+  img.classList.remove("fa-spin");
+});
+
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */

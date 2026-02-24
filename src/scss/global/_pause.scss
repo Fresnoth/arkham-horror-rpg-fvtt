@@ -1,0 +1,49 @@
+#pause.paused {
+	animation: none;
+	gap: 0px;
+
+	img {
+		will-change: filter;
+		animation: pulse 3s infinite ease-in-out;
+		opacity: 80%;
+		object-fit: contain;
+		width: 250px;
+		height: 250px;
+		left: calc(50% - 125px);
+		margin-block: -35px -10px;
+	}
+
+	figcaption {
+		will-change: filter;
+		animation: pulse 3s infinite ease-in-out;
+		color:$c-faint;
+		text-shadow: 2px 2px 2px black;
+		font-family: $font-primary;
+		font-weight: 800;
+		letter-spacing: 2.5px;
+		padding: 0;
+		margin: 0;
+        margin-top: 10px;
+	}
+}
+
+@media (prefers-reduced-motion) {
+	#pause {
+		animation: none;
+	}
+}
+
+/* Animations */
+@keyframes pulse {
+	0% {
+		filter: drop-shadow(0 0 0 transparent);
+	}
+
+	50% {
+		filter: drop-shadow(0 0 16px $c-red);
+	}
+
+	100% {
+		filter: drop-shadow(0 0 0 transparent);
+	}
+}

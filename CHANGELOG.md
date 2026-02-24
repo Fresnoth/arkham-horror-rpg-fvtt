@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 13.0.37
+- added ability to chose which dice to spend during character rolls and other improvement regarding dices
+- pause graphics
+  
 ## 13.0.36
 - added property for weapons to decrease ammunition after every usage
 
