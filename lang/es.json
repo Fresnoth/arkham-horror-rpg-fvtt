@@ -1,0 +1,729 @@
+{
+  "ARKHAM_HORROR": {
+    "SheetLabels": {
+      "Actor": "Hoja de Actor - Arkham Horror",
+      "Item": "Hoja de Objeto - Arkham Horror",
+      "Vehicle": "Hoja de Vehículo - Arkham Horror",
+      "NPC": "Hoja de PNJ - Arkham Horror"
+    },
+    "Apps": {
+      "DiceRoll": {
+        "Title": "Tirada de dados"
+      },
+      "InjuryTraumaRoll": {
+        "Title": "Tirada de Herida / Trauma"
+      },
+      "RerollDice": {
+        "Title": "Repetir tirada"
+      },
+      "SpendInsight": {
+        "Title": "Gastar Inspiración"
+      }
+    },
+    "Item": {
+      "Spell": {
+        "difficulty": "Dificultad",
+        "SpellLVL": "Nivel de Hechizo {level}",
+        "AddLVL": "Añadir Hechizo nivel {level}"
+      }
+    },
+    "Effect": {
+      "Source": "Origen",
+      "Toggle": "Activar/Desactivar efecto",
+      "Temporary": "Efectos Temporales",
+      "Passive": "Efectos Pasivos",
+      "Inactive": "Efectos Inactivos"
+    },
+    "LABELS": {
+      "Form": "Datos",
+      "Description": "Descripción",
+      "Dicepool": "Res. Dados",
+      "Damage": "Daño",
+      "Horror": "Horror",
+      "Archetype": "Arquetipo",
+      "Profile": "Perfil",
+      "Size": "Tamaño",
+      "Skills": "Habilidades",
+      "Insight": "Inspiración",
+      "Limit": "Límite",
+      "Max": "Max",
+      "Knacks": "Talentos",
+      "Remaining": "Restantes",
+      "PersonalityTrait": "Rasgo de personalidad",
+      "InjuriesTrauma": "Heridas y Trauma",
+      "Weaknesses": "Debilidades",
+      "Money": "Dinero",
+      "Vehicle": "Vehículo",
+      "Lodging": "Alojamiento",
+      "LoadCapacity": "Carga",
+      "Weapons": "Armas",
+      "ProtectiveEquipment": "Protecciones",
+      "UsefulItems":"Objetos de utilidad",
+      "OtherEquipment": "Otros objetos",
+      "Favors":"Favores",
+      "Spells":"Hechizos",
+      "Tome": "Tomo",
+      "Tomes":"Tomos",
+      "Relics":"Reliquias"
+    },
+    "UNITS": {
+      "Ft": "m"
+    },
+    "TOOLTIPS": {
+      "ExpandSpecialRules": "{itemName} - clic para expandir reglas especiales",
+      "OpenArchetype": "Abrir Arquetipo",
+      "UnusedXP": "XP sin usar",
+      "TotalXP": "XP total",
+      "ToggleItemActive": "Activar/Desactivar"
+    },
+    "TABS": {
+      "Description": "Descripción",
+      "Attributes": "Atributos",
+      "Effects": "Efectos",
+      "Character": "Personaje",
+      "NPC": "PNJ",
+      "Biography": "Biografía",
+      "Vehicle": "Vehículo",
+      "MundaneResources": "Recursos Terrenales",
+      "SupernaturalResources": "Recursos Sobrenaturales",
+      "Background": "Trasfondo",
+      "Abilities": "Capacidades"
+    },
+    "VEHICLE": {
+      "Cargo": "Carga",
+      "AbilitiesDescription": "Capacidades / Descripción"
+    },
+    "WORDS": {
+      "Of": "de"
+    },
+    "ABBR": {
+      "Dicepool": "RD"
+    },
+    "KNACK_SHEET": {
+      "SelectedSkills": "Habilidades seleccionadas",
+      "SelectedRollTypes": "Tipos de tirada seleccionados",
+      "Any": "Cualquiera",
+      "AnyOverrides": "\"Cualquiera\" sobrescribe otras selecciones.",
+      "Grants": "Otorga (Hechizos/Fe/Intuición)",
+      "GrantsHint": "Arrastra hechizos aquí para que este Talento los otorgue al obtenerla.",
+      "Usage": "Uso",
+      "Frequency": "Frecuencia",
+      "MaxUses": "Usos máximos",
+      "NpcKnackFlags": "Flags de Talentos PNJ",
+      "RollEffectsPromptSelectable": "Efectos de Tirada (Seleccionables)",
+      "Enabled": "Activado",
+      "AppliesToSkills": "Aplica a Habilidades",
+      "RerollAllowanceDice": "Repeticiones Permitidas (dados)",
+      "AppliesToRollTypes": "Aplica a Tipos de Tirada",
+      "RollKind": {
+        "Any": "Cualquiera",
+        "Complex": "Compleja",
+        "Reaction": "Reacción",
+        "TomeUnderstand": "Tomo: Comprender",
+        "TomeAttune": "Tome: Sintonizar"
+      },
+      "BonusDiceDelta": "Dados Extra",
+      "ResultModifierDelta": "Modificador de Resultado",
+      "Remove": "Eliminar"
+    },
+    "INJURY_SHEET": {
+      "Active": "Activa",
+      "RollEffectsAutomatic": "Efectos de tirada (penalizadores automáticos)",
+      "Enabled": "Activado",
+      "AppliesToSkills": "Aplica a Habilidades",
+      "AppliesToRollTypes": "Aplica a Tipos de Tirada",
+      "PenaltyPerDie": "Penalización (por dado)",
+      "PenaltyHint": "Se aplica automáticamente como penalización a las tiradas correspondientes. Los duplicados de la misma herida no se acumulan; todas las instancias deben curarse para eliminar el efecto."
+    },
+    "TRAUMA_SHEET": {
+      "Active": "Activo",
+      "TraumaRollModifier": "Añade a las tiradas de Trauma",
+      "TraumaRollModifierHint": "Cuando está activado, este Trauma añade +1 a futuras tiradas de Trauma (las tiradas de herida no se ven afectadas)."
+    },
+    "KNACK_USAGE": {
+      "passive": "Pasivo",
+      "unlimited": "Ilimitado",
+      "oncePerTurn": "Una vez por Turno",
+      "oncePerScene": "Una vez por Escena",
+      "oncePerSession": "Una vez por Sesión"
+    },
+    "ARCHETYPE": {
+      "SkillCaps": "Límites de Habilidad",
+      "TierPurchaseLimits": "Límites de compra por Nivel",
+      "TierMaxLabel": "Máx. Nivel {tier}",
+      "TierXpCostLabel": "Coste de XP Nivel {tier}",
+      "KnackTiers": "Niveles de Talento",
+      "DragDropHint": "Arrastra y suelta objetos de tipo Talento sobre un nivel inferior para añadir su UUID (sin incrustarlos). Haz clic en el nombre de un talento para ver su descripción."
+    },
+    "DIFFICULTY":{
+      "Normal": "Normal (1)",
+      "Difficult": "Difícil (2)",
+      "VeryDifficult": "Muy Difícil (3)"
+    },
+    "DIFFICULTY_CHAT": {
+      "Normal": "Normal",
+      "Difficult": "Difícil",
+      "VeryDifficult": "Muy<br />Difícil"
+    },
+    "COMBAT": {
+      "EndActivePhase": "Terminar fase de {label}",
+      "EndPhase": "Terminar fase",
+      "EndCombat": "Terminar combate",
+      "BeginCombat": "Comenzar combate",
+      "SideInvestigators": "Investigadores",
+      "SideNPCs": "PNJs",
+      "FirstSidePrompt": "¿Qué bando actúa primero?",
+      "FirstSideInvestigators": "Investigadores",
+      "FirstSideNPCs": "PNJs"
+    },
+    "RARITY": {
+      "common": "Común",
+      "uncommon": "Infrecuente",
+      "rare": "Rara",
+      "unique": "Única"
+    },
+    "BACKGROUND": {
+      "PlaceOfOrigin": "Lugar de Origen",
+      "FamilyAndFriends": "Familiares y Amigos",
+      "Employment": "Empleo",
+      "WeeklySalary": "Ingresos Semanales",
+      "Biography": "Biografía",
+      "FirstSupernaturalEncounter": "Primer Encuentro con lo Sobrenatural",
+      "NotableEnemies": "Enemigos Destacados"
+    },
+    "PERSONALITY": {
+      "Positive": "Positivo",
+      "Negative": "Negativo",
+      "NoneAssigned": "No hay ningún rasgo de personalidad asignado. Arrastra y suelta uno aquí."
+    },
+    "PROPS":{
+      "Name":"Nombre",
+      "Quantity": "Cantidad",
+      "Skill":"Habilidad",
+      "Tier": "Nivel",
+      "Rarity": "Rareza",
+      "HasSpecialRules": "Tiene reglas especiales",
+      "Passengers": "Pasajeros",
+      "Fuel": "Combustible",
+      "Cost": "Coste",
+      "MaxRange": "Rango max",
+      "CargoCapacity": "Capacidad de carga",
+      "Weapon": "Arma",
+      "Spell": "Hechizo",
+      "Damage": "Daño",
+      "DamageShort": "D",
+      "InjuryRating":"Valor de herida",
+      "InjuryRatingShort":"VH",
+      "Range":"Rango",
+      "Engaged": "Trabado",
+      "Ammunition":"Munición",
+      "Costs":"Costes",
+      "Uses":"Usos",
+      "Difficulty":"Dificultad",
+      "RollType": "Tipo de Tirada",
+      "RollFormula": "Fórmula de Tirada",
+      "NumberOfDice": "Números de Dados",
+      "DieSize": "Tamaño del Dado",
+      "RollModifier": "Modificador de Tirada",
+      "SuccessOnXPlus": "Éxito con X+",
+      "BonusDice": "Dados Extra",
+      "Penalty": "Penalización",
+      "ResultModifier": "Modificador del Resultado",
+      "Advantage": "Ventaja",
+      "Disadvantage": "Desventaja",
+      "XP": "XP",
+      "Benefit": "Beneficio",
+      "Declining": "Rechazar",
+      "Losing": "Perder",
+      "Weight":"Peso",
+      "SpecialRules":"Reglas especiales",
+      "DefensiveBenefit":"Beneficios defensivos"
+    },
+    "ACTIONS": {
+      "SpendInsight": "Gastar Inspiración",
+      "RefreshInsight": "Recuperar Inspiración",
+      "ClearDicePool": "Vaciar",
+      "DiscardDie": "Descartar Dado",
+      "DiscardAllDice": "Descartar todos los Dados",
+      "SpendRegularDie": "Gastar Dado Normal",
+      "SpendHorrorDie": "Gastar Dado de Horror",
+      "StrainOneself": "Esforzarse",
+      "RefreshDicePool": "Recuperar",
+      "Roll": "Tirar",
+      "ResetAllKnackUses": "Restablecer Uso de Talentos",
+      "ResetKnackUses": "Restablecer este Talento",
+      "ViewEdit": "Ver/Editar",
+      "Remove": "Eliminar",
+      "Reload": "Recargar",
+      "RollInjuryTrauma": "Tirar Herida/Trauma"
+    },
+    "Settings": {
+      "TokenShowDicePools": {
+        "Name": "Mostrar reservas de dados en los tokens",
+        "Hint": "Muestra la reserva de dados en los tokens del lienzo."
+      },
+      "TokenShowDamage": {
+        "Name": "Mostrar daño en los tokens",
+        "Hint": "Muestra el daño en los tokens del lienzo."
+      },
+      "TokenOverlayAbove": {
+        "Name": "Superposición del token sobre el token",
+        "Hint": "Si está activado, muestra la Reserva de Dados/Daño encima del token en lugar de debajo."
+      },
+      "CharacterLoadCapacity": {
+        "Name": "Capacidad de carga del personaje",
+        "Hint": "Cálculo automático de la capacidad de carga."
+      },
+      "CharacterInjuryTable": {
+        "Name": "Tabla de heridas del personaje",
+        "Hint": "Se usa para tirar heridas."
+      },
+      "CharacterTraumaTableVariant": {
+        "Name": "Variante de tabla de trauma del personaje",
+        "Hint": "Elige qué tabla de trauma del personaje usar al tirar trauma.",
+        "Choices": {
+          "Standard": "Estándar",
+          "NoPersonality": "Sin personalidad"
+        }
+      },
+      "CharacterTraumaTable": {
+        "Name": "Tabla de trauma del personaje",
+        "Hint": "Se usa para tirar trauma."
+      },
+      "CharacterTraumaTableNoPersonality": {
+        "Name": "Tabla de trauma del personaje (sin personalidad)",
+        "Hint": "Tabla de trauma alternativa opcional con menos entradas (sin efectos de rasgo de personalidad)."
+      },
+      "NpcInjuryTable": {
+        "Name": "Tabla de heridas de PNJ",
+        "Hint": "Se usa para tirar heridas."
+      },
+      "NpcTraumaTable": {
+        "Name": "Tabla de trauma de PNJ",
+        "Hint": "Se usa para tirar trauma."
+      }
+    },
+    "Warnings": {
+      "NpcKnackDropBlocked": "Los Talentos exclusivos de PNJ no pueden añadirse a Personajes.",
+
+      "PermissionRollActor": "No tienes permiso para tirar por este Actor.",
+      "PermissionStrainActor": "No tienes permiso para esforzarte con este Actor.",
+      "StrainRequiresDamage": "Solo puedes esforzarte cuando el máximo de tu reserva de dados se ha reducido por daño.",
+
+      "ArchetypeKnackDropInvalid": "Datos inválidos al soltar talento de arquetipo.",
+      "ArchetypeRequiredForKnacks": "Asigna un arquetipo a este actor antes de comprar talentos.",
+      "KnackDifferentArchetype": "Este talento pertenece a un arquetipo diferente.",
+      "ActorArchetypeInvalid": "La referencia de arquetipo del actor no es válida.",
+      "KnackNotAllowedTier": "Ese talento no está permitido para el Nivel {tier} según el arquetipo del actor.",
+      "KnackTierNotPurchasable": "No se pueden comprar talentos de Nivel {tier} para este arquetipo (el máximo es {maxPurchasable}).",
+      "KnackTierLimitReached":  "Se ha alcanzado el límite de talentos de Nivel {tier} ({existingTierCount}/{maxPurchasable}).",
+      "SourceKnackResolveFailed": "No se pudo resolver el objeto de talento de origen.",
+
+      "ActorHasNoArchetype": "Este actor no tiene un arquetipo asignado.",
+      "ActorArchetypeUuidResolveFailed": "No se pudo resolver la UUID del arquetipo del actor.",
+      "LinkedDocNotArchetype": "El documento enlazado no es un arquetipo.",
+      "OpenArchetypeFailed": "No se pudo abrir el arquetipo.",
+
+      "WeaponOutOfAmmo": "¡A {itemName} no le queda munición! Recarga antes de usarlo.",
+      "ResetKnackPermission": "No tienes permiso para restablecer los talentos de este actor.",
+      "RefreshKnackUsesPermission": "No tienes permiso para recuperar usos de talentos de este actor.",
+
+      "MacroOwnedItemsOnly": "Solo puedes crear botones de macro para Objetos que poseas.",
+      "MacroItemNotFound": "No se pudo encontrar el objeto {itemName}. Puede que necesites eliminar y volver a crear esta macro.",
+
+      "CombatAddCombatantsFirst": "Añade primero combatientes al encuentro (cambiando el estado de combate del token) y después comienza el combate.",
+
+      "RerollSelectAtLeastOneDie": "Selecciona al menos un dado para repetir la tirada.",
+
+      "RollKnacksNotApplicable": "Uno o más Talentos seleccionados ya no se aplican a esta tirada.",
+      "RollReactionRequiresOneDie": "Las tiradas de reacción requieren 1 dado de tu reserva.",
+      "RollAdvDisadvRequiresDie": "La Ventaja/Desventaja requiere tirar al menos 1 dado.",
+      "RollMustRollAtLeastOneDie": "Debes tirar al menos 1 dado.",
+      "RollSpendFailed": "No se pudieron gastar dados para esta tirada.",
+      "RollPostProcessingFailed": "Falló el procesamiento posterior a la tirada.",
+      "SimpleActionInsufficientHorror": "No tienes suficientes dados de horror para gastar.",
+      "SimpleActionInsufficientRegular": "No tienes suficientes dados normales para gastar.",
+      "SimpleActionInsufficientDicepool": "No tienes suficientes dados en tu reserva.",
+      "SimpleActionInvalidAmount": "La cantidad gastada en la acción simple no es válida.",
+      "SimpleActionInvalidHorrorSplit": "La cantidad de dados de horror a usar no es válida para esta tirada.",
+      "SimpleActionSpendFailed": "Falló el gasto de la acción simple.",
+
+      "InjuryTraumaFallingModeInjuryOnly": "El modo de caída solo se aplica a las tiradas de Herida.",
+      "InjuryTraumaFallingHeightMin": "La altura de la caída debe ser de al menos {minFt} pies (10 pies ≈ 3 metros).",
+
+      "SkillRerollInvalidCard": "Esa carta de chat no puede volver a tirarse.",
+      "SkillRerollActorResolveFailed": "No se pudo resolver el actor para esta tirada.",
+      "SkillRerollPermission": "No tienes permiso para repetir esta tirada.",
+      "SkillRerollNoSelectableDice": "No se eligió ningún dado seleccionable.",
+
+      "RollTableEmptyResultName": "La tabla de tiradas '{tableName}' tiene un rango coincidente pero un nombre de resultado vacío. Asigna un nombre de resultado a la tabla o el sistema recurrirá a las tablas integradas.",
+      "RollTableOverflowAssumption": "La tabla de tiradas '{tableName}' llega hasta {tableMax}; tratando la entrada superior como {tableMax}+ para un total de {total}.",
+
+      "ItemOpenSourceKnackGmOnly": "Solo el DJ puede abrir/editar documentos de Talento de origen desde un Arquetipo.",
+      "ItemUuidResolveFailed": "No se pudo resolver la UUID soltada.",
+      "ItemNoSheetForDocument": "No hay una hoja disponible para ese documento.",
+      "ItemOpenUuidFailed": "No se pudo abrir el documento UUID.",
+      "ItemTomeModifySpellsGmOnly": "Solo el DJ puede modificar los hechizos de un Tomo.",
+      "ItemTomeModifySpellListOrDifficultyGmOnly": "Solo el DJ puede modificar la lista de hechizos o la dificultad de comprensión de un Tomo.",
+      "ItemTomeMustBeOwnedToUnderstand": "Este Tomo debe pertenecer a un Actor para poder comprenderse.",
+      "ItemTomeMustBeOwnedToAttune": "Este Tomo debe pertenecer a un Actor para poder sintonizarse con él.",
+      "ItemTomeMustUnderstandBeforeAttune": "Debes comprender este Tomo antes de sintonizarte con él.",
+      "ItemTomeClearStateGmOnly": "Solo el DJ puede borrar el estado de comprendido/sintonizado de un Tomo.",
+      "ItemArchetypeModifyAllowedKnacksGmOnly": "Solo el DJ puede modificar los Talentos permitidos de un Arquetipo.",
+      "ItemArchetypeModifyGmOnly": "Solo el DJ puede modificar un Arquetipo.",
+      "ItemArchetypeDropTierRequired": "Suelta el Talento sobre una sección de nivel específica.",
+      "ItemArchetypeDropOnlyKnacks": "Solo pueden soltarse objetos de tipo Talento sobre un Arquetipo.",
+      "ItemTomeDropModifyGmOnly": "Solo el DJ puede añadir o eliminar hechizos de un Tomo.",
+      "ItemTomeDropOnlySpells": "Solo pueden soltarse objetos de tipo Hechizo sobre un Tomo.",
+      "ItemKnackDropOnlySpells": "Solo pueden soltarse objetos de tipo Hechizo sobre la lista de hechizos otorgados de un Talento.",
+      "ItemTomeInaccessibleSpells": "Este Tomo contiene {count} hechizo(s) que no tienes permiso para ver."
+    },
+    "Info": {
+      "KnackAlreadyOwnedUpdated": "Talento ya adquirido; nivel actualizado para coincidir con el arquetipo.",
+      "ArchetypeSet": "Arquetipo establecido en {archetypeName}.",
+      "TomeAlreadyUnderstood": "Este Tomo ya está comprendido.",
+      "TomeNoSpellsToLearn": "Este Tomo no tiene hechizos que aprender.",
+      "TomeLearnedSpells": "Se han aprendido {count} hechizo(s) del Tomo.",
+      "TomeNoNewSpellsLearned": "No se ha aprendido ningún hechizo nuevo de este Tomo.",
+      "TomeAttuned": "Sintonizado con {tomeName}.",
+      "TomeClearedUnderstanding": "Se ha borrado la comprensión del Tomo.",
+      "ArchetypeKnackAlreadyAddedTier": "Talento ya añadido a este nivel.",
+      "TomeSpellAlreadyInTome": "Ese hechizo ya está en este Tomo.",
+      "KnackSpellAlreadyGranted": "Ese hechizo ya es otorgado por este Talento."
+    },
+    "INSIGHT": {
+      "Errors": {
+        "PermissionSpend": "No tienes permiso para gastar Inspiración con este actor.",
+        "PermissionRefresh": "No tienes permiso para recuperar Inspiración con este actor.",
+        "OnlyCharacterSpend": "Solo los actores de personaje pueden gastar Inspiración.",
+        "OnlyCharacterRefresh": "Solo los actores de personaje pueden recuperar Inspiración.",
+        "NoneRemaining": "{actorName} no tiene Inspiración restante.",
+        "InsufficientRemaining": "{actorName} no tiene suficiente Inspiración restante.",
+        "AmountAtLeastOne": "La cantidad de Inspiración gastada debe ser al menos 1."
+      }
+    },
+    "DICEPOOL": {
+      "Chat": {
+        "Refresh": "Recuperación de Reserva de Dados",
+        "Reset": "Restablecimiento de Reserva de Dados"
+      }
+    },
+    "InjuryTrauma": {
+      "Fallback": {
+        "NoMatchingEntry": "No hay una entrada de tabla coincidente",
+        "Trauma": {
+          "SubtleStrangeness": "Anomalía sutil",
+          "Shocked": "Sobresalto",
+          "Stunned": "Impresión fuerte",
+          "OvercomeByHorror": "Abrumado por el miedo",
+          "MindUndone": "Trastornado",
+          "LostForever": "Perdido en el tiempo y el espacio"
+        },
+        "Injury": {
+          "HeavyBlow": "Golpe fuerte",
+          "Slowed": "Entumecido",
+          "NastyCut": "Corte profundo",
+          "Concussed": "Conmoción",
+          "InjuredArm": "Brazo herido",
+          "InjuredLeg": "Pierna herida",
+          "LossOfASense": "Sentido impedido",
+          "SeverelyInjured": "Herido de gravedad",
+          "Comatose": "Coma",
+          "Dire": "Estado crítico",
+          "Dead": "Muerte"
+        }
+      }
+    },
+    "Chat": {
+      "RollResult": {
+        "ReactionRollTooltip": "Tirada de reacción",
+        "DifficultyFallback": "Dificultad {successesNeeded}",
+        "Reroll": "Repetir tirada",
+        "Success": "ÉXITO",
+        "Failure": "FALLO",
+        "HorrorDiceHint": "Los dados de horror se marcan en negro.",
+        "HorrorDiceTooltip": "Los dados de horror se marcan en negro.",
+        "RerollDice": "Repetir dados",
+        "RollDetails": "Detalles de la tirada",
+        "Advantage": "Ventaja",
+        "Disadvantage": "Desventaja",
+        "Penalty": "Penalización -{penalty}",
+        "Result": "Resultado +{resultModifier}",
+        "BonusDice": "Dados extra: {bonusDice}",
+        "DroppedDice": "Dados descartados",
+        "RawDiceResult": "Resultado bruto de los dados",
+        "Successes": "Éxitos",
+        "Failures": "Fallos",
+        "Trauma": "Trauma",
+        "Damage": "Daño",
+        "InflictInjury": "Infligir Herida",
+        "DicePoolUnchangedReroll": "Reserva de Dados: sin cambios (repetición)",
+        "DicePoolChanged": "Reserva de Dados: {oldDicePoolValue} → {newDicePoolValue}"
+      },
+      "DicepoolReset": {
+        "Changed": "La reserva de dados de {actorName} ha cambiado de {oldDicePoolValue} a {newDicePoolValue}.",
+        "HealedDamage": "Se han curado {healedDamage} de daño"
+      },
+      "DicepoolDiscard": {
+        "Label": "Descarte de Reserva de Dados",
+        "Spent": "{actorName} descartó {amount} dados (normales: {discardedRegular}, de horror: {discardedHorror}) ({oldDicePoolValue} → {newDicePoolValue})."
+      },
+      "Insight": {
+        "LabelSpent": "Inspiración gastada",
+        "LabelRefreshed": "Inspiración recuperada",
+        "Spent": "{actorName} gastó {spent} de Inspiración ({oldRemaining} → {newRemaining}/{limit}).",
+        "Refreshed": "La Inspiración de {actorName} se ha recuperado de {oldRemaining} a {newRemaining}."
+      },
+      "SimpleAction": {
+        "Label": "Acción simple",
+        "Spent": "{actorName} gastó {amount} {dieTypeLabel} ({oldDicePoolValue} → {newDicePoolValue} en la reserva de dados).",
+        "DieTypeHorror": "Dado de Horror",
+        "DieTypeRegular": "Dado Normal"
+      },
+      "InjuryTrauma": {
+        "FallingTooltip": "Caída",
+        "StrainTooltip": "Esforzarse",
+        "StrainNote": "aplica la herida resultante al final del turno / tras 1 acción compleja.",
+        "FallingLabel": "Herida por caída",
+        "HeightLabel": "Altura",
+        "Roll": "Tirar",
+        "Die": "Dado",
+        "Dice": "Dados",
+        "DieTotal": "Total del dado",
+        "Modifier": "Modificador",
+        "Total": "Total",
+        "Table": "Tabla"
+      }
+    },
+    "Dialog": {
+      "ResetKnacks": {
+        "Title": "Restablecer usos de Talento",
+        "Prompt": "¿Restablecer qué usos de Talento?",
+        "OncePerTurn": "Una vez por Turno",
+        "OncePerScene": "Una vez por Escena",
+        "OncePerSession": "Una vez por Sesión",
+        "All": "Todos"
+      },
+      "DiceRoll": {
+        "Knacks": "Talentos",
+        "KnacksAffectingRoll": "Talentos aplicables a esta tirada ({selected}/{available} seleccionados)",
+        "KnacksHint": "Selecciona Talentos para aplicar. Los usos se gastan al tirar.",
+        "SelectedEffects": "Efectos seleccionados",
+        "OutOfUses": "Sin usos",
+        "NoRollChanges": "Sin cambios en la tirada",
+        "PreviewBonusDice": "{dice} dados extra",
+        "PreviewResultModifier": "{mod} modificador al resultado",
+        "PreviewAdvantage": "Ventaja",
+        "PreviewDisadvantage": "Desventaja",
+        "PreviewAdvantagePlusDisadvantage": "Ventaja + Desventaja",
+        "PreviewRerollAllowanceOne": "{count} dado permitido para repetir",
+        "PreviewRerollAllowanceMany": "{count} dados permitidos para repetir",
+        "KnackEffectResult": "{mod} al resultado",
+        "KnackEffectAdv": "Vent",
+        "KnackEffectDisadv": "Desv",
+        "KnackEffectAdvPlusDisadv": "Vent+Desv",
+        "KnackEffectRerollDieOne": "{count} dado para repetir",
+        "KnackEffectRerollDieMany": "{count} dados para repetir",
+        "Tier": "Nivel {tier}",
+        "RefreshUses": "Recuperar usos",
+        "None": "Ninguno",
+        "AdvPlusDisadv": "Vent + Desventaja",
+        "HorrorDiceToUse": "Dados de Horror",
+        "HorrorDiceToUseHint": "Dados de horror disponibles: {available}. Máximo para esta tirada: {max}.",
+        "InjuriesAffectingRoll": "Heridas que afectan a esta tirada",
+        "TotalPenalty": "Penalización total",
+        "InjuriesAutoAppliedHint": "Estas penalizaciones se aplican automáticamente por heridas activas (los duplicados no se acumulan).",
+        "PenaltyMinus": "Penalización -{penalty}"
+      },
+      "SpendInsight": {
+        "Remaining": "Restante: {remaining}/{limit}",
+        "Spend": "Gastar"
+      },
+      "InjuryTrauma": {
+        "RollType": "Tipo de Tirada",
+        "Mode": "Modo",
+        "Standard": "Estándar",
+        "Falling": "Caída",
+        "Die": "Dado",
+        "FallingHeightFt": "Altura de la caída (pies). *3 metros = 10 pies",
+        "Modifier": "Modificador",
+        "InjuriesAffectingModifier": "Heridas que afectan a esta tirada (modificador: +{modifier})",
+        "TraumasAffectingModifier": "Traumas que afectan a esta tirada (modificador: +{modifier})",
+        "AddsModifier": "añade +{modifier}"
+      },
+      "RerollDice": {
+        "SuccessOn": "Éxito en",
+        "RerollSelected": "Repetir seleccionados",
+        "DieTypeHorror": "Horror",
+        "DieTypeNormal": "Normal",
+        "Raw": "Bruto",
+        "Final": "Final",
+        "Dropped": "descartado",
+        "CannotReroll": "no se puede repetir"
+      }
+    },
+    "MONEY": {
+      "Actions": {
+        "Add": "Añadir",
+        "Spend": "Gastar",
+        "Set": "Establecer"
+      },
+      "Tooltips": {
+        "Add": "Añadir dinero",
+        "Spend": "Gastar dinero",
+        "Set": "Establecer dinero"
+      },
+      "WindowTitle": {
+        "Add": "Añadir Dinero",
+        "Spend": "Gastar Dinero",
+        "Set": "Establecer Dinero"
+      },
+      "Dialog": {
+        "CurrentBalance": "Saldo actual",
+        "Amount": "Cantidad"
+      },
+      "Hints": {
+        "Amount": "Cantidad: {amount}"
+      },
+      "Errors": {
+        "Permission": "No tienes permiso para ajustar el dinero de este actor.",
+        "InvalidAmount": "Cantidad no válida. Usa un número con hasta 2 decimales.",
+        "AmountMustBePositive": "La cantidad debe ser mayor que $0.00."
+      },
+      "Chat": {
+        "Gained": "{actorName} ganó {delta}. Saldo: {balance}.",
+        "Spent": "{actorName} gastó {delta}. Saldo: {balance}.",
+        "Set": "{actorName} estableció su dinero en {balance}."
+      }
+    },
+    "SKILL": {
+      "rangedCombat": "Combate a Distancia",
+      "meleeCombat": "Combate Cuerpo a Cuerpo",
+      "agility": "Agilidad",
+      "athletics": "Atletismo",
+      "wits": "Ingenio",
+      "presence": "Presencia",
+      "intuition": "Intuición",
+      "knowledge": "Conocimientos",
+      "resolve": "Aplomo",
+      "lore": "Ocultismo"
+    },
+    "SKILL_SHORT": {
+      "agility": "AGI",
+      "athletics": "ATL",
+      "wits": "ING",
+      "presence": "PRES",
+      "intuition": "INT",
+      "knowledge": "CON",
+      "resolve": "APL",
+      "meleeCombat": "C/C",
+      "rangedCombat": "DIST",
+      "lore": "OCUL"
+    },
+    "NPC": {
+      "NewKnack": "Nuevo Talento",
+      "NewWeakness": "Nueva Debilidad",
+      "NewEquipment": "Nuevo Equipo",
+      "Weakness": "Debilidad",
+      "Abilities": "Capacidades",
+      "Profile": {
+        "generic": "PNJ Genérico",
+        "named": "Personaje único",
+        "supernatural": "Criatura Sobrenatural",
+        "monstrosity": "Monstruosidad Arcana"
+      },
+      "Size": {
+        "standard": "Estándar",
+        "large": "Grande",
+        "huge": "Enorme",
+        "titanic": "Titánico"
+      }
+    }
+  },
+  "ITEM": {
+    "Knack": {
+      "isNPCknack": "Talento de PNJ",
+      "isNPCweakness": "Debilidad de PNJ"
+    },
+    "Weapon": {
+      "skill": "Habilidad",
+      "damage": "Daño",
+      "range": "Alcance",
+      "injuryRating": "Valor de Herida",
+      "ammunition": "Munición",
+      "cost": "Coste",
+      "specialRules": "Reglas Especiales",
+      "ammunitionMax": "Munición Máxima",
+      "reloadCost": "Coste de Recarga",
+      "weight": "Peso",
+      "reloadAfterUsage": "Recargar después de usar",
+      "isRelic": "Reliquia",
+      "decreaseAfterUsage": "Reducir munición después de usar"
+    },
+    "ProtectiveEquipment": {
+      "defensiveBenefit": "Beneficio Defensivo",
+      "specialRules": "Reglas Especiales",
+      "cost": "Coste"
+    },
+    "Tome": {
+      "alternativeNames": "Nombres alternativos",
+      "knowledgeBonus": "Bonificador de Conocimiento",
+      "rarity": "Rareza",
+      "spells": "Hechizos",
+      "source": "Origen",
+      "dropSpellHint": "(DJ: arrastra un hechizo aquí)",
+      "dropSpellTarget": "Suelta objetos de tipo Hechizo sobre este Tomo (solo DJ).",
+      "attunementDifficulty": "Dificultad de Comprensión",
+      "difficultyNormal": "Normal (1)",
+      "difficultyDifficult": "Difícil (2)",
+      "difficultyVeryDifficult": "Muy Difícil (3)",
+      "understood": "Comprendido",
+      "attuned": "Sintonizado",
+      "understandButton": "Comprender",
+      "attuneButton": "Sintonizar",
+      "clearUnderstoodButton": "Borrar Comprendido",
+      "inaccessibleSpells": "Este Tomo contiene {count} hechizo(s) que no tienes permiso para ver."
+    },
+    "UsefulItem": {
+      "uses": "Usos",
+      "weight": "Peso",
+      "specialRules": "Reglas Especiales"
+    },
+    "PersonalityTrait": {
+      "positive": "Rasgo Positivo",
+      "negative": "Rasgo Negativo"
+    },
+    "Favor": {
+      "xp": "Coste en XP",
+      "benefit": "Beneficio",
+      "decliningText": "Rechazar",
+      "losingText": "Perder"
+    },
+    "Spell": {
+      "difficulty": "Dificultad"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Personaje",
+      "npc": "PNJ",
+      "vehicle": "Vehículo"
+    },
+    "Item": {
+      "item": "Objeto",
+      "feature": "Rasgo",
+      "spell": "Hechizo",
+      "knack": "Talento",
+      "personality_trait": "Rasgo de personalidad",
+      "weapon": "Arma",
+      "protective_equipment": "Protección",
+      "useful_item": "Objeto de utilidad",
+      "tome": "Tomo",
+      "relic": "Reliquia",
+      "injury": "Herida",
+      "trauma": "Trauma",
+      "favor": "Favor",
+      "archetype": "Arquetipo"
+    }
+  }
+}
