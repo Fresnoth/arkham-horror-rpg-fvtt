@@ -24,10 +24,10 @@
       "thumbnail": "systems/arkham-horror-rpg-fvtt/assets/anvil-impact.png"
     }
   ],
-  "version": "13.0.37",
+  "version": "14.0.0",
   "compatibility": {
     "minimum": 13,
-    "verified": "13"
+    "verified": "14"
   },
   "esmodules": ["module/arkham-horror-rpg-fvtt.mjs"],
   "styles": ["css/arkham-horror-rpg-fvtt.css"],
