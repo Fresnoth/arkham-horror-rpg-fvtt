@@ -43,6 +43,8 @@ export class ArkhamHorrorItem extends Item {
    * Augment the basic Item data model with additional dynamic data.
    */
   prepareData() {
+    // This is currently a pass-through hook. If item document-level prep is not
+    // needed, prefer removing the override rather than shadowing core behavior.
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData();

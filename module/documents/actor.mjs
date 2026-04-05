@@ -5,6 +5,8 @@
 export class ArkhamHorrorActor extends Actor {
   /** @override */
   prepareData() {
+    // This is currently a pass-through hook. If no document-level prep is needed,
+    // prefer removing the override rather than shadowing the core lifecycle.
     // Prepare data for the actor. Calling the super version of this executes
     // the following, in order: data reset (to clear active effects),
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
@@ -40,6 +42,10 @@ export class ArkhamHorrorActor extends Actor {
 
   /** @override */
   prepareBaseData() {
+    // Foundry v14 resets Active Effect cycle state here, so document overrides
+    // must call the parent implementation before adding custom logic.
+    super.prepareBaseData();
+
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
   }
@@ -52,6 +58,8 @@ export class ArkhamHorrorActor extends Actor {
    * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
+    // Keep document-level derived logic here only for values that do not belong
+    // in the actor TypeDataModel. Flags are still consulted here for that reason.
     const actorData = this;
     const flags = actorData.flags.arkhamhorrorrpgfvtt || {};
   }
