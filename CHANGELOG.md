@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 14.0.0
+- FoundryVTT 14 compatible
+- added spanish fan translation by Nixitro
+
 ## 13.0.37
 - added ability to chose which dice to spend during character rolls and other improvement regarding dices
 - pause graphics
