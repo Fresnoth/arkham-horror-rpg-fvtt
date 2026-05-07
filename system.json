@@ -24,7 +24,7 @@
       "thumbnail": "systems/arkham-horror-rpg-fvtt/assets/anvil-impact.png"
     }
   ],
-  "version": "14.0.0",
+  "version": "14.1.0",
   "compatibility": {
     "minimum": 13,
     "verified": "14"

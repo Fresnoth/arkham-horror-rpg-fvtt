@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 14.1.0
+- styling update for the actor sheets
+
 ## 14.0.0
 - FoundryVTT 14 compatible
 - added spanish fan translation by Nixitro
