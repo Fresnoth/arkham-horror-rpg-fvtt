@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 /* Global styles */
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Voltaire&display=swap");
@@ -1120,11 +1121,17 @@ li.chat-message.message > .message-content {
   padding: 0px;
   margin: 5px 0;
   border-bottom: 0;
+  font-size: 1rem;
 }
 .system-arkham-horror-rpg-fvtt .sheet-header h1.charname input {
   width: 100%;
   height: 100%;
   margin: 0;
+  background-color: inherit;
+  color: #f0e8d0;
+}
+.system-arkham-horror-rpg-fvtt .sheet-header h1.charname input:focus {
+  color: #f0e8d0;
 }
 .system-arkham-horror-rpg-fvtt .sheet-tabs {
   flex: 0;
@@ -1228,77 +1235,103 @@ li.chat-message.message > .message-content {
 .system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset {
   color: #191813;
   background: linear-gradient(180deg, rgba(249, 240, 219, 0.96), rgba(232, 219, 191, 0.94)), repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0) 7px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  border: 2px solid #722A1C;
-  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  border: 1.5px solid #2a1f10;
+  border-radius: 2px;
   padding: 5px;
+  margin-top: 5px;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend,
 .system-arkham-horror-rpg-fvtt .sheet.item fieldset legend,
 .system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend {
   font-family: "Teutonic", sans-serif;
-  font-size: 1.2em;
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+  font-size: 1.1em;
+  color: #f0e8d0;
+  background: #1a130a;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  padding: 2px 14px;
+  text-shadow: none;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend::before,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend::before,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend::before {
+  content: "✦";
+  margin-right: 8px;
+  opacity: 0.55;
+  font-size: 0.65em;
+  vertical-align: middle;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend::after,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend::after,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend::after {
+  content: "✦";
+  margin-left: 8px;
+  opacity: 0.55;
+  font-size: 0.65em;
+  vertical-align: middle;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend a, .system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend i,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend a,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend i,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend a,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend i {
+  font-size: 0.85em;
+  color: rgba(240, 232, 208, 0.75);
+  vertical-align: middle;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend a:hover, .system-arkham-horror-rpg-fvtt .sheet.actor fieldset legend i:hover,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend a:hover,
+.system-arkham-horror-rpg-fvtt .sheet.item fieldset legend i:hover,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend a:hover,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset legend i:hover {
+  color: #f0e8d0;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor fieldset input,
 .system-arkham-horror-rpg-fvtt .sheet.item fieldset input,
 .system-arkham-horror-rpg-fvtt .roll-dialog-container fieldset input {
   height: 20px;
 }
-.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h5,
+.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h5, .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h4, .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h3, .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h2, .system-arkham-horror-rpg-fvtt .sheet.actor .window-content h1,
 .system-arkham-horror-rpg-fvtt .sheet.item .window-content h5,
-.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h5 {
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-  border-bottom: 1px solid #722A1C;
-  font-family: "Teutonic", sans-serif;
-}
-.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h4,
 .system-arkham-horror-rpg-fvtt .sheet.item .window-content h4,
-.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h4 {
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-  border-bottom: 1px solid #722A1C;
-  font-family: "Teutonic", sans-serif;
-}
-.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h3,
 .system-arkham-horror-rpg-fvtt .sheet.item .window-content h3,
-.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h3 {
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-  border-bottom: 1px solid #722A1C;
-  font-family: "Teutonic", sans-serif;
-}
-.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h2,
 .system-arkham-horror-rpg-fvtt .sheet.item .window-content h2,
-.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h2 {
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-  border-bottom: 1px solid #722A1C;
-  font-family: "Teutonic", sans-serif;
-}
-.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h1,
 .system-arkham-horror-rpg-fvtt .sheet.item .window-content h1,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h5,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h4,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h3,
+.system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h2,
 .system-arkham-horror-rpg-fvtt .roll-dialog-container .window-content h1 {
-  color: #2B100A;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-  border-bottom: 1px solid #722A1C;
   font-family: "Teutonic", sans-serif;
+  color: #f0e8d0;
+  background: #1a130a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: normal;
+  padding: 2px 10px;
+  border: none;
+  text-shadow: none;
+  margin: 6px 0 4px;
 }
 .system-arkham-horror-rpg-fvtt .foldable-content {
   display: none;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 0px;
-  padding: 5px;
-  color: #c9c7b8;
+  background: rgba(26, 19, 10, 0.06);
+  border: 1px solid rgba(42, 31, 16, 0.2);
+  border-radius: 2px;
+  padding: 6px 8px;
+  color: #191813;
   text-align: justify;
   font-family: "Lusitana", serif;
+  font-size: 0.92em;
+  line-height: 1.45;
 }
 .system-arkham-horror-rpg-fvtt .foldable-content.collapsed {
   display: block;
+}
+.system-arkham-horror-rpg-fvtt .item-card > h4 {
+  font-size: 0.8rem;
 }
 .system-arkham-horror-rpg-fvtt .roll-dialog-container .roll-resource-row > label {
   flex: 0 0 130px;
@@ -1536,9 +1569,9 @@ li.chat-message.message > .message-content {
   margin-top: 10px;
   color: #191813;
   background: linear-gradient(180deg, rgba(249, 240, 219, 0.96), rgba(232, 219, 191, 0.94)), repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0) 7px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  border: 2px solid #722A1C;
-  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  border: 1.5px solid #2a1f10;
+  border-radius: 2px;
   padding: 5px;
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .resource-group-styled input, .system-arkham-horror-rpg-fvtt .sheet.actor .resource-group-styled select,
@@ -1634,6 +1667,82 @@ li.chat-message.message > .message-content {
 }
 .system-arkham-horror-rpg-fvtt .sheet.actor .money-controls-row .money-action {
   flex: 0 0 auto;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container {
+  padding: 6px;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .form-group,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .form-group {
+  background: linear-gradient(180deg, rgba(249, 240, 219, 0.96), rgba(232, 219, 191, 0.94)), repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0) 7px);
+  border: 1px solid rgba(42, 31, 16, 0.2);
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 4px 6px;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .form-group > label,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .form-group > label {
+  color: #191813;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container input[type=text],
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container input[type=number],
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container select,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container input[type=text],
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container input[type=number],
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(42, 31, 16, 0.45);
+  border-radius: 0;
+  box-shadow: none;
+  color: #191813;
+  font-family: "Lusitana", serif;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container input[type=text]:focus,
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container input[type=number]:focus,
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container select:focus,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container input[type=text]:focus,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container input[type=number]:focus,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container select:focus {
+  outline: none;
+  border-bottom-color: #1a130a;
+  box-shadow: none;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .button-dicepool-rolldialog,
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .roll-button,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .button-dicepool-rolldialog,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .roll-button {
+  background: #1a130a;
+  color: #f0e8d0;
+  border: 1px solid #2a1f10;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: none;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .roll-button,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .roll-button {
+  margin: 0;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .arkham-roll-details-summary,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .arkham-roll-details-summary {
+  font-family: "Teutonic", sans-serif;
+  color: #f0e8d0;
+  background: #1a130a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: normal;
+  padding: 3px 10px;
+}
+.system-arkham-horror-rpg-fvtt #dice-roll-app .roll-dialog-container .arkham-roll-details-body,
+.system-arkham-horror-rpg-fvtt #injury-trauma-roll-app .roll-dialog-container .arkham-roll-details-body {
+  background: rgba(26, 19, 10, 0.06);
+  border: 1px solid rgba(42, 31, 16, 0.2);
+  border-top: none;
+  padding: 6px 8px;
 }
 .system-arkham-horror-rpg-fvtt .money-adjust-app .roll-dialog-container .form-group {
   flex-direction: column;
@@ -1754,7 +1863,10 @@ li.chat-message.message > .message-content {
 }
 .system-arkham-horror-rpg-fvtt .styled-label {
   font-family: "Teutonic", sans-serif;
-  font-size: 1.1em;
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #191813;
 }
 .system-arkham-horror-rpg-fvtt .ammo_input {
   width: 35px;
@@ -1820,15 +1932,19 @@ li.chat-message.message > .message-content {
   height: 32px;
 }
 .system-arkham-horror-rpg-fvtt .fancy-input {
-  /* TODO: Style fancy inputs */
-  /*background: transparent;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px 0px inset;
-    color: black;
-    text-align: center;
-    font-family: $font-tertiary;
-    font-weight: 400;
-    font-style: normal;*/
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(42, 31, 16, 0.45);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: "Lusitana", serif;
+  color: #191813;
+  font-weight: 400;
+}
+.system-arkham-horror-rpg-fvtt .fancy-input:focus {
+  outline: none;
+  border-bottom-color: #1a130a;
+  box-shadow: none;
 }
 .system-arkham-horror-rpg-fvtt .resource-label {
   font-weight: bold;
@@ -1851,6 +1967,41 @@ li.chat-message.message > .message-content {
   text-align: left;
   display: flex;
 }
+.system-arkham-horror-rpg-fvtt .quick-label {
+  font-family: "Teutonic", sans-serif;
+  font-size: 1em;
+  color: #f0e8d0;
+  background: #1a130a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: normal;
+  padding: 3px 10px;
+  margin: 8px 0 0;
+  border: none;
+  text-shadow: none;
+}
+.system-arkham-horror-rpg-fvtt .quick-label::before {
+  content: "✦";
+  margin-right: 7px;
+  opacity: 0.55;
+  font-size: 0.65em;
+  vertical-align: middle;
+}
+.system-arkham-horror-rpg-fvtt .quick-label::after {
+  content: "✦";
+  margin-left: 7px;
+  opacity: 0.55;
+  font-size: 0.65em;
+  vertical-align: middle;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h5.quick-label {
+  margin-bottom: 0;
+  font-size: 1.15rem;
+  text-align: center;
+}
+.system-arkham-horror-rpg-fvtt .sheet.actor .window-content h5.quick-label + .items-list {
+  margin-top: 0;
+}
 .system-arkham-horror-rpg-fvtt .items-list {
   --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
   --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
@@ -1861,10 +2012,8 @@ li.chat-message.message > .message-content {
   scrollbar-width: thin;
   color: #191813;
   background: linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)), repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0) 7px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  padding: 5px;
-  border: 2px solid #722A1C;
-  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  padding: 0;
 }
 .system-arkham-horror-rpg-fvtt .items-list .item-list {
   list-style: none;
@@ -1897,7 +2046,7 @@ li.chat-message.message > .message-content {
 }
 .system-arkham-horror-rpg-fvtt .items-list .item {
   align-items: center;
-  padding: 0 2px;
+  padding: 0 5px;
   border-bottom: 1px solid #c9c7b8;
 }
 .system-arkham-horror-rpg-fvtt .items-list .item:last-child {
@@ -1922,21 +2071,28 @@ li.chat-message.message > .message-content {
   font-family: "Lusitana", serif;
 }
 .system-arkham-horror-rpg-fvtt .items-list .items-header {
-  height: 28px;
-  margin: 2px 0;
-  padding: 0;
+  height: 30px;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0 6px;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid black;
-  font-weight: bold;
+  background: #1a130a;
+  color: #f0e8d0;
+  border-bottom: none;
+  font-weight: normal;
+  font-family: "Teutonic", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .system-arkham-horror-rpg-fvtt .items-list .items-header > * {
   font-size: 12px;
   text-align: center;
+  color: #f0e8d0;
 }
 .system-arkham-horror-rpg-fvtt .items-list .items-header .item-name {
   padding-left: 5px;
   text-align: left;
+  color: #f0e8d0;
 }
 .system-arkham-horror-rpg-fvtt .item-formula {
   flex: 0 0 200px;

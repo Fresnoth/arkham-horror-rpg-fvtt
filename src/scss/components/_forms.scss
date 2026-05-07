@@ -31,10 +31,17 @@
     padding: 0px;
     margin: 5px 0;
     border-bottom: 0;
+    font-size: 1rem;
     input {
       width: 100%;
       height: 100%;
       margin: 0;
+      background-color: inherit;
+      color: $c-banner-text;
+
+      &:focus {
+        color: $c-banner-text;
+      }
     }
   }
 }
@@ -162,73 +169,92 @@
         rgba(255, 255, 255, 0) 3px,
         rgba(255, 255, 255, 0) 7px
       );
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-    border: 2px solid $c-red-border;
-    border-radius: 5px;
-    padding:  5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    border: 1.5px solid $c-border-dark;
+    border-radius: 2px;
+    padding: 5px;
+    margin-top: 5px;
 
     legend {
       font-family: $font-primary;
-      font-size: 1.2em;
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+      font-size: 1.1em;
+      color: $c-banner-text;
+      background: $c-banner-bg;
       text-transform: uppercase;
-      font-weight: 600;
+      font-weight: normal;
+      letter-spacing: 0.08em;
+      padding: 2px 14px;
+      text-shadow: none;
+
+      &::before {
+        content: '✦';
+        margin-right: 8px;
+        opacity: 0.55;
+        font-size: 0.65em;
+        vertical-align: middle;
+      }
+
+      &::after {
+        content: '✦';
+        margin-left: 8px;
+        opacity: 0.55;
+        font-size: 0.65em;
+        vertical-align: middle;
+      }
+
+      // Action icons inside legend keep their original size and colours
+      a, i {
+        font-size: 0.85em;
+        color: rgba($c-banner-text, 0.75);
+        vertical-align: middle;
+
+        &:hover {
+          color: $c-banner-text;
+        }
+      }
     }
 
-    input{
+    input {
       height: 20px;
     }
   }
 
   .window-content {
-    h5 {
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
+    h5, h4, h3, h2, h1 {
       font-family: $font-primary;
-    }
-
-    h4 {
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-
-    h3 {
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-    h2 {
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-    h1 {
-      color: $c-light-red;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
+      color: $c-banner-text;
+      background: $c-banner-bg;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: normal;
+      padding: 2px 10px;
+      border: none;
+      text-shadow: none;
+      margin: 6px 0 4px;
     }
   }
 } // end of sheet
 
 .foldable-content {
   display: none;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 0px;
-  padding: 5px;
-  color: $c-faint;
+  background: rgba(26, 19, 10, 0.06);
+  border: 1px solid rgba(42, 31, 16, 0.2);
+  border-radius: 2px;
+  padding: 6px 8px;
+  color: $c-dark;
   text-align: justify;
   font-family: $font-tertiary;
+  font-size: 0.92em;
+  line-height: 1.45;
 
   &.collapsed {
     display: block;
   }
+}
+
+// Personality trait card title should be smaller than the generic h4 banner.
+.item-card > h4 {
+  font-size: 0.8rem;
 }
 
 // Dice roll dialog: tidy up the Knacks selector layout.
@@ -524,11 +550,12 @@
         rgba(255, 255, 255, 0) 3px,
         rgba(255, 255, 255, 0) 7px
       );
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-    border: 2px solid $c-red-border;
-    border-radius: 5px;
-    padding:  5px;
-    input,select{
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+
+    border: 1.5px solid $c-border-dark;
+    border-radius: 2px;
+    padding: 5px;
+    input, select {
       height: 20px;
     }
 
@@ -629,6 +656,87 @@
 
   .money-controls-row .money-action {
     flex: 0 0 auto;
+  }
+}
+
+// Dice roll dialogs: align dialog controls with the Arkham sheet visual language.
+#dice-roll-app,
+#injury-trauma-roll-app {
+  .roll-dialog-container {
+    padding: 6px;
+
+    .form-group {
+      background:
+        linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
+        repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.02) 0px,
+          rgba(0, 0, 0, 0.02) 1px,
+          rgba(255, 255, 255, 0) 3px,
+          rgba(255, 255, 255, 0) 7px
+        );
+      border: 1px solid rgba(42, 31, 16, 0.2);
+      border-radius: 2px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      padding: 4px 6px;
+    }
+
+    .form-group > label {
+      color: $c-dark;
+      font-size: 1em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(42, 31, 16, 0.45);
+      border-radius: 0;
+      box-shadow: none;
+      color: $c-dark;
+      font-family: $font-tertiary;
+
+      &:focus {
+        outline: none;
+        border-bottom-color: $c-banner-bg;
+        box-shadow: none;
+      }
+    }
+
+    .button-dicepool-rolldialog,
+    .roll-button {
+      background: $c-banner-bg;
+      color: $c-banner-text;
+      border: 1px solid $c-border-dark;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: none;
+    }
+
+    .roll-button {
+      margin: 0;
+    }
+
+    .arkham-roll-details-summary {
+      font-family: $font-primary;
+      color: $c-banner-text;
+      background: $c-banner-bg;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: normal;
+      padding: 3px 10px;
+    }
+
+    .arkham-roll-details-body {
+      background: rgba(26, 19, 10, 0.06);
+      border: 1px solid rgba(42, 31, 16, 0.2);
+      border-top: none;
+      padding: 6px 8px;
+    }
   }
 }
 
@@ -780,7 +888,10 @@
 
 .styled-label {
   font-family: $font-primary;
-  font-size: 1.1em;
+  font-size: 1.0em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $c-dark;
 }
 
 .ammo_input {
@@ -868,13 +979,18 @@
 }
 
 .fancy-input {
-  /* TODO: Style fancy inputs */
-  /*background: transparent;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px 0px inset;
-    color: black;
-    text-align: center;
-    font-family: $font-tertiary;
-    font-weight: 400;
-    font-style: normal;*/
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(42, 31, 16, 0.45);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: $font-tertiary;
+  color: $c-dark;
+  font-weight: 400;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: $c-banner-bg;
+    box-shadow: none;
+  }
 }
