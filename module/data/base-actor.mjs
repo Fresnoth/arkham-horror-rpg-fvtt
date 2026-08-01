@@ -22,44 +22,34 @@ export default class ArkhamHorrorActorBase extends ArkhamHorrorDataModel {
 
      schema.skills = new fields.SchemaField({
       agility: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       athletics: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       wits: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       presence: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       intuition: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       knowledge: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       resolve: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       meleeCombat: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       rangedCombat: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
       lore: new fields.SchemaField({
-        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        max: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 })
       }),
     });
 

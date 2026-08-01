@@ -25,7 +25,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.actor = options.actor;
     this.skillKey = options.skillKey;
     this.skillCurrent = options.skillCurrent;
-    this.skillMax = options.skillMax;
     this.currentDicePool = options.currentDicePool;
     this.weaponToUse = options.weaponToUse;
     this.spellToUse = options.spellToUse;
@@ -39,7 +38,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.rollState = {
         skillKey: this.skillKey,
         skillCurrent: this.skillCurrent,
-        skillMax: this.skillMax,
         currentDicePool: this.currentDicePool,
         weaponToUse: this.weaponToUse,
         spellToUse: this.spellToUse,
@@ -119,7 +117,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (Object.prototype.hasOwnProperty.call(options, 'actor')) this.actor = options.actor;
     if (Object.prototype.hasOwnProperty.call(options, 'skillKey')) this.skillKey = options.skillKey;
     if (options.skillCurrent !== undefined) this.skillCurrent = options.skillCurrent;
-    if (options.skillMax !== undefined) this.skillMax = options.skillMax;
     if (options.currentDicePool !== undefined) this.currentDicePool = options.currentDicePool;
     if (Object.prototype.hasOwnProperty.call(options, 'weaponToUse')) this.weaponToUse = options.weaponToUse;
     if (Object.prototype.hasOwnProperty.call(options, 'spellToUse')) this.spellToUse = options.spellToUse;
@@ -131,7 +128,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
     // Keep rollState in sync (single book)
     this.rollState.skillKey = this.skillKey;
     this.rollState.skillCurrent = this.skillCurrent;
-    this.rollState.skillMax = this.skillMax;
     this.rollState.currentDicePool = this.currentDicePool;
     this.rollState.weaponToUse = this.weaponToUse;
     this.rollState.spellToUse = this.spellToUse;
@@ -365,7 +361,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
         isReaction,
         skillKey: this.rollState.skillKey,
         skillCurrent: this.rollState.skillCurrent,
-        skillMax: this.rollState.skillMax,
         currentDicePool: this.rollState.currentDicePool,
         diceToUse: this.rollState.diceToUse,
         horrorDiceToUse: this.rollState.horrorDiceToUse,
@@ -487,7 +482,6 @@ export class DiceRollApp extends HandlebarsApplicationMixin(ApplicationV2) {
       const skillData = this.actor?.system?.skills?.[selectedKey];
       this.rollState.skillKey = selectedKey;
       this.rollState.skillCurrent = Number(skillData?.current ?? 0);
-      this.rollState.skillMax = Number(skillData?.max ?? 0);
 
       this.render({ force: true });
     }, { signal });

@@ -1785,7 +1785,7 @@ li.chat-message.message > .message-content {
   margin-top: 2px;
 }
 .system-arkham-horror-rpg-fvtt .skills-list .skill-row {
-  grid-template-columns: 1fr 1fr 40px 40px 18px;
+  grid-template-columns: 1fr 1fr 40px 18px;
   gap: 6px;
   align-items: center;
 }
@@ -2137,5 +2137,3 @@ li.chat-message.message > .message-content {
 .editor.prosemirror {
   height: 100%;
 }
-
-/*# sourceMappingURL=arkham-horror-rpg-fvtt.css.map */

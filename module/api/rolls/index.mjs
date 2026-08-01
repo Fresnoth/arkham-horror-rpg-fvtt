@@ -9,7 +9,6 @@ function getSkillSnapshot(actor, skillKey) {
   return {
     skillKey: key,
     skillCurrent: Number(skillData.current ?? skillData.value ?? 0) || 0,
-    skillMax: Number(skillData.max ?? 0) || 0,
     currentDicePool: Number(actor?.system?.dicepool?.value ?? actor?.system?.dicePool?.value ?? 0) || 0,
   };
 }
@@ -39,7 +38,6 @@ export async function openSkillDialog(actor, {
     rollKind,
     skillKey: snapshot.skillKey,
     skillCurrent: snapshot.skillCurrent,
-    skillMax: snapshot.skillMax,
     currentDicePool: snapshot.currentDicePool,
     weaponToUse,
     spellToUse,

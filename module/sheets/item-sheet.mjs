@@ -483,7 +483,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         // For v1: we prompt with Knowledge by default; player can re-open and pick Lore from a secondary button in future.
         const skillKey = 'knowledge';
         const skillCurrent = actor.system.skills?.[skillKey]?.current ?? 0;
-        const skillMax = actor.system.skills?.[skillKey]?.max ?? 0;
         const currentDicePool = actor.system.dicepool?.value ?? 0;
         const successesNeeded = Number(this.document.system?.attunementDifficulty ?? 2);
 
@@ -493,7 +492,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             skillChoices: ['knowledge', 'lore'],
             skillKey,
             skillCurrent,
-            skillMax,
             currentDicePool,
             weaponToUse: null,
             successesNeeded,
@@ -524,7 +522,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
         const skillKey = 'intuition';
         const skillCurrent = actor.system.skills?.[skillKey]?.current ?? 0;
-        const skillMax = actor.system.skills?.[skillKey]?.max ?? 0;
         const currentDicePool = actor.system.dicepool?.value ?? 0;
         const successesNeeded = 2;
 
@@ -533,7 +530,6 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
             rollKind: 'tome-attune',
             skillKey,
             skillCurrent,
-            skillMax,
             currentDicePool,
             weaponToUse: null,
             successesNeeded,

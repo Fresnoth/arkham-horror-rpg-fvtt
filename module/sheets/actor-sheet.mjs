@@ -312,24 +312,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
                     'system.archetype': dropped.name
                 };
 
-                const skillCaps = dropped.system?.skillCaps ?? {};
-                for (const skillKey of Object.keys(skillCaps)) {
-                    // Ignore any unexpected keys which aren't actual actor skills.
-                    if (!(skillKey in (this.document.system?.skills ?? {}))) continue;
-                    const cap = Number(skillCaps?.[skillKey] ?? 0);
-                    // Always overwrite the actor's max values from the newly-dropped archetype.
-                    // Otherwise, switching archetypes can leave behind stale/manual caps from the previous archetype.
-                    updateData[`system.skills.${skillKey}.max`] = Number.isFinite(cap) ? cap : 0;
-
-                    // Only clamp current when an actual cap is present.
-                    if (Number.isFinite(cap) && cap > 0) {
-                        const current = Number(this.document.system?.skills?.[skillKey]?.current ?? 0);
-                        if (Number.isFinite(current) && current > cap) {
-                            updateData[`system.skills.${skillKey}.current`] = cap;
-                        }
-                    }
-                }
-
+                // The archetype's skillCaps are advancement limits (how far XP may improve a skill),
+                // not values to copy onto the actor. They stay on the archetype Item.
                 await this.document.update(updateData);
                 ui.notifications.info(game.i18n.format('ARKHAM_HORROR.Info.ArchetypeSet', { archetypeName: dropped.name }));
                 return;
@@ -746,9 +730,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const skillKey = target.dataset.skillKey;
 
         let skillCurrent = this.actor.system.skills[skillKey].current;
-        let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
-        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null,spellToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: null,spellToUse: null }).render(true);
     }
 
     static async #handleSkillReactionClicked(event, target) {
@@ -756,10 +739,9 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const skillKey = target.dataset.skillKey;
 
         let skillCurrent = this.actor.system.skills[skillKey].current;
-        let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
 
-        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
     }
 
     static async #handleWeaponReload(event, target) {
@@ -831,9 +813,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             
             let skillKey = item.system.skill;
             let skillCurrent = this.actor.system.skills[skillKey].current;
-            let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null}).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null}).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }
@@ -846,9 +827,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         if (item) {
             let skillKey = item.system.skill;
             let skillCurrent = this.actor.system.skills[skillKey].current;
-            let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, spellToUse: item,weaponToUse: null }).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, spellToUse: item,weaponToUse: null }).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }
@@ -980,7 +960,6 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
         const skillKey = 'knowledge';
         const skillCurrent = this.actor.system.skills?.[skillKey]?.current ?? 0;
-        const skillMax = this.actor.system.skills?.[skillKey]?.max ?? 0;
         const currentDicePool = this.actor.system.dicepool?.value ?? 0;
         const successesNeeded = Number(tome.system?.attunementDifficulty ?? 2);
 
@@ -990,7 +969,6 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             skillChoices: ['knowledge', 'lore'],
             skillKey,
             skillCurrent,
-            skillMax,
             currentDicePool,
             weaponToUse: null,
             spellToUse: null,
@@ -1018,7 +996,6 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
         const skillKey = 'intuition';
         const skillCurrent = this.actor.system.skills?.[skillKey]?.current ?? 0;
-        const skillMax = this.actor.system.skills?.[skillKey]?.max ?? 0;
         const currentDicePool = this.actor.system.dicepool?.value ?? 0;
         const successesNeeded = 2;
 
@@ -1027,7 +1004,6 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             rollKind: 'tome-attune',
             skillKey,
             skillCurrent,
-            skillMax,
             currentDicePool,
             weaponToUse: null,
             spellToUse: null,

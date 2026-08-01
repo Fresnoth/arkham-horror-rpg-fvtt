@@ -396,10 +396,9 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         const skillKey = target.dataset.skillKey;        
 
         let skillCurrent = this.actor.system.skills[skillKey].current;
-        let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
 
-        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
     }
 
     static async #handleSkillReactionClicked(event, target) {
@@ -407,10 +406,9 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         const skillKey = target.dataset.skillKey;
 
         let skillCurrent = this.actor.system.skills[skillKey].current;
-        let skillMax = this.actor.system.skills[skillKey].max;
         let currentDicePool = this.actor.system.dicepool.value;
 
-        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
+        DiceRollApp.getInstance({ actor: this.actor, rollKind: "reaction", skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: null, spellToUse: null }).render(true);
     }
 
     static async #handleWeaponReload(event, target) {
@@ -483,9 +481,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         if (item) {
             let skillKey = item.system.skill;
             let skillCurrent = this.actor.system.skills[skillKey].current;
-            let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null }).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, weaponToUse: item,spellToUse: null }).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }
@@ -498,9 +495,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         if (item) {
             let skillKey = item.system.skill;
             let skillCurrent = this.actor.system.skills[skillKey].current;
-            let skillMax = this.actor.system.skills[skillKey].max;
             let currentDicePool = this.actor.system.dicepool.value;
-            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, skillMax: skillMax, currentDicePool: currentDicePool, spellToUse: item, weaponToUse: null }).render(true);
+            DiceRollApp.getInstance({ actor: this.actor, skillKey: skillKey, skillCurrent: skillCurrent, currentDicePool: currentDicePool, spellToUse: item, weaponToUse: null }).render(true);
         } else {
             console.error(`Item with ID ${itemId} not found on actor.`);
         }

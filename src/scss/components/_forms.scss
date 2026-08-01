@@ -798,7 +798,7 @@
 // Character sheet skills: keep the reaction icon in its own fixed-width column
 // instead of consuming a full 1fr grid track.
 .skills-list .skill-row {
-  grid-template-columns: 1fr 1fr 40px 40px 18px;
+  grid-template-columns: 1fr 1fr 40px 18px;
   gap: 6px;
   align-items: center;
 }
