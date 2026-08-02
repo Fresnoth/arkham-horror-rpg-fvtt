@@ -32,7 +32,14 @@
       "Toggle": "Activar/Desactivar efecto",
       "Temporary": "Efectos Temporales",
       "Passive": "Efectos Pasivos",
-      "Inactive": "Efectos Inactivos"
+      "Inactive": "Efectos Inactivos",
+      "Duration": "Duración",
+      "None": "No hay efectos en esta categoría.",
+      "FromItem": "Proviene del objeto «{itemName}»",
+      "Errors": {
+        "DeleteOnItem": "Este efecto pertenece al objeto «{itemName}» y solo puede eliminarse allí.",
+        "Permission": "No tienes permiso para modificar los efectos de este actor."
+      }
     },
     "LABELS": {
       "Form": "Datos",
@@ -57,13 +64,13 @@
       "LoadCapacity": "Carga",
       "Weapons": "Armas",
       "ProtectiveEquipment": "Protecciones",
-      "UsefulItems":"Objetos de utilidad",
+      "UsefulItems": "Objetos de utilidad",
       "OtherEquipment": "Otros objetos",
-      "Favors":"Favores",
-      "Spells":"Hechizos",
+      "Favors": "Favores",
+      "Spells": "Hechizos",
       "Tome": "Tomo",
-      "Tomes":"Tomos",
-      "Relics":"Reliquias"
+      "Tomes": "Tomos",
+      "Relics": "Reliquias"
     },
     "UNITS": {
       "Ft": "m"
@@ -132,7 +139,12 @@
       "AppliesToSkills": "Aplica a Habilidades",
       "AppliesToRollTypes": "Aplica a Tipos de Tirada",
       "PenaltyPerDie": "Penalización (por dado)",
-      "PenaltyHint": "Se aplica automáticamente como penalización a las tiradas correspondientes. Los duplicados de la misma herida no se acumulan; todas las instancias deben curarse para eliminar el efecto."
+      "PenaltyHint": "Se aplica automáticamente como penalización a las tiradas correspondientes. Los duplicados de la misma herida no se acumulan; todas las instancias deben curarse para eliminar el efecto.",
+      "Healing": "Curación",
+      "HealDifficulty": "Éxitos para curar",
+      "HealDifficultyHint": "1 por defecto, 2 para Herido de gravedad, Sentido impedido y Coma, 3 para Estado crítico (manual p. 33-34).",
+      "CanHealNaturally": "Se cura con el tiempo",
+      "CanHealNaturallyHint": "Desactivado para Estado crítico, la única herida que nunca se cura por sí sola (manual p. 34)."
     },
     "TRAUMA_SHEET": {
       "Active": "Activo",
@@ -154,7 +166,7 @@
       "KnackTiers": "Niveles de Talento",
       "DragDropHint": "Arrastra y suelta objetos de tipo Talento sobre un nivel inferior para añadir su UUID (sin incrustarlos). Haz clic en el nombre de un talento para ver su descripción."
     },
-    "DIFFICULTY":{
+    "DIFFICULTY": {
       "Normal": "Normal (1)",
       "Difficult": "Difícil (2)",
       "VeryDifficult": "Muy Difícil (3)"
@@ -195,10 +207,10 @@
       "Negative": "Negativo",
       "NoneAssigned": "No hay ningún rasgo de personalidad asignado. Arrastra y suelta uno aquí."
     },
-    "PROPS":{
-      "Name":"Nombre",
+    "PROPS": {
+      "Name": "Nombre",
       "Quantity": "Cantidad",
-      "Skill":"Habilidad",
+      "Skill": "Habilidad",
       "Tier": "Nivel",
       "Rarity": "Rareza",
       "HasSpecialRules": "Tiene reglas especiales",
@@ -211,14 +223,14 @@
       "Spell": "Hechizo",
       "Damage": "Daño",
       "DamageShort": "D",
-      "InjuryRating":"Valor de herida",
-      "InjuryRatingShort":"VH",
-      "Range":"Rango",
+      "InjuryRating": "Valor de herida",
+      "InjuryRatingShort": "VH",
+      "Range": "Rango",
       "Engaged": "Trabado",
-      "Ammunition":"Munición",
-      "Costs":"Costes",
-      "Uses":"Usos",
-      "Difficulty":"Dificultad",
+      "Ammunition": "Munición",
+      "Costs": "Costes",
+      "Uses": "Usos",
+      "Difficulty": "Dificultad",
       "RollType": "Tipo de Tirada",
       "RollFormula": "Fórmula de Tirada",
       "NumberOfDice": "Números de Dados",
@@ -234,9 +246,9 @@
       "Benefit": "Beneficio",
       "Declining": "Rechazar",
       "Losing": "Perder",
-      "Weight":"Peso",
-      "SpecialRules":"Reglas especiales",
-      "DefensiveBenefit":"Beneficios defensivos"
+      "Weight": "Peso",
+      "SpecialRules": "Reglas especiales",
+      "DefensiveBenefit": "Beneficios defensivos"
     },
     "ACTIONS": {
       "SpendInsight": "Gastar Inspiración",
@@ -304,36 +316,28 @@
     },
     "Warnings": {
       "NpcKnackDropBlocked": "Los Talentos exclusivos de PNJ no pueden añadirse a Personajes.",
-
       "PermissionRollActor": "No tienes permiso para tirar por este Actor.",
       "PermissionStrainActor": "No tienes permiso para esforzarte con este Actor.",
       "StrainRequiresDamage": "Solo puedes esforzarte cuando el máximo de tu reserva de dados se ha reducido por daño.",
-
       "ArchetypeKnackDropInvalid": "Datos inválidos al soltar talento de arquetipo.",
       "ArchetypeRequiredForKnacks": "Asigna un arquetipo a este actor antes de comprar talentos.",
       "KnackDifferentArchetype": "Este talento pertenece a un arquetipo diferente.",
       "ActorArchetypeInvalid": "La referencia de arquetipo del actor no es válida.",
       "KnackNotAllowedTier": "Ese talento no está permitido para el Nivel {tier} según el arquetipo del actor.",
       "KnackTierNotPurchasable": "No se pueden comprar talentos de Nivel {tier} para este arquetipo (el máximo es {maxPurchasable}).",
-      "KnackTierLimitReached":  "Se ha alcanzado el límite de talentos de Nivel {tier} ({existingTierCount}/{maxPurchasable}).",
+      "KnackTierLimitReached": "Se ha alcanzado el límite de talentos de Nivel {tier} ({existingTierCount}/{maxPurchasable}).",
       "SourceKnackResolveFailed": "No se pudo resolver el objeto de talento de origen.",
-
       "ActorHasNoArchetype": "Este actor no tiene un arquetipo asignado.",
       "ActorArchetypeUuidResolveFailed": "No se pudo resolver la UUID del arquetipo del actor.",
       "LinkedDocNotArchetype": "El documento enlazado no es un arquetipo.",
       "OpenArchetypeFailed": "No se pudo abrir el arquetipo.",
-
       "WeaponOutOfAmmo": "¡A {itemName} no le queda munición! Recarga antes de usarlo.",
       "ResetKnackPermission": "No tienes permiso para restablecer los talentos de este actor.",
       "RefreshKnackUsesPermission": "No tienes permiso para recuperar usos de talentos de este actor.",
-
       "MacroOwnedItemsOnly": "Solo puedes crear botones de macro para Objetos que poseas.",
       "MacroItemNotFound": "No se pudo encontrar el objeto {itemName}. Puede que necesites eliminar y volver a crear esta macro.",
-
       "CombatAddCombatantsFirst": "Añade primero combatientes al encuentro (cambiando el estado de combate del token) y después comienza el combate.",
-
       "RerollSelectAtLeastOneDie": "Selecciona al menos un dado para repetir la tirada.",
-
       "RollKnacksNotApplicable": "Uno o más Talentos seleccionados ya no se aplican a esta tirada.",
       "RollReactionRequiresOneDie": "Las tiradas de reacción requieren 1 dado de tu reserva.",
       "RollAdvDisadvRequiresDie": "La Ventaja/Desventaja requiere tirar al menos 1 dado.",
@@ -346,18 +350,14 @@
       "SimpleActionInvalidAmount": "La cantidad gastada en la acción simple no es válida.",
       "SimpleActionInvalidHorrorSplit": "La cantidad de dados de horror a usar no es válida para esta tirada.",
       "SimpleActionSpendFailed": "Falló el gasto de la acción simple.",
-
       "InjuryTraumaFallingModeInjuryOnly": "El modo de caída solo se aplica a las tiradas de Herida.",
       "InjuryTraumaFallingHeightMin": "La altura de la caída debe ser de al menos {minFt} pies (10 pies ≈ 3 metros).",
-
       "SkillRerollInvalidCard": "Esa carta de chat no puede volver a tirarse.",
       "SkillRerollActorResolveFailed": "No se pudo resolver el actor para esta tirada.",
       "SkillRerollPermission": "No tienes permiso para repetir esta tirada.",
       "SkillRerollNoSelectableDice": "No se eligió ningún dado seleccionable.",
-
       "RollTableEmptyResultName": "La tabla de tiradas '{tableName}' tiene un rango coincidente pero un nombre de resultado vacío. Asigna un nombre de resultado a la tabla o el sistema recurrirá a las tablas integradas.",
       "RollTableOverflowAssumption": "La tabla de tiradas '{tableName}' llega hasta {tableMax}; tratando la entrada superior como {tableMax}+ para un total de {total}.",
-
       "ItemOpenSourceKnackGmOnly": "Solo el DJ puede abrir/editar documentos de Talento de origen desde un Arquetipo.",
       "ItemUuidResolveFailed": "No se pudo resolver la UUID soltada.",
       "ItemNoSheetForDocument": "No hay una hoja disponible para ese documento.",
@@ -491,7 +491,9 @@
         "DieTotal": "Total del dado",
         "Modifier": "Modificador",
         "Total": "Total",
-        "Table": "Tabla"
+        "Table": "Tabla",
+        "HorrorTooltip": "Provocado por un 1 en un dado de horror",
+        "HorrorNote": "Provocado por un resultado de 1 en un dado de horror (Libro básico p. 37)."
       }
     },
     "Dialog": {
@@ -637,6 +639,230 @@
         "huge": "Enorme",
         "titanic": "Titánico"
       }
+    },
+    "DEFEND": {
+      "SectionTitle": "Defenderse",
+      "ReactionSkill": "Reacción: {skill}",
+      "Button": "Defenderse",
+      "StatusAvoided": "Evitado",
+      "StatusNotAvoided": "El impacto se mantiene",
+      "ReasonNoDice": "No quedan dados en la reserva — no es posible reaccionar (manual básico pág. 30).",
+      "ReasonAttackMissed": "El ataque ha fallado — no hace falta reaccionar.",
+      "ReasonActorNotFound": "No se ha encontrado el objetivo.",
+      "ReasonSkillNotFound": "El objetivo no tiene la habilidad necesaria.",
+      "ReasonUnavailable": "Ahora mismo no es posible reaccionar.",
+      "RerollHint": "{items} permite repetir esta reacción.",
+      "ReactionTo": "Reacción al ataque de {attacker}",
+      "LinkFailed": "No se ha podido vincular la reacción con el ataque."
+    },
+    "STRAIN": {
+      "Button": "Esforzarse",
+      "Wounded": "Herido",
+      "Spent": "Ya utilizado",
+      "Tooltip": "Esforzarse: restaura el límite de tu reserva de dados a su máximo. Sufres una herida.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "Ningún actor seleccionado.",
+        "ACTOR_TYPE_UNSUPPORTED": "Este actor no puede esforzarse.",
+        "NOT_DAMAGED": "El límite de tu reserva de dados ya está al máximo.",
+        "MAJOR_NPC_REQUIRED": "Solo los PNJ con la maña «Major NPC» pueden esforzarse.",
+        "ALREADY_STRAINED": "Este PNJ ya se ha esforzado una vez y no puede volver a hacerlo.",
+        "PERMISSION_DENIED": "No tienes permiso para esforzarte con este actor."
+      },
+      "Dialog": {
+        "Title": "Esforzarse",
+        "Prompt": "{actorName} restaura el límite de su reserva de dados a su máximo.",
+        "Price": "El precio: una herida, tirada de inmediato.",
+        "NpcOnce": "Un Major NPC solo puede esforzarse una vez. Si resulta herido después, muere o queda inconsciente de inmediato, a criterio del DJ.",
+        "Confirm": "Esforzarse",
+        "Cancel": "Cancelar"
+      },
+      "Chat": {
+        "Label": "Esforzarse",
+        "Summary": "{actorName} se esfuerza y restaura el límite de su reserva de dados ({oldDicePoolValue} → {newDicePoolValue} dados).",
+        "Price": "Precio: una herida.",
+        "NpcSpent": "{actorName} ya ha gastado su único esfuerzo. Si vuelve a resultar herido, queda fuera de combate."
+      }
+    },
+    "DAMAGE": {
+      "Button": "Aplicar daño",
+      "Tooltip": "Aplicar el daño de este ataque al objetivo.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "No hay ningún actor seleccionado.",
+        "ACTOR_NOT_FOUND": "No se ha encontrado el objetivo.",
+        "PERMISSION_DENIED": "No tienes permiso para modificar este actor.",
+        "ATTACK_MISSED": "El ataque ha fallado — no causa daño.",
+        "DEFENDED": "El objetivo ha evitado el ataque — no causa nada en absoluto (manual básico pág. 30).",
+        "INVALID_AMOUNT": "Introduce un número entero.",
+        "NO_CHANGE": "No se ha introducido ni daño ni horror.",
+        "UNAVAILABLE": "Ahora mismo no se puede aplicar daño."
+      },
+      "Dialog": {
+        "Title": "Aplicar daño",
+        "Attacker": "Atacante",
+        "Weapon": "Arma",
+        "Target": "Objetivo",
+        "Damage": "Daño",
+        "Horror": "Horror",
+        "HorrorHint": "Opcional — para conjuros y habilidades de PNJ.",
+        "Injury": "Infligir herida",
+        "InjuryHint": "{successes} éxitos frente a un valor de herida de {injuryRating} (manual básico pág. 30).",
+        "Preview": "Límite de reserva {oldLimit} → {newLimit}",
+        "WoundedWarning": "Con un límite de 0, {targetName} está herido y solo puede esforzarse (manual básico pág. 31).",
+        "HintsTitle": "Reducción de daño del objetivo",
+        "HintsNote": "Solo texto de reglas — no se descuenta nada automáticamente. Ajusta el daño a mano.",
+        "HintsEmpty": "No se ha encontrado ninguna reducción de daño en este objetivo.",
+        "Apply": "Aplicar",
+        "Cancel": "Cancelar",
+        "HorrorPreview": "Límite de horror {oldHorror} → {newHorror} (dados de horror en la reserva {oldHorrorInPool} → {newHorrorInPool})",
+        "HorrorAtMax": "{targetName} está en el límite máximo de horror de {max}: el horror adicional no tiene efecto (libro básico p. 36).",
+        "HorrorPrefilled": "Tomado del ataque; editable."
+      },
+      "Chat": {
+        "Label": "Daño",
+        "Summary": "{targetName} sufre {amount} de daño (límite de reserva {oldLimit} → {newLimit}).",
+        "NoDamage": "{targetName} no sufre daño.",
+        "Horror": "{targetName} gana {horror} de horror (límite de horror {oldHorror} → {newHorror}).",
+        "Source": "De {attackerName} con {weaponName}.",
+        "SourceAttacker": "De {attackerName}.",
+        "Wounded": "{targetName} está herido — sin acciones hasta que se esfuerce (manual básico pág. 31).",
+        "HorrorCapped": "{requested} de horror se redujo a {applied}: el límite de horror de {targetName} no puede superar su máximo de reserva de dados.",
+        "HorrorAtMax": "El límite de horror de {targetName} ya está en su máximo de reserva de dados — el horror adicional no se aplica."
+      }
+    },
+    "HEALING": {
+      "Button": "Aplicar curación",
+      "Tooltip": "Aplicar el resultado de esta tirada de curación al objetivo.",
+      "SectionTitle": "Curación",
+      "RollKind": {
+        "heal-damage": "Curar daño",
+        "heal-injury": "Curar herida",
+        "introspection": "Introspección",
+        "counseling": "Consuelo"
+      },
+      "Reasons": {
+        "ACTOR_REQUIRED": "Ningún actor seleccionado.",
+        "ACTOR_NOT_FOUND": "No se ha encontrado el objetivo.",
+        "PERMISSION_DENIED": "No tienes permiso para modificar este actor.",
+        "INVALID_AMOUNT": "Introduce un número entero.",
+        "NO_CHANGE": "No cambiaría nada.",
+        "INJURY_NOT_FOUND": "Esa herida ya no está en el objetivo.",
+        "NOT_AN_INJURY": "Solo las heridas se curan — los traumas nunca (manual p. 38).",
+        "ROLL_FAILED": "La tirada ha fallado — el límite de horror se mantiene (manual p. 38).",
+        "NO_SUCCESSES": "Sin éxitos no hay nada que curar (manual p. 33).",
+        "CARD_UPDATE_FAILED": "No se ha podido añadir la sección de curación a la tarjeta.",
+        "UNAVAILABLE": "Ahora mismo no se puede aplicar curación."
+      },
+      "Dialog": {
+        "Title": "Aplicar curación",
+        "TitleHorror": "Superar el horror",
+        "Healer": "Sanador",
+        "Target": "Objetivo",
+        "Successes": "Tirada",
+        "Damage": "Curar daño",
+        "DamageHint": "1 de daño por éxito (manual p. 33). Los efectos de objeto configurados ya están incluidos arriba.",
+        "Preview": "Límite de reserva {oldLimit} → {newLimit}",
+        "HorrorPreview": "Límite de horror {oldHorror} → {newHorror}",
+        "HorrorHint": "Un éxito reduce el límite exactamente en 1, sin importar cuántos éxitos se obtengan (manual p. 38).",
+        "RollFailed": "La tirada no ha tenido éxito.",
+        "NoHorror": "El límite de horror ya está en 0.",
+        "InjuriesTitle": "Heridas del objetivo",
+        "InjuriesNote": "Éxitos obtenidos: {successes}. Las heridas más graves necesitan otra tirada (manual p. 33-34).",
+        "InjuriesEmpty": "Este objetivo no tiene heridas.",
+        "InjuryDifficulty": "Éxitos: {difficulty}",
+        "HintsTitle": "Material médico del sanador",
+        "HintsNote": "Reconocidos solo por su texto de reglas, sin efecto configurado — ajusta la cantidad a mano si alguno de ellos se aplica.",
+        "HintsEmpty": "No se ha encontrado material médico en el sanador.",
+        "NotesTitle": "Lo decide el DJ",
+        "NoteEngaged": "El objetivo debe estar trabado o ser el propio sanador (manual p. 29/33).",
+        "NoteNarrative": "La curación normal solo ocurre en escenas narrativas (manual p. 33).",
+        "NoteOncePerScene": "Un personaje solo puede tratar al mismo objetivo una vez por escena (manual p. 33).",
+        "Apply": "Aplicar",
+        "Cancel": "Cancelar",
+        "EffectsTitle": "Efectos de objeto aplicados",
+        "InjuryDifficultyReduced": "Éxitos: {difficulty} (en lugar de {original})"
+      },
+      "Chat": {
+        "Label": "Curación",
+        "LabelHorror": "Superar el horror",
+        "LabelRecovery": "Descanso",
+        "Summary": "{targetName} cura {amount} de daño (límite de reserva {oldLimit} → {newLimit}).",
+        "NoHealing": "{targetName} no cura daño.",
+        "Injury": "Curada: {injuryName}",
+        "Horror": "{targetName} reduce su límite de horror ({oldHorror} → {newHorror}).",
+        "Recovery": "{targetName} descansa: {spanLabel}.",
+        "RecoveryDamage": "{targetName} cura {healedDamage} de daño — el límite de reserva vuelve a su máximo.",
+        "RecoveryHorror": "El límite de horror de {targetName} baja de {oldHorror} a 0 (manual p. 38).",
+        "BlockedTitle": "No se cura por sí sola:",
+        "Source": "Tratado por {healerName}."
+      },
+      "Treatment": {
+        "Legend": "Tratamiento",
+        "HealDamageHint": "Conocimiento, sobre uno mismo o un objetivo trabado: cura 1 de daño por éxito (manual p. 33).",
+        "HealInjuryHint": "Conocimiento, sobre uno mismo o un objetivo trabado: cura una herida que necesita de 1 a 3 éxitos (manual p. 33-34)."
+      },
+      "Horror": {
+        "Legend": "Horror",
+        "Limit": "Límite de horror",
+        "IntrospectionHint": "Aplomo, sobre uno mismo: un éxito reduce el límite de horror en 1 (manual p. 38).",
+        "CounselingHint": "Presencia, sobre un objetivo al alcance del oído: un éxito reduce su límite de horror en 1 (manual p. 38)."
+      },
+      "Recovery": {
+        "MenuLabel": "Descanso",
+        "Span": {
+          "night": "Descanso nocturno (8 horas)",
+          "week": "Una semana",
+          "twoWeeks": "Dos semanas"
+        },
+        "Dialog": {
+          "Title": "Descanso",
+          "Prompt": "¿Cuánto tiempo tiene {actorName}?",
+          "Span": "Periodo",
+          "Note": "Deliberadamente independiente del reloj del mundo — el periodo lo decides tú. El descanso nocturno restaura el límite de reserva, una semana cura además las heridas leves y el límite de horror, dos semanas también las más graves.",
+          "Apply": "Aplicar"
+        },
+        "Chat": {
+          "Label": "Descanso"
+        }
+      }
+    },
+    "TRAUMA": {
+      "Tooltip": "Tira el trauma en la tabla 2-2. El modificador ya incluye los traumas existentes.",
+      "Reasons": {
+        "ACTOR_NOT_FOUND": "No se ha encontrado al personaje afectado.",
+        "ACTOR_TYPE_UNSUPPORTED": "Este actor no puede sufrir un trauma.",
+        "NO_HORROR_ONES": "No hay nuevos unos en dados de horror."
+      },
+      "Chat": {
+        "Label": "Trauma",
+        "Summary": "{actorName} saca {horrorOnes} uno(s) en dados de horror y sufre un trauma (libro básico p. 37).",
+        "Severity": "Cada uno adicional lo empeora: modificador +{severityModifier} a la tirada de trauma.",
+        "Note": "La tirada no es automática: el DJ decide cuándo se hace.",
+        "RollButton": "Tirar trauma"
+      },
+      "Settings": {
+        "AutoReport": {
+          "Name": "Informar de traumas por unos en dados de horror",
+          "Hint": "Tras cada tirada de habilidad, los unos en dados de horror se informan como trauma con un botón para la tirada (libro básico p. 37). Desactívalo para gestionar los traumas a mano."
+        }
+      }
+    },
+    "ROLLEFFECTS": {
+      "AddSuccesses": "{count} éxito",
+      "HealDamage": "cura {count} de daño",
+      "HealInjury": "dificultad de herida -1",
+      "ReduceHorrorLimit": "límite de horror -{count}"
+    },
+    "ROLL_EFFECT_SHEET": {
+      "AddSuccesses": "Éxitos otorgados",
+      "AddSuccessesHint": "Se suman a los éxitos contados tras leer los dados. No otorga dados adicionales.",
+      "HealDamage": "Daño curado adicional",
+      "HealDamageHint": "Se suma al 1 de daño por éxito que restaura una tirada de curación.",
+      "HealInjury": "Reduce la dificultad de la herida",
+      "HealInjuryHint": "Una herida necesita un éxito menos para curarse — nunca menos de uno.",
+      "ReduceHorrorLimit": "Pasos de horror adicionales",
+      "ReduceHorrorLimitHint": "Se suman al único paso que otorga una Introspección o un Consuelo con éxito.",
+      "DecreaseAfterUsage": "Consume una carga",
+      "DecreaseAfterUsageHint": "Cada uso reduce las cargas restantes, incluso cuando la frecuencia es ilimitada."
     }
   },
   "ITEM": {

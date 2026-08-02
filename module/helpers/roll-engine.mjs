@@ -1,6 +1,12 @@
 // Functional implementation of helper functions for use by class based roll workflows see SkillWorkflow.mjs, etc.
 // Allows for composable roll pipelines to be developed.
 
+import {
+  getTraumaTriggerFromRoll,
+  isTraumaReportingEnabled,
+  postTraumaSufferedCard,
+} from "./trauma.mjs";
+
 // Dice So Nice support integration
 export function addShowDicePromise(promises, roll) {
   if (game.dice3d) {
@@ -168,7 +174,9 @@ export function applyAdvantageDisadvantageDrop(diceRollResults, { rollWithAdvant
 }
 
 // Computes final success/failure counts based on modified dice results like original logic from 13.0.7 ALPHA dice-roll-app.
-export function computeSkillOutcome(diceRollResults, { successOn, penalty, successesNeeded, resultModifier }) {
+// `addSuccesses` comes from item roll effects (see `helpers/knacks.mjs`) and is added to the
+// counted successes, not to the dice: a First Aid Kit grants a success, it does not roll one.
+export function computeSkillOutcome(diceRollResults, { successOn, penalty, successesNeeded, resultModifier, addSuccesses = 0 }) {
   const kept = diceRollResults.filter(r => !r.isDropped);
 
   // count all natural 6s as successes
@@ -208,16 +216,143 @@ export function computeSkillOutcome(diceRollResults, { successOn, penalty, succe
   // count failures on non-natural dice
   failureCount += nonNat.filter(r => r.result < so).length;
 
+  const addedSuccesses = Math.max(0, Number.parseInt(addSuccesses) || 0);
+  successCount += addedSuccesses;
+
   const needed = Number.parseInt(successesNeeded) || 0;
   const isSuccess = successCount >= needed;
 
   return {
     isSuccess,
     successCount,
+    addedSuccesses,
     failureCount,
     horrorFailureCount,
     finalDiceRollResults: withDisplayed,
   };
+}
+
+/* -------------------------------------------- */
+/*  Post-roll aftermath                          */
+/* -------------------------------------------- */
+
+// `rollEffects` on items only ever changes a roll *before* it happens. The most common triggers in
+// the compendium data (`onRollResult`, `onReaction`) fire *after* the dice have landed and had no
+// place to run at all. `computeRollAftermath` is that place: it reads a finished outcome and
+// returns what should follow from it, without touching a single document.
+//
+// Pure on purpose — `resolveRollAftermath` below is the thin, Foundry-facing half that the
+// workflows call.
+
+/**
+ * Everything a result-triggered effect needs to know about a finished roll, in one flat shape.
+ *
+ * @param {object} outcome Result of `computeSkillOutcome`.
+ * @param {object} [context]
+ * @returns {object}
+ */
+export function summarizeRollResult(outcome = {}, context = {}) {
+  const dice = Array.isArray(outcome?.finalDiceRollResults) ? outcome.finalDiceRollResults : [];
+  const kept = dice.filter(d => !d?.isDropped);
+  const face = d => Number(d?.rawResult ?? d?.result) || 0;
+
+  const countedHorrorOnes = kept.filter(d => !!d?.isHorror && face(d) === 1).length;
+
+  return {
+    isSuccess: !!outcome?.isSuccess,
+    successCount: Math.max(0, Number(outcome?.successCount) || 0),
+    failureCount: Math.max(0, Number(outcome?.failureCount) || 0),
+    // Fall back to the pre-computed count when the caller hands over an outcome without dice.
+    horrorOnes: dice.length > 0
+      ? countedHorrorOnes
+      : Math.max(0, Number(outcome?.horrorFailureCount) || 0),
+    naturalSixes: kept.filter(d => face(d) === 6).length,
+    diceCount: kept.length,
+    horrorDiceCount: kept.filter(d => !!d?.isHorror).length,
+    rollKind: String(context.rollKind ?? "complex"),
+    skillKey: String(context.skillKey ?? ""),
+    actorType: String(context.actorType ?? ""),
+    isReroll: !!context.isReroll,
+  };
+}
+
+/**
+ * The post-roll evaluation point. Runs after `computeSkillOutcome` and collects every effect whose
+ * trigger is the *result* of the roll rather than the roll itself.
+ *
+ * @param {object} options
+ * @param {Actor|null} [options.actor]
+ * @param {object} options.outcome Result of `computeSkillOutcome`.
+ * @param {string} [options.rollKind]
+ * @param {string} [options.skillKey]
+ * @param {boolean} [options.isReroll]
+ * @param {number} [options.previousHorrorOnes] Horror ones already reported for this roll chain.
+ * @param {object} [options.enabled] Per-effect switches, e.g. `{ trauma: false }`.
+ * @returns {{summary: object, effects: object[], hasEffects: boolean}}
+ */
+export function computeRollAftermath({
+  actor = null,
+  outcome = {},
+  rollKind = "complex",
+  skillKey = "",
+  isReroll = false,
+  previousHorrorOnes = 0,
+  enabled = {},
+} = {}) {
+  const actorType = String(actor?.type ?? "");
+  const summary = summarizeRollResult(outcome, { rollKind, skillKey, isReroll, actorType });
+  const effects = [];
+
+  if (enabled.trauma !== false) {
+    const trauma = getTraumaTriggerFromRoll(outcome, { previousHorrorOnes, actorType });
+    if (trauma.triggered) effects.push({ type: "trauma", ...trauma });
+  }
+
+  return { summary, effects, hasEffects: effects.length > 0 };
+}
+
+/**
+ * Thin caller for the workflows: evaluates the aftermath and carries out what it found.
+ *
+ * Never throws — a roll that already happened must not be undone by a failed follow-up.
+ *
+ * @returns {Promise<{ok: boolean, reason: string|null, summary?: object, effects?: object[],
+ *   applied?: object[]}>}
+ */
+export async function resolveRollAftermath({
+  actor,
+  outcome,
+  rollKind = "complex",
+  skillKey = "",
+  isReroll = false,
+  previousHorrorOnes = 0,
+  source = "roll",
+  rollMode = "roll",
+} = {}) {
+  if (!actor) return { ok: false, reason: "ACTOR_REQUIRED", effects: [], applied: [] };
+
+  const aftermath = computeRollAftermath({
+    actor,
+    outcome,
+    rollKind,
+    skillKey,
+    isReroll,
+    previousHorrorOnes,
+    enabled: { trauma: isTraumaReportingEnabled() },
+  });
+
+  const applied = [];
+  for (const effect of aftermath.effects) {
+    if (effect.type !== "trauma") continue;
+    try {
+      const message = await postTraumaSufferedCard({ actor, trigger: effect, source, rollMode });
+      if (message) applied.push({ type: "trauma", messageId: message.id ?? null });
+    } catch (e) {
+      console.warn("Arkham Horror | reporting a trauma from horror ones failed", e);
+    }
+  }
+
+  return { ok: true, reason: null, summary: aftermath.summary, effects: aftermath.effects, applied };
 }
 
 // Deducts rolled dice from actor pool.

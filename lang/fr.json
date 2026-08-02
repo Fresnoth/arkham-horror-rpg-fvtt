@@ -32,8 +32,14 @@
       "Toggle": "Activer / désactiver l’effet",
       "Temporary": "Effets temporaires",
       "Passive": "Effets passifs",
-      "Inactive": "Effets inactifs"
-
+      "Inactive": "Effets inactifs",
+      "Duration": "Durée",
+      "None": "Aucun effet dans cette catégorie.",
+      "FromItem": "Provient de l'objet « {itemName} »",
+      "Errors": {
+        "DeleteOnItem": "Cet effet appartient à l'objet « {itemName} » et ne peut être supprimé que depuis celui-ci.",
+        "Permission": "Vous n'avez pas la permission de modifier les effets de cet acteur."
+      }
     },
     "LABELS": {
       "Form": "Données",
@@ -88,7 +94,6 @@
       "SupernaturalResources": "Ressources surnaturelles",
       "Background": "Historique",
       "Abilities": "Autres capacités"
-
     },
     "VEHICLE": {
       "Cargo": "Chargement",
@@ -134,7 +139,12 @@
       "AppliesToSkills": "S’applique aux compétences",
       "AppliesToRollTypes": "S’applique aux types de jets",
       "PenaltyPerDie": "Pénalité par dé",
-      "PenaltyHint": "S’applique automatiquement comme pénalité aux jets concernés. Les blessures identiques ne se cumulent pas ; toutes les occurrences doivent être soignées pour supprimer l’effet."
+      "PenaltyHint": "S’applique automatiquement comme pénalité aux jets concernés. Les blessures identiques ne se cumulent pas ; toutes les occurrences doivent être soignées pour supprimer l’effet.",
+      "Healing": "Soins",
+      "HealDifficulty": "Succès pour soigner",
+      "HealDifficultyHint": "1 par défaut, 2 pour Gravement blessé, Perte d’un sens et Comateux, 3 pour Critique (règles p. 33-34).",
+      "CanHealNaturally": "Guérit avec le temps",
+      "CanHealNaturallyHint": "Désactivé pour Critique, la seule blessure qui ne guérit jamais d’elle-même (règles p. 34)."
     },
     "TRAUMA_SHEET": {
       "Active": "Actif",
@@ -147,7 +157,6 @@
       "oncePerTurn": "Une fois par tour",
       "oncePerScene": "Une fois par scène",
       "oncePerSession": "Une fois par session"
-
     },
     "ARCHETYPE": {
       "SkillCaps": "Plafonds de compétences",
@@ -157,7 +166,7 @@
       "KnackTiers": "Rangs de dons",
       "DragDropHint": "Glissez-déposez des dons sur un rang ci-dessous pour ajouter leur UUID. Cliquez sur le nom d’un don pour afficher sa description."
     },
-    "DIFFICULTY":{
+    "DIFFICULTY": {
       "Normal": "Normal (1)",
       "Difficult": "Difficile (2)",
       "VeryDifficult": "Très difficile (3)"
@@ -198,10 +207,10 @@
       "Negative": "Négatif",
       "NoneAssigned": "Aucun trait de personnalité assigné. Glissez-déposez-en un ici."
     },
-    "PROPS":{
-      "Name":"Nom",
+    "PROPS": {
+      "Name": "Nom",
       "Quantity": "Quantité",
-      "Skill":"Compétence",
+      "Skill": "Compétence",
       "Tier": "Rang",
       "Rarity": "Rareté",
       "HasSpecialRules": "Règles spéciales",
@@ -214,14 +223,14 @@
       "Spell": "Sort",
       "Damage": "Dégâts",
       "DamageShort": "D",
-      "InjuryRating":"Seuil de blessure",
-      "InjuryRatingShort":"SB",
-      "Range":"Portée",
+      "InjuryRating": "Seuil de blessure",
+      "InjuryRatingShort": "SB",
+      "Range": "Portée",
       "Engaged": "Engagé",
-      "Ammunition":"Munitions",
-      "Costs":"Coûts",
-      "Uses":"Utilisations",
-      "Difficulty":"Difficulté",
+      "Ammunition": "Munitions",
+      "Costs": "Coûts",
+      "Uses": "Utilisations",
+      "Difficulty": "Difficulté",
       "RollType": "Type de jet",
       "RollFormula": "Formule de jet",
       "NumberOfDice": "Nombre de dés",
@@ -237,10 +246,9 @@
       "Benefit": "Bénéfice",
       "Declining": "Déclin",
       "Losing": "Perte",
-      "Weight":"Poids",
-      "SpecialRules":"Règles spéciales",
-      "DefensiveBenefit":"Bénéfice défensif"
-
+      "Weight": "Poids",
+      "SpecialRules": "Règles spéciales",
+      "DefensiveBenefit": "Bénéfice défensif"
     },
     "ACTIONS": {
       "SpendInsight": "Dépenser de la lucidité",
@@ -305,15 +313,12 @@
         "Name": "Table de traumatismes des PNJ",
         "Hint": "Utilisée pour les jets de traumatisme."
       }
-
     },
     "Warnings": {
       "NpcKnackDropBlocked": "Les dons réservés aux PNJ ne peuvent pas être ajoutés aux personnages.",
-
       "PermissionRollActor": "Vous n’avez pas l’autorisation d’effectuer des jets pour cet acteur.",
       "PermissionStrainActor": "Vous n’avez pas l’autorisation de vous dépasser avec cet acteur.",
       "StrainRequiresDamage": "Vous ne pouvez vous dépasser que lorsque le maximum de votre réserve de dés est réduit par des dégâts.",
-
       "ArchetypeKnackDropInvalid": "Données de dépôt de don d’archétype invalides.",
       "ArchetypeRequiredForKnacks": "Définissez un archétype pour cet acteur avant d’acheter des dons.",
       "KnackDifferentArchetype": "Ce don appartient à un autre archétype.",
@@ -322,23 +327,17 @@
       "KnackTierNotPurchasable": "Aucun don de rang {tier} ne peut être acheté pour cet archétype (maximum {maxPurchasable}).",
       "KnackTierLimitReached": "Limite de dons de rang {tier} atteinte ({existingTierCount}/{maxPurchasable}).",
       "SourceKnackResolveFailed": "Impossible de résoudre le don source.",
-
       "ActorHasNoArchetype": "Cet acteur n’a pas d’archétype défini.",
       "ActorArchetypeUuidResolveFailed": "Impossible de résoudre l’UUID de l’archétype de l’acteur.",
       "LinkedDocNotArchetype": "Le document lié n’est pas un archétype.",
       "OpenArchetypeFailed": "Échec de l’ouverture de l’archétype.",
-
       "WeaponOutOfAmmo": "{itemName} n’a plus de munitions ! Rechargez avant de l’utiliser.",
       "ResetKnackPermission": "Vous n’avez pas l’autorisation de réinitialiser les dons de cet acteur.",
       "RefreshKnackUsesPermission": "Vous n’avez pas l’autorisation de rafraîchir les utilisations de dons de cet acteur.",
-
       "MacroOwnedItemsOnly": "Vous ne pouvez créer des boutons de macro que pour des objets possédés",
       "MacroItemNotFound": "Impossible de trouver l’objet {itemName}. Vous devrez peut-être supprimer puis recréer cette macro.",
-
       "CombatAddCombatantsFirst": "Ajoutez d’abord des combattants à la rencontre (activer l’état de combat des pions), puis lancez le combat.",
-
       "RerollSelectAtLeastOneDie": "Sélectionnez au moins un dé à relancer.",
-
       "RollKnacksNotApplicable": "Un ou plusieurs dons sélectionnés ne s’appliquent plus à ce jet.",
       "RollReactionRequiresOneDie": "Les jets de réaction nécessitent 1 dé de votre réserve.",
       "RollAdvDisadvRequiresDie": "L’avantage ou le désavantage nécessite de lancer au moins 1 dé.",
@@ -351,18 +350,14 @@
       "SimpleActionInvalidAmount": "Montant invalide pour une action simple.",
       "SimpleActionInvalidHorrorSplit": "Le nombre de dés d’horreur utilisés est invalide pour ce jet.",
       "SimpleActionSpendFailed": "Échec de la dépense pour l’action simple.",
-
       "InjuryTraumaFallingModeInjuryOnly": "Le mode chute s’applique uniquement aux jets de blessure.",
       "InjuryTraumaFallingHeightMin": "La hauteur de chute doit être d’au moins {minFt} m.",
-
       "SkillRerollInvalidCard": "Cette carte de discussion ne peut pas être relancée.",
       "SkillRerollActorResolveFailed": "Impossible de résoudre l’acteur pour ce jet.",
       "SkillRerollPermission": "Vous n’avez pas l’autorisation de relancer ce jet.",
       "SkillRerollNoSelectableDice": "Aucun dé sélectionnable n’a été choisi.",
-
       "RollTableEmptyResultName": "La table de jets « {tableName} » possède une plage correspondante mais un nom de résultat vide. Définissez le nom du résultat ou le système utilisera les tables intégrées.",
       "RollTableOverflowAssumption": "La table de jets « {tableName} » s’arrête à {tableMax} ; l’entrée supérieure est traitée comme {tableMax}+ pour un total de {total}.",
-
       "ItemOpenSourceKnackGmOnly": "Seul le MJ peut ouvrir ou modifier les documents de dons source depuis un archétype.",
       "ItemUuidResolveFailed": "Impossible de résoudre l’UUID déposé.",
       "ItemNoSheetForDocument": "Aucune fiche disponible pour ce document.",
@@ -381,7 +376,6 @@
       "ItemTomeDropOnlySpells": "Seuls des sorts peuvent être déposés sur un ouvrage occulte.",
       "ItemKnackDropOnlySpells": "Seuls des sorts peuvent être déposés dans la liste de dons accordés.",
       "ItemTomeInaccessibleSpells": "Cet ouvrage occulte contient {count} sort(s) que vous n’avez pas l’autorisation de consulter."
-
     },
     "Info": {
       "KnackAlreadyOwnedUpdated": "Don déjà possédé ; rang mis à jour pour correspondre à l’archétype.",
@@ -436,7 +430,6 @@
           "Comatose": "Comateux",
           "Dire": "Critique",
           "Dead": "Mort"
-
         }
       }
     },
@@ -498,8 +491,9 @@
         "DieTotal": "Total du dé",
         "Modifier": "Modificateur",
         "Total": "Total",
-        "Table": "Table"
-
+        "Table": "Table",
+        "HorrorTooltip": "Déclenché par un 1 sur un dé d'horreur",
+        "HorrorNote": "Déclenché par un résultat de 1 sur un dé d'horreur (Livre de base p. 37)."
       }
     },
     "Dialog": {
@@ -567,7 +561,6 @@
         "Final": "Final",
         "Dropped": "écarté",
         "CannotReroll": "ne peut pas être relancé"
-
       }
     },
     "MONEY": {
@@ -627,9 +620,8 @@
       "meleeCombat": "CAC",
       "rangedCombat": "DIST",
       "lore": "MYST"
-
     },
-  "NPC": {
+    "NPC": {
       "NewKnack": "Nouveau don",
       "NewWeakness": "Nouvelle faiblesse",
       "NewEquipment": "Nouvel équipement",
@@ -647,6 +639,230 @@
         "huge": "Énorme",
         "titanic": "Titanesque"
       }
+    },
+    "DEFEND": {
+      "SectionTitle": "Se défendre",
+      "ReactionSkill": "Réaction : {skill}",
+      "Button": "Se défendre",
+      "StatusAvoided": "Évité",
+      "StatusNotAvoided": "Le coup porte",
+      "ReasonNoDice": "Plus de dés dans la réserve — aucune réaction possible (livre de base p. 30).",
+      "ReasonAttackMissed": "L'attaque a échoué — aucune réaction nécessaire.",
+      "ReasonActorNotFound": "La cible est introuvable.",
+      "ReasonSkillNotFound": "La cible ne possède pas la compétence requise.",
+      "ReasonUnavailable": "Aucune réaction possible pour le moment.",
+      "RerollHint": "{items} permet de relancer cette réaction.",
+      "ReactionTo": "Réaction à l'attaque de {attacker}",
+      "LinkFailed": "La réaction n'a pas pu être liée à l'attaque."
+    },
+    "STRAIN": {
+      "Button": "Se dépasser",
+      "Wounded": "Blessé",
+      "Spent": "Déjà utilisé",
+      "Tooltip": "Se dépasser : rétablit la limite de votre réserve de dés à son maximum. Vous subissez une blessure.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "Aucun acteur sélectionné.",
+        "ACTOR_TYPE_UNSUPPORTED": "Cet acteur ne peut pas se dépasser.",
+        "NOT_DAMAGED": "La limite de votre réserve de dés est déjà à son maximum.",
+        "MAJOR_NPC_REQUIRED": "Seuls les PNJ dotés du talent « Major NPC » peuvent se dépasser.",
+        "ALREADY_STRAINED": "Ce PNJ s’est déjà dépassé une fois et ne peut pas recommencer.",
+        "PERMISSION_DENIED": "Vous n’avez pas l’autorisation de vous dépasser avec cet acteur."
+      },
+      "Dialog": {
+        "Title": "Se dépasser",
+        "Prompt": "{actorName} rétablit la limite de sa réserve de dés à son maximum.",
+        "Price": "Le prix : une blessure, lancée immédiatement.",
+        "NpcOnce": "Un Major NPC ne peut se dépasser qu’une seule fois. S’il est blessé ensuite, il est immédiatement tué ou assommé, à la discrétion du MJ.",
+        "Confirm": "Se dépasser",
+        "Cancel": "Annuler"
+      },
+      "Chat": {
+        "Label": "Se dépasser",
+        "Summary": "{actorName} se dépasse et rétablit la limite de sa réserve de dés ({oldDicePoolValue} → {newDicePoolValue} dés).",
+        "Price": "Prix : une blessure.",
+        "NpcSpent": "{actorName} a désormais épuisé son unique dépassement. S’il est blessé à nouveau, il est hors de combat."
+      }
+    },
+    "DAMAGE": {
+      "Button": "Appliquer les dégâts",
+      "Tooltip": "Appliquer les dégâts de cette attaque à la cible.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "Aucun acteur sélectionné.",
+        "ACTOR_NOT_FOUND": "La cible est introuvable.",
+        "PERMISSION_DENIED": "Vous n'avez pas la permission de modifier cet acteur.",
+        "ATTACK_MISSED": "L'attaque a échoué — elle n'inflige aucun dégât.",
+        "DEFENDED": "La cible a évité l'attaque — elle n'inflige rien du tout (livre de base p. 30).",
+        "INVALID_AMOUNT": "Veuillez saisir un nombre entier.",
+        "NO_CHANGE": "Ni dégâts ni horreur n'ont été saisis.",
+        "UNAVAILABLE": "Impossible d'appliquer des dégâts pour le moment."
+      },
+      "Dialog": {
+        "Title": "Appliquer les dégâts",
+        "Attacker": "Attaquant",
+        "Weapon": "Arme",
+        "Target": "Cible",
+        "Damage": "Dégâts",
+        "Horror": "Horreur",
+        "HorrorHint": "Facultatif — pour les sorts et les talents de PNJ.",
+        "Injury": "Infliger une blessure",
+        "InjuryHint": "{successes} succès contre un indice de blessure de {injuryRating} (livre de base p. 30).",
+        "Preview": "Limite de réserve {oldLimit} → {newLimit}",
+        "WoundedWarning": "À une limite de 0, {targetName} est blessé(e) et ne peut plus que se dépasser (livre de base p. 31).",
+        "HintsTitle": "Réduction de dégâts de la cible",
+        "HintsNote": "Texte de règles uniquement — rien n'est déduit automatiquement. Ajustez les dégâts à la main.",
+        "HintsEmpty": "Aucune réduction de dégâts trouvée sur cette cible.",
+        "Apply": "Appliquer",
+        "Cancel": "Annuler",
+        "HorrorPreview": "Limite d'horreur {oldHorror} → {newHorror} (dés d'horreur dans la réserve {oldHorrorInPool} → {newHorrorInPool})",
+        "HorrorAtMax": "{targetName} est à la limite d'horreur maximale de {max} — toute horreur supplémentaire reste sans effet (livre de base p. 36).",
+        "HorrorPrefilled": "Repris de l'attaque — modifiable."
+      },
+      "Chat": {
+        "Label": "Dégâts",
+        "Summary": "{targetName} subit {amount} dégâts (limite de réserve {oldLimit} → {newLimit}).",
+        "NoDamage": "{targetName} ne subit aucun dégât.",
+        "Horror": "{targetName} gagne {horror} horreur (limite d'horreur {oldHorror} → {newHorror}).",
+        "Source": "De {attackerName} avec {weaponName}.",
+        "SourceAttacker": "De {attackerName}.",
+        "Wounded": "{targetName} est blessé(e) — plus aucune action avant de se dépasser (livre de base p. 31).",
+        "HorrorCapped": "{requested} horreur réduite à {applied} : la limite d'horreur de {targetName} ne peut dépasser son maximum de réserve de dés.",
+        "HorrorAtMax": "La limite d'horreur de {targetName} est déjà à son maximum de réserve de dés — aucune horreur supplémentaire ne s'applique."
+      }
+    },
+    "HEALING": {
+      "Button": "Appliquer les soins",
+      "Tooltip": "Appliquer le résultat de ce jet de soins à la cible.",
+      "SectionTitle": "Soins",
+      "RollKind": {
+        "heal-damage": "Soigner les dégâts",
+        "heal-injury": "Soigner une blessure",
+        "introspection": "Introspection",
+        "counseling": "Réconfort"
+      },
+      "Reasons": {
+        "ACTOR_REQUIRED": "Aucun acteur sélectionné.",
+        "ACTOR_NOT_FOUND": "La cible est introuvable.",
+        "PERMISSION_DENIED": "Vous n'avez pas la permission de modifier cet acteur.",
+        "INVALID_AMOUNT": "Veuillez saisir un nombre entier.",
+        "NO_CHANGE": "Rien ne changerait.",
+        "INJURY_NOT_FOUND": "Cette blessure n'est plus sur la cible.",
+        "NOT_AN_INJURY": "Seules les blessures se soignent — jamais les traumatismes (règles p. 38).",
+        "ROLL_FAILED": "Le jet a échoué — la limite d'horreur ne bouge pas (règles p. 38).",
+        "NO_SUCCESSES": "Sans succès, il n'y a rien à soigner (règles p. 33).",
+        "CARD_UPDATE_FAILED": "La carte du jet n'a pas pu recevoir la section de soins.",
+        "UNAVAILABLE": "Les soins ne peuvent pas être appliqués pour l'instant."
+      },
+      "Dialog": {
+        "Title": "Appliquer les soins",
+        "TitleHorror": "Surmonter l'horreur",
+        "Healer": "Soignant",
+        "Target": "Cible",
+        "Successes": "Jet",
+        "Damage": "Soigner les dégâts",
+        "DamageHint": "1 dégât par succès (règles p. 33). Les effets d'objet configurés sont déjà pris en compte ci-dessus.",
+        "Preview": "Limite de réserve {oldLimit} → {newLimit}",
+        "HorrorPreview": "Limite d'horreur {oldHorror} → {newHorror}",
+        "HorrorHint": "Un succès abaisse la limite d'exactement 1, quel que soit le nombre de succès (règles p. 38).",
+        "RollFailed": "Le jet n'a pas réussi.",
+        "NoHorror": "La limite d'horreur est déjà à 0.",
+        "InjuriesTitle": "Blessures de la cible",
+        "InjuriesNote": "Succès obtenus : {successes}. Les blessures plus graves demandent un autre jet (règles p. 33-34).",
+        "InjuriesEmpty": "Cette cible n'a aucune blessure.",
+        "InjuryDifficulty": "Succès : {difficulty}",
+        "HintsTitle": "Matériel médical du soignant",
+        "HintsNote": "Reconnus uniquement à leur texte de règles, sans effet configuré — ajustez le montant à la main si l'un d'eux s'applique.",
+        "HintsEmpty": "Aucun matériel médical trouvé sur le soignant.",
+        "NotesTitle": "Décision du MJ",
+        "NoteEngaged": "La cible doit être engagée, ou être le soignant lui-même (règles p. 29/33).",
+        "NoteNarrative": "Les soins normaux n'ont lieu que dans des scènes narratives (règles p. 33).",
+        "NoteOncePerScene": "Un personnage ne peut soigner la même cible qu'une fois par scène (règles p. 33).",
+        "Apply": "Appliquer",
+        "Cancel": "Annuler",
+        "EffectsTitle": "Effets d'objet appliqués",
+        "InjuryDifficultyReduced": "Succès : {difficulty} (au lieu de {original})"
+      },
+      "Chat": {
+        "Label": "Soins",
+        "LabelHorror": "Surmonter l'horreur",
+        "LabelRecovery": "Repos",
+        "Summary": "{targetName} soigne {amount} dégâts (limite de réserve {oldLimit} → {newLimit}).",
+        "NoHealing": "{targetName} ne soigne aucun dégât.",
+        "Injury": "Soignée : {injuryName}",
+        "Horror": "{targetName} abaisse sa limite d'horreur ({oldHorror} → {newHorror}).",
+        "Recovery": "{targetName} se repose : {spanLabel}.",
+        "RecoveryDamage": "{targetName} soigne {healedDamage} dégâts — la limite de réserve est de nouveau au maximum.",
+        "RecoveryHorror": "La limite d'horreur de {targetName} passe de {oldHorror} à 0 (règles p. 38).",
+        "BlockedTitle": "Ne guérit pas tout seul :",
+        "Source": "Soigné par {healerName}."
+      },
+      "Treatment": {
+        "Legend": "Traitement",
+        "HealDamageHint": "Savoir, sur soi-même ou une cible engagée : soigne 1 dégât par succès (règles p. 33).",
+        "HealInjuryHint": "Savoir, sur soi-même ou une cible engagée : soigne une blessure qui demande 1 à 3 succès (règles p. 33-34)."
+      },
+      "Horror": {
+        "Legend": "Horreur",
+        "Limit": "Limite d'horreur",
+        "IntrospectionHint": "Sang-froid, sur soi-même : un succès abaisse la limite d'horreur de 1 (règles p. 38).",
+        "CounselingHint": "Présence, sur une cible à portée de voix : un succès abaisse sa limite d'horreur de 1 (règles p. 38)."
+      },
+      "Recovery": {
+        "MenuLabel": "Repos",
+        "Span": {
+          "night": "Nuit de repos (8 heures)",
+          "week": "Une semaine",
+          "twoWeeks": "Deux semaines"
+        },
+        "Dialog": {
+          "Title": "Repos",
+          "Prompt": "De combien de temps dispose {actorName} ?",
+          "Span": "Durée",
+          "Note": "Volontairement indépendant de l'horloge du monde — la durée est votre choix. Une nuit rétablit la limite de réserve, une semaine soigne aussi les blessures légères et la limite d'horreur, deux semaines les blessures plus graves.",
+          "Apply": "Appliquer"
+        },
+        "Chat": {
+          "Label": "Repos"
+        }
+      }
+    },
+    "TRAUMA": {
+      "Tooltip": "Lancer le traumatisme sur la table 2-2. Le modificateur tient déjà compte des traumatismes existants.",
+      "Reasons": {
+        "ACTOR_NOT_FOUND": "Le personnage concerné est introuvable.",
+        "ACTOR_TYPE_UNSUPPORTED": "Cet acteur ne peut pas subir de traumatisme.",
+        "NO_HORROR_ONES": "Aucun nouveau 1 sur les dés d'horreur."
+      },
+      "Chat": {
+        "Label": "Traumatisme",
+        "Summary": "{actorName} obtient {horrorOnes} 1 sur les dés d'horreur et subit un traumatisme (livre de base p. 37).",
+        "Severity": "Chaque 1 supplémentaire aggrave le résultat : modificateur +{severityModifier} au jet de traumatisme.",
+        "Note": "Le jet n'est pas automatique — le MJ choisit le moment.",
+        "RollButton": "Lancer le traumatisme"
+      },
+      "Settings": {
+        "AutoReport": {
+          "Name": "Signaler les traumatismes issus des 1 sur les dés d'horreur",
+          "Hint": "Après chaque jet de compétence, les 1 obtenus sur des dés d'horreur sont signalés comme traumatisme, avec un bouton pour le jet (livre de base p. 37). Désactivez pour gérer les traumatismes entièrement à la main."
+        }
+      }
+    },
+    "ROLLEFFECTS": {
+      "AddSuccesses": "{count} succès",
+      "HealDamage": "soigne {count} dégâts",
+      "HealInjury": "difficulté de blessure -1",
+      "ReduceHorrorLimit": "limite d'horreur -{count}"
+    },
+    "ROLL_EFFECT_SHEET": {
+      "AddSuccesses": "Succès accordés",
+      "AddSuccessesHint": "Ajoutés aux succès comptés une fois les dés lus. N’accorde aucun dé supplémentaire.",
+      "HealDamage": "Dégâts soignés en plus",
+      "HealDamageHint": "S’ajoutent au 1 dégât par succès que rend un jet de soins.",
+      "HealInjury": "Abaisse la difficulté de la blessure",
+      "HealInjuryHint": "Une blessure demande un succès de moins pour être soignée — jamais moins d’un.",
+      "ReduceHorrorLimit": "Paliers d’horreur supplémentaires",
+      "ReduceHorrorLimitHint": "S’ajoutent au palier unique qu’accorde une Introspection ou un Réconfort réussi.",
+      "DecreaseAfterUsage": "Consomme une charge",
+      "DecreaseAfterUsageHint": "Chaque utilisation réduit les charges restantes, même si la fréquence est illimitée."
     }
   },
   "ITEM": {
@@ -692,7 +908,6 @@
       "attuneButton": "Harmoniser",
       "clearUnderstoodButton": "Réinitialiser la compréhension",
       "inaccessibleSpells": "Cet ouvrage occulte contient {count} sort(s) que vous n’avez pas l’autorisation de consulter."
-
     },
     "UsefulItem": {
       "uses": "Utilisations",

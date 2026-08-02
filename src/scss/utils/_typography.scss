@@ -1,3 +1,6 @@
-$font-primary: 'Teutonic', sans-serif;
+// Display: banners, section headers, sheet labels.
+$font-primary: 'Teutonic', serif;
 $font-secondary: 'Roboto', sans-serif;
-$font-tertiary: "Lusitana", serif;
+// Body text. Alegreya lives locally under assets/fonts and needs no network;
+// Lusitana stays as a fallback for worlds that do not have the font cache yet.
+$font-tertiary: 'Alegreya', 'Lusitana', serif;

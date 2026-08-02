@@ -26,6 +26,15 @@
   font-weight: normal;
 }
 
+// Without this cut the browser would synthesize bold from the regular — that
+// makes Alegreya mushy, and the small caps labels next to it lose their
+// contrast.
+@font-face {
+  font-family: Alegreya;
+  src: url("../assets/fonts/Alegreya-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
 @font-face {
   font-family: Teutonic;
   src: url("../assets/fonts/Teutonic-Regular.ttf") format("truetype");

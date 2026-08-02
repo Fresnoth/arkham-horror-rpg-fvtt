@@ -35,6 +35,17 @@ export function setupConfiguration() {
         default: true
     });
 
+    // Core p. 37: ones rolled on horror dice cause a trauma. Reporting them is automatic, rolling
+    // them is not — the card only offers the button.
+    game.settings.register("arkham-horror-rpg-fvtt", "traumaFromHorrorOnes", {
+        name: "ARKHAM_HORROR.TRAUMA.Settings.AutoReport.Name",
+        hint: "ARKHAM_HORROR.TRAUMA.Settings.AutoReport.Hint",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+
     game.settings.register("arkham-horror-rpg-fvtt", "characterInjuryTable", {
         name: "ARKHAM_HORROR.Settings.CharacterInjuryTable.Name",
         hint: "ARKHAM_HORROR.Settings.CharacterInjuryTable.Hint",

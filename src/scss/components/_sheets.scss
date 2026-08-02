@@ -1,13 +1,16 @@
-.photo-frame{
+.photo-frame {
     background: url("../assets/images/photo-frame.webp");
     background-size: cover;
     flex: 0 0 120px;
-    height: 150px;
+    // Level with the header fields next to it (name + archetype/XP): the portrait
+    // used to sit 19px lower than the fields and tore open empty space there.
+    height: 132px;
     display: flex;
-    align-items: center;   /* vertikal */
+    align-items: center;   /* vertical */
     justify-content: center; /* horizontal */
     overflow: hidden;      /* optional */
-    img{
+
+    img {
         margin-left: auto;
         margin-right: auto;
         max-width: 100%;
@@ -16,6 +19,131 @@
         height: auto;
         padding: 4px;
         border-radius: 25px;
-        box-shadow: 0 0 20px 20px rgba(0,0,0,0.1) inset;
+        box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.1) inset;
+    }
+}
+
+// The vehicle sheet has no photo frame; instead the image gets the same double
+// outline as the circles and the insight pill.
+.sheet-header > .portrait-img {
+    flex: 0 0 auto;
+    margin-right: var(--ah-space-3);
+    border: 1.5px solid var(--ah-ink);
+    border-radius: var(--ah-radius);
+    box-shadow:
+        0 0 0 2px var(--ah-paper),
+        0 0 0 3px var(--ah-line-strong);
+    object-fit: cover;
+}
+
+// ---------------------------------------------------------------------------
+// Sheet header and column grid
+// ---------------------------------------------------------------------------
+
+.sheet-header {
+    gap: var(--ah-space-3);
+    padding-bottom: var(--ah-space-2);
+}
+
+// Item sheet header: image and name on one row, below it the rulebook's double
+// rule as a closing line.
+.item-header {
+    margin-bottom: var(--ah-space-3);
+    padding-bottom: var(--ah-space-2);
+    border-bottom: 1px solid var(--ah-line-strong);
+    box-shadow: 0 3px 0 -2px var(--ah-line);
+
+    .flexrow {
+        display: flex;
+        align-items: center;
+        gap: var(--ah-space-3);
+    }
+
+    .item-img {
+        flex: 0 0 auto;
+        border: 1.5px solid var(--ah-ink);
+        border-radius: var(--ah-radius);
+        box-shadow:
+            0 0 0 2px var(--ah-paper),
+            0 0 0 3px var(--ah-line-strong);
+        object-fit: cover;
+    }
+
+    .charname input {
+        font-family: var(--ah-font-display);
+        font-size: 1.4rem;
+    }
+}
+
+// Two columns with air between them. The printed sheet places skills and
+// insight next to each other; here the separation is done by whitespace, not
+// by a line.
+.character-sheet-divider {
+    gap: var(--ah-space-4);
+}
+
+// Injuries and knacks side by side, across the full sheet width. In a narrow
+// window they drop below each other — 300px is the width below which the entry row
+// with its three control buttons starts to wrap.
+.character-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: start;
+    gap: var(--ah-space-4);
+}
+
+// Entry rows in the section panels (knacks, injuries, weapons ...).
+.knack-entry,
+.injury-entry {
+    padding: var(--ah-space-2) 0;
+    font-family: var(--ah-font-text);
+
+    & + .knack-entry,
+    & + .injury-entry {
+        border-top: 1px dotted var(--ah-line);
+    }
+
+    > div:first-child {
+        display: flex;
+        align-items: baseline;
+        gap: var(--ah-space-2);
+    }
+
+    strong {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-weight: normal;
+        font-family: var(--ah-font-display);
+        font-size: 1.02em;
+        letter-spacing: 0.03em;
+    }
+
+    .item-control {
+        flex: 0 0 auto;
+        color: var(--ah-ink-faint);
+
+        &:hover { color: var(--ah-accent); }
+    }
+
+    .notes {
+        font-family: var(--ah-font-text);
+        font-size: 0.82em;
+        letter-spacing: normal;
+        color: var(--ah-ink-soft);
+    }
+}
+
+.item-card {
+    font-family: var(--ah-font-text);
+
+    p { margin: var(--ah-space-1) 0; }
+
+    strong {
+        font-family: var(--ah-font-display);
+        font-weight: normal;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 0.86em;
+        color: var(--ah-ink-soft);
     }
 }

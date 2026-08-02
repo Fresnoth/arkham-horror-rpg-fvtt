@@ -1,4 +1,8 @@
+import { ROLL_EFFECT_ITEM_TYPES } from "../data/fields/roll-effects.mjs";
+
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
+
+const EFFECT_ITEM_TYPES = new Set(ROLL_EFFECT_ITEM_TYPES);
 
 function isActorEmbeddedItem(item) {
   return !!item?.parent && item.parent instanceof Actor;
@@ -151,8 +155,8 @@ export async function removeKnackGrantedSpellsOnDelete({ actor, knack, notify = 
   return { deletedCount: toDeleteIds.length, updatedCount: toUpdate.length };
 }
 
-function rollEffectApplies({ knack, rollState }) {
-  const re = knack?.system?.rollEffects;
+function rollEffectApplies({ item, rollState }) {
+  const re = item?.system?.rollEffects;
   if (!re?.enabled) return false;
 
   const normalizeSkillKey = (key) => {
@@ -194,36 +198,77 @@ function rollEffectApplies({ knack, rollState }) {
   return skillOk && kindOk;
 }
 
-function isKnackUsableNow(knack) {
-  const freq = String(knack?.system?.usage?.frequency ?? "passive");
-  if (freq === "passive" || freq === "unlimited") return true;
-  const remaining = Number(knack?.system?.usage?.remaining ?? 0);
-  return remaining > 0;
+function isChargeBased(item) {
+  const usage = item?.system?.usage ?? {};
+  return Boolean(usage.decreaseAfterUsage) && (Number(usage.max ?? 0) || 0) > 0;
+}
+
+function hasLimitedFrequency(item) {
+  const freq = String(item?.system?.usage?.frequency ?? "passive");
+  return freq !== "passive" && freq !== "unlimited";
 }
 
 /**
- * Returns knacks whose roll effects match the current roll, regardless of remaining uses.
- * Use this for UX (showing exhausted-but-applicable knacks) while keeping selection
- * validation based on `getApplicableKnacksForRoll`.
+ * Whether using this item costs one of its remaining uses. A limited frequency has always done so;
+ * `decreaseAfterUsage` adds the charge case (First Aid Kit and friends) without changing what an
+ * existing knack does.
  */
-export function getMatchingKnacksForRoll({ actor, rollState } = {}) {
-  const knacks = (actor?.items?.contents ?? []).filter(i => i.type === "knack");
-  return knacks.filter(k => rollEffectApplies({ knack: k, rollState }));
+function consumesUse(item) {
+  return hasLimitedFrequency(item) || isChargeBased(item);
 }
 
-export function getApplicableKnacksForRoll({ actor, rollState } = {}) {
-  const knacks = getMatchingKnacksForRoll({ actor, rollState });
-  return knacks.filter(isKnackUsableNow);
+function isUsableNow(item) {
+  if (!consumesUse(item)) return true;
+  return (Number(item?.system?.usage?.remaining ?? 0) || 0) > 0;
 }
 
-export function buildAppliedKnackEffects({ selectedKnacks } = {}) {
-  const list = Array.isArray(selectedKnacks) ? selectedKnacks : [];
+function getEffectItems(actor) {
+  return (actor?.items?.contents ?? []).filter(i => EFFECT_ITEM_TYPES.has(i?.type));
+}
+
+/**
+ * Returns items whose roll effects match the current roll, regardless of remaining uses.
+ * Use this for UX (showing exhausted-but-applicable items) while keeping selection
+ * validation based on `getApplicableEffectItemsForRoll`.
+ */
+export function getMatchingEffectItemsForRoll({ actor, rollState } = {}) {
+  return getEffectItems(actor).filter(i => rollEffectApplies({ item: i, rollState }));
+}
+
+export function getApplicableEffectItemsForRoll({ actor, rollState } = {}) {
+  return getMatchingEffectItemsForRoll({ actor, rollState }).filter(isUsableNow);
+}
+
+export function resolveSelectedEffectItems({ actor, selectedIds } = {}) {
+  const ids = new Set((Array.isArray(selectedIds) ? selectedIds : []).map(String));
+  return getEffectItems(actor).filter(i => ids.has(String(i.id)));
+}
+
+export function isApplicableEffectItemSelection({ actor, rollState, itemIds } = {}) {
+  const applicable = new Set(getApplicableEffectItemsForRoll({ actor, rollState }).map(i => String(i.id)));
+  return (Array.isArray(itemIds) ? itemIds : []).every(id => applicable.has(String(id)));
+}
+
+/**
+ * Sums the roll effects of the selected items.
+ *
+ * `addSuccesses` is the only new modifier that changes the roll itself (see `computeSkillOutcome`).
+ * `healDamage`, `healInjury` and `reduceHorrorLimit` are carried along untouched — they are inputs
+ * for the apply dialogs, not for the dice. `resolveHealEffects` in `helpers/healing.mjs` turns them
+ * into the numbers `HealApp` works with.
+ */
+export function buildAppliedItemEffects({ selectedItems } = {}) {
+  const list = Array.isArray(selectedItems) ? selectedItems : [];
 
   let bonusDiceDelta = 0;
   let resultModifierDelta = 0;
   let advantage = false;
   let disadvantage = false;
   let rerollAllowanceDice = 0;
+  let addSuccesses = 0;
+  let healDamage = 0;
+  let healInjury = false;
+  let reduceHorrorLimit = 0;
 
   const applied = [];
 
@@ -235,20 +280,29 @@ export function buildAppliedKnackEffects({ selectedKnacks } = {}) {
     if (mod.advantage) advantage = true;
     if (mod.disadvantage) disadvantage = true;
     rerollAllowanceDice += Number(mod.rerollAllowanceDice ?? 0);
+    addSuccesses += Number(mod.addSuccesses ?? 0);
+    healDamage += Number(mod.healDamage ?? 0);
+    if (mod.healInjury) healInjury = true;
+    reduceHorrorLimit += Number(mod.reduceHorrorLimit ?? 0);
 
     applied.push({
       itemId: k.id,
       itemUuid: k.uuid,
       name: k.name,
+      itemType: String(k.type ?? ""),
       tier: Number(k.system?.tier ?? 0),
       frequency: String(k.system?.usage?.frequency ?? "passive"),
-      spent: (String(k.system?.usage?.frequency ?? "passive") !== "passive" && String(k.system?.usage?.frequency ?? "passive") !== "unlimited"),
+      spent: consumesUse(k),
       effects: {
         bonusDiceDelta: Number(mod.addBonusDice ?? 0),
         resultModifierDelta: Number(mod.resultModifier ?? 0),
         advantage: !!mod.advantage,
         disadvantage: !!mod.disadvantage,
         rerollAllowanceDice: Number(mod.rerollAllowanceDice ?? 0),
+        addSuccesses: Number(mod.addSuccesses ?? 0),
+        healDamage: Number(mod.healDamage ?? 0),
+        healInjury: !!mod.healInjury,
+        reduceHorrorLimit: Number(mod.reduceHorrorLimit ?? 0),
       }
     });
   }
@@ -259,17 +313,23 @@ export function buildAppliedKnackEffects({ selectedKnacks } = {}) {
     advantage,
     disadvantage,
     rerollAllowanceDice,
+    addSuccesses,
+    healDamage,
+    healInjury,
+    reduceHorrorLimit,
+    // `appliedKnacks` is the name the chat flags have carried since v1 and is kept for readers of
+    // existing cards; `appliedItems` is the same array under the name that now fits.
+    appliedItems: applied,
     appliedKnacks: applied,
   };
 }
 
-export async function spendKnackUses({ actor, selectedKnacks } = {}) {
-  const list = Array.isArray(selectedKnacks) ? selectedKnacks : [];
+export async function spendItemUses({ actor, selectedItems } = {}) {
+  const list = Array.isArray(selectedItems) ? selectedItems : [];
   const updates = [];
 
   for (const k of list) {
-    const freq = String(k.system?.usage?.frequency ?? "passive");
-    if (freq === "passive" || freq === "unlimited") continue;
+    if (!consumesUse(k)) continue;
 
     const remaining = Math.max(0, Number(k.system?.usage?.remaining ?? 0));
     if (remaining <= 0) continue;
@@ -287,13 +347,26 @@ export async function spendKnackUses({ actor, selectedKnacks } = {}) {
   return { updatedCount: updates.length };
 }
 
+/* -------------------------------------------- */
+/*  Legacy knack-only names                      */
+/* -------------------------------------------- */
+// Kept so modules and macros written against the v1 helper surface keep working.
+
+export const getMatchingKnacksForRoll = getMatchingEffectItemsForRoll;
+export const getApplicableKnacksForRoll = getApplicableEffectItemsForRoll;
+
 export function resolveSelectedKnacks({ actor, selectedKnackIds } = {}) {
-  const ids = Array.isArray(selectedKnackIds) ? selectedKnackIds : [];
-  const byId = new Set(ids.map(String));
-  return (actor?.items?.contents ?? []).filter(i => i.type === "knack" && byId.has(i.id));
+  return resolveSelectedEffectItems({ actor, selectedIds: selectedKnackIds });
+}
+
+export function buildAppliedKnackEffects({ selectedKnacks } = {}) {
+  return buildAppliedItemEffects({ selectedItems: selectedKnacks });
+}
+
+export function spendKnackUses({ actor, selectedKnacks } = {}) {
+  return spendItemUses({ actor, selectedItems: selectedKnacks });
 }
 
 export function isApplicableKnackSelection({ actor, rollState, knackIds } = {}) {
-  const applicable = new Set(getApplicableKnacksForRoll({ actor, rollState }).map(k => k.id));
-  return (Array.isArray(knackIds) ? knackIds : []).every(id => applicable.has(String(id)));
+  return isApplicableEffectItemSelection({ actor, rollState, itemIds: knackIds });
 }

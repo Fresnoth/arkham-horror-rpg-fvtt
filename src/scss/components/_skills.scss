@@ -1,0 +1,116 @@
+// ---------------------------------------------------------------------------
+// Skill row in sheet style.
+//
+// The printed sheet does not set the value in a number field but in a circle
+// with a second, thin outline around it. Here the circle is the input field
+// itself — an additional border would be a panel inside a circle.
+// ---------------------------------------------------------------------------
+
+// 30px instead of 34: with ten skills every pixel of circle diameter hits the
+// sheet height ten times over. The number stays well readable at 1.05rem.
+$skill-circle: 30px;
+
+@mixin ah-skill-circle {
+  box-sizing: border-box;
+  width: $skill-circle;
+  min-width: $skill-circle;
+  max-width: $skill-circle;
+  height: $skill-circle;
+  padding: 0;
+  border: 1.5px solid var(--ah-ink);
+  border-radius: 50%;
+  // Second outline: paper gap, then hairline — the double outline of the print.
+  box-shadow:
+    0 0 0 2px var(--ah-paper-raised),
+    0 0 0 3px var(--ah-line-strong);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ah-ink);
+  font-family: var(--ah-font-text);
+  font-size: 1.05rem;
+  line-height: 1;
+  text-align: center;
+  transition: background 160ms ease, box-shadow 160ms ease;
+
+  // The spinners would burst the circle.
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background: #fff;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    background: #fff;
+    box-shadow:
+      0 0 0 2px var(--ah-paper-raised),
+      0 0 0 3px var(--ah-focus);
+  }
+}
+
+// Everything under `.sheet.actor` (the NPC and vehicle sheets carry the class
+// as well): the generic field baseline in components/_forms.scss sits under
+// `.sheet.actor input[type="number"]` and would otherwise beat the circle — it
+// counts one class more than a bare `.skills-list input`.
+.sheet.actor {
+  .skills-list {
+    display: grid;
+    // The circle carries a 3px double outline on the outside; below ~7px spacing
+    // between two rows the outlines touch.
+    gap: 5px;
+
+    .skill-row {
+      // The reaction icon gets a fixed, narrow track and the circle one of its
+      // own — otherwise the circle moves with the label width.
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) #{$skill-circle} 20px;
+      column-gap: var(--ah-space-2);
+      align-items: center;
+      margin: 0;
+      padding: 1px 0;
+    }
+
+    .skill-row + .skill-row {
+      border-top: 1px dotted var(--ah-line);
+    }
+
+    .skill {
+      align-self: center;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      @include ah-skill-circle;
+    }
+  }
+
+  .skill-reaction-icon {
+    color: var(--ah-ink-faint);
+    font-size: 0.9em;
+    transition: color 140ms ease;
+
+    &:hover {
+      color: var(--ah-accent);
+    }
+  }
+
+  // NPC sheet: same circles, just set more tightly.
+  .npc-skill-entry {
+    grid-template-columns: minmax(0, 1fr) #{$skill-circle} 18px;
+    column-gap: var(--ah-space-1);
+    padding: 1px 0;
+
+    input[type="number"] {
+      @include ah-skill-circle;
+
+      font-size: 0.95rem;
+    }
+  }
+}

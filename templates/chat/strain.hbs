@@ -1,0 +1,11 @@
+<div class="arkham-strain-card">
+    <div class="arkham-strain-card-title">
+        <i class="fa-solid fa-hand-fist" aria-hidden="true"></i>
+        <strong>{{localize "ARKHAM_HORROR.STRAIN.Chat.Label"}}</strong>
+    </div>
+    <p>{{localize "ARKHAM_HORROR.STRAIN.Chat.Summary" actorName=actorName oldDicePoolValue=oldDicePoolValue newDicePoolValue=newDicePoolValue}}</p>
+    <p class="arkham-strain-card-price">{{localize "ARKHAM_HORROR.STRAIN.Chat.Price"}}</p>
+    {{#if npcStrainSpent}}
+    <p class="arkham-strain-card-warning">{{localize "ARKHAM_HORROR.STRAIN.Chat.NpcSpent" actorName=actorName}}</p>
+    {{/if}}
+</div>

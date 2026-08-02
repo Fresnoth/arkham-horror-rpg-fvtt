@@ -22,6 +22,8 @@ import * as models from './data/_module.mjs';
 
 import { setupConfiguration } from './util/configuration.mjs';
 import { registerChatRerollHooks } from './hooks/chat-reroll-hooks.mjs';
+import { registerChatDefendHooks } from './hooks/chat-defend-hooks.mjs';
+import { registerChatTraumaHooks } from './hooks/chat-trauma-hooks.mjs';
 import { refreshInsightAndPost, spendInsightAndPost, refreshInsight, spendInsight } from './helpers/insight.mjs';
 
 import { applyKnackGrantsOnAcquire, removeKnackGrantedSpellsOnDelete } from './helpers/knacks.mjs';
@@ -170,6 +172,8 @@ Hooks.once('init', function () {
   setupConfiguration();
   TokenInformationOverlay.registerHooks();
   registerChatRerollHooks();
+  registerChatDefendHooks();
+  registerChatTraumaHooks();
 
   // Knack spell grants: apply on acquire, remove on delete.
   // This is intentionally data-driven and does not require special purchase flows.

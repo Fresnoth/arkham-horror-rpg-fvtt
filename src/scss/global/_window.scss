@@ -2,70 +2,88 @@
   font-family: $font-primary;
 }
 
-.rollable {
-  &:hover,
-  &:focus {
-    color: #000;
-    text-shadow: 0 0 10px red;
-    cursor: pointer;
-  }
-}
-
+// Quiet interaction states: the red glow that used to be here
+// (`text-shadow: 0 0 10px red`) was too loud on every clickable label.
+// Instead only the ink moves forward and an underline indicates that
+// something happens.
+.rollable,
 .clickable {
+  cursor: pointer;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+  text-decoration-color: transparent;
+
   &:hover,
-  &:focus {
-    color: #000;
-    text-shadow: 0 0 10px red;
-    cursor: pointer;
+  &:focus-visible {
+    color: var(--ah-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: currentColor;
+    text-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--ah-focus);
+    outline-offset: 2px;
   }
 }
 
-.character .window-content {
-  background: none;
-  background-image: url("../assets/images/sheet-background-v2.webp");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  position: relative;
-  color: $c-dark;
-  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
-}
-
-.npc .window-content {
-  background: none;
-  background-image: url("../assets/images/sheet-background-v2.webp");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  position: relative;
-  color: $c-dark;
-  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
-}
-
-.vehicle .window-content {
-  background: none;
-  background-image: url("../assets/images/sheet-background-v2.webp");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  position: relative;
-  color: $c-dark;
-  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
-}
-
-.item .window-content {
-  background: none;
-  background-image: url("../assets/images/sheet-background-v2.webp");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  position: relative;
-  color: $c-dark;
-  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
-}
-
+.character .window-content,
+.npc .window-content,
+.vehicle .window-content,
+.item .window-content,
 .dice-roll-app .window-content {
-  background: none;
-  background-image: url("../assets/images/sheet-background-v2.webp");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  @include ah-paper-surface;
+
   position: relative;
-  color: $c-dark;
-  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85));
+  line-height: var(--ah-line-height);
+  // Window shadow. `filter` creates its own stacking context here — the icon
+  // rail on the right sits inside it with `z-index: -1` and is carried by it.
+  // Do not replace it with `box-shadow`.
+  filter: drop-shadow(2px 4px 12px rgba(0, 0, 0, 0.55));
+}
+
+// ---------------------------------------------------------------------------
+// Frame for the icon rail on the right (global/_tabs-rail.scss).
+//
+// Foundry clamps `.application` and `.window-content` to `overflow: hidden`.
+// That is lifted here so the rail may stick out of the window — but ONLY for
+// the two sheets that have a rail (`arkham-sheet` from the DEFAULT_OPTIONS of
+// actor-sheet/npc-sheet), so that item, vehicle and dialog windows keep their
+// clipping.
+//
+// Lifting the clipping took the height limit with it: `.window-content`
+// is a flex item of `.application` and therefore has `min-height: auto`. As long
+// as it carried `overflow: hidden`, that resolved to 0 and the content had to fit
+// into the window height; with `overflow: visible` it grows to the full content
+// height instead, visibly runs out below the window frame and no tab section
+// ever gets to scroll. A sheet with many knacks became arbitrarily long
+// that way.
+//
+// `min-height: 0` restores exactly that one effect without bringing back the
+// clipping: the rail may still stick out, the content is clamped to the window
+// height again, and the tab sections scroll as their own scroll containers
+// (`scrollable` = `overflow: hidden auto`).
+// ---------------------------------------------------------------------------
+.application.arkham-sheet:not(.minimized) {
+  overflow: visible;
+
+  // Without the window's clipping, header and content have to bring the rounded
+  // corners themselves (6px frame radius minus 1px border width).
+  > .window-header {
+    border-radius: 5px 5px 0 0;
+  }
+
+  > .window-content {
+    position: relative; // reference frame for the absolutely positioned rail
+    overflow: visible;
+    min-height: 0;
+    border-radius: 0 0 5px 5px;
+  }
+
+  // The section is a scroll container AND a flex item; without the explicit 0 it
+  // can, depending on the content, get stuck at its own automatic min-height.
+  > .window-content > section.tab {
+    min-height: 0;
+  }
 }

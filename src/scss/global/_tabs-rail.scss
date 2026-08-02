@@ -1,0 +1,92 @@
+// ---------------------------------------------------------------------------
+// Tabs as a vertical icon rail NEXT TO the window (character + NPC).
+//
+// The nav hangs inside `.window-content` and positions itself against its
+// padding box (`left: 100%`), so it sticks out of the window frame on the right.
+// That only works because `.application.arkham-sheet` and its `.window-content`
+// get `overflow: visible` — see global/_window.scss.
+//
+// `z-index: -1` puts the rail behind the sheet: the seam to the window
+// disappears under the paper surface instead of drawing a double edge.
+//
+// This file is included OUTSIDE the `.system-arkham-horror-rpg-fvtt` block and
+// comes before it in the cascade. The selectors therefore have to be more
+// specific than `components/_forms.scss`
+// (`.sheet.actor nav.tabs [data-group="sheet"]` colours the old horizontal tab
+// bar red and enlarges the type).
+// ---------------------------------------------------------------------------
+
+$rail-width: 34px;
+$rail-item: 28px;
+
+.application.arkham-sheet nav.arkham-icon-tabs {
+  position: absolute;
+  top: 54px;
+  left: 100%;
+  width: $rail-width;
+  height: auto;
+  z-index: -1;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  margin: 0;
+  padding: 4px 4px 4px 3px;
+
+  background: linear-gradient(180deg, $c-border-dark, $c-banner-bg);
+  border: 1px solid rgba(240, 232, 208, 0.22);
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.6);
+
+  a.icon-tab {
+    flex: 0 0 $rail-item;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px 0;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    color: rgba(240, 232, 208, 0.72);
+    font-size: 0.95rem;
+    font-weight: normal;
+    text-decoration: none;
+    text-shadow: none;
+    transition: color 200ms ease, background 200ms ease;
+
+    i {
+      margin: 0;
+      color: inherit;
+    }
+
+    &:hover {
+      background: rgba(114, 42, 28, 0.35);
+      color: $c-banner-text;
+      text-shadow: none;
+    }
+
+    // Active tab as a filled plate — the same inversion as the banner headings
+    // of the official sheet.
+    &.active {
+      background: $c-banner-text;
+      color: $c-banner-bg;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.35);
+    }
+
+    &:focus-visible {
+      outline: 1px solid $c-red;
+      outline-offset: -1px;
+    }
+  }
+}
+
+// A minimized window hides its content anyway; explicit so that the rail does
+// not survive the minimize animation.
+.application.arkham-sheet.minimized nav.arkham-icon-tabs,
+.application.arkham-sheet.minimizing nav.arkham-icon-tabs {
+  display: none;
+}

@@ -125,7 +125,9 @@
                 <li class="arkham-knack-impact-item {{#if k.checked}}is-checked{{/if}} {{#if k.disabled}}is-disabled{{/if}}">
                     <label class="arkham-knack-impact-main">
                         <input type="checkbox" name="selectedKnackIds" value="{{k.id}}" {{#if k.checked}}checked{{/if}} {{#if k.disabled}}disabled{{/if}}>
-                        <span class="arkham-knack-impact-name">{{localize "ARKHAM_HORROR.Dialog.DiceRoll.Tier" tier=k.tier}} - {{k.name}}</span>
+                        {{!-- Only knacks have tiers. Useful items and relics now carry roll effects too
+                             and would otherwise show up as "Tier 0 - …". --}}
+                        <span class="arkham-knack-impact-name">{{#if (eq k.itemType "knack")}}{{localize "ARKHAM_HORROR.Dialog.DiceRoll.Tier" tier=k.tier}} - {{/if}}{{k.name}}</span>
                     </label>
 
                     {{#if k.effect}}

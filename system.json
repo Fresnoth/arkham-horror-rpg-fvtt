@@ -24,13 +24,17 @@
       "thumbnail": "systems/arkham-horror-rpg-fvtt/assets/anvil-impact.png"
     }
   ],
-  "version": "14.1.0",
+  "version": "14.2.0",
   "compatibility": {
     "minimum": 13,
     "verified": "14"
   },
-  "esmodules": ["module/arkham-horror-rpg-fvtt.mjs"],
-  "styles": ["css/arkham-horror-rpg-fvtt.css"],
+  "esmodules": [
+    "module/arkham-horror-rpg-fvtt.mjs"
+  ],
+  "styles": [
+    "css/arkham-horror-rpg-fvtt.css"
+  ],
   "languages": [
     {
       "lang": "en",
@@ -47,7 +51,7 @@
       "name": "Français",
       "path": "lang/fr.json"
     },
-        {
+    {
       "lang": "es",
       "name": "Español",
       "path": "lang/es.json"
@@ -59,10 +63,10 @@
   "manifest": "https://github.com/MrTheBino/arkham-horror-rpg-fvtt/releases/latest/download/system.json",
   "download": "https://github.com/MrTheBino/arkham-horror-rpg-fvtt/releases/latest/download/arkham-horror-rpg-fvtt.zip",
   "background": "systems/arkham-horror-rpg-fvtt/assets/anvil-impact.png",
-   "grid": {
-      "distance": 5,
-      "units": "ft"
-	},
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power"
 }

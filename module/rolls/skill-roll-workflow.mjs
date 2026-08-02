@@ -4,8 +4,10 @@ import {
     collectTaggedResults,
     applyAdvantageDisadvantageDrop,
     computeSkillOutcome,
+    resolveRollAftermath,
 } from "../helpers/roll-engine.mjs";
 import { computeShowRollDetails } from "../helpers/roll-details.mjs";
+import { collectCurrentTargets, getReactionSkillForAttack } from "../helpers/defend.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 import { spendRollCost } from "../api/resources/index.mjs";
 
@@ -119,6 +121,27 @@ export class SkillRollWorkflow {
     return result;
   }
 
+  processTargets({ state }) {
+    const empty = { targets: [], attackSkill: null, defendSkillKey: null };
+
+    const defendSkillKey = getReactionSkillForAttack({
+      weapon: state.weaponToUse,
+      spell: state.spellToUse,
+    });
+    if (!defendSkillKey) return empty;
+
+    // Targets are read here (and not in the dialog) because the workflow runs on the
+    // attacking client, where `game.user.targets` is still the live selection.
+    const targets = collectCurrentTargets();
+    if (targets.length === 0) return empty;
+
+    return {
+      targets,
+      attackSkill: String(state.weaponToUse?.system?.skill ?? ""),
+      defendSkillKey,
+    };
+  }
+
   async computeOutcome({ state, plan, exec }) {
     const diceRollResults = collectTaggedResults({
       normalResults: exec.normal.results,
@@ -135,10 +158,12 @@ export class SkillRollWorkflow {
       penalty: plan.penalty,
       successesNeeded: state.successesNeeded,
       resultModifier: plan.resultModifier,
+      addSuccesses: state.addSuccesses,
     });
 
     outcome = { ...outcome, ...await this.processWeapon({ state, outcome }) };
     outcome = { ...outcome, ...this.processSpell({ state, outcome }) };
+    outcome = { ...outcome, ...this.processTargets({ state }) };
 
     return {
       ...outcome,
@@ -196,6 +221,9 @@ export class SkillRollWorkflow {
 
     const showRollDetails = computeShowRollDetails(outcome);
 
+    const targets = Array.isArray(outcome.targets) ? outcome.targets : [];
+    const defendSkillKey = outcome.defendSkillKey ?? null;
+
     const chatData = {
       rollCategory: "skill",
       rollKind,
@@ -209,6 +237,8 @@ export class SkillRollWorkflow {
       successCount: outcome.successCount,
       failureCount: outcome.failureCount,
       skillUsed: game.i18n.localize(`ARKHAM_HORROR.SKILL.${state.skillKey}`),
+      // Kept alongside the label so reroll cards can hand the raw key back to the aftermath.
+      skillKey: String(state?.skillKey ?? ""),
       newDicePoolValue: outcome.newDicePoolValue,
       oldDicePoolValue: outcome.oldDicePoolValue,
       horrorFailureCount: outcome.horrorFailureCount,
@@ -238,6 +268,25 @@ export class SkillRollWorkflow {
 
       appliedKnacks: Array.isArray(state?.appliedKnacks) ? state.appliedKnacks : [],
       knackRerollAllowanceDice: Number(state?.knackRerollAllowanceDice ?? 0) || 0,
+
+      // Item roll effects. `addedSuccesses` is already contained in `successCount`; a reroll of this
+      // card reads it back so the granted success is not lost. The three `effect*` values change
+      // nothing about the roll and are here for the apply dialogs (core p. 33-34, p. 38).
+      addedSuccesses: Number(outcome.addedSuccesses ?? 0) || 0,
+      effectHealDamage: Number(state?.effectHealDamage ?? 0) || 0,
+      effectHealInjury: Boolean(state?.effectHealInjury),
+      effectReduceHorrorLimit: Number(state?.effectReduceHorrorLimit ?? 0) || 0,
+
+      // Attack -> target -> defend (core p.30)
+      targets,
+      attackSkill: outcome.attackSkill ?? null,
+      defendSkillKey,
+      defendSkillLabel: defendSkillKey
+        ? game.i18n.localize(`ARKHAM_HORROR.SKILL.${defendSkillKey}`)
+        : "",
+      attackHit: Boolean(outcome.weaponUsageSuccess),
+      showDefendSection: !!defendSkillKey && targets.length > 0,
+      defenses: [],
     };
 
     return { template, chatData };
@@ -269,6 +318,19 @@ export class SkillRollWorkflow {
     }
 
     const posted = await this.post({ actor, state, outcome });
-    return { ok: true, reason: null, plan, exec, outcome, ...posted };
+
+    // Result-triggered effects run after the roll card, so the cause is always above the
+    // consequence in the log.
+    const aftermath = await resolveRollAftermath({
+      actor,
+      outcome,
+      rollKind: state?.rollKind ?? "complex",
+      skillKey: state?.skillKey ?? "",
+      source: "skill-roll",
+    });
+
+    // `message` is the created ChatMessage document; callers (e.g. the defend hooks)
+    // need a stable handle to attach follow-up flags to.
+    return { ok: true, reason: null, plan, exec, outcome, aftermath, ...posted, message: posted };
   }
 }

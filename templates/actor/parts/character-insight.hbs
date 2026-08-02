@@ -9,14 +9,59 @@
         </a>
     </legend>
 
-    <div class="grid grid-2col">
-        <div class="form-group"><label class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Limit"}}</label>
-            <input type="number" name="system.insight.limit" value="{{system.insight.limit}}" data-dtype="Number" class="fancy-input">
+    <div class="arkham-insight-pill">
+        <div class="arkham-insight-cell">
+            <label for="system.insight.limit">{{localize "ARKHAM_HORROR.LABELS.Limit"}}</label>
+            <input type="number" name="system.insight.limit" value="{{system.insight.limit}}" data-dtype="Number">
         </div>
-        <div class="form-group">
-            <label class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Remaining"}}</label>
+        <div class="arkham-insight-divider" aria-hidden="true"></div>
+        <div class="arkham-insight-cell">
+            <label for="system.insight.remaining">{{localize "ARKHAM_HORROR.LABELS.Remaining"}}</label>
             <input type="number" name="system.insight.remaining" value="{{system.insight.remaining}}"
-                data-dtype="Number" class="fancy-input">
+                data-dtype="Number">
         </div>
+    </div>
+</fieldset>
+
+{{!-- Healing damage and injuries (core p. 33-34). Both are Knowledge rolls on oneself or on the
+      currently targeted token; the result is applied from the roll card by whoever owns the
+      target. --}}
+<fieldset>
+    <legend>{{localize "ARKHAM_HORROR.HEALING.Treatment.Legend"}}</legend>
+
+    <div class="arkham-horror-actions">
+        <button type="button" class="arkham-horror-action" data-action="clickedHealDamage"
+                data-tooltip="{{localize "ARKHAM_HORROR.HEALING.Treatment.HealDamageHint"}}">
+            <i class="fa-solid fa-kit-medical" aria-hidden="true"></i>
+            <span>{{localize "ARKHAM_HORROR.HEALING.RollKind.heal-damage"}}</span>
+        </button>
+        <button type="button" class="arkham-horror-action" data-action="clickedHealInjury"
+                data-tooltip="{{localize "ARKHAM_HORROR.HEALING.Treatment.HealInjuryHint"}}">
+            <i class="fa-solid fa-bandage" aria-hidden="true"></i>
+            <span>{{localize "ARKHAM_HORROR.HEALING.RollKind.heal-injury"}}</span>
+        </button>
+    </div>
+</fieldset>
+
+{{!-- Overcoming horror (core p. 37-38). Both actions are complex actions in narrative scenes and
+      lower the horror limit by exactly 1 on a success — the limit itself stays editable in the
+      sheet header, these buttons only start the roll. --}}
+<fieldset>
+    <legend>{{localize "ARKHAM_HORROR.HEALING.Horror.Legend"}}</legend>
+
+    <div class="arkham-horror-actions">
+        <span class="arkham-horror-limit">
+            {{localize "ARKHAM_HORROR.HEALING.Horror.Limit"}}: <strong>{{system.horror}}</strong>
+        </span>
+        <button type="button" class="arkham-horror-action" data-action="clickedIntrospection"
+                data-tooltip="{{localize "ARKHAM_HORROR.HEALING.Horror.IntrospectionHint"}}">
+            <i class="fa-solid fa-brain" aria-hidden="true"></i>
+            <span>{{localize "ARKHAM_HORROR.HEALING.RollKind.introspection"}}</span>
+        </button>
+        <button type="button" class="arkham-horror-action" data-action="clickedCounseling"
+                data-tooltip="{{localize "ARKHAM_HORROR.HEALING.Horror.CounselingHint"}}">
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+            <span>{{localize "ARKHAM_HORROR.HEALING.RollKind.counseling"}}</span>
+        </button>
     </div>
 </fieldset>

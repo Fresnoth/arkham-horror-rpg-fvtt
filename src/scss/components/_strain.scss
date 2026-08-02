@@ -1,0 +1,92 @@
+// "Strain Oneself" button (core p. 31), sits next to the dicepool in the character/NPC header.
+//
+// Three states that have to stay distinguishable even without colour:
+//   normal    — filled plate in ink
+//   disabled  — paper surface, dotted border, pale ink
+//   wounded   — accent red with a double outline; the moment the rule takes effect
+// Opacity alone is not enough for that: the sheet is light, a merely darkened
+// button would vanish into the paper surface.
+// Pure icon button. The label sits in the tooltip and in the aria-label — on a
+// disabled button the tooltip also names the reason.
+.arkham-strain-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  border: 1px solid var(--ah-banner);
+  border-radius: var(--ah-radius);
+  background: var(--ah-banner);
+  color: var(--ah-banner-ink);
+  box-shadow: none;
+  cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease;
+
+  // The fist sits as a CSS mask over the text colour instead of as an <img>:
+  // that way it takes on the button's colour in all three states.
+  // ("Fist" by Lorc, game-icons.net, CC BY 3.0)
+  .arkham-strain-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    mask: url("../assets/icons/icon-strain.svg") center / contain no-repeat;
+    -webkit-mask: url("../assets/icons/icon-strain.svg") center / contain no-repeat;
+  }
+
+  &:hover:not(:disabled) {
+    background: #2c241a;
+    box-shadow: 0 0 0 2px var(--ah-paper-raised), 0 0 0 3px var(--ah-line-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ah-focus);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    border: 1px dotted var(--ah-line-strong);
+    background: var(--ah-paper-sunken);
+    color: var(--ah-ink-faint);
+    cursor: not-allowed;
+    opacity: 1;
+    box-shadow: none;
+  }
+
+  // Major NPC that has used up its one opportunity. Without a label this would
+  // otherwise not be distinguishable from "still unharmed" — the slash makes
+  // "used up" readable at a glance.
+  &.is-spent {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: linear-gradient(
+        to top left,
+        transparent calc(50% - 1px),
+        var(--ah-accent) calc(50% - 1px),
+        var(--ah-accent) calc(50% + 1px),
+        transparent calc(50% + 1px)
+      );
+    }
+  }
+
+  // Dice pool limit is down to zero — the moment the rule actually matters.
+  &.is-wounded:not(:disabled) {
+    background: var(--ah-accent);
+    border-color: var(--ah-accent);
+    color: #fdf6ea;
+    box-shadow:
+      0 0 0 2px var(--ah-paper-raised),
+      0 0 0 3px var(--ah-accent);
+
+    &:hover {
+      background: #8a3423;
+    }
+  }
+}

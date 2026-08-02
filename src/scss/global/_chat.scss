@@ -1,3 +1,11 @@
+// ---------------------------------------------------------------------------
+// Chat cards.
+//
+// They render in the sidebar, so outside the sheet scope. They therefore take
+// their values exclusively from the :root tokens in utils/_variables — that way
+// sheet and chat stay cast from the same mould.
+// ---------------------------------------------------------------------------
+
 .arkham-roll-card {
     position: relative;
     padding: 0;
@@ -5,7 +13,9 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    color: rgba(20, 16, 10, 0.95);
+    color: var(--ah-ink);
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
 }
 
 .arkham-roll-header {
@@ -13,8 +23,8 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    gap: 12px;
-    padding: 2px 2px 8px;
+    gap: var(--ah-space-3);
+    padding: 2px 2px var(--ah-space-2);
     border-bottom: 0;
 }
 
@@ -31,8 +41,8 @@
 .arkham-roll-heading {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 0 1 auto;        
+    gap: var(--ah-space-2);
+    flex: 0 1 auto;
     min-width: 0;
 }
 
@@ -46,14 +56,15 @@
 }
 
 .arkham-reroll-banner {
-    margin: 4px 2px 10px;
-    padding: 6px 10px;
-    border: 1px dashed rgba(20, 16, 10, 0.45);
-    border-radius: 6px;
-    font-family: "Voltaire", sans-serif;
-    font-size: 11px;
-    letter-spacing: 1.2px;
+    margin: var(--ah-space-1) 2px var(--ah-space-3);
+    padding: 5px var(--ah-space-3);
+    border: 1px dashed var(--ah-line-strong);
+    border-radius: 0;
+    font-family: var(--ah-font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--ah-ink-soft);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,67 +72,75 @@
 }
 
 .arkham-reroll-label {
-    font-weight: 900;
-    letter-spacing: 2px;
+    font-weight: normal;
+    letter-spacing: 0.18em;
 }
 
 .arkham-roll-details {
-    border: 1px solid rgba(20, 16, 10, 0.14);
-    border-radius: 8px;
-    padding: 6px 8px;
-    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    padding: var(--ah-space-2);
+    background: rgba(255, 255, 255, 0.22);
 }
 
 .arkham-roll-details-summary {
     cursor: pointer;
-    font-family: "Voltaire", sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
+    font-family: var(--ah-font-display);
+    font-size: 0.72rem;
+    font-weight: normal;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
+    color: var(--ah-ink-soft);
+
+    &:hover { color: var(--ah-ink); }
 }
 
 .arkham-roll-details-body {
-    margin-top: 6px;
+    margin-top: var(--ah-space-2);
     display: grid;
-    gap: 6px;
+    gap: var(--ah-space-2);
 }
 
 .arkham-roll-details-row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: var(--ah-space-3);
     align-items: baseline;
 }
 
 .arkham-roll-details-label {
-    font-size: 11px;
-    opacity: 0.85;
+    font-family: var(--ah-font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ah-ink-soft);
 }
 
 .arkham-roll-details-value {
-    font-size: 11px;
-    font-family: "Voltaire", sans-serif;
+    font-size: 0.72rem;
+    font-family: var(--ah-font-text);
     font-variant-numeric: tabular-nums;
     text-align: right;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--ah-space-2);
     justify-content: flex-end;
 }
 
+// Card header row: a plate in ink instead of a red outline. The accent stays
+// reserved for the states (success, failure, wounded).
 .arkham-roll-kind {
     display: inline-flex;
     align-items: center;
-    padding: 4px 14px;
-    border: 2px solid $c-red;
-    border-radius: 6px;
-    background: rgba($c-red, 0.07);
-    color: $c-red;
-    font-family: "Voltaire", sans-serif;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
+    padding: 4px var(--ah-space-3);
+    border: none;
+    border-radius: var(--ah-radius);
+    background: var(--ah-banner);
+    color: var(--ah-banner-ink);
+    font-family: var(--ah-font-display);
+    font-size: 0.85rem;
+    font-weight: normal;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
 }
@@ -135,6 +154,7 @@
 
 .arkham-roll-kind.arkham-roll-kind--item-name {
     width: 100%;
+    justify-content: center;
 }
 
 .arkham-roll-kind--item-name .arkham-roll-kind__text {
@@ -147,7 +167,7 @@
 
 .arkham-roll-flags {
     display: flex;
-    gap: 8px;
+    gap: var(--ah-space-2);
     justify-content: flex-start;
     padding: 2px;
     flex-wrap: wrap;
@@ -157,16 +177,16 @@
 .arkham-roll-flag {
     display: inline-flex;
     align-items: center;
-    padding: 3px 7px;
-    border-radius: 5px;
-    border: 1px solid rgba(20, 16, 10, 0.35);
-    background: rgba(255, 255, 255, 0.12);
-    font-family: "Voltaire", sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.9px;
+    padding: 2px 7px;
+    border-radius: var(--ah-radius);
+    border: 1px solid var(--ah-line-strong);
+    background: rgba(255, 255, 255, 0.30);
+    font-family: var(--ah-font-display);
+    font-size: 0.68rem;
+    font-weight: normal;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: rgba(20, 16, 10, 0.90);
+    color: var(--ah-ink);
     flex: 0 1 auto;
     min-width: 0;
     max-width: 100%;
@@ -176,26 +196,26 @@
 }
 
 .arkham-roll-flag.is-adv {
-    border-color: rgba(25, 85, 55, 0.55);
-    background: rgba(40, 140, 85, 0.16);
+    border-color: var(--ah-good);
+    background: rgba(47, 93, 64, 0.12);
 }
 
 .arkham-roll-flag.is-dis {
-    border-color: rgba(110, 25, 25, 0.60);
-    background: rgba(150, 45, 45, 0.16);
+    border-color: var(--ah-bad);
+    background: rgba(124, 36, 25, 0.12);
 }
 
 .arkham-roll-flag.is-diff {
-    border-color: rgba(20, 16, 10, 0.40);
-    background: rgba(0, 0, 0, 0.03);
+    border-color: var(--ah-line-strong);
+    background: rgba(30, 26, 20, 0.05);
 }
 
 .arkham-roll-title {
-    font-weight: 800;
-    letter-spacing: 0.4px;
+    font-weight: normal;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    font-size: 14px;
-    font-family: $font-primary;
+    font-size: 0.9rem;
+    font-family: var(--ah-font-display);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -205,81 +225,72 @@
 .arkham-roll-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px 10px;
-    padding: 10px 2px 6px;
+    gap: var(--ah-space-2) var(--ah-space-3);
+    padding: var(--ah-space-3) 2px var(--ah-space-2);
 }
 
 .arkham-meta-row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: var(--ah-space-3);
     padding: 3px 6px;
-    border: 1px solid rgba(20, 16, 10, 0.14);
-    border-radius: 6px;
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
     background: transparent;
 }
 
 .arkham-meta-label {
-    font-size: 11px;
+    font-family: var(--ah-font-display);
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    opacity: 0.8;
+    letter-spacing: 0.10em;
+    color: var(--ah-ink-soft);
 }
 
 .arkham-meta-value {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 0.8rem;
     text-align: right;
-    font-family: "Voltaire", sans-serif;
+    font-family: var(--ah-font-text);
     font-variant-numeric: tabular-nums;
 }
 
+// Success / failure as a banner — the same shape as the sheet's section headers.
+// clip-path cuts borders away, so the banner carries only its fill.
 .arkham-roll-banner {
-    margin: 8px 2px 10px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: 900;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border: 1px solid rgba(20, 16, 10, 0.45);
-    border-radius: 6px;
+    @include ah-banner(1rem, 12px);
+
+    margin: var(--ah-space-3) 0;
+    border-radius: 0;
+    letter-spacing: 0.22em;
+    text-shadow: none;
     box-shadow: none;
-    font-family: "Voltaire", sans-serif;
-    font-size: 16px;
-    line-height: 1.1;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
 }
 
 .arkham-roll-banner.is-success {
-    background:
-        repeating-linear-gradient(-12deg, rgba(255, 255, 255, 0.10) 0px, rgba(255, 255, 255, 0.10) 2px, rgba(255, 255, 255, 0.00) 2px, rgba(255, 255, 255, 0.00) 6px),
-        rgba(40, 110, 70, 0.90);
-    color: rgba(255, 255, 255, 0.96);
+    background: var(--ah-good);
 }
 
 .arkham-roll-banner.is-failure {
-    background:
-        repeating-linear-gradient(-12deg, rgba(255, 255, 255, 0.10) 0px, rgba(255, 255, 255, 0.10) 2px, rgba(255, 255, 255, 0.00) 2px, rgba(255, 255, 255, 0.00) 6px),
-        rgba(120, 30, 30, 0.90);
-    color: rgba(255, 255, 255, 0.96);
+    background: var(--ah-bad);
 }
 
 .arkham-roll-results {
     display: grid;
-    gap: 10px;
+    gap: var(--ah-space-3);
 }
 
 .arkham-roll-footer {
-    margin-top: 2px;
-    padding: 0 2px;
+    margin-top: var(--ah-space-2);
+    padding: var(--ah-space-2) 2px 0;
+    border-top: 1px solid var(--ah-line);
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 10px;
-    font-family: "Voltaire", sans-serif;
-    font-size: 11px;
-    opacity: 0.88;
+    gap: var(--ah-space-3);
+    font-family: var(--ah-font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--ah-ink-soft);
 }
 
 .arkham-roll-footer-left {
@@ -296,18 +307,18 @@
 .dice-results-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: var(--ah-space-1);
     margin: 0;
-    padding: 6px;
-    border: 1px solid rgba(20, 16, 10, 0.16);
-    border-radius: 10px;
-    background: transparent;
+    padding: var(--ah-space-2);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    background: rgba(255, 255, 255, 0.22);
 }
 
 .arkham-dice-results-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--ah-space-2);
 }
 
 .arkham-dice-results-container {
@@ -317,69 +328,84 @@
 
 .arkham-reroll-icon {
     flex: 0 0 auto;
-    width: 22px;
-    height: 22px;
-    border-radius: 7px;
-    border: 1px solid rgba(20, 16, 10, 0.25);
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(20, 16, 10, 0.90);
+    width: 24px;
+    height: 24px;
+    // Foundry gives every button `min-height: 28px` and `padding: 0 8px`. The
+    // min-height beats the height set here, which made the button 24x28 — an
+    // upright oval instead of a circle. Both have to be reset, otherwise
+    // `border-radius: 50%` applies to a rectangle.
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--ah-line-strong);
+    background: rgba(255, 255, 255, 0.28);
+    color: var(--ah-ink-soft);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
 
     &:hover {
-        border-color: rgba($c-red, 0.55);
-        background: rgba($c-red, 0.10);
-        color: $c-red;
+        border-color: var(--ah-accent);
+        background: rgba(114, 42, 28, 0.10);
+        color: var(--ah-accent);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--ah-focus);
+        outline-offset: 2px;
     }
 }
 
+// The individual die: a tile with a clear outline, so that it reads as a
+// related element next to the sheet's diamond slots.
 .dice-result.arkham-die {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: 4px;
-    border: 1px solid rgba(20, 16, 10, 0.55);
-    background: rgba(255, 255, 255, 0.20);
-    font-weight: 900;
-    font-size: 14px;
+    border-radius: var(--ah-radius);
+    border: 1px solid var(--ah-ink);
+    background: rgba(255, 255, 255, 0.45);
+    font-weight: normal;
+    font-size: 0.95rem;
     line-height: 1;
-    color: rgba(20, 16, 10, 0.95);
-    font-family: "Voltaire", sans-serif;
+    color: var(--ah-ink);
+    font-family: var(--ah-font-text);
     font-variant-numeric: tabular-nums;
 
     &.success {
-        border-color: rgba(25, 85, 55, 0.9);
-        background: rgba(40, 140, 85, 0.90);
-        color: rgba(255, 255, 255, 0.96);
+        border-color: var(--ah-good);
+        background: var(--ah-good);
+        color: #f4f7f2;
     }
 
     &.failure {
-        border-color: rgba(110, 25, 25, 0.95);
-        background: rgba(150, 45, 45, 0.90);
-        color: rgba(255, 255, 255, 0.96);
+        border-color: var(--ah-bad);
+        background: var(--ah-bad);
+        color: #fbf1ec;
     }
 
     &.horror-die {
-        border-color: rgba(0, 0, 0, 0.9);
-        background: rgba(10, 10, 10, 0.94) !important;
-        color: rgba(255, 255, 255, 0.96) !important;
+        border-color: var(--ah-ink);
+        background: var(--ah-banner) !important;
+        color: var(--ah-banner-ink) !important;
     }
 
     &.is-dropped {
-        opacity: 0.55;
+        opacity: 0.45;
         text-decoration: line-through;
     }
 
     &.horror-die.horror-nat6 {
-        color: rgba(60, 220, 120, 0.98) !important;
+        color: #7fd6a1 !important;
     }
 
     &.horror-die.horror-nat1 {
-        color: rgba(255, 95, 95, 0.98) !important;
+        color: #e8837a !important;
     }
 }
 
@@ -390,28 +416,28 @@
 .reroll-dice-app {
     .arkham-reroll-meta {
         display: grid;
-        gap: 4px;
-        font-family: "Voltaire", sans-serif;
-        font-size: 12px;
+        gap: var(--ah-space-1);
+        font-family: var(--ah-font-text);
+        font-size: 0.82rem;
     }
 
     .arkham-reroll-dice {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: var(--ah-space-2);
     }
 
     .arkham-reroll-die-row {
-        padding: 6px;
-        border: 1px solid rgba(20, 16, 10, 0.14);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.08);
+        padding: var(--ah-space-2);
+        border: 1px solid var(--ah-line);
+        border-radius: var(--ah-radius);
+        background: rgba(255, 255, 255, 0.22);
     }
 
     .arkham-reroll-die {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: var(--ah-space-3);
         margin: 0;
     }
 
@@ -422,53 +448,56 @@
     .arkham-reroll-die-label {
         flex: 1 1 auto;
         min-width: 0;
-        font-family: "Voltaire", sans-serif;
-        font-size: 12px;
-        opacity: 0.92;
+        font-family: var(--ah-font-text);
+        font-size: 0.82rem;
+        color: var(--ah-ink-soft);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 
     .form-footer {
-        margin-top: 10px;
+        margin-top: var(--ah-space-3);
         display: flex;
         justify-content: center;
     }
 }
 
 .arkham-horror-hint {
-    margin-top: 6px;
-    font-size: 11px;
-    opacity: 0.85;
+    margin-top: var(--ah-space-2);
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--ah-ink-soft);
 }
+
 .arkham-totals {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: var(--ah-space-2);
 }
 
-.arkham-totals-weapon{
+.arkham-totals-weapon {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: var(--ah-space-2);
 }
 
 .arkham-total {
     min-width: 0;
-    padding: 8px;
-    border: 1px solid rgba(20, 16, 10, 0.14);
-    border-radius: 6px;
-    background: transparent;
+    padding: var(--ah-space-2);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    background: rgba(255, 255, 255, 0.18);
     text-align: center;
 }
 
 .arkham-total-label {
     display: block;
-    font-size: 10px;
+    font-family: var(--ah-font-display);
+    font-size: 0.66rem;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    opacity: 0.8;
+    letter-spacing: 0.10em;
+    color: var(--ah-ink-soft);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -476,10 +505,10 @@
 
 .arkham-total-value {
     display: block;
-    font-size: 16px;
-    font-weight: 900;
+    font-size: 1.15rem;
+    font-weight: normal;
     margin-top: 2px;
-    font-family: "Voltaire", sans-serif;
+    font-family: var(--ah-font-text);
     font-variant-numeric: tabular-nums;
 }
 
@@ -492,25 +521,30 @@
 // -----------------------------------------------------------------------------
 
 li.chat-message.message {
-    --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
-    --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
-    --ah-chat-border: rgba(20, 16, 10, 0.50);
-    --ah-chat-accent: #{$c-red};
+    --ah-chat-paper: var(--ah-paper);
+    --ah-chat-border: var(--ah-line-strong);
+    --ah-chat-accent: var(--ah-banner);
 
     border: 1px solid var(--ah-chat-border);
-    border-radius: 12px;
-    background:
-        linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)),
-        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0.00) 3px, rgba(255, 255, 255, 0.00) 7px);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    border-radius: var(--ah-radius);
+    color: var(--ah-ink);
+    // The same paper surface as the sheet, just with a flatter vignette.
+    background-color: var(--ah-chat-paper);
+    background-image:
+        radial-gradient(120% 130% at 50% 0%, rgba(236, 231, 225, 0) 55%, rgba(196, 187, 173, 0.45) 100%),
+        linear-gradient(rgba(238, 233, 226, 0.86), rgba(238, 233, 226, 0.86)),
+        url("../assets/images/sheet-background-v2.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%, 100% 100%, cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.30);
 }
 
 // Whisper messages (GM/private)
 li.chat-message.message.whisper {
-    --ah-chat-bg-top: rgba(235, 241, 249, 0.95);
-    --ah-chat-bg-bottom: rgba(206, 218, 236, 0.93);
+    --ah-chat-paper: #e4e7ee;
     --ah-chat-border: rgba(54, 74, 115, 0.75);
-    --ah-chat-accent: rgba(66, 86, 132, 0.95);
+    --ah-chat-accent: rgba(46, 62, 96, 0.95);
 
     // Also align with Foundry's native variables (in case core styles reference them)
     --color-whisper-background: #dbe6f6;
@@ -519,39 +553,41 @@ li.chat-message.message.whisper {
 
 // Blind rolls (GM-only)
 li.chat-message.message.blind {
-    --ah-chat-bg-top: rgba(250, 236, 241, 0.95);
-    --ah-chat-bg-bottom: rgba(236, 205, 215, 0.93);
+    --ah-chat-paper: #f0e2e7;
     --ah-chat-border: rgba(124, 52, 73, 0.72);
-    --ah-chat-accent: rgba(144, 60, 82, 0.95);
+    --ah-chat-accent: rgba(110, 44, 62, 0.95);
 
     --color-blind-background: #f2d7e0;
     --color-blind-border: #7a3a50;
 }
 
 li.chat-message.message > header.message-header {
-    padding: 8px 12px;
+    padding: var(--ah-space-2) var(--ah-space-3);
     border-bottom: 1px solid var(--ah-chat-accent);
     background: transparent;
 }
 
 li.chat-message.message > header.message-header .message-sender {
     margin: 0;
-    font-family: $font-primary;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-family: var(--ah-font-display);
+    font-weight: normal;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: $c-dark;
+    color: var(--ah-ink);
 }
 
 li.chat-message.message > header.message-header .message-metadata {
-    font-family: "Voltaire", sans-serif;
-    font-size: 11px;
-    opacity: 0.85;
-    color: $c-dark;
+    font-family: var(--ah-font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--ah-ink-soft);
 }
 
 li.chat-message.message > .message-content {
-    padding: 10px 12px 12px;
+    padding: var(--ah-space-3);
+    color: var(--ah-ink);
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
 }
 
 .arkham-roll-card {
@@ -563,43 +599,31 @@ li.chat-message.message > .message-content {
 // -----------------------------------------------------------------------------
 
 .arkham-injury-trauma-card .arkham-roll-kind.is-injury {
-    border-color: $c-red;
-    background: rgba($c-red, 0.07);
-    color: $c-red;
+    background: var(--ah-bad);
+    color: #fbf1ec;
 }
 
 .arkham-injury-trauma-card .arkham-roll-kind.is-trauma {
-    border-color: rgba(0, 0, 0, 0.75);
-    background: rgba(0, 0, 0, 0.06);
-    color: rgba(0, 0, 0, 0.88);
+    background: var(--ah-banner);
+    color: var(--ah-banner-ink);
 }
 
 .arkham-injury-trauma-banner {
-    margin: 8px 2px 10px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: 900;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    border: 1px solid rgba(20, 16, 10, 0.45);
-    background:
-        repeating-linear-gradient(-12deg, rgba(255, 255, 255, 0.10) 0px, rgba(255, 255, 255, 0.10) 2px, rgba(255, 255, 255, 0.00) 2px, rgba(255, 255, 255, 0.00) 6px),
-        rgba(30, 30, 30, 0.08);
-    color: rgba(20, 16, 10, 0.95);
-    font-family: "Voltaire", sans-serif;
-    font-size: 14px;
-    line-height: 1.2;
+    @include ah-banner(0.9rem, 10px);
+
+    margin: var(--ah-space-3) 0;
+    letter-spacing: 0.14em;
 }
 
 .arkham-injury-trauma-description {
-    margin: 0 2px 10px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(20, 16, 10, 0.14);
-    background: rgba(255, 255, 255, 0.10);
-    font-size: 12px;
-    line-height: 1.25;
+    margin: 0 0 var(--ah-space-3);
+    padding: var(--ah-space-2) var(--ah-space-3);
+    border: none;
+    border-left: 2px solid var(--ah-line-strong);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.30);
+    font-size: 0.85rem;
+    line-height: var(--ah-line-height);
 }
 
 .arkham-injury-trauma-description p {
@@ -607,11 +631,67 @@ li.chat-message.message > .message-content {
 }
 
 .arkham-weapon-special-rules {
-    padding: 8px;
-    border: 1px solid rgba(20, 16, 10, 0.14);
-    border-radius: 6px;
-    background: transparent;
-    font-size: 0.8em;
-    opacity: 0.8;
-    letter-spacing: 0.3px;
+    padding: var(--ah-space-2) var(--ah-space-3);
+    border: none;
+    border-left: 2px solid var(--ah-line-strong);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.24);
+    font-size: 0.82rem;
+    color: var(--ah-ink-soft);
+
+    strong {
+        font-family: var(--ah-font-display);
+        font-weight: normal;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ah-ink);
+    }
+
+    p { margin: 2px 0 0; }
+}
+
+// -----------------------------------------------------------------------------
+// Short cards: strain oneself and damage.
+// Same pattern — header row in small caps above the rulebook double rule, body
+// text below, aside in italics.
+// -----------------------------------------------------------------------------
+
+.arkham-strain-card,
+.arkham-damage-card {
+    color: var(--ah-ink);
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
+}
+
+.arkham-strain-card-title,
+.arkham-damage-card-title {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-2);
+    margin-bottom: var(--ah-space-2);
+    padding-bottom: var(--ah-space-1);
+    border-bottom: 1px solid var(--ah-line-strong);
+    box-shadow: 0 3px 0 -2px var(--ah-line);
+    font-family: var(--ah-font-display);
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    strong { font-weight: normal; }
+}
+
+.arkham-strain-card p {
+    margin: 2px 0;
+}
+
+.arkham-strain-card-price {
+    font-style: italic;
+    color: var(--ah-ink-soft);
+}
+
+.arkham-strain-card-warning {
+    margin-top: var(--ah-space-2);
+    padding: 2px 0 2px var(--ah-space-2);
+    border-left: 3px solid var(--ah-accent);
+    color: var(--ah-accent);
 }

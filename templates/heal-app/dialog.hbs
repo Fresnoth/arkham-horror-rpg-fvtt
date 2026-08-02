@@ -1,0 +1,118 @@
+<form class="roll-dialog-container scrollable heal-form" autocomplete="off">
+  <div class="arkham-heal-head">
+    {{#if hasHealer}}
+      <div class="arkham-heal-head-row">
+        <span class="arkham-heal-head-label">{{localize "ARKHAM_HORROR.HEALING.Dialog.Healer"}}</span>
+        <span class="arkham-heal-head-value">{{healerName}}</span>
+      </div>
+    {{/if}}
+    <div class="arkham-heal-head-row">
+      <span class="arkham-heal-head-label">{{localize "ARKHAM_HORROR.HEALING.Dialog.Target"}}</span>
+      <span class="arkham-heal-head-value">{{targetName}}</span>
+    </div>
+    <div class="arkham-heal-head-row">
+      <span class="arkham-heal-head-label">{{localize "ARKHAM_HORROR.HEALING.Dialog.Successes"}}</span>
+      <span class="arkham-heal-head-value">{{rollKindLabel}} &middot; {{successes}}</span>
+    </div>
+  </div>
+
+  {{#if hasEffectSources}}
+    <div class="arkham-heal-effects">
+      <div class="arkham-heal-effects-title">{{localize "ARKHAM_HORROR.HEALING.Dialog.EffectsTitle"}}</div>
+      <ul class="arkham-heal-effects-list">
+        {{#each effectSources}}
+          <li class="arkham-heal-effect">
+            <span class="arkham-heal-effect-name">{{this.name}}</span>
+            <span class="arkham-heal-effect-text">{{this.text}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+  {{#if isHorror}}
+    <p class="arkham-horror-hint arkham-heal-preview">{{horrorPreviewText}}</p>
+    <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.HEALING.Dialog.HorrorHint"}}</p>
+    {{#unless rollSucceeded}}
+      <p class="arkham-heal-warning">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        {{localize "ARKHAM_HORROR.HEALING.Dialog.RollFailed"}}
+      </p>
+    {{/unless}}
+    {{#unless canLowerHorror}}
+      <p class="arkham-heal-warning">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        {{localize "ARKHAM_HORROR.HEALING.Dialog.NoHorror"}}
+      </p>
+    {{/unless}}
+  {{else}}
+    <div class="form-group">
+      <label>{{localize "ARKHAM_HORROR.HEALING.Dialog.Damage"}}</label>
+      <input type="number" name="amount" value="{{amount}}" min="0" step="1" autofocus />
+    </div>
+
+    <p class="arkham-horror-hint arkham-heal-preview" data-role="healPreview">{{previewText}}</p>
+    <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.HEALING.Dialog.DamageHint"}}</p>
+
+    <div class="arkham-heal-injuries">
+      <div class="arkham-heal-injuries-title">{{localize "ARKHAM_HORROR.HEALING.Dialog.InjuriesTitle"}}</div>
+      {{#if hasInjuries}}
+        <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.HEALING.Dialog.InjuriesNote" successes=successes}}</p>
+        <ul class="arkham-heal-injury-list">
+          {{#each injuries}}
+            <li class="arkham-heal-injury {{#unless this.healable}}is-blocked{{/unless}}">
+              <label>
+                <input type="checkbox" name="injuryIds" value="{{this.id}}"
+                       {{#if this.checked}}checked{{/if}} {{#unless this.healable}}disabled{{/unless}} />
+                <span class="arkham-heal-injury-name">{{this.name}}</span>
+                <span class="arkham-heal-injury-difficulty">
+                  {{#if this.isReduced}}
+                    {{localize "ARKHAM_HORROR.HEALING.Dialog.InjuryDifficultyReduced"
+                      difficulty=this.effectiveDifficulty original=this.difficulty}}
+                  {{else}}
+                    {{localize "ARKHAM_HORROR.HEALING.Dialog.InjuryDifficulty" difficulty=this.difficulty}}
+                  {{/if}}
+                </span>
+              </label>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class="arkham-heal-injuries-empty">{{localize "ARKHAM_HORROR.HEALING.Dialog.InjuriesEmpty"}}</p>
+      {{/if}}
+    </div>
+
+    <div class="arkham-heal-hints">
+      <div class="arkham-heal-hints-title">{{localize "ARKHAM_HORROR.HEALING.Dialog.HintsTitle"}}</div>
+      <p class="arkham-heal-hints-note">{{localize "ARKHAM_HORROR.HEALING.Dialog.HintsNote"}}</p>
+      {{#if hasHints}}
+        <ul class="arkham-heal-hints-list">
+          {{#each hints}}
+            <li class="arkham-heal-hint">
+              <span class="arkham-heal-hint-name">{{this.name}}</span>
+              <span class="arkham-heal-hint-text">{{this.text}}</span>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class="arkham-heal-hints-empty">{{localize "ARKHAM_HORROR.HEALING.Dialog.HintsEmpty"}}</p>
+      {{/if}}
+    </div>
+  {{/if}}
+
+  <div class="arkham-heal-notes">
+    <div class="arkham-heal-notes-title">{{localize "ARKHAM_HORROR.HEALING.Dialog.NotesTitle"}}</div>
+    <ul class="arkham-heal-notes-list">
+      <li>{{localize "ARKHAM_HORROR.HEALING.Dialog.NoteEngaged"}}</li>
+      <li>{{localize "ARKHAM_HORROR.HEALING.Dialog.NoteNarrative"}}</li>
+      <li>{{localize "ARKHAM_HORROR.HEALING.Dialog.NoteOncePerScene"}}</li>
+    </ul>
+  </div>
+
+  <footer class="dialog-footer">
+    <button type="button" class="roll-button" data-action="clickedApply">
+      <i class="fa-solid fa-kit-medical" aria-hidden="true"></i> {{localize "ARKHAM_HORROR.HEALING.Dialog.Apply"}}
+    </button>
+    <button type="button" class="roll-button" data-action="clickedCancel">{{localize "ARKHAM_HORROR.HEALING.Dialog.Cancel"}}</button>
+  </footer>
+</form>

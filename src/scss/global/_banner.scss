@@ -1,0 +1,46 @@
+// ---------------------------------------------------------------------------
+// Banner as a standalone component.
+//
+// Deliberately OUTSIDE the `.system-arkham-horror-rpg-fvtt` block: the same
+// class carries the section headers on the sheets AND the headings of the chat
+// cards, and those render in the sidebar without the system scope.
+// ---------------------------------------------------------------------------
+
+.arkham-banner {
+  @include ah-banner;
+
+  margin: 0 0 var(--ah-space-3);
+
+  // Action icons in the banner (roll, create, reset) sit as <a> inside the text
+  // and must not take part in the uppercase treatment.
+  a,
+  button.inline-control {
+    color: rgba(240, 232, 208, 0.72);
+    font-size: 0.8em;
+    letter-spacing: normal;
+    text-decoration: none;
+    vertical-align: baseline;
+
+    &:hover {
+      color: var(--ah-banner-ink);
+      text-shadow: none;
+    }
+  }
+}
+
+// Narrow variant for chat cards and dialogs.
+.arkham-banner--sm {
+  padding: 8px 26px;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+}
+
+// Inversion: a light banner on a dark ground is not needed, but the chat card's
+// success/failure banners use the same shape with colour.
+.arkham-banner--good {
+  background: var(--ah-good);
+}
+
+.arkham-banner--bad {
+  background: var(--ah-bad);
+}

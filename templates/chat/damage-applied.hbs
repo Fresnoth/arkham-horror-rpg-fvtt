@@ -1,0 +1,37 @@
+<div class="arkham-damage-card">
+    <div class="arkham-damage-card-title">
+        <i class="fa-solid fa-heart-crack" aria-hidden="true"></i>
+        <strong>{{localize "ARKHAM_HORROR.DAMAGE.Chat.Label"}}</strong>
+    </div>
+
+    {{#if amount}}
+        <p>{{localize "ARKHAM_HORROR.DAMAGE.Chat.Summary" targetName=actorName amount=amount oldLimit=oldLimit newLimit=newLimit}}</p>
+    {{else}}
+        <p>{{localize "ARKHAM_HORROR.DAMAGE.Chat.NoDamage" targetName=actorName}}</p>
+    {{/if}}
+
+    {{#if hasHorror}}
+        <p>{{localize "ARKHAM_HORROR.DAMAGE.Chat.Horror" targetName=actorName horror=horror oldHorror=oldHorror newHorror=newHorror}}</p>
+        {{!-- By the rules the horror limit can never rise above the dice pool maximum
+              (core p. 36). If it was capped for that reason, the card has to say so. --}}
+        {{#if horrorCapped}}
+            <p class="arkham-damage-card-note">{{localize "ARKHAM_HORROR.DAMAGE.Chat.HorrorCapped" targetName=actorName requested=horrorRequested applied=horror}}</p>
+        {{/if}}
+    {{else if horrorAtMax}}
+        <p class="arkham-damage-card-note">{{localize "ARKHAM_HORROR.DAMAGE.Chat.HorrorAtMax" targetName=actorName}}</p>
+    {{/if}}
+
+    {{#if hasAttacker}}
+        <p class="arkham-damage-card-source">
+            {{#if hasWeapon}}
+                {{localize "ARKHAM_HORROR.DAMAGE.Chat.Source" attackerName=attackerName weaponName=weaponName}}
+            {{else}}
+                {{localize "ARKHAM_HORROR.DAMAGE.Chat.SourceAttacker" attackerName=attackerName}}
+            {{/if}}
+        </p>
+    {{/if}}
+
+    {{#if wounded}}
+        <p class="arkham-damage-card-wounded">{{localize "ARKHAM_HORROR.DAMAGE.Chat.Wounded" targetName=actorName}}</p>
+    {{/if}}
+</div>

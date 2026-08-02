@@ -43,8 +43,18 @@
                     value="{{system.horror}}" data-dtype="Number" class="small-input" />
             </div>
         </div>
-        <div class="resource-group-styled dicepool-container">
-                {{> systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-dicepool.hbs}}
-        </div>
+    </div>
+    {{!-- Direct child of .sheet-header, not of .header-fields: only then does the
+          dice pool row span the full width instead of sitting next to the portrait. --}}
+    <div class="resource-group-styled dicepool-container">
+        {{> systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-dicepool.hbs}}
+        {{!-- Only Major NPCs get the button at all; see helpers/strain.mjs --}}
+        {{#if strain.visible}}
+        <button type="button" class="arkham-strain-button{{#if strain.wounded}} is-wounded{{/if}}{{#if strain.strainedOnce}} is-spent{{/if}}"
+            data-action="clickedStrainOneself" data-tooltip="{{strain.tooltip}}"
+            aria-label="{{localize "ARKHAM_HORROR.STRAIN.Button"}}" {{#unless strain.ok}}disabled{{/unless}}>
+            <span class="arkham-strain-icon" aria-hidden="true"></span>
+        </button>
+        {{/if}}
     </div>
 </header>

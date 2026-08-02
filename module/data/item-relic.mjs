@@ -1,4 +1,5 @@
 import ArkhamHorrorItemBase from "./base-item.mjs";
+import { rollEffectsField, usageField } from "./fields/roll-effects.mjs";
 
 export default class ArkhamHorrorRelic extends ArkhamHorrorItemBase {
 
@@ -13,6 +14,9 @@ export default class ArkhamHorrorRelic extends ArkhamHorrorItemBase {
             rare: new fields.BooleanField({ required: true, initial: false }),
             unique: new fields.BooleanField({ required: true, initial: false })
         });
+
+        schema.usage = usageField();
+        schema.rollEffects = rollEffectsField();
 
         return schema;
     }

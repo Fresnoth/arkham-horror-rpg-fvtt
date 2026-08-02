@@ -1,0 +1,53 @@
+<div class="arkham-heal-card">
+    <div class="arkham-heal-card-title">
+        {{#if (eq mode "horror")}}
+            <i class="fa-solid fa-brain" aria-hidden="true"></i>
+            <strong>{{localize "ARKHAM_HORROR.HEALING.Chat.LabelHorror"}}</strong>
+        {{else if (eq mode "recovery")}}
+            <i class="fa-solid fa-bed" aria-hidden="true"></i>
+            <strong>{{localize "ARKHAM_HORROR.HEALING.Chat.LabelRecovery"}}</strong>
+        {{else}}
+            <i class="fa-solid fa-kit-medical" aria-hidden="true"></i>
+            <strong>{{localize "ARKHAM_HORROR.HEALING.Chat.Label"}}</strong>
+        {{/if}}
+    </div>
+
+    {{#if (eq mode "horror")}}
+        <p>{{localize "ARKHAM_HORROR.HEALING.Chat.Horror" targetName=actorName oldHorror=oldHorror newHorror=newHorror}}</p>
+    {{else if (eq mode "recovery")}}
+        <p>{{localize "ARKHAM_HORROR.HEALING.Chat.Recovery" targetName=actorName spanLabel=spanLabel}}</p>
+        {{#if hasHealedDamage}}
+            <p>{{localize "ARKHAM_HORROR.HEALING.Chat.RecoveryDamage" targetName=actorName healedDamage=healedDamage}}</p>
+        {{/if}}
+        {{#if clearedHorror}}
+            <p>{{localize "ARKHAM_HORROR.HEALING.Chat.RecoveryHorror" targetName=actorName oldHorror=oldHorror}}</p>
+        {{/if}}
+    {{else}}
+        {{#if amount}}
+            <p>{{localize "ARKHAM_HORROR.HEALING.Chat.Summary" targetName=actorName amount=amount oldLimit=oldLimit newLimit=newLimit}}</p>
+        {{else}}
+            <p>{{localize "ARKHAM_HORROR.HEALING.Chat.NoHealing" targetName=actorName}}</p>
+        {{/if}}
+    {{/if}}
+
+    {{#if hasInjuries}}
+        <ul class="arkham-heal-card-injuries">
+            {{#each healedInjuries}}
+                <li>{{localize "ARKHAM_HORROR.HEALING.Chat.Injury" injuryName=this.name}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+
+    {{#if hasBlocked}}
+        <p class="arkham-heal-card-note">{{localize "ARKHAM_HORROR.HEALING.Chat.BlockedTitle"}}</p>
+        <ul class="arkham-heal-card-injuries is-blocked">
+            {{#each blockedInjuries}}
+                <li>{{this.name}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+
+    {{#if hasHealer}}
+        <p class="arkham-heal-card-source">{{localize "ARKHAM_HORROR.HEALING.Chat.Source" healerName=healerName}}</p>
+    {{/if}}
+</div>

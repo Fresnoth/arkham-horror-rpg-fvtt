@@ -6,6 +6,8 @@
           <i class="fa-solid fa-person-falling arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.FallingTooltip"}}" aria-hidden="true"></i>
         {{else if (eq rollSource "strain")}}
           <i class="fa-solid fa-hand-fist arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.StrainTooltip"}}" aria-hidden="true"></i>
+        {{else if (eq rollSource "horror")}}
+          <i class="fa-solid fa-skull arkham-roll-reaction-icon" title="{{localize "ARKHAM_HORROR.Chat.InjuryTrauma.HorrorTooltip"}}" aria-hidden="true"></i>
         {{/if}}
         {{rollKindLabel}}
       </span>
@@ -28,6 +30,12 @@
   {{#if (eq rollSource "strain")}}
     <div class="arkham-injury-trauma-description">
       <strong>{{localize "ARKHAM_HORROR.ACTIONS.StrainOneself"}}:</strong> {{localize "ARKHAM_HORROR.Chat.InjuryTrauma.StrainNote"}}
+    </div>
+  {{/if}}
+
+  {{#if (eq rollSource "horror")}}
+    <div class="arkham-injury-trauma-description">
+      {{localize "ARKHAM_HORROR.Chat.InjuryTrauma.HorrorNote"}}
     </div>
   {{/if}}
 

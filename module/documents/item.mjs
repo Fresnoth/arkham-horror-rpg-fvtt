@@ -18,6 +18,23 @@ export class ArkhamHorrorItem extends Item {
       if (cur && typeof cur === 'object') delete cur[parts[parts.length - 1]];
     };
 
+    // A useful item whose charges still live in the legacy `system.uses` gets them written into
+    // `system.usage` the first time anything touches its charges (see
+    // `data/item-useful-item.mjs`). Without this the seeded maximum stays at 0 in storage, so the
+    // next data preparation would seed `remaining` from `uses.current` again and undo the change —
+    // spending a charge would silently do nothing.
+    if (this.type === 'useful_item' && foundry.utils.hasProperty(changed, 'system.usage')) {
+      const storedMax = Number(this._source?.system?.usage?.max ?? 0) || 0;
+      const legacyMax = Number(this._source?.system?.uses?.max ?? 0) || 0;
+
+      if (storedMax <= 0 && legacyMax > 0 && !foundry.utils.hasProperty(changed, 'system.usage.max')) {
+        foundry.utils.setProperty(changed, 'system.usage.max', legacyMax);
+        if (!foundry.utils.hasProperty(changed, 'system.usage.decreaseAfterUsage')) {
+          foundry.utils.setProperty(changed, 'system.usage.decreaseAfterUsage', true);
+        }
+      }
+    }
+
     // Tome spell lists and base understanding difficulty are GM-managed.
     // Players can still own Tomes and update state like understood/attuned.
     if (this.type === 'tome') {

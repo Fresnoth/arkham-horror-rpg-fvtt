@@ -1,47 +1,33 @@
-.journal-page-content{
+.journal-page-content {
+  font-family: var(--ah-font-text);
+  text-align: left;
+  font-size: 1.05em;
+  line-height: var(--ah-line-height);
 
-  font-family: $font-tertiary;
-  text-align:justify;
-  font-size: 1.1em;
+  // Rulebook headings: serif caps above a thin double rule.
+  h1, h2, h3, h4, h5 {
+    font-family: var(--ah-font-display);
+    font-weight: normal;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-bottom: 1px solid var(--ah-line-strong);
+    box-shadow: 0 3px 0 -2px var(--ah-line);
+    padding-bottom: 4px;
+    margin: var(--ah-space-4) 0 var(--ah-space-2);
+  }
 
-  h5 {
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-
-    h4 {
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-
-    h3 {
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-    h2 {
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-    h1 {
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
-      border-bottom: 1px solid $c-red;
-      font-family: $font-primary;
-    }
-    blockquote.read-aloud{
-      --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
-      --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
-      padding: 5px;
-      text-align: justify;
-      font-family: $font-tertiary;
-      border: 2px solid $c-red-border;
-      border-radius: 5px;
-      color: $c-dark;
-      background:
-          linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)),
-          repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0.00) 3px, rgba(255, 255, 255, 0.00) 7px);
-    }
+  // Read-aloud box: paper surface with a bracket on the left, no red border.
+  blockquote.read-aloud {
+    margin: var(--ah-space-3) 0;
+    padding: var(--ah-space-3) var(--ah-space-4);
+    border: 1px solid var(--ah-line-strong);
+    border-left: 4px solid var(--ah-banner);
+    border-radius: var(--ah-radius);
+    text-align: left;
+    font-family: var(--ah-font-text);
+    font-style: italic;
+    color: var(--ah-ink);
+    background: var(--ah-paper-raised);
+  }
 }

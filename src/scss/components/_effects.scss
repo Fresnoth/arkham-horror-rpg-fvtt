@@ -1,14 +1,87 @@
-.effects .item {
-  .effect-source,
-  .effect-duration,
-  .effect-controls {
-    text-align: center;
-    border-left: 1px solid #c9c7b8;
-    border-right: 1px solid #c9c7b8;
-    font-size: 12px;
+// Effects tab. The three categories are section panels as everywhere else in
+// the sheet; the rows inside them follow the grid of the items-list.
+.effects-section {
+  // The panel already brings a border and paper — the list inside must not draw
+  // a second panel, otherwise line sits on line.
+  .items-list {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
-  .effect-controls {
-    border: none;
+  // Otherwise the column header carries the same black bar as the legend above
+  // it — two banner rows stacked. Small caps are enough here.
+  .items-header {
+    height: auto;
+    padding: 1px var(--ah-space-2);
+    border-bottom: 1px solid var(--ah-line);
+    background: transparent;
+
+    > * {
+      color: var(--ah-ink-soft);
+      border-right-color: var(--ah-line);
+    }
+
+    .item-name {
+      color: var(--ah-ink-soft);
+    }
+  }
+
+  // Four categories stacked: the full banner spacing would be too much air
+  // here. One panel is just about enough for the overhanging half of the banner.
+  + .effects-section {
+    margin-top: 18px;
+  }
+}
+
+.effects-list {
+  .effect-source,
+  .effect-duration {
+    flex: 0 0 110px;
+    padding: 0 var(--ah-space-1);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // Three controls instead of the two that `.item-controls` is laid out for.
+  .item-controls {
+    flex: 0 0 72px;
+
+    a,
+    .item-control-locked {
+      margin: 0 4px;
+      font-size: 12px;
+    }
+  }
+
+  .effect-source-icon {
+    margin-right: var(--ah-space-1);
+    color: var(--ah-ink-faint);
+  }
+
+  // Transferred from the item: the effect does not belong to the actor. The row
+  // stays readable but is marked as foreign-owned by the edge stripe.
+  .effect-from-item {
+    box-shadow: inset 2px 0 0 0 var(--ah-line-strong);
+
+    .item-name {
+      padding-left: var(--ah-space-1);
+    }
+  }
+
+  .item-control-locked {
+    color: var(--ah-ink-faint);
+    cursor: not-allowed;
+  }
+
+  .effects-empty {
+    color: var(--ah-ink-faint);
+    font-family: var(--ah-font-text);
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
   }
 }

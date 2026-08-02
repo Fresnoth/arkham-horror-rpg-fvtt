@@ -1,0 +1,122 @@
+// Attack -> target -> defend section on the skill roll chat card.
+// Lives outside the sheet scope because chat cards render in the sidebar.
+
+.arkham-defend {
+    margin: var(--ah-space-3) 0 0;
+    padding: var(--ah-space-3) 0 0;
+    border-top: 1px solid var(--ah-line-strong);
+    // Rulebook double rule: a second hairline just below the first.
+    box-shadow: 0 3px 0 -2px var(--ah-line);
+}
+
+.arkham-defend-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ah-space-2);
+    margin-bottom: var(--ah-space-2);
+}
+
+.arkham-defend-title {
+    font-family: var(--ah-font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ah-ink);
+}
+
+.arkham-defend-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ah-space-2);
+    padding: 5px 0;
+    min-width: 0;
+
+    & + .arkham-defend-row {
+        border-top: 1px dotted var(--ah-line);
+    }
+
+    // Already reacted: the row recedes but stays readable. Opacity alone would
+    // be too little difference on the light paper, hence the additional offset
+    // surface.
+    &.is-defended {
+        opacity: 0.9;
+        background: rgba(30, 26, 20, 0.05);
+    }
+}
+
+.arkham-defend-target {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-2);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.arkham-defend-target-img {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border: 1px solid var(--ah-line-strong);
+    border-radius: var(--ah-radius);
+}
+
+.arkham-defend-target-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    font-family: var(--ah-font-text);
+}
+
+.arkham-defend-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-2);
+    flex: 0 0 auto;
+}
+
+.arkham-defend-button {
+    @include ah-button-quiet;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+    padding: 3px var(--ah-space-2);
+    line-height: 1.5;
+    font-size: 0.72rem;
+}
+
+.arkham-defend-status {
+    font-family: var(--ah-font-display);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    &.is-avoided {
+        color: var(--ah-good);
+    }
+
+    &.is-not-avoided {
+        color: var(--ah-bad);
+    }
+}
+
+.arkham-defend-hint {
+    flex: 1 0 100%;
+    font-size: 0.74rem;
+    font-style: italic;
+    color: var(--ah-ink-soft);
+}
+
+.arkham-defend-backlink {
+    margin: 0 0 var(--ah-space-2);
+    padding: 3px var(--ah-space-2);
+    border-left: 3px solid var(--ah-line-strong);
+    font-size: 0.74rem;
+    font-style: italic;
+    color: var(--ah-ink-soft);
+}

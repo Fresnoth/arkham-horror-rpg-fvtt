@@ -8,10 +8,14 @@ import { SpendInsightApp } from "../apps/spend-insight-app.mjs";
 import { MoneyAdjustApp } from "../apps/money-adjust-app.mjs";
 import { attuneTomeExclusive, understandTomeAndLearnSpells } from '../helpers/tome.mjs';
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
+import { getStrainButtonState, strainAndPost } from "../helpers/strain.mjs";
+import { openRecoveryDialog } from "../helpers/healing.mjs";
+import { openHealDialog } from "../api/rolls/index.mjs";
 import { refreshInsightAndPost } from "../helpers/insight.mjs";
 import { formatCurrency, spendMoney } from "../helpers/money.mjs";
 import { discardAllDice, discardDice, spendSimpleActionDie } from "../api/resources/index.mjs";
 import { setValue as setDicepoolValue } from "../api/dicepool/index.mjs";
+import { collectActorEffects, onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -77,7 +81,9 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
-        classes: ['sheet', 'actor', 'character'],
+        // `arkham-sheet` marks the sheets that carry the right-hand icon rail and therefore
+        // need an unclipped window frame (see src/scss/global/_window.scss).
+        classes: ['sheet', 'actor', 'character', 'arkham-sheet'],
         tag: 'form',
         position: {
             width: 700,
@@ -106,11 +112,20 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll,
             clickedSpendInsight: this.#handleClickedSpendInsight,
             clickedRefreshInsight: this.#handleClickedRefreshInsight,
+            clickedHealDamage: this.#handleClickedHealDamage,
+            clickedHealInjury: this.#handleClickedHealInjury,
+            clickedIntrospection: this.#handleClickedIntrospection,
+            clickedCounseling: this.#handleClickedCounseling,
+            clickedRecovery: this.#handleClickedRecovery,
             understandTomeFromList: this.#handleUnderstandTomeFromList,
             attuneTomeFromList: this.#handleAttuneTomeFromList,
             resetKnackUses: this.#handleResetKnackUses,
             resetAllKnackUses: this.#handleResetAllKnackUses,
             adjustMoney: this.#handleAdjustMoney,
+            effectCreate: this.#handleManageEffect,
+            effectEdit: this.#handleManageEffect,
+            effectDelete: this.#handleManageEffect,
+            effectToggle: this.#handleManageEffect,
         },
         form: {
             submitOnChange: true
@@ -137,7 +152,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         },
         tabs: {
             id: 'tabs',
-            template: 'templates/generic/tab-navigation.hbs'
+            template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-icons.hbs',
+            classes: ['arkham-tab-icons']
         },
         character: {
             id: 'character',
@@ -158,6 +174,11 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             id: 'supernatural_resources',
             template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-supernatural-resources.hbs',
             scrollable: ['']
+        },
+        effects: {
+            id: 'effects',
+            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/actor-effects.hbs',
+            scrollable: ['']
         }
     }
 
@@ -169,10 +190,11 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'character', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Character' },
-                    { id: 'mundane_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.MundaneResources' },
-                    { id: 'supernatural_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.SupernaturalResources' },
-                    { id: 'background', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Background' }
+                    { id: 'character', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Character', icon: 'fa-solid fa-user' },
+                    { id: 'mundane_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.MundaneResources', icon: 'fa-solid fa-sack-dollar' },
+                    { id: 'supernatural_resources', group: 'sheet', label: 'ARKHAM_HORROR.TABS.SupernaturalResources', icon: 'fa-solid fa-hat-wizard' },
+                    { id: 'background', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Background', icon: 'fa-solid fa-book-open' },
+                    { id: 'effects', group: 'sheet', label: 'ARKHAM_HORROR.TABS.Effects', icon: 'fa-solid fa-wand-sparkles' }
                 ],
             initial: 'character'
         }
@@ -387,8 +409,16 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         const rawMoney = context.system?.mundaneResources?.money ?? 0;
         context.moneyDisplay = formatCurrency(rawMoney);
 
+        context.strain = getStrainButtonState(this.document);
+
+        context.effects = prepareActiveEffectCategories(collectActorEffects(this.document));
+
         foundry.utils.mergeObject(context, items);
         return context;
+    }
+
+    static async #handleManageEffect(event, target) {
+        await onManageActiveEffect(event, this.document, target);
     }
 
     static async #handleAdjustMoney(event, target) {
@@ -775,29 +805,56 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     static async #handleClickedStrainOneself(event, target) {
         event.preventDefault();
+        await strainAndPost({ actor: this.actor, source: "sheet" });
+    }
 
-        if (!this.actor?.isOwner) {
-            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionStrainActor'));
-            return;
-        }
+    // Core p. 33-34: treating damage and injuries is a Knowledge roll on oneself or on the token
+    // currently targeted. Applying the result is left to the owner of that target.
+    static async #handleClickedHealDamage(event, target) {
+        event.preventDefault();
+        await openHealDialog(this.actor, { rollKind: "heal-damage" });
+    }
 
-        const currentDamage = Number(this.actor.system?.damage ?? 0);
-        if (currentDamage <= 0) {
-            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.StrainRequiresDamage'));
-            return;
-        }
+    static async #handleClickedHealInjury(event, target) {
+        event.preventDefault();
+        await openHealDialog(this.actor, { rollKind: "heal-injury" });
+    }
 
-        await refreshDicepoolAndPost({
-            actor: this.actor,
-            label: game.i18n.localize("ARKHAM_HORROR.ACTIONS.StrainOneself"),
-            healDamage: true,
-        });
+    // Core p. 38: Introspection is always aimed at oneself, Counseling at a target within earshot.
+    // Both only lower the horror limit by 1 once the roll succeeded, which happens on the card.
+    static async #handleClickedIntrospection(event, target) {
+        event.preventDefault();
+        await openHealDialog(this.actor, { rollKind: "introspection" });
+    }
 
-        InjuryTraumaRollApp.getInstance({
-            actor: this.actor,
-            rollKind: "injury",
-            rollSource: "strain",
-        }).render(true);
+    static async #handleClickedCounseling(event, target) {
+        event.preventDefault();
+        await openHealDialog(this.actor, { rollKind: "counseling" });
+    }
+
+    static async #handleClickedRecovery(event, target) {
+        event.preventDefault();
+        await openRecoveryDialog(this.actor, { source: "sheet" });
+    }
+
+    /**
+     * Recovery over time (core p. 33-34, p. 38) is a GM decision about the fiction, not a player
+     * action, and it is deliberately not tied to `game.time.worldTime`. The window header keeps it
+     * out of the players' sheet body while staying reachable for every actor.
+     * @inheritDoc
+     */
+    _getHeaderControls() {
+        const controls = super._getHeaderControls();
+        if (!game.user?.isGM) return controls;
+
+        return [
+            ...controls,
+            {
+                icon: 'fa-solid fa-bed',
+                label: 'ARKHAM_HORROR.HEALING.Recovery.MenuLabel',
+                action: 'clickedRecovery',
+            },
+        ];
     }
 
     static async #handleClickedRollWithWeapon(event, target) {

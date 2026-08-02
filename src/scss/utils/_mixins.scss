@@ -14,3 +14,201 @@
 @mixin hide {
   display: none;
 }
+
+// ---------------------------------------------------------------------------
+// Banner — the signature element of the official sheet.
+//
+// A black bar whose ends flare up and down and carry a V-notch on the outside.
+// Done purely with clip-path, so the shape grows with the text and no bitmap
+// is needed.
+//
+// The outline from the top left, clockwise:
+//   wing tip top l. -> bar top l. -> bar top r. -> wing tip top r.
+//   -> notch right -> wing tip bottom r. -> bar bottom r. -> bar bottom l.
+//   -> wing tip bottom l. -> notch left
+//
+// Important: clip-path also cuts away borders and shadows. A banner therefore
+// carries only its fill, no `border`.
+// ---------------------------------------------------------------------------
+@mixin ah-banner-shape {
+  clip-path: polygon(
+    0 0,
+    var(--ah-banner-wing) var(--ah-banner-flare),
+    calc(100% - var(--ah-banner-wing)) var(--ah-banner-flare),
+    100% 0,
+    calc(100% - var(--ah-banner-notch)) 50%,
+    100% 100%,
+    calc(100% - var(--ah-banner-wing)) calc(100% - var(--ah-banner-flare)),
+    var(--ah-banner-wing) calc(100% - var(--ah-banner-flare)),
+    0 100%,
+    var(--ah-banner-notch) 50%
+  );
+}
+
+// The text has to stay inside the centre bar, otherwise it runs into the
+// clipped wings. Rule of thumb for $pad-block: at least
+// `flare / (1 - 2*flare) * line-height`, so at 22 % a good two thirds of a
+// line. Hence the generous padding.
+@mixin ah-banner($font-size: 0.95rem, $pad-block: 11px) {
+  @include ah-banner-shape;
+
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: $pad-block 32px;
+  border: none;
+  background: var(--ah-banner);
+  color: var(--ah-banner-ink);
+  font-family: var(--ah-font-display);
+  font-size: $font-size;
+  font-weight: normal;
+  line-height: 1.15;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+// Paper surface with a vignette. The texture stays as a quiet grain
+// underneath, the cream wash on top brings it to the colour of the printed
+// sheet. No tiling: the image is laid over the area once.
+@mixin ah-paper-surface {
+  background-color: var(--ah-paper);
+  background-image:
+    radial-gradient(118% 96% at 50% 34%, rgba(236, 231, 225, 0) 42%, rgba(196, 187, 173, 0.62) 100%),
+    linear-gradient(rgba(238, 233, 226, 0.82), rgba(238, 233, 226, 0.82)),
+    url("../assets/images/sheet-background-v2.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%, 100% 100%, cover;
+  color: var(--ah-ink);
+}
+
+// Panel: slightly offset paper surface with the rulebook's thin double rule
+// (strong on the outside, hairline-thin on the inside via an inset shadow).
+@mixin ah-panel {
+  border: 1px solid var(--ah-line-strong);
+  border-radius: var(--ah-radius);
+  background: var(--ah-paper-raised);
+  box-shadow:
+    inset 0 0 0 1px rgba(236, 231, 225, 0.85),
+    0 1px 3px rgba(30, 26, 20, 0.10);
+  color: var(--ah-ink);
+}
+
+// Input field in sheet style: just a baseline, no panel within a panel.
+@mixin ah-field {
+  border: none;
+  border-bottom: 1px solid var(--ah-line-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ah-ink);
+  font-family: var(--ah-font-text);
+
+  &::placeholder {
+    color: var(--ah-ink-faint);
+    opacity: 1; // otherwise Firefox dims the placeholder a second time
+  }
+
+  &:hover:not(:disabled):not([readonly]) {
+    border-bottom-color: var(--ah-ink);
+    background: var(--ah-hover-wash);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-bottom-color: var(--ah-focus);
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 1px 0 0 var(--ah-focus);
+    color: var(--ah-ink);
+  }
+
+  &:disabled,
+  &[readonly] {
+    color: var(--ah-ink-soft);
+    border-bottom-style: dotted;
+  }
+}
+
+// Button: filled plate, the same inversion as the banner headings.
+@mixin ah-button {
+  border: 1px solid var(--ah-banner);
+  border-radius: var(--ah-radius);
+  background: var(--ah-banner);
+  color: var(--ah-banner-ink);
+  font-family: var(--ah-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--ah-accent);
+    border-color: var(--ah-accent);
+    color: var(--ah-banner-ink);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ah-focus);
+    outline-offset: 2px;
+  }
+
+  // Disabled has to stay readable on light paper — opacity alone is not enough
+  // for that, hence the dedicated paper/ink values.
+  &:disabled {
+    background: var(--ah-paper-sunken);
+    border-color: var(--ah-line);
+    color: var(--ah-ink-faint);
+    cursor: not-allowed;
+    opacity: 1;
+  }
+}
+
+// Restrained button on paper — for chat cards and secondary actions.
+@mixin ah-button-quiet {
+  border: 1px solid var(--ah-line-strong);
+  border-radius: var(--ah-radius);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--ah-ink);
+  font-family: var(--ah-font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ah-ink);
+    background: var(--ah-hover-wash);
+    color: var(--ah-ink);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ah-focus);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    border-style: dashed;
+    border-color: var(--ah-line);
+    background: transparent;
+    color: var(--ah-ink-faint);
+    cursor: not-allowed;
+    opacity: 1;
+  }
+}
+
+// Small caps label — the labelling typeface of the printed sheet.
+@mixin ah-caps($size: 0.72rem) {
+  font-family: var(--ah-font-display);
+  font-size: $size;
+  font-weight: normal;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ah-ink-soft);
+}

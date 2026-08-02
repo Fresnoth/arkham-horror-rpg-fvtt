@@ -28,11 +28,18 @@
       }
     },
     "Effect": {
-      "Source": "Source",
-      "Toggle": "Toggle Effect",
-      "Temporary": "Temporary Effects",
-      "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Source": "Herkunft",
+      "Toggle": "Effekt ein-/ausschalten",
+      "Temporary": "Temporäre Effekte",
+      "Passive": "Passive Effekte",
+      "Inactive": "Inaktive Effekte",
+      "Duration": "Dauer",
+      "None": "Keine Effekte in dieser Kategorie.",
+      "FromItem": "Stammt vom Gegenstand „{itemName}“",
+      "Errors": {
+        "DeleteOnItem": "Dieser Effekt gehört zum Gegenstand „{itemName}“ und kann nur dort gelöscht werden.",
+        "Permission": "Du darfst die Effekte dieses Akteurs nicht ändern."
+      }
     },
     "LABELS": {
       "Form": "Data",
@@ -57,13 +64,13 @@
       "LoadCapacity": "Tragfähigkeit (lbs)",
       "Weapons": "Waffen",
       "ProtectiveEquipment": "Schutzausrüstung",
-      "UsefulItems":"Nützliche Gegenstände",
+      "UsefulItems": "Nützliche Gegenstände",
       "OtherEquipment": "Andere Ausrüstung",
-      "Favors":"Gefallen",
-      "Spells":"Zauber",
+      "Favors": "Gefallen",
+      "Spells": "Zauber",
       "Tome": "Foliant",
-      "Tomes":"Bücher",
-      "Relics":"Relikte"
+      "Tomes": "Bücher",
+      "Relics": "Relikte"
     },
     "UNITS": {
       "Ft": "ft"
@@ -132,7 +139,12 @@
       "AppliesToSkills": "Gilt für Fertigkeiten",
       "AppliesToRollTypes": "Gilt für Wurftypen",
       "PenaltyPerDie": "Malus (pro Würfel)",
-      "PenaltyHint": "Wird automatisch als Malus auf passende Würfe angewendet. Doppelte Verletzungen stapeln nicht; alle Instanzen müssen geheilt werden, um den Effekt zu entfernen."
+      "PenaltyHint": "Wird automatisch als Malus auf passende Würfe angewendet. Doppelte Verletzungen stapeln nicht; alle Instanzen müssen geheilt werden, um den Effekt zu entfernen.",
+      "Healing": "Heilung",
+      "HealDifficulty": "Erfolge zum Heilen",
+      "HealDifficultyHint": "Standardmäßig 1, bei Schwer verletzt, Verlust eines Sinns und Komatös 2, bei Kritisch 3 (Grundregelwerk S. 33–34).",
+      "CanHealNaturally": "Heilt mit der Zeit",
+      "CanHealNaturallyHint": "Bei Kritisch aus — der einzigen Verletzung, die nie von allein heilt (Grundregelwerk S. 34)."
     },
     "TRAUMA_SHEET": {
       "Active": "Aktiv",
@@ -154,7 +166,7 @@
       "KnackTiers": "Kniff-Stufen",
       "DragDropHint": "Ziehe Kniff-Items per Drag & Drop auf eine Stufe unten, um ihre UUID hinzuzufügen (ohne Einbettung). Klicke auf einen Kniff-Namen, um die Beschreibung anzuzeigen."
     },
-    "DIFFICULTY":{
+    "DIFFICULTY": {
       "Normal": "Normal (1)",
       "Difficult": "Schwierig (2)",
       "VeryDifficult": "Sehr Schwierig (3)"
@@ -195,10 +207,10 @@
       "Negative": "Negativ",
       "NoneAssigned": "Kein Persönlichkeitstrait zugewiesen. Ziehe per Drag & Drop einen hierher."
     },
-    "PROPS":{
-      "Name":"Name",
+    "PROPS": {
+      "Name": "Name",
       "Quantity": "Menge",
-      "Skill":"Fertigkeit",
+      "Skill": "Fertigkeit",
       "Tier": "Stufe",
       "Rarity": "Seltenheit",
       "HasSpecialRules": "Hat Spezialregeln",
@@ -211,14 +223,14 @@
       "Spell": "Zauber",
       "Damage": "Schaden",
       "DamageShort": "S",
-      "InjuryRating":"Verletzungsgrad",
-      "InjuryRatingShort":"VG",
-      "Range":"Reichweite",
+      "InjuryRating": "Verletzungsgrad",
+      "InjuryRatingShort": "VG",
+      "Range": "Reichweite",
       "Engaged": "Nahkampf",
-      "Ammunition":"Munition",
+      "Ammunition": "Munition",
       "Costs": "Preis",
-      "Uses":"Verwendungen",
-      "Difficulty":"Schwierigkeit",
+      "Uses": "Verwendungen",
+      "Difficulty": "Schwierigkeit",
       "RollType": "Wurftyp",
       "RollFormula": "Wurf-Formel",
       "NumberOfDice": "Anzahl Würfel",
@@ -234,20 +246,20 @@
       "Benefit": "Vorteil",
       "Declining": "Abnehmend",
       "Losing": "Verlieren",
-      "Weight":"Gewicht",
-      "SpecialRules":"Spezialregeln",
-      "DefensiveBenefit":"Defensiver Vorteil"
+      "Weight": "Gewicht",
+      "SpecialRules": "Spezialregeln",
+      "DefensiveBenefit": "Defensiver Vorteil"
     },
-    "ACTIONS":{
-      "SpendInsight":"Einsicht ausgeben",
-      "RefreshInsight":"Einsicht erneuern",
-      "ClearDicePool":"Zurücksetzen",
+    "ACTIONS": {
+      "SpendInsight": "Einsicht ausgeben",
+      "RefreshInsight": "Einsicht erneuern",
+      "ClearDicePool": "Zurücksetzen",
       "DiscardDie": "Würfel verwerfen",
       "DiscardAllDice": "Alle Würfel verwerfen",
       "SpendRegularDie": "Normalen Würfel ausgeben",
       "SpendHorrorDie": "Horrorwürfel ausgeben",
-      "StrainOneself":"Sich belasten",
-      "RefreshDicePool":"Erneuern",
+      "StrainOneself": "Sich belasten",
+      "RefreshDicePool": "Erneuern",
       "Roll": "Würfeln",
       "ResetAllKnackUses": "Kniff-Verwendungen zurücksetzen",
       "ResetKnackUses": "Diesen Kniff zurücksetzen",
@@ -304,11 +316,9 @@
     },
     "Warnings": {
       "NpcKnackDropBlocked": "Nur-NPC-Kniffe können nicht zu Charakteren hinzugefügt werden.",
-
       "PermissionRollActor": "Du hast keine Berechtigung, für diesen Akteur zu würfeln.",
       "PermissionStrainActor": "Du hast keine Berechtigung, diesen Akteur zu belasten.",
       "StrainRequiresDamage": "Du kannst dich nur belasten, wenn dein Würfelpool-Maximum durch Schaden reduziert ist.",
-
       "ArchetypeKnackDropInvalid": "Ungültige Drag&Drop-Daten für einen Archetypen-Kniff.",
       "ArchetypeRequiredForKnacks": "Lege zuerst einen Archetypen auf diesen Akteur fest, bevor Kniffe gekauft werden.",
       "KnackDifferentArchetype": "Dieser Kniff gehört zu einem anderen Archetypen.",
@@ -317,23 +327,17 @@
       "KnackTierNotPurchasable": "Für Stufe {tier} können keine Kniffe gekauft werden (Maximum: {maxPurchasable}).",
       "KnackTierLimitReached": "Limit für Stufe {tier} erreicht ({existingTierCount}/{maxPurchasable}).",
       "SourceKnackResolveFailed": "Der Quell-Kniff konnte nicht aufgelöst werden.",
-
       "ActorHasNoArchetype": "Dieser Akteur hat keinen Archetypen festgelegt.",
       "ActorArchetypeUuidResolveFailed": "Die Archetypen-UUID des Akteurs konnte nicht aufgelöst werden.",
       "LinkedDocNotArchetype": "Das verknüpfte Dokument ist kein Archetyp.",
       "OpenArchetypeFailed": "Archetyp konnte nicht geöffnet werden.",
-
       "WeaponOutOfAmmo": "{itemName} hat keine Munition mehr! Bitte nachladen, bevor es verwendet wird.",
       "ResetKnackPermission": "Du hast keine Berechtigung, die Kniffe dieses Akteurs zurückzusetzen.",
       "RefreshKnackUsesPermission": "Du hast keine Berechtigung, die Kniff-Verwendungen dieses Akteurs zu erneuern.",
-
       "MacroOwnedItemsOnly": "Du kannst Makro-Buttons nur für besessene Gegenstände erstellen",
       "MacroItemNotFound": "Gegenstand {itemName} konnte nicht gefunden werden. Du musst dieses Makro eventuell löschen und neu erstellen.",
-
       "CombatAddCombatantsFirst": "Füge zuerst Kampfteilnehmer zum Encounter hinzu (Token-Kampfstatus umschalten) und beginne dann den Kampf.",
-
       "RerollSelectAtLeastOneDie": "Wähle mindestens einen Würfel zum erneuten Würfeln aus.",
-
       "RollKnacksNotApplicable": "Ein oder mehrere ausgewählte Kniffe gelten nicht mehr für diesen Wurf.",
       "RollReactionRequiresOneDie": "Reaktionswürfe erfordern 1 Würfel aus deinem Pool.",
       "RollAdvDisadvRequiresDie": "Vorteil/Nachteil erfordert mindestens 1 gewürfelten Würfel.",
@@ -346,18 +350,14 @@
       "SimpleActionInvalidAmount": "Ungültiger Betrag für eine einfache Aktion.",
       "SimpleActionInvalidHorrorSplit": "Die Anzahl der eingesetzten Horrorwürfel ist für diesen Wurf ungültig.",
       "SimpleActionSpendFailed": "Ausgeben für einfache Aktion fehlgeschlagen.",
-
       "InjuryTraumaFallingModeInjuryOnly": "Der Fallmodus gilt nur für Verletzungswürfe.",
       "InjuryTraumaFallingHeightMin": "Die Fallhöhe muss mindestens {minFt} ft betragen.",
-
       "SkillRerollInvalidCard": "Diese Chatkarte kann nicht erneut gewürfelt werden.",
       "SkillRerollActorResolveFailed": "Der Akteur für diesen Wurf konnte nicht aufgelöst werden.",
       "SkillRerollPermission": "Du hast keine Berechtigung, diesen Wurf erneut zu würfeln.",
       "SkillRerollNoSelectableDice": "Es wurden keine neu würfelbaren Würfel ausgewählt.",
-
       "RollTableEmptyResultName": "Würfeltabelle '{tableName}' hat zwar einen passenden Bereich, aber einen leeren Ergebnisnamen. Lege einen Namen für das Würfeltabellen-Ergebnis fest, sonst verwendet das System die eingebauten Fallback-Tabellen.",
       "RollTableOverflowAssumption": "Würfeltabelle '{tableName}' endet bei {tableMax}; behandle den obersten Eintrag als {tableMax}+ für Gesamt {total}.",
-
       "ItemOpenSourceKnackGmOnly": "Nur die SL kann Quell-Kniff-Dokumente aus einem Archetypen öffnen/bearbeiten.",
       "ItemUuidResolveFailed": "Die abgelegte UUID konnte nicht aufgelöst werden.",
       "ItemNoSheetForDocument": "Für dieses Dokument ist kein Sheet verfügbar.",
@@ -491,7 +491,9 @@
         "DieTotal": "Würfelsumme",
         "Modifier": "Modifikator",
         "Total": "Gesamt",
-        "Table": "Tabelle"
+        "Table": "Tabelle",
+        "HorrorTooltip": "Ausgelöst durch eine 1 auf einem Horrorwürfel",
+        "HorrorNote": "Ausgelöst durch eine gewürfelte 1 auf einem Horrorwürfel (Grundregelwerk S. 37)."
       }
     },
     "Dialog": {
@@ -601,23 +603,23 @@
       "agility": "Beweglichkeit",
       "athletics": "Athletik",
       "wits": "Verstand",
-      "presence": "Präsenz",
+      "presence": "Ausstrahlung",
       "intuition": "Intuition",
       "knowledge": "Wissen",
       "resolve": "Entschlossenheit",
-      "lore": "Lore"
+      "lore": "Geheimwissen"
     },
     "SKILL_SHORT": {
-      "agility": "AGI",
+      "agility": "BEW",
       "athletics": "ATH",
-      "wits": "WIT",
-      "presence": "PRES",
+      "wits": "VER",
+      "presence": "AUS",
       "intuition": "INT",
-      "knowledge": "KNOW",
-      "resolve": "RES",
-      "meleeCombat": "MELEE",
-      "rangedCombat": "RANGED",
-      "lore": "LORE"
+      "knowledge": "WIS",
+      "resolve": "ENT",
+      "meleeCombat": "NAH",
+      "rangedCombat": "FERN",
+      "lore": "GEH"
     },
     "NPC": {
       "NewKnack": "Neuer Kniff",
@@ -637,6 +639,230 @@
         "huge": "Riesig",
         "titanic": "Titanisch"
       }
+    },
+    "DEFEND": {
+      "SectionTitle": "Verteidigen",
+      "ReactionSkill": "Reaktion: {skill}",
+      "Button": "Verteidigen",
+      "StatusAvoided": "Ausgewichen",
+      "StatusNotAvoided": "Treffer bleibt",
+      "ReasonNoDice": "Keine Würfel im Pool — keine Reaktion möglich (Regelwerk S. 30).",
+      "ReasonAttackMissed": "Der Angriff hat verfehlt — keine Reaktion nötig.",
+      "ReasonActorNotFound": "Das Ziel wurde nicht gefunden.",
+      "ReasonSkillNotFound": "Das Ziel besitzt die benötigte Fertigkeit nicht.",
+      "ReasonUnavailable": "Derzeit ist keine Reaktion möglich.",
+      "RerollHint": "{items} erlaubt eine Wiederholung dieser Reaktion.",
+      "ReactionTo": "Reaktion auf den Angriff von {attacker}",
+      "LinkFailed": "Die Reaktion konnte nicht mit dem Angriff verknüpft werden."
+    },
+    "STRAIN": {
+      "Button": "Zusammenreißen",
+      "Wounded": "Verwundet",
+      "Spent": "Bereits genutzt",
+      "Tooltip": "Sich zusammenreißen: Setzt das Würfelpool-Limit auf das Maximum zurück. Du erleidest eine Verletzung.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "Kein Akteur ausgewählt.",
+        "ACTOR_TYPE_UNSUPPORTED": "Dieser Akteur kann sich nicht zusammenreißen.",
+        "NOT_DAMAGED": "Dein Würfelpool-Limit ist bereits auf dem Maximum.",
+        "MAJOR_NPC_REQUIRED": "Nur NSCs mit dem Knack „Major NPC“ können sich zusammenreißen.",
+        "ALREADY_STRAINED": "Dieser NSC hat sich bereits einmal zusammengerissen und kann es nicht erneut tun.",
+        "PERMISSION_DENIED": "Du hast keine Berechtigung, dich für diesen Akteur zusammenzureißen."
+      },
+      "Dialog": {
+        "Title": "Sich zusammenreißen",
+        "Prompt": "{actorName} setzt das Würfelpool-Limit auf das Maximum zurück.",
+        "Price": "Der Preis: eine Verletzung, sofort gewürfelt.",
+        "NpcOnce": "Ein Major NPC darf sich nur einmal zusammenreißen. Wird er danach verwundet, scheidet er nach Ermessen der SL sofort aus (tot oder bewusstlos).",
+        "Confirm": "Zusammenreißen",
+        "Cancel": "Abbrechen"
+      },
+      "Chat": {
+        "Label": "Sich zusammenreißen",
+        "Summary": "{actorName} reißt sich zusammen und stellt das Würfelpool-Limit wieder her ({oldDicePoolValue} → {newDicePoolValue} Würfel).",
+        "Price": "Preis: eine Verletzung.",
+        "NpcSpent": "{actorName} hat das einmalige Zusammenreißen nun verbraucht. Erneut verwundet, scheidet er aus."
+      }
+    },
+    "DAMAGE": {
+      "Button": "Schaden anwenden",
+      "Tooltip": "Den Schaden dieses Angriffs auf das Ziel anwenden.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "Kein Akteur ausgewählt.",
+        "ACTOR_NOT_FOUND": "Das Ziel wurde nicht gefunden.",
+        "PERMISSION_DENIED": "Du darfst diesen Akteur nicht verändern.",
+        "ATTACK_MISSED": "Der Angriff hat verfehlt — er richtet keinen Schaden an.",
+        "DEFENDED": "Das Ziel ist ausgewichen — der Angriff richtet gar nichts an (Regelwerk S. 30).",
+        "INVALID_AMOUNT": "Bitte eine ganze Zahl eingeben.",
+        "NO_CHANGE": "Weder Schaden noch Horror eingetragen.",
+        "UNAVAILABLE": "Derzeit kann kein Schaden angewendet werden."
+      },
+      "Dialog": {
+        "Title": "Schaden anwenden",
+        "Attacker": "Angreifer",
+        "Weapon": "Waffe",
+        "Target": "Ziel",
+        "Damage": "Schaden",
+        "Horror": "Horror",
+        "HorrorHint": "Optional — für Zauber und NPC-Knacks.",
+        "Injury": "Verletzung zufügen",
+        "InjuryHint": "{successes} Erfolge gegen Verletzungsrating {injuryRating} (Regelwerk S. 30).",
+        "Preview": "Poollimit {oldLimit} → {newLimit}",
+        "WoundedWarning": "{targetName} ist bei Limit 0 verwundet und kann sich nur noch zusammenreißen (Regelwerk S. 31).",
+        "HintsTitle": "Schadensreduktion des Ziels",
+        "HintsNote": "Nur Regeltext — es wird nichts automatisch verrechnet. Den Schaden von Hand anpassen.",
+        "HintsEmpty": "Bei diesem Ziel wurde keine Schadensreduktion gefunden.",
+        "Apply": "Anwenden",
+        "Cancel": "Abbrechen",
+        "HorrorPreview": "Horror-Limit {oldHorror} → {newHorror} (Horrorwürfel im Pool {oldHorrorInPool} → {newHorrorInPool})",
+        "HorrorAtMax": "{targetName} ist beim maximalen Horror-Limit von {max} — weiterer Horror bleibt wirkungslos (Grundregelwerk S. 36).",
+        "HorrorPrefilled": "Aus dem Angriff übernommen — änderbar."
+      },
+      "Chat": {
+        "Label": "Schaden",
+        "Summary": "{targetName} erleidet {amount} Schaden (Poollimit {oldLimit} → {newLimit}).",
+        "NoDamage": "{targetName} erleidet keinen Schaden.",
+        "Horror": "{targetName} erhält {horror} Horror (Horror-Limit {oldHorror} → {newHorror}).",
+        "Source": "Von {attackerName} mit {weaponName}.",
+        "SourceAttacker": "Von {attackerName}.",
+        "Wounded": "{targetName} ist verwundet — keine Aktionen, bis er/sie sich zusammenreißt (Regelwerk S. 31).",
+        "HorrorCapped": "{requested} Horror wurden auf {applied} gekürzt: Das Horror-Limit von {targetName} kann das Würfelpool-Maximum nicht überschreiten.",
+        "HorrorAtMax": "Das Horror-Limit von {targetName} liegt bereits auf dem Würfelpool-Maximum — weiterer Horror wirkt nicht."
+      }
+    },
+    "HEALING": {
+      "Button": "Heilung anwenden",
+      "Tooltip": "Das Ergebnis dieses Heilwurfs auf das Ziel anwenden.",
+      "SectionTitle": "Heilung",
+      "RollKind": {
+        "heal-damage": "Schaden heilen",
+        "heal-injury": "Verletzung heilen",
+        "introspection": "Selbstreflexion",
+        "counseling": "Zuspruch"
+      },
+      "Reasons": {
+        "ACTOR_REQUIRED": "Kein Akteur ausgewählt.",
+        "ACTOR_NOT_FOUND": "Das Ziel wurde nicht gefunden.",
+        "PERMISSION_DENIED": "Du darfst diesen Akteur nicht verändern.",
+        "INVALID_AMOUNT": "Bitte eine ganze Zahl eingeben.",
+        "NO_CHANGE": "Es würde sich nichts ändern.",
+        "INJURY_NOT_FOUND": "Diese Verletzung ist nicht mehr am Ziel.",
+        "NOT_AN_INJURY": "Nur Verletzungen lassen sich heilen — Traumas nie (Grundregelwerk S. 38).",
+        "ROLL_FAILED": "Der Wurf ist misslungen — das Horror-Limit bleibt (Grundregelwerk S. 38).",
+        "NO_SUCCESSES": "Ohne Erfolg gibt es nichts zu heilen (Grundregelwerk S. 33).",
+        "CARD_UPDATE_FAILED": "Die Wurfkarte konnte nicht um den Heilbereich ergänzt werden.",
+        "UNAVAILABLE": "Heilung ist gerade nicht möglich."
+      },
+      "Dialog": {
+        "Title": "Heilung anwenden",
+        "TitleHorror": "Horror überwinden",
+        "Healer": "Heiler",
+        "Target": "Ziel",
+        "Successes": "Wurf",
+        "Damage": "Schaden heilen",
+        "DamageHint": "1 Schaden je Erfolg (Grundregelwerk S. 33). Konfigurierte Gegenstandseffekte sind oben bereits verrechnet.",
+        "Preview": "Poollimit {oldLimit} → {newLimit}",
+        "HorrorPreview": "Horror-Limit {oldHorror} → {newHorror}",
+        "HorrorHint": "Ein Erfolg senkt das Limit um genau 1, unabhängig von der Erfolgszahl (Grundregelwerk S. 38).",
+        "RollFailed": "Der Wurf war nicht erfolgreich.",
+        "NoHorror": "Das Horror-Limit steht bereits auf 0.",
+        "InjuriesTitle": "Verletzungen des Ziels",
+        "InjuriesNote": "Gewürfelte Erfolge: {successes}. Schwerere Verletzungen brauchen einen weiteren Wurf (Grundregelwerk S. 33–34).",
+        "InjuriesEmpty": "Dieses Ziel hat keine Verletzungen.",
+        "InjuryDifficulty": "Erfolge: {difficulty}",
+        "HintsTitle": "Medizinisches Material des Heilers",
+        "HintsNote": "Nur am Regeltext erkannt, ohne konfigurierten Effekt — den Betrag von Hand anpassen, wenn etwas davon greift.",
+        "HintsEmpty": "Kein medizinisches Material beim Heiler gefunden.",
+        "NotesTitle": "Entscheidet die Spielleitung",
+        "NoteEngaged": "Das Ziel muss engagiert sein oder der Heiler selbst (Grundregelwerk S. 29/33).",
+        "NoteNarrative": "Normale Heilung geschieht nur in narrativen Szenen (Grundregelwerk S. 33).",
+        "NoteOncePerScene": "Ein Charakter darf dasselbe Ziel nur einmal pro Szene behandeln (Grundregelwerk S. 33).",
+        "Apply": "Anwenden",
+        "Cancel": "Abbrechen",
+        "EffectsTitle": "Angewendete Gegenstandseffekte",
+        "InjuryDifficultyReduced": "Erfolge: {difficulty} (statt {original})"
+      },
+      "Chat": {
+        "Label": "Heilung",
+        "LabelHorror": "Horror überwinden",
+        "LabelRecovery": "Erholung",
+        "Summary": "{targetName} heilt {amount} Schaden (Poollimit {oldLimit} → {newLimit}).",
+        "NoHealing": "{targetName} heilt keinen Schaden.",
+        "Injury": "Geheilt: {injuryName}",
+        "Horror": "{targetName} senkt das Horror-Limit ({oldHorror} → {newHorror}).",
+        "Recovery": "{targetName} ruht sich aus: {spanLabel}.",
+        "RecoveryDamage": "{targetName} heilt {healedDamage} Schaden — das Poollimit steht wieder auf dem Maximum.",
+        "RecoveryHorror": "Das Horror-Limit von {targetName} fällt von {oldHorror} auf 0 (Grundregelwerk S. 38).",
+        "BlockedTitle": "Heilt nicht von allein:",
+        "Source": "Behandelt von {healerName}."
+      },
+      "Treatment": {
+        "Legend": "Behandlung",
+        "HealDamageHint": "Wissen, an sich selbst oder einem engagierten Ziel: heilt 1 Schaden je Erfolg (Grundregelwerk S. 33).",
+        "HealInjuryHint": "Wissen, an sich selbst oder einem engagierten Ziel: heilt eine Verletzung, die 1–3 Erfolge braucht (Grundregelwerk S. 33–34)."
+      },
+      "Horror": {
+        "Legend": "Horror",
+        "Limit": "Horror-Limit",
+        "IntrospectionHint": "Entschlossenheit, an sich selbst: Ein Erfolg senkt das Horror-Limit um 1 (Grundregelwerk S. 38).",
+        "CounselingHint": "Ausstrahlung, an einem Ziel in Hörweite: Ein Erfolg senkt dessen Horror-Limit um 1 (Grundregelwerk S. 38)."
+      },
+      "Recovery": {
+        "MenuLabel": "Erholung",
+        "Span": {
+          "night": "Nachtruhe (8 Stunden)",
+          "week": "Eine Woche",
+          "twoWeeks": "Zwei Wochen"
+        },
+        "Dialog": {
+          "Title": "Erholung",
+          "Prompt": "Wie viel Zeit bekommt {actorName}?",
+          "Span": "Zeitraum",
+          "Note": "Bewusst nicht an die Weltzeit gekoppelt — den Zeitraum bestimmst du. Die Nachtruhe stellt das Poollimit her, eine Woche heilt zusätzlich leichte Verletzungen und das Horror-Limit, zwei Wochen auch die schwereren.",
+          "Apply": "Anwenden"
+        },
+        "Chat": {
+          "Label": "Erholung"
+        }
+      }
+    },
+    "TRAUMA": {
+      "Tooltip": "Trauma auf Tabelle 2–2 würfeln. Der Modifikator berücksichtigt bereits die vorhandenen Traumas.",
+      "Reasons": {
+        "ACTOR_NOT_FOUND": "Der betroffene Charakter wurde nicht gefunden.",
+        "ACTOR_TYPE_UNSUPPORTED": "Dieser Akteur kann kein Trauma erleiden.",
+        "NO_HORROR_ONES": "Keine neuen Einsen auf Horrorwürfeln."
+      },
+      "Chat": {
+        "Label": "Trauma",
+        "Summary": "{actorName} würfelt {horrorOnes} Eins(en) auf Horrorwürfeln und erleidet ein Trauma (Grundregelwerk S. 37).",
+        "Severity": "Jede weitere Eins verschlimmert es: Modifikator +{severityModifier} auf den Trauma-Wurf.",
+        "Note": "Der Wurf erfolgt nicht automatisch — die Spielleitung bestimmt den Zeitpunkt.",
+        "RollButton": "Trauma würfeln"
+      },
+      "Settings": {
+        "AutoReport": {
+          "Name": "Traumas aus Horror-Einsen automatisch melden",
+          "Hint": "Nach jedem Fertigkeitswurf werden Einsen auf Horrorwürfeln als Trauma gemeldet, mit Knopf für den Trauma-Wurf (Grundregelwerk S. 37). Ausschalten, um Traumas vollständig von Hand zu führen."
+        }
+      }
+    },
+    "ROLLEFFECTS": {
+      "AddSuccesses": "{count} Erfolg",
+      "HealDamage": "heilt {count} Schaden",
+      "HealInjury": "Verletzungsschwierigkeit -1",
+      "ReduceHorrorLimit": "Horror-Limit -{count}"
+    },
+    "ROLL_EFFECT_SHEET": {
+      "AddSuccesses": "Gewährte Erfolge",
+      "AddSuccessesHint": "Wird nach dem Auszählen der Würfel zu den Erfolgen addiert. Bringt keine zusätzlichen Würfel.",
+      "HealDamage": "Zusätzlich geheilter Schaden",
+      "HealDamageHint": "Kommt zu dem 1 Schaden je Erfolg hinzu, den ein Heilwurf wiederherstellt.",
+      "HealInjury": "Senkt die Verletzungsschwierigkeit",
+      "HealInjuryHint": "Eine Verletzung braucht einen Erfolg weniger, um geheilt zu werden — nie weniger als einen.",
+      "ReduceHorrorLimit": "Zusätzliche Horror-Stufen",
+      "ReduceHorrorLimitHint": "Kommt zu der einen Stufe hinzu, die eine gelungene Selbstreflexion oder ein gelungener Zuspruch gewährt.",
+      "DecreaseAfterUsage": "Verbraucht eine Ladung",
+      "DecreaseAfterUsageHint": "Jede Verwendung senkt die verbleibenden Ladungen, auch wenn die Häufigkeit selbst unbegrenzt ist."
     }
   },
   "ITEM": {
@@ -683,7 +909,7 @@
       "clearUnderstoodButton": "Verstanden zurücksetzen",
       "inaccessibleSpells": "Dieser Foliant enthält {count} Zauber, die du nicht ansehen darfst."
     },
-    "UsefulItem":{
+    "UsefulItem": {
       "uses": "Uses",
       "weight": "Weight",
       "specialRules": "Spezialregeln"

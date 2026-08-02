@@ -50,10 +50,14 @@ function normalizeRollMode(mode) {
   return "standard";
 }
 
+// Known triggers of an injury/trauma roll. The chat card shows its own icon and an explanatory
+// sentence per source; an unknown value deliberately falls back to "", so the card stays neutral
+// rather than showing an empty text block.
+const ROLL_SOURCES = new Set(["strain", "horror"]);
+
 function normalizeRollSource(source) {
   const s = String(source ?? "").toLowerCase();
-  if (s === "strain") return "strain";
-  return "";
+  return ROLL_SOURCES.has(s) ? s : "";
 }
 
 function lookupFallbackEntry(kind, traumaVariant, total) {

@@ -1,5 +1,5 @@
 import { refreshDicepoolAndPost } from "../../helpers/dicepool.mjs";
-import { openInjuryTraumaDialog } from "../rolls/index.mjs";
+import { strainAndPost } from "../../helpers/strain.mjs";
 
 function toNumber(value, fallback = 0) {
   const n = Number(value);
@@ -150,40 +150,13 @@ export async function refresh(actor, {
   };
 }
 
-export async function strain(actor, {
-  source = "api",
-} = {}) {
-  if (!actor) return { ok: false, reason: "ACTOR_REQUIRED" };
-
-  if (!actor?.isOwner) {
-    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.Warnings.PermissionStrainActor"));
-    return { ok: false, reason: "PERMISSION_DENIED" };
-  }
-
-  const currentDamage = Number(actor.system?.damage ?? 0) || 0;
-  if (currentDamage <= 0) {
-    ui.notifications.warn(game.i18n.localize("ARKHAM_HORROR.Warnings.StrainRequiresDamage"));
-    return { ok: false, reason: "NO_DAMAGE_TO_STRAIN" };
-  }
-
-  const refreshResult = await refreshDicepoolAndPost({
-    actor,
-    label: game.i18n.localize("ARKHAM_HORROR.ACTIONS.StrainOneself"),
-    healDamage: true,
-  });
-
-  const injuryResult = await openInjuryTraumaDialog(actor, {
-    rollKind: "injury",
-    rollSource: "strain",
-  });
-
-  return {
-    ok: true,
-    reason: null,
-    source,
-    refresh: refreshResult,
-    injury: injuryResult,
-  };
+/**
+ * Kept for callers that already reach for `api.dicepool.strain`. The rule itself lives in
+ * `helpers/strain.mjs`, which also enforces the NPC restrictions this entry point never had.
+ * @deprecated prefer `api.resources.strain`
+ */
+export async function strain(actor, options = {}) {
+  return strainAndPost({ actor, source: "api", ...options });
 }
 
 export const dicepoolApi = {

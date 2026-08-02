@@ -185,9 +185,9 @@
                         <span>{{item.name}}</span>
                     </div>
                     <div class='item-prop'>{{formatCurrency item.system.cost}}</div>
-                    <div class="item-prop"><input type="text" value="{{item.system.uses.current}}"
-                            data-item-stat="system.uses.current" class="item-editable-stat ammo_input"> /
-                        {{item.system.uses.max}}</div>
+                    <div class="item-prop"><input type="text" value="{{item.system.usage.remaining}}"
+                            data-item-stat="system.usage.remaining" class="item-editable-stat ammo_input"> /
+                        {{item.system.usage.max}}</div>
                     <div class='item-controls'>
                         <a class='item-control item-edit' data-action="editItem"
                             title='{{localize "DOCUMENT.Update" type=(localize "TYPES.Item.useful_item")}}'>

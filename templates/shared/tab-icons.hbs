@@ -1,0 +1,13 @@
+{{!-- Sheet tabs as a vertical icon rail that hangs outside the right window edge.
+      The label is only carried as a tooltip / aria-label, the rail itself shows icons only.
+      Requires `overflow: visible` on the window frame, see src/scss/global/_window.scss. --}}
+<nav class="sheet-tabs tabs arkham-icon-tabs"
+     aria-roledescription="{{localize "SHEETS.FormNavLabel"}}">
+    {{#each tabs}}
+    <a class="icon-tab {{this.cssClass}}" data-action="tab" data-group="{{this.group}}" data-tab="{{this.id}}"
+       data-tooltip="{{localize this.label}}" data-tooltip-direction="LEFT"
+       aria-label="{{localize this.label}}">
+        <i class="{{this.icon}}" inert></i>
+    </a>
+    {{/each}}
+</nav>

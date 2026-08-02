@@ -5,14 +5,20 @@ import { ArkhamHorrorItem } from "../documents/item.mjs";
 import { DiceRollApp } from '../apps/dice-roll-app.mjs';
 import { InjuryTraumaRollApp } from '../apps/injury-trauma-roll-app.mjs';
 import { refreshDicepoolAndPost } from "../helpers/dicepool.mjs";
+import { getStrainButtonState, strainAndPost } from "../helpers/strain.mjs";
+import { openRecoveryDialog } from "../helpers/healing.mjs";
 import { setValue as setDicepoolValue } from "../api/dicepool/index.mjs";
+import { discardDice, spendSimpleActionDie } from "../helpers/resources.mjs";
+import { collectActorEffects, onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
 export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
 
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
-        classes: ['sheet', 'actor', 'npc'],
+        // `arkham-sheet` marks the sheets that carry the right-hand icon rail and therefore
+        // need an unclipped window frame (see src/scss/global/_window.scss).
+        classes: ['sheet', 'actor', 'npc', 'arkham-sheet'],
         tag: 'form',
         position: {
             width: 700,
@@ -20,8 +26,12 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         },
         actions: {
             clickedDicePool: this.#handleClickedDicePool,
+            clickedDiscardDie: this.#handleClickedDiscardDie,
+            clickedSpendRegularDie: this.#handleClickedSpendRegularDie,
+            clickedSpendHorrorDie: this.#handleClickedSpendHorrorDie,
             clickedClearDicePool: this.#handleClickedClearDicePool,
             clickedStrainOneself: this.#handleClickedStrainOneself,
+            clickedRecovery: this.#handleClickedRecovery,
             editItem: this.#handleEditItem,
             createItem: this.#handleCreateItem,
             createNpcKnack: this.#handleCreateNpcKnack,
@@ -36,7 +46,11 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             clickedRefreshDicePool: this.#handleClickedRefreshDicePool,
             clickedRollWithWeapon: this.#handleClickedRollWithWeapon,
             clickedRollWithSpell: this.#handleClickedRollWithSpell,
-            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll
+            clickedInjuryTraumaRoll: this.#handleClickedInjuryTraumaRoll,
+            effectCreate: this.#handleManageEffect,
+            effectEdit: this.#handleManageEffect,
+            effectDelete: this.#handleManageEffect,
+            effectToggle: this.#handleManageEffect,
         },
         form: {
             submitOnChange: true
@@ -63,7 +77,8 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         },
         tabs: {
             id: 'tabs',
-            template: 'templates/generic/tab-navigation.hbs'
+            template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-icons.hbs',
+            classes: ['arkham-tab-icons']
         },
         npc: {
             id: 'npc',
@@ -77,6 +92,11 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         biography: {
             id: 'biography',
             template: 'systems/arkham-horror-rpg-fvtt/templates/shared/tab-biography.hbs'
+        },
+        effects: {
+            id: 'effects',
+            template: 'systems/arkham-horror-rpg-fvtt/templates/actor/parts/actor-effects.hbs',
+            scrollable: ['']
         }
     }
 
@@ -88,9 +108,10 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
         sheet: { // this is the group name
             tabs:
                 [
-                    { id: 'npc', label: 'ARKHAM_HORROR.TABS.NPC', group: 'sheet' },
-                    { id: 'abilities', label: 'ARKHAM_HORROR.TABS.Abilities', group: 'sheet' },
-                    { id: 'biography', label: 'ARKHAM_HORROR.TABS.Biography', group: 'sheet' }
+                    { id: 'npc', label: 'ARKHAM_HORROR.TABS.NPC', group: 'sheet', icon: 'fa-solid fa-user' },
+                    { id: 'abilities', label: 'ARKHAM_HORROR.TABS.Abilities', group: 'sheet', icon: 'fa-solid fa-bolt' },
+                    { id: 'biography', label: 'ARKHAM_HORROR.TABS.Biography', group: 'sheet', icon: 'fa-solid fa-book-open' },
+                    { id: 'effects', label: 'ARKHAM_HORROR.TABS.Effects', group: 'sheet', icon: 'fa-solid fa-wand-sparkles' }
                 ],
             initial: 'npc'
         }
@@ -141,9 +162,17 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
             }
         );
 
+        context.strain = getStrainButtonState(this.document);
+
+        context.effects = prepareActiveEffectCategories(collectActorEffects(this.document));
+
         let items = this._prepareItems();
         foundry.utils.mergeObject(context, items);
         return context;
+    }
+
+    static async #handleManageEffect(event, target) {
+        await onManageActiveEffect(event, this.document, target);
     }
 
     _prepareItems() {
@@ -235,6 +264,47 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
     static async #handleClickedClearDicePool(event, target) {
         event.preventDefault();
         this.actor.update({ 'system.dicepool.value': 0, 'system.dicepool.horrorInPool': 0 });
+    }
+
+    // The dice pool strip is shared with the character sheet and emits six actions; these three
+    // were missing here, so the buttons did nothing on the NPC sheet (issue #37).
+    // The helpers are actor-type agnostic — the same logic as on the character sheet.
+    static async #handleClickedDiscardDie(event, _target) {
+        event.preventDefault();
+        const outcome = await discardDice(this.actor, {
+            amount: 1, context: 'discard', postChat: true, chatVisibility: 'public', source: 'sheet',
+        });
+        if (!outcome?.ok) ArkhamHorrorNpcSheet.#notifySimpleSpendFailure(outcome?.reason);
+    }
+
+    static async #handleClickedSpendRegularDie(event, _target) {
+        event.preventDefault();
+        const outcome = await spendSimpleActionDie(this.actor, {
+            dieType: 'regular', context: 'simple', postChat: true, chatVisibility: 'public', source: 'sheet',
+        });
+        if (!outcome?.ok) ArkhamHorrorNpcSheet.#notifySimpleSpendFailure(outcome?.reason);
+    }
+
+    static async #handleClickedSpendHorrorDie(event, _target) {
+        event.preventDefault();
+        const outcome = await spendSimpleActionDie(this.actor, {
+            dieType: 'horror', context: 'simple', postChat: true, chatVisibility: 'public', source: 'sheet',
+        });
+        if (!outcome?.ok) ArkhamHorrorNpcSheet.#notifySimpleSpendFailure(outcome?.reason);
+    }
+
+    static #notifySimpleSpendFailure(reason) {
+        const reasonMap = {
+            PERMISSION_DENIED: 'ARKHAM_HORROR.Warnings.PermissionRollActor',
+            INSUFFICIENT_HORROR: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientHorror',
+            INSUFFICIENT_REGULAR: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientRegular',
+            INSUFFICIENT_DICEPOOL: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientDicepool',
+            INSUFFICIENT_RESOURCE: 'ARKHAM_HORROR.Warnings.SimpleActionInsufficientDicepool',
+            AMOUNT_INVALID: 'ARKHAM_HORROR.Warnings.SimpleActionInvalidAmount',
+            HORROR_EXCEEDS_TOTAL: 'ARKHAM_HORROR.Warnings.SimpleActionInvalidHorrorSplit',
+        };
+        const key = reasonMap[String(reason ?? '')] ?? 'ARKHAM_HORROR.Warnings.SimpleActionSpendFailed';
+        ui.notifications.warn(game.i18n.localize(key));
     }
 
     static async #handleClickedInjuryTraumaRoll(event, target) {
@@ -449,29 +519,31 @@ export class ArkhamHorrorNpcSheet extends HandlebarsApplicationMixin(ActorSheetV
 
     static async #handleClickedStrainOneself(event, target) {
         event.preventDefault();
+        await strainAndPost({ actor: this.actor, source: "sheet" });
+    }
 
-        if (!this.actor?.isOwner) {
-            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.PermissionStrainActor'));
-            return;
-        }
+    static async #handleClickedRecovery(event, target) {
+        event.preventDefault();
+        await openRecoveryDialog(this.actor, { source: "sheet" });
+    }
 
-        const currentDamage = Number(this.actor.system?.damage ?? 0);
-        if (currentDamage <= 0) {
-            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.StrainRequiresDamage'));
-            return;
-        }
+    /**
+     * Same GM tool as on the character sheet: NPCs carry damage and injuries too, and the GM should
+     * be able to grant them a night's rest or a week without leaving the sheet.
+     * @inheritDoc
+     */
+    _getHeaderControls() {
+        const controls = super._getHeaderControls();
+        if (!game.user?.isGM) return controls;
 
-        await refreshDicepoolAndPost({
-            actor: this.actor,
-            label: game.i18n.localize("ARKHAM_HORROR.ACTIONS.StrainOneself"),
-            healDamage: true,
-        });
-
-        InjuryTraumaRollApp.getInstance({
-            actor: this.actor,
-            rollKind: "injury",
-            rollSource: "strain",
-        }).render(true);
+        return [
+            ...controls,
+            {
+                icon: 'fa-solid fa-bed',
+                label: 'ARKHAM_HORROR.HEALING.Recovery.MenuLabel',
+                action: 'clickedRecovery',
+            },
+        ];
     }
 
     static async #handleClickedRollWithWeapon(event, target) {

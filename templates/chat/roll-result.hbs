@@ -208,6 +208,66 @@
         {{/if}}
 
 
+        {{#if showDefendSection}}
+            <div class="arkham-defend" data-role="defendSection">
+                <div class="arkham-defend-header">
+                    <span class="arkham-defend-title">{{localize "ARKHAM_HORROR.DEFEND.SectionTitle"}}</span>
+                    <span class="arkham-roll-flag is-diff">{{localize "ARKHAM_HORROR.DEFEND.ReactionSkill" skill=defendSkillLabel}}</span>
+                </div>
+                {{#each targets}}
+                    <div class="arkham-defend-row" data-target-uuid="{{this.tokenUuid}}" data-actor-uuid="{{this.actorUuid}}">
+                        <span class="arkham-defend-target" title="{{this.name}}">
+                            {{#if this.img}}<img class="arkham-defend-target-img" src="{{this.img}}" alt="">{{/if}}
+                            <span class="arkham-defend-target-name">{{this.name}}</span>
+                        </span>
+                        <span class="arkham-defend-actions">
+                            <button type="button" class="arkham-defend-button" data-action="arkham-defend"
+                                    data-target-uuid="{{this.tokenUuid}}" data-actor-uuid="{{this.actorUuid}}"
+                                    data-target-name="{{this.name}}">
+                                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                                <span>{{localize "ARKHAM_HORROR.DEFEND.Button"}}</span>
+                            </button>
+                            <span class="arkham-defend-status" data-role="defendStatus" hidden></span>
+                            <button type="button" class="arkham-damage-button" data-action="arkham-apply-damage"
+                                    data-target-uuid="{{this.tokenUuid}}" data-actor-uuid="{{this.actorUuid}}"
+                                    data-target-name="{{this.name}}">
+                                <i class="fa-solid fa-heart-crack" aria-hidden="true"></i>
+                                <span>{{localize "ARKHAM_HORROR.DAMAGE.Button"}}</span>
+                            </button>
+                        </span>
+                        <span class="arkham-defend-hint" data-role="defendHint" hidden></span>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+
+        {{!-- Healing (core p. 33/34/38). The section is added after the roll by
+              `helpers/healing.mjs`, which re-renders this template with the heal data. --}}
+        {{#if showHealSection}}
+            <div class="arkham-heal" data-role="healSection">
+                <div class="arkham-heal-header">
+                    <span class="arkham-heal-title">{{localize "ARKHAM_HORROR.HEALING.SectionTitle"}}</span>
+                    <span class="arkham-roll-flag is-diff">{{localize (concat "ARKHAM_HORROR.HEALING.RollKind." healRollKind)}}</span>
+                </div>
+                {{#each healTargets}}
+                    <div class="arkham-heal-row" data-target-uuid="{{this.tokenUuid}}" data-actor-uuid="{{this.actorUuid}}">
+                        <span class="arkham-heal-target" title="{{this.name}}">
+                            {{#if this.img}}<img class="arkham-heal-target-img" src="{{this.img}}" alt="">{{/if}}
+                            <span class="arkham-heal-target-name">{{this.name}}</span>
+                        </span>
+                        <span class="arkham-heal-actions">
+                            <button type="button" class="arkham-heal-button" data-action="arkham-apply-healing"
+                                    data-target-uuid="{{this.tokenUuid}}" data-actor-uuid="{{this.actorUuid}}"
+                                    data-target-name="{{this.name}}">
+                                <i class="fa-solid fa-kit-medical" aria-hidden="true"></i>
+                                <span>{{localize "ARKHAM_HORROR.HEALING.Button"}}</span>
+                            </button>
+                        </span>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+
         <footer class="arkham-roll-footer">
             {{#if isReroll}}
                 <span class="arkham-roll-footer-right">{{localize "ARKHAM_HORROR.Chat.RollResult.DicePoolUnchangedReroll"}}</span>

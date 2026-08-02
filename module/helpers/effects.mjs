@@ -1,36 +1,167 @@
+/** Artwork a freshly created ActiveEffect starts with. */
+const NEW_EFFECT_IMG = 'icons/svg/aura.svg';
+
+/**
+ * Collect every ActiveEffect that applies to an Actor, including the ones transferred from owned
+ * Items. The system runs with `CONFIG.ActiveEffect.legacyTransferral = false`, so those effects stay
+ * on the Item and only *apply* to the Actor — `actor.effects` alone would not list them.
+ * @param {Actor} actor
+ * @returns {ActiveEffect[]}
+ */
+export function collectActorEffects(actor) {
+  if (!actor) return [];
+  if (typeof actor.allApplicableEffects === 'function') return [...actor.allApplicableEffects()];
+  return [...(actor.effects ?? [])];
+}
+
+/**
+ * Whether an effect is owned by an Item rather than by the Actor sheet showing it.
+ * @param {ActiveEffect} effect
+ * @returns {boolean}
+ */
+export function isItemOwnedEffect(effect) {
+  return effect?.parent?.documentName === 'Item';
+}
+
+/**
+ * Resolve the ActiveEffect a clicked sheet control belongs to.
+ * The row carries the full UUID rather than an id, because item-transferred effects are not part of
+ * `owner.effects` and could not be looked up on the Actor.
+ * @param {HTMLElement} target    The clicked control
+ * @returns {ActiveEffect|null}
+ */
+export function resolveEffectFromTarget(target) {
+  const uuid = target?.closest?.('[data-effect-uuid]')?.dataset?.effectUuid;
+  if (!uuid) return null;
+  return fromUuidSync(uuid) ?? null;
+}
+
+/**
+ * Create a new ActiveEffect on the owning document, pre-set for the category it was created in.
+ * @param {Actor|Item} owner
+ * @param {string} [type]         One of `temporary`, `passive`, `inactive`
+ */
+export async function createActiveEffect(owner, type = 'passive') {
+  return owner.createEmbeddedDocuments('ActiveEffect', [{
+    name: game.i18n.format('DOCUMENT.New', { type: game.i18n.localize('DOCUMENT.ActiveEffect') }),
+    img: NEW_EFFECT_IMG,
+    origin: owner.uuid,
+    duration: type === 'temporary' ? { rounds: 1 } : {},
+    disabled: type === 'inactive'
+  }]);
+}
+
+/**
+ * Delete an ActiveEffect. Effects belonging to an Item are refused here: they are part of that Item
+ * and removing them from the Actor sheet would silently edit the Item for every owner of it.
+ * @param {ActiveEffect} effect
+ */
+export async function deleteActiveEffect(effect) {
+  if (!effect) return;
+  if (isItemOwnedEffect(effect)) {
+    ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Effect.Errors.DeleteOnItem', {
+      itemName: effect.parent?.name ?? ''
+    }));
+    return;
+  }
+  return effect.delete();
+}
+
 /**
  * Manage Active Effect instances through an Actor or Item Sheet via effect control buttons.
- * @param {MouseEvent} event      The left-click event on the effect control
+ * The action names are effect specific (`effectCreate`, `effectEdit`, `effectDelete`,
+ * `effectToggle`) so they cannot collide with the item controls the sheets already register.
+ * @param {Event} event           The originating click event
  * @param {Actor|Item} owner      The owning document which manages this effect
+ * @param {HTMLElement} target    The clicked control (ApplicationV2 passes it explicitly, because
+ *                                `event.currentTarget` is the delegating form root)
  */
-export function onManageActiveEffect(event, owner) {
-  event.preventDefault();
-  const a = event.currentTarget;
-  const li = a.closest('li');
-  const effect = li.dataset.effectId
-    ? owner.effects.get(li.dataset.effectId)
-    : null;
-  switch (a.dataset.action) {
-    case 'create':
-      return owner.createEmbeddedDocuments('ActiveEffect', [
-        {
-          name: game.i18n.format('DOCUMENT.New', {
-            type: game.i18n.localize('DOCUMENT.ActiveEffect'),
-          }),
-          icon: 'icons/svg/aura.svg',
-          origin: owner.uuid,
-          'duration.rounds':
-            li.dataset.effectType === 'temporary' ? 1 : undefined,
-          disabled: li.dataset.effectType === 'inactive',
-        },
-      ]);
-    case 'edit':
-      return effect.sheet.render(true);
-    case 'delete':
-      return effect.delete();
-    case 'toggle':
-      return effect.update({ disabled: !effect.disabled });
+export async function onManageActiveEffect(event, owner, target = event?.currentTarget) {
+  event?.preventDefault?.();
+  if (!owner || !target) return;
+
+  const action = target.dataset?.action;
+  const isEditable = owner.isOwner || game.user?.isGM;
+
+  if (action === 'effectCreate') {
+    if (!isEditable) return void ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Effect.Errors.Permission'));
+    return createActiveEffect(owner, target.dataset?.effectType);
   }
+
+  const effect = resolveEffectFromTarget(target);
+  if (!effect) return;
+
+  switch (action) {
+    case 'effectEdit':
+      return effect.sheet?.render({ force: true });
+    case 'effectToggle':
+      if (!isEditable) return void ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Effect.Errors.Permission'));
+      return effect.update({ disabled: !effect.disabled });
+    case 'effectDelete':
+      if (!isEditable) return void ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Effect.Errors.Permission'));
+      return deleteActiveEffect(effect);
+  }
+}
+
+/**
+ * Flatten an ActiveEffect into the fields the sheet template needs.
+ * @param {ActiveEffect} effect
+ * @returns {object}
+ */
+function toEffectEntry(effect) {
+  const fromItem = isItemOwnedEffect(effect);
+  return {
+    id: effect.id,
+    uuid: effect.uuid,
+    name: effect.name,
+    // v12+ renamed the artwork field from `icon` to `img`.
+    img: effect.img,
+    disabled: effect.disabled,
+    duration: { label: describeDuration(effect) },
+    // Item effects carry no `origin`, so `sourceName` would read "None" — their source is the Item.
+    // For an effect that lives on the Actor itself there is no meaningful source either; an em dash
+    // reads better in the column than Foundry's literal "None".
+    sourceName: fromItem ? effect.parent.name : normaliseNone(effect.sourceName),
+    fromItem,
+    itemName: fromItem ? effect.parent.name : ''
+  };
+}
+
+const EM_DASH = '\u2014';
+
+/** Foundry returns the literal string "None" for an absent value; blank out for display. */
+function normaliseNone(value) {
+  const text = String(value ?? '').trim();
+  if (!text || text === 'None' || text === game.i18n.localize('None')) return EM_DASH;
+  return text;
+}
+
+/**
+ * Foundry's `duration.label` reads "None" for a round-based duration while no combat is running,
+ * which hides the very information this column exists for. The computed `duration` object does not
+ * carry `rounds`/`turns` either, so fall back to the stored values.
+ */
+function describeDuration(effect) {
+  const label = normaliseNone(effect.duration?.label);
+  if (label !== EM_DASH) return label;
+
+  const stored = effect._source?.duration ?? {};
+  const num = (value) => {
+    const n = Number(value);
+    // Permanent effects can report Infinity; that is "no duration", not a number to print.
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  };
+
+  const rounds = num(stored.rounds);
+  if (rounds) return `${rounds} ${game.i18n.localize('COMBAT.Rounds')}`;
+
+  const turns = num(stored.turns);
+  if (turns) return `${turns} ${game.i18n.localize('COMBAT.Turns')}`;
+
+  const seconds = num(stored.seconds);
+  if (seconds) return `${seconds} s`;
+
+  return EM_DASH;
 }
 
 /**
@@ -60,9 +191,10 @@ export function prepareActiveEffectCategories(effects) {
 
   // Iterate over active effects, classifying them into categories
   for (let e of effects) {
-    if (e.disabled) categories.inactive.effects.push(e);
-    else if (e.isTemporary) categories.temporary.effects.push(e);
-    else categories.passive.effects.push(e);
+    const entry = toEffectEntry(e);
+    if (e.disabled) categories.inactive.effects.push(entry);
+    else if (e.isTemporary) categories.temporary.effects.push(entry);
+    else categories.passive.effects.push(entry);
   }
   return categories;
 }

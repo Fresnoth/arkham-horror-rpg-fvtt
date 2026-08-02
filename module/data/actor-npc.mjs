@@ -23,7 +23,11 @@ export default class ArkhamHorrorNPC extends ArkhamHorrorActorBase {
     });
 
     schema.abilitiesDescription = new fields.StringField({ required: false, blank: true });
-    
+
+    // The "Major NPC" knack allows straining exactly once (core p. 190/196). Once spent, being
+    // wounded means the NPC is immediately killed or knocked out at the GM's discretion.
+    schema.strainedOnce = new fields.BooleanField({ required: true, nullable: false, initial: false });
+
     return schema
   }
 

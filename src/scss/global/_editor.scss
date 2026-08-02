@@ -1,24 +1,28 @@
-.editor{
-  &.prosemirror{
+.editor {
+  &.prosemirror {
     height: 100%;
   }
-  
 }
 
-.sheet.actor,.sheet.item,.sheet.npc{
+.sheet.actor,
+.sheet.item,
+.sheet.npc,
+.sheet.vehicle {
   prose-mirror {
-    .editor-content{
-      --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
-      --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
-      padding: 5px;
-      text-align: justify;
-      font-family: $font-tertiary;
-      border: 2px solid $c-red-border;
-      border-radius: 5px;
-      background:
-          linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)),
-          repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0.00) 3px, rgba(255, 255, 255, 0.00) 7px);
+    .editor-content {
+      padding: var(--ah-space-3);
+      // Justified text tears holes in the narrow sheet columns; left-aligned,
+      // the rulebook layout reads much calmer here.
+      text-align: left;
+      font-family: var(--ah-font-text);
+      line-height: var(--ah-line-height);
+      color: var(--ah-ink);
+      border: 1px solid var(--ah-line-strong);
+      border-radius: var(--ah-radius);
+      background: var(--ah-paper-raised);
+
+      p:first-child { margin-top: 0; }
+      p:last-child { margin-bottom: 0; }
     }
-    
   }
 }

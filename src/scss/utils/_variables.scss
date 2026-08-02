@@ -3,3 +3,59 @@ $padding-md: 10px;
 $padding-lg: 20px;
 
 $border-groove: 2px groove #eeede0;
+
+// Padding of the panels. The banner legend bleeds out of the panel to the left
+// and right by exactly this value (see components/_forms.scss).
+$panel-pad: 10px;
+
+// ---------------------------------------------------------------------------
+// Design tokens as CSS custom properties.
+//
+// Deliberately on :root and not on .system-arkham-horror-rpg-fvtt: the chat
+// cards, the dice roll dialog and the damage dialog render outside the system
+// scope and should see the same values as the sheets.
+// ---------------------------------------------------------------------------
+:root {
+  // Paper
+  --ah-paper: #{$c-paper};
+  --ah-paper-edge: #{$c-paper-edge};
+  --ah-paper-raised: #{$c-paper-raised};
+  --ah-paper-sunken: #{$c-paper-sunken};
+
+  // Ink
+  --ah-ink: #{$c-ink};
+  --ah-ink-soft: #{$c-ink-soft};
+  --ah-ink-faint: #{$c-ink-faint};
+  --ah-line: #{$c-line};
+  --ah-line-strong: #{$c-line-strong};
+
+  // Banner
+  --ah-banner: #{$c-banner-bg};
+  --ah-banner-ink: #{$c-banner-text};
+  // Geometry of the banner: width of the winged ends, depth of the notch, and
+  // how far the centre bar is inset relative to the ends.
+  --ah-banner-wing: 15px;
+  --ah-banner-notch: 8px;
+  --ah-banner-flare: 22%;
+
+  // States
+  --ah-accent: #{$c-red};
+  --ah-good: #{$c-good};
+  --ah-bad: #{$c-bad};
+  --ah-focus: #{$c-focus};
+  --ah-focus-ring: #{rgba($c-focus, 0.30)};
+  --ah-hover-wash: #{rgba($c-ink, 0.06)};
+
+  // Grid
+  --ah-space-1: 4px;
+  --ah-space-2: 8px;
+  --ah-space-3: 12px;
+  --ah-space-4: 20px;
+  --ah-radius: 2px;
+  --ah-radius-pill: 999px;
+  --ah-line-height: 1.5;
+
+  // Type
+  --ah-font-display: #{$font-primary};
+  --ah-font-text: #{$font-tertiary};
+}

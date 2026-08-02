@@ -1,0 +1,80 @@
+<form class="roll-dialog-container scrollable apply-damage-form" autocomplete="off">
+  <div class="arkham-damage-head">
+    {{#if hasAttacker}}
+      <div class="arkham-damage-head-row">
+        <span class="arkham-damage-head-label">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Attacker"}}</span>
+        <span class="arkham-damage-head-value">{{attackerName}}</span>
+      </div>
+    {{/if}}
+    {{#if hasWeapon}}
+      <div class="arkham-damage-head-row">
+        <span class="arkham-damage-head-label">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Weapon"}}</span>
+        <span class="arkham-damage-head-value">{{weaponName}}</span>
+      </div>
+    {{/if}}
+    <div class="arkham-damage-head-row">
+      <span class="arkham-damage-head-label">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Target"}}</span>
+      <span class="arkham-damage-head-value">{{targetName}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Damage"}}</label>
+    <input type="number" name="amount" value="{{amount}}" min="0" step="1" autofocus />
+  </div>
+
+  <p class="arkham-horror-hint arkham-damage-preview" data-role="damagePreview">{{previewText}}</p>
+  <p class="arkham-damage-wounded" data-role="woundedWarning" {{#unless wouldBeWounded}}hidden{{/unless}}>
+    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{woundedWarning}}
+  </p>
+
+  <div class="form-group">
+    <label>{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Horror"}}</label>
+    <input type="number" name="horror" value="{{horror}}" min="0" step="1" />
+  </div>
+
+  <p class="arkham-horror-hint arkham-damage-horror-preview" data-role="horrorPreview">{{horrorPreviewText}}</p>
+  <p class="arkham-damage-horror-max" data-role="horrorAtMax" {{#unless horrorAtMax}}hidden{{/unless}}>
+    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{horrorAtMaxWarning}}
+  </p>
+
+  {{#if horrorPrefilled}}
+    <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.HorrorPrefilled"}}</p>
+  {{else}}
+    <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.HorrorHint"}}</p>
+  {{/if}}
+
+  <div class="form-group arkham-damage-injury">
+    <label>
+      <input type="checkbox" name="injury" {{#if injury}}checked{{/if}} />
+      {{localize "ARKHAM_HORROR.DAMAGE.Dialog.Injury"}}
+    </label>
+  </div>
+  {{#if showInjuryHint}}
+    <p class="arkham-horror-hint">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.InjuryHint" successes=successes injuryRating=injuryRating}}</p>
+  {{/if}}
+
+  <div class="arkham-damage-hints">
+    <div class="arkham-damage-hints-title">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.HintsTitle"}}</div>
+    <p class="arkham-damage-hints-note">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.HintsNote"}}</p>
+    {{#if hasHints}}
+      <ul class="arkham-damage-hints-list">
+        {{#each hints}}
+          <li class="arkham-damage-hint is-{{this.type}}">
+            <span class="arkham-damage-hint-name">{{this.name}}</span>
+            <span class="arkham-damage-hint-text">{{this.text}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p class="arkham-damage-hints-empty">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.HintsEmpty"}}</p>
+    {{/if}}
+  </div>
+
+  <footer class="dialog-footer">
+    <button type="button" class="roll-button" data-action="clickedApply">
+      <i class="fa-solid fa-heart-crack" aria-hidden="true"></i> {{localize "ARKHAM_HORROR.DAMAGE.Dialog.Apply"}}
+    </button>
+    <button type="button" class="roll-button" data-action="clickedCancel">{{localize "ARKHAM_HORROR.DAMAGE.Dialog.Cancel"}}</button>
+  </footer>
+</form>

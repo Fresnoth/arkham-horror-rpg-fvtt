@@ -9,11 +9,16 @@
 
 /* Global styles */
 @import 'global/window';
+@import 'global/banner';
 @import 'global/grid';
 @import 'global/flex';
 @import 'global/fonts';
 @import 'global/editor';
 @import 'global/chat';
+@import 'components/defend';
+@import 'components/damage';
+@import 'components/healing';
+@import 'global/tabs-rail';
 @import 'global/journal';
 @import 'global/combat';
 @import 'global/pause';
@@ -25,7 +30,11 @@
   @import 'components/items';
   @import 'components/effects';
   @import 'components/tabs';
+  @import 'components/skills';
+  @import 'components/dicepool';
+  @import 'components/insight';
   @import 'components/sheets';
+  @import 'components/strain';
 }
 
 .editor.prosemirror {

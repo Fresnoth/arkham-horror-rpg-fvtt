@@ -1,0 +1,334 @@
+// Healing: the section on the roll chat card, the apply dialog, the confirmation card and the two
+// horror buttons on the character sheet. Lives outside the sheet scope because chat cards render in
+// the sidebar and the dialog is its own application window.
+
+.arkham-heal {
+    margin: var(--ah-space-3) 0 0;
+    padding: var(--ah-space-3) 0 0;
+    border-top: 1px solid var(--ah-line-strong);
+    // Rulebook double rule as in the reaction section.
+    box-shadow: 0 3px 0 -2px var(--ah-line);
+}
+
+.arkham-heal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ah-space-2);
+    margin-bottom: var(--ah-space-2);
+}
+
+.arkham-heal-title {
+    font-family: var(--ah-font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ah-ink);
+}
+
+.arkham-heal-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ah-space-2);
+    padding: 5px 0;
+    min-width: 0;
+
+    & + .arkham-heal-row {
+        border-top: 1px dotted var(--ah-line);
+    }
+}
+
+.arkham-heal-target {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-2);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.arkham-heal-target-img {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border: 1px solid var(--ah-line-strong);
+    border-radius: var(--ah-radius);
+}
+
+.arkham-heal-target-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    font-family: var(--ah-font-text);
+}
+
+.arkham-heal-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-2);
+    flex: 0 0 auto;
+}
+
+.arkham-heal-button {
+    @include ah-button-quiet;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+    padding: 3px var(--ah-space-2);
+    line-height: 1.5;
+    font-size: 0.72rem;
+}
+
+/* Dialog */
+
+.heal-form {
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
+
+    // Dialog header as a banner panel: healer / target / successes at a glance.
+    .arkham-heal-head {
+        margin-bottom: var(--ah-space-3);
+        padding: var(--ah-space-2) var(--ah-space-3);
+        border: 1px solid var(--ah-line-strong);
+        border-radius: var(--ah-radius);
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .arkham-heal-head-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--ah-space-2);
+        padding: 2px 0;
+
+        & + .arkham-heal-head-row {
+            border-top: 1px dotted var(--ah-line);
+        }
+    }
+
+    .arkham-heal-head-label {
+        font-family: var(--ah-font-display);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-heal-head-value {
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--ah-ink);
+    }
+
+    .arkham-heal-preview {
+        font-style: normal;
+        color: var(--ah-ink);
+    }
+
+    .arkham-heal-warning {
+        margin: 2px 0 var(--ah-space-2);
+        padding: var(--ah-space-1) var(--ah-space-2);
+        border-left: 3px solid var(--ah-accent);
+        font-size: 0.8rem;
+        color: var(--ah-accent);
+    }
+
+    .arkham-heal-injuries,
+    .arkham-heal-effects,
+    .arkham-heal-hints,
+    .arkham-heal-notes {
+        margin-top: var(--ah-space-3);
+        padding-top: var(--ah-space-2);
+        border-top: 1px solid var(--ah-line-strong);
+        box-shadow: 0 3px 0 -2px var(--ah-line);
+    }
+
+    .arkham-heal-injuries-title,
+    .arkham-heal-effects-title,
+    .arkham-heal-hints-title,
+    .arkham-heal-notes-title {
+        font-family: var(--ah-font-display);
+        font-size: 0.8rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ah-ink);
+    }
+
+    .arkham-heal-injury-list,
+    .arkham-heal-effects-list,
+    .arkham-heal-hints-list,
+    .arkham-heal-notes-list {
+        margin: var(--ah-space-1) 0 0;
+        padding: 0;
+        list-style: none;
+        max-height: 160px;
+        overflow-y: auto;
+    }
+
+    .arkham-heal-injury label {
+        display: flex;
+        align-items: center;
+        gap: var(--ah-space-2);
+    }
+
+    // Too severe for the successes rolled: visible, but not selectable.
+    .arkham-heal-injury.is-blocked {
+        opacity: 0.6;
+    }
+
+    .arkham-heal-injury-name {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .arkham-heal-injury-difficulty {
+        flex: 0 0 auto;
+        font-size: 0.74rem;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-heal-hints-note,
+    .arkham-heal-hints-empty,
+    .arkham-heal-injuries-empty {
+        margin: 2px 0 var(--ah-space-2);
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-heal-hint {
+        padding: var(--ah-space-1) 0 var(--ah-space-1) var(--ah-space-2);
+        border-left: 2px solid var(--ah-line);
+        font-size: 0.82rem;
+
+        & + .arkham-heal-hint {
+            margin-top: var(--ah-space-1);
+        }
+    }
+
+    .arkham-heal-hint-name {
+        display: block;
+        font-family: var(--ah-font-display);
+        font-weight: normal;
+        letter-spacing: 0.06em;
+        color: var(--ah-ink);
+    }
+
+    .arkham-heal-hint-text {
+        display: block;
+        color: var(--ah-ink-soft);
+    }
+
+    // The hints below are deliberately without consequence; this block is the opposite — it shows
+    // what the items used have already changed about the numbers above. Hence the accent colour.
+    .arkham-heal-effect {
+        padding: var(--ah-space-1) 0 var(--ah-space-1) var(--ah-space-2);
+        border-left: 2px solid var(--ah-accent);
+        font-size: 0.82rem;
+
+        & + .arkham-heal-effect {
+            margin-top: var(--ah-space-1);
+        }
+    }
+
+    .arkham-heal-effect-name {
+        display: block;
+        font-family: var(--ah-font-display);
+        font-weight: normal;
+        letter-spacing: 0.06em;
+        color: var(--ah-ink);
+    }
+
+    .arkham-heal-effect-text {
+        display: block;
+        color: var(--ah-accent);
+    }
+
+    .arkham-heal-notes-list li {
+        padding: 2px 0 2px var(--ah-space-2);
+        border-left: 2px solid var(--ah-line);
+        font-size: 0.78rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .dialog-footer {
+        display: flex;
+        gap: var(--ah-space-2);
+        margin-top: var(--ah-space-3);
+    }
+}
+
+/* Confirmation chat card */
+
+.arkham-heal-card {
+    p {
+        margin: 2px 0;
+    }
+
+    .arkham-heal-card-title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: var(--ah-space-1);
+    }
+
+    .arkham-heal-card-injuries {
+        margin: 2px 0 2px var(--ah-space-3);
+        padding: 0;
+        list-style: square;
+
+        &.is-blocked {
+            color: var(--ah-ink-soft);
+        }
+    }
+
+    .arkham-heal-card-note {
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-heal-card-source {
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+}
+
+/* Horror actions on the character sheet */
+
+.arkham-horror-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ah-space-2);
+
+    .arkham-horror-limit {
+        flex: 1 1 auto;
+        font-family: var(--ah-font-text);
+        font-size: 0.82rem;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-horror-action {
+        @include ah-button-quiet;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        width: auto;
+        padding: 3px var(--ah-space-2);
+        line-height: 1.5;
+        font-size: 0.72rem;
+    }
+}

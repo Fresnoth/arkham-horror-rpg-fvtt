@@ -1,0 +1,81 @@
+{{!--
+    Shared editor for `system.rollEffects`, used by knack, injury, useful_item and relic.
+
+    Context comes from `buildRollEffectContext()` (module/data/fields/roll-effects.hbs): the two pick
+    lists, the selected pills and one entry per modifier the item type actually has. Nothing here is
+    type-specific — an item type that gains a modifier gets its input automatically.
+
+    Hash parameters:
+      title  heading above the block (the wording differs: knacks are picked, injuries apply on their own)
+--}}
+<h5 class="quick-label">{{title}}</h5>
+
+<div class="form-group">
+    <label class="styled-label" for="roll-effects-enabled">{{localize "ARKHAM_HORROR.KNACK_SHEET.Enabled"}}</label>
+    <input type="checkbox" id="roll-effects-enabled" name="system.rollEffects.enabled" {{#if rollEffects.enabled}}checked{{/if}}>
+</div>
+
+<div class="form-group">
+    <label class="styled-label">{{localize "ARKHAM_HORROR.KNACK_SHEET.AppliesToSkills"}}</label>
+    <div class="knack-picker" data-group="skillKeys">
+        <div class="knack-picker__controls">
+            <select class="knack-picker__select" name="_rollEffectSkillKey">
+                {{#each rollEffects.skillChoices as |choice|}}
+                    <option value="{{choice.key}}">{{choice.label}}</option>
+                {{/each}}
+            </select>
+            <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="skillKeys">+</button>
+        </div>
+        <div class="knack-picker__selected" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.SelectedSkills"}}">
+            {{#each rollEffects.selectedSkills as |choice|}}
+                <span class="knack-pill" data-value="{{choice.key}}">
+                    {{choice.label}}
+                    <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="skillKeys" data-value="{{choice.key}}" title="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </span>
+            {{/each}}
+        </div>
+        <div class="notes">{{localize "ARKHAM_HORROR.KNACK_SHEET.AnyOverrides"}}</div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="styled-label">{{localize "ARKHAM_HORROR.KNACK_SHEET.AppliesToRollTypes"}}</label>
+    <div class="knack-picker" data-group="rollKinds">
+        <div class="knack-picker__controls">
+            <select class="knack-picker__select" name="_rollEffectRollKind">
+                {{#each rollEffects.rollKindChoices as |choice|}}
+                    <option value="{{choice.key}}">{{choice.label}}</option>
+                {{/each}}
+            </select>
+            <button type="button" class="knack-picker__add" data-action="addKnackRollEffectKey" data-group="rollKinds">+</button>
+        </div>
+        <div class="knack-picker__selected" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.SelectedRollTypes"}}">
+            {{#each rollEffects.selectedRollKinds as |choice|}}
+                <span class="knack-pill" data-value="{{choice.key}}">
+                    {{choice.label}}
+                    <a class="knack-pill__remove" data-action="removeKnackRollEffectKey" data-group="rollKinds" data-value="{{choice.key}}" title="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}" aria-label="{{localize "ARKHAM_HORROR.KNACK_SHEET.Remove"}}">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </span>
+            {{/each}}
+        </div>
+        <div class="notes">{{localize "ARKHAM_HORROR.KNACK_SHEET.AnyOverrides"}}</div>
+    </div>
+</div>
+
+{{#each rollEffects.modifiers as |modifier|}}
+    <div class="form-group">
+        <label class="styled-label" for="roll-effect-{{modifier.key}}">{{modifier.label}}</label>
+        {{#if modifier.isBoolean}}
+            <input type="checkbox" id="roll-effect-{{modifier.key}}" name="{{modifier.name}}" {{#if modifier.checked}}checked{{/if}}>
+        {{else}}
+            <input type="number" id="roll-effect-{{modifier.key}}" name="{{modifier.name}}" value="{{modifier.value}}" step="1"
+                {{#if modifier.hasMin}}min="{{modifier.min}}"{{/if}}>
+        {{/if}}
+    </div>
+    {{#if modifier.hint}}
+        <div class="notes">{{modifier.hint}}</div>
+    {{/if}}
+{{/each}}

@@ -26,10 +26,10 @@ export const TokenInformationOverlay = (() => {
     }
 
     function computeFontSize() {
-        // Grid size in Pixeln (z. B. 100 bei 100px Grid)
+        // Grid size in pixels (e.g. 100 for a 100px grid)
         const gs = canvas.grid.size;
 
-        // Beispiel: 18% der Grid-Größe, min/max begrenzen
+        // For example: 18% of the grid size, clamped to min/max
         const value = Math.round(gs * 0.18);
         const clamp = Math.clamp ?? Math.clamped ?? ((n, min, max) => Math.min(Math.max(n, min), max));
         return clamp(value, 12, 36);

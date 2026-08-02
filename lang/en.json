@@ -32,7 +32,14 @@
       "Toggle": "Toggle Effect",
       "Temporary": "Temporary Effects",
       "Passive": "Passive Effects",
-      "Inactive": "Inactive Effects"
+      "Inactive": "Inactive Effects",
+      "Duration": "Duration",
+      "None": "No effects in this category.",
+      "FromItem": "Granted by the item \"{itemName}\"",
+      "Errors": {
+        "DeleteOnItem": "This effect belongs to the item \"{itemName}\" and can only be deleted there.",
+        "Permission": "You do not have permission to change this actor's effects."
+      }
     },
     "LABELS": {
       "Form": "Data",
@@ -57,13 +64,13 @@
       "LoadCapacity": "Load Capacity (lbs)",
       "Weapons": "Weapons",
       "ProtectiveEquipment": "Protective Equipment",
-      "UsefulItems":"Useful Items",
+      "UsefulItems": "Useful Items",
       "OtherEquipment": "Other Equipment",
-      "Favors":"Favors",
-      "Spells":"Spells",
+      "Favors": "Favors",
+      "Spells": "Spells",
       "Tome": "Tome",
-      "Tomes":"Tomes",
-      "Relics":"Relics"
+      "Tomes": "Tomes",
+      "Relics": "Relics"
     },
     "UNITS": {
       "Ft": "ft"
@@ -132,7 +139,12 @@
       "AppliesToSkills": "Applies to Skills",
       "AppliesToRollTypes": "Applies to Roll Types",
       "PenaltyPerDie": "Penalty (per die)",
-      "PenaltyHint": "Automatically applies as a penalty on matching rolls. Duplicates of the same injury do not stack; all instances must be healed to remove the effect."
+      "PenaltyHint": "Automatically applies as a penalty on matching rolls. Duplicates of the same injury do not stack; all instances must be healed to remove the effect.",
+      "Healing": "Healing",
+      "HealDifficulty": "Successes to heal",
+      "HealDifficultyHint": "1 by default, 2 for Severely Injured, Loss of a Sense and Comatose, 3 for Dire (core p. 33-34).",
+      "CanHealNaturally": "Heals over time",
+      "CanHealNaturallyHint": "Off for Dire, the one injury that never heals on its own (core p. 34)."
     },
     "TRAUMA_SHEET": {
       "Active": "Active",
@@ -154,7 +166,7 @@
       "KnackTiers": "Knack Tiers",
       "DragDropHint": "Drag & drop Knack Items onto a tier below to add their UUID (no embedding). Click a knack name to view its description."
     },
-    "DIFFICULTY":{
+    "DIFFICULTY": {
       "Normal": "Normal (1)",
       "Difficult": "Difficult (2)",
       "VeryDifficult": "Very Difficult (3)"
@@ -195,10 +207,10 @@
       "Negative": "Negative",
       "NoneAssigned": "No personality trait assigned. Drag'n'drop one here."
     },
-    "PROPS":{
-      "Name":"Name",
+    "PROPS": {
+      "Name": "Name",
       "Quantity": "Quantity",
-      "Skill":"Skill",
+      "Skill": "Skill",
       "Tier": "Tier",
       "Rarity": "Rarity",
       "HasSpecialRules": "Has Special Rules",
@@ -211,14 +223,14 @@
       "Spell": "Spell",
       "Damage": "Damage",
       "DamageShort": "D",
-      "InjuryRating":"Injury Rating",
-      "InjuryRatingShort":"IR",
-      "Range":"Range",
+      "InjuryRating": "Injury Rating",
+      "InjuryRatingShort": "IR",
+      "Range": "Range",
       "Engaged": "Engaged",
-      "Ammunition":"Ammunition",
-      "Costs":"Costs",
-      "Uses":"Uses",
-      "Difficulty":"Difficulty",
+      "Ammunition": "Ammunition",
+      "Costs": "Costs",
+      "Uses": "Uses",
+      "Difficulty": "Difficulty",
       "RollType": "Roll Type",
       "RollFormula": "Roll Formula",
       "NumberOfDice": "Number of Dice",
@@ -234,9 +246,9 @@
       "Benefit": "Benefit",
       "Declining": "Declining",
       "Losing": "Losing",
-      "Weight":"Weight",
-      "SpecialRules":"Special Rules",
-      "DefensiveBenefit":"Defensive Benefit"
+      "Weight": "Weight",
+      "SpecialRules": "Special Rules",
+      "DefensiveBenefit": "Defensive Benefit"
     },
     "ACTIONS": {
       "SpendInsight": "Spend Insight",
@@ -304,11 +316,9 @@
     },
     "Warnings": {
       "NpcKnackDropBlocked": "NPC-only Knacks cannot be added to Characters.",
-
       "PermissionRollActor": "You do not have permission to roll for this Actor.",
       "PermissionStrainActor": "You do not have permission to strain for this Actor.",
       "StrainRequiresDamage": "You can only strain when your dice pool maximum is reduced by damage.",
-
       "ArchetypeKnackDropInvalid": "Invalid archetype knack drop data.",
       "ArchetypeRequiredForKnacks": "Set an archetype on this actor before purchasing knacks.",
       "KnackDifferentArchetype": "This knack belongs to a different archetype.",
@@ -317,23 +327,17 @@
       "KnackTierNotPurchasable": "No Tier {tier} knacks can be purchased for this archetype (max is {maxPurchasable}).",
       "KnackTierLimitReached": "Tier {tier} knack limit reached ({existingTierCount}/{maxPurchasable}).",
       "SourceKnackResolveFailed": "Could not resolve the source knack item.",
-
       "ActorHasNoArchetype": "This actor has no archetype set.",
       "ActorArchetypeUuidResolveFailed": "Could not resolve actor archetype UUID.",
       "LinkedDocNotArchetype": "The linked document is not an archetype.",
       "OpenArchetypeFailed": "Failed to open archetype.",
-
       "WeaponOutOfAmmo": "{itemName} has no ammunition left! Reload before using it.",
       "ResetKnackPermission": "You do not have permission to reset this actor's knacks.",
       "RefreshKnackUsesPermission": "You do not have permission to refresh knack uses for this actor.",
-
       "MacroOwnedItemsOnly": "You can only create macro buttons for owned Items",
       "MacroItemNotFound": "Could not find item {itemName}. You may need to delete and recreate this macro.",
-
       "CombatAddCombatantsFirst": "Add combatants to the encounter first (toggle token combat state), then begin combat.",
-
       "RerollSelectAtLeastOneDie": "Select at least one die to reroll.",
-
       "RollKnacksNotApplicable": "One or more selected Knacks no longer apply to this roll.",
       "RollReactionRequiresOneDie": "Reaction rolls require 1 die from your pool.",
       "RollAdvDisadvRequiresDie": "Advantage/Disadvantage requires rolling at least 1 die.",
@@ -346,18 +350,14 @@
       "SimpleActionInvalidAmount": "Simple Action spend amount is invalid.",
       "SimpleActionInvalidHorrorSplit": "Horror dice to use is invalid for this roll.",
       "SimpleActionSpendFailed": "Simple Action spend failed.",
-
       "InjuryTraumaFallingModeInjuryOnly": "Falling mode only applies to Injury rolls.",
       "InjuryTraumaFallingHeightMin": "Falling height must be at least {minFt} ft.",
-
       "SkillRerollInvalidCard": "That chat card cannot be rerolled.",
       "SkillRerollActorResolveFailed": "Could not resolve the actor for this roll.",
       "SkillRerollPermission": "You do not have permission to reroll this roll.",
       "SkillRerollNoSelectableDice": "No selectable dice were chosen.",
-
       "RollTableEmptyResultName": "Roll table '{tableName}' has a matching range but an empty result name. Set the RollTable Result Name, or the system will fall back to built-in tables.",
       "RollTableOverflowAssumption": "Roll table '{tableName}' maxes at {tableMax}; treating top entry as {tableMax}+ for total {total}.",
-
       "ItemOpenSourceKnackGmOnly": "Only the GM can open/edit source Knack documents from an Archetype.",
       "ItemUuidResolveFailed": "Could not resolve the dropped UUID.",
       "ItemNoSheetForDocument": "No sheet available for that document.",
@@ -491,7 +491,9 @@
         "DieTotal": "Die Total",
         "Modifier": "Modifier",
         "Total": "Total",
-        "Table": "Table"
+        "Table": "Table",
+        "HorrorTooltip": "Triggered by rolling a 1 on a horror die",
+        "HorrorNote": "Triggered by a result of 1 on a horror die (Corebook p. 37)."
       }
     },
     "Dialog": {
@@ -637,6 +639,230 @@
         "huge": "Huge",
         "titanic": "Titanic"
       }
+    },
+    "DEFEND": {
+      "SectionTitle": "Defend",
+      "ReactionSkill": "Reaction: {skill}",
+      "Button": "Defend",
+      "StatusAvoided": "Avoided",
+      "StatusNotAvoided": "Hit stands",
+      "ReasonNoDice": "No dice left in the pool — no reaction possible (core p. 30).",
+      "ReasonAttackMissed": "The attack missed — no reaction needed.",
+      "ReasonActorNotFound": "The target could not be found.",
+      "ReasonSkillNotFound": "The target does not have the required skill.",
+      "ReasonUnavailable": "No reaction possible right now.",
+      "RerollHint": "{items} allows this reaction to be rerolled.",
+      "ReactionTo": "Reaction to {attacker}'s attack",
+      "LinkFailed": "The reaction could not be linked to the attack."
+    },
+    "STRAIN": {
+      "Button": "Strain",
+      "Wounded": "Wounded",
+      "Spent": "Strain Used",
+      "Tooltip": "Strain Oneself: restore your dice pool limit to its maximum. You suffer one injury.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "No actor selected.",
+        "ACTOR_TYPE_UNSUPPORTED": "This actor cannot strain itself.",
+        "NOT_DAMAGED": "Your dice pool limit is already at its maximum.",
+        "MAJOR_NPC_REQUIRED": "Only NPCs with the Major NPC knack can strain themselves.",
+        "ALREADY_STRAINED": "This NPC has already strained once and cannot do so again.",
+        "PERMISSION_DENIED": "You do not have permission to strain for this actor."
+      },
+      "Dialog": {
+        "Title": "Strain Oneself",
+        "Prompt": "{actorName} restores their dice pool limit to its maximum.",
+        "Price": "The price: one injury, rolled right away.",
+        "NpcOnce": "A Major NPC may strain only once. If they are wounded afterwards, they are immediately killed or knocked unconscious at the GM's discretion.",
+        "Confirm": "Strain",
+        "Cancel": "Cancel"
+      },
+      "Chat": {
+        "Label": "Strain Oneself",
+        "Summary": "{actorName} strains themselves and restores their dice pool limit ({oldDicePoolValue} → {newDicePoolValue} dice).",
+        "Price": "Price: one injury.",
+        "NpcSpent": "{actorName} has now used their one strain. If they are wounded again, they are out of the fight."
+      }
+    },
+    "DAMAGE": {
+      "Button": "Apply damage",
+      "Tooltip": "Apply the damage of this attack to the target.",
+      "Reasons": {
+        "ACTOR_REQUIRED": "No actor selected.",
+        "ACTOR_NOT_FOUND": "The target could not be found.",
+        "PERMISSION_DENIED": "You do not have permission to change this actor.",
+        "ATTACK_MISSED": "The attack missed — it deals no damage.",
+        "DEFENDED": "The target avoided the attack — it deals no damage at all (core p. 30).",
+        "INVALID_AMOUNT": "Please enter a whole number.",
+        "NO_CHANGE": "Neither damage nor horror was entered.",
+        "UNAVAILABLE": "Damage cannot be applied right now."
+      },
+      "Dialog": {
+        "Title": "Apply Damage",
+        "Attacker": "Attacker",
+        "Weapon": "Weapon",
+        "Target": "Target",
+        "Damage": "Damage",
+        "Horror": "Horror",
+        "HorrorHint": "Optional — for spells and NPC knacks.",
+        "Injury": "Inflict injury",
+        "InjuryHint": "{successes} successes vs. injury rating {injuryRating} (core p. 30).",
+        "Preview": "Pool limit {oldLimit} → {newLimit}",
+        "WoundedWarning": "{targetName} is wounded at a limit of 0 and can only strain themselves (core p. 31).",
+        "HintsTitle": "Damage reduction of the target",
+        "HintsNote": "Rules text only — nothing is deducted automatically. Adjust the damage by hand.",
+        "HintsEmpty": "No damage reduction found on this target.",
+        "Apply": "Apply",
+        "Cancel": "Cancel",
+        "HorrorPreview": "Horror limit {oldHorror} → {newHorror} (horror dice in pool {oldHorrorInPool} → {newHorrorInPool})",
+        "HorrorAtMax": "{targetName} is at the maximum horror limit of {max} — further horror has no effect (core p. 36).",
+        "HorrorPrefilled": "Taken from the attack — editable."
+      },
+      "Chat": {
+        "Label": "Damage",
+        "Summary": "{targetName} suffers {amount} damage (pool limit {oldLimit} → {newLimit}).",
+        "NoDamage": "{targetName} suffers no damage.",
+        "Horror": "{targetName} gains {horror} horror (horror limit {oldHorror} → {newHorror}).",
+        "Source": "From {attackerName} with {weaponName}.",
+        "SourceAttacker": "From {attackerName}.",
+        "Wounded": "{targetName} is wounded — no actions until they strain themselves (core p. 31).",
+        "HorrorCapped": "{requested} horror were reduced to {applied}: {targetName}'s horror limit cannot exceed their dice pool maximum.",
+        "HorrorAtMax": "{targetName}'s horror limit is already at their dice pool maximum — no further horror applies."
+      }
+    },
+    "HEALING": {
+      "Button": "Apply healing",
+      "Tooltip": "Apply the result of this healing roll to the target.",
+      "SectionTitle": "Healing",
+      "RollKind": {
+        "heal-damage": "Heal damage",
+        "heal-injury": "Heal injury",
+        "introspection": "Introspection",
+        "counseling": "Counseling"
+      },
+      "Reasons": {
+        "ACTOR_REQUIRED": "No actor selected.",
+        "ACTOR_NOT_FOUND": "The target could not be found.",
+        "PERMISSION_DENIED": "You do not have permission to change this actor.",
+        "INVALID_AMOUNT": "Please enter a whole number.",
+        "NO_CHANGE": "Nothing would change.",
+        "INJURY_NOT_FOUND": "This injury is no longer on the target.",
+        "NOT_AN_INJURY": "Only injuries can be healed — traumas never are (core p. 38).",
+        "ROLL_FAILED": "The roll failed — the horror limit stays where it is (core p. 38).",
+        "NO_SUCCESSES": "Without a success there is nothing to heal (core p. 33).",
+        "CARD_UPDATE_FAILED": "The roll card could not be extended with the healing section.",
+        "UNAVAILABLE": "Healing cannot be applied right now."
+      },
+      "Dialog": {
+        "Title": "Apply Healing",
+        "TitleHorror": "Overcome Horror",
+        "Healer": "Healer",
+        "Target": "Target",
+        "Successes": "Roll",
+        "Damage": "Heal damage",
+        "DamageHint": "1 damage per success (core p. 33). Configured item effects are already included above.",
+        "Preview": "Pool limit {oldLimit} → {newLimit}",
+        "HorrorPreview": "Horror limit {oldHorror} → {newHorror}",
+        "HorrorHint": "A success lowers the limit by exactly 1, no matter how many successes were rolled (core p. 38).",
+        "RollFailed": "The roll did not succeed.",
+        "NoHorror": "The horror limit is already 0.",
+        "InjuriesTitle": "Injuries of the target",
+        "InjuriesNote": "Successes rolled: {successes}. Harder injuries need another roll (core p. 33-34).",
+        "InjuriesEmpty": "This target has no injuries.",
+        "InjuryDifficulty": "Successes: {difficulty}",
+        "HintsTitle": "Medical supplies of the healer",
+        "HintsNote": "Recognised by their rules text only, with no configured effect — adjust the amount by hand if one of them applies.",
+        "HintsEmpty": "No medical supplies found on the healer.",
+        "NotesTitle": "The GM decides",
+        "NoteEngaged": "The target must be engaged or be the healer themself (core p. 29/33).",
+        "NoteNarrative": "Normal healing only happens in narrative scenes (core p. 33).",
+        "NoteOncePerScene": "One character may treat the same target only once per scene (core p. 33).",
+        "Apply": "Apply",
+        "Cancel": "Cancel",
+        "EffectsTitle": "Applied item effects",
+        "InjuryDifficultyReduced": "Successes: {difficulty} (instead of {original})"
+      },
+      "Chat": {
+        "Label": "Healing",
+        "LabelHorror": "Overcoming Horror",
+        "LabelRecovery": "Recovery",
+        "Summary": "{targetName} heals {amount} damage (pool limit {oldLimit} → {newLimit}).",
+        "NoHealing": "{targetName} heals no damage.",
+        "Injury": "Healed: {injuryName}",
+        "Horror": "{targetName} lowers their horror limit ({oldHorror} → {newHorror}).",
+        "Recovery": "{targetName} rests: {spanLabel}.",
+        "RecoveryDamage": "{targetName} heals {healedDamage} damage — the pool limit is back at its maximum.",
+        "RecoveryHorror": "The horror limit of {targetName} drops from {oldHorror} to 0 (core p. 38).",
+        "BlockedTitle": "Does not heal on its own:",
+        "Source": "Treated by {healerName}."
+      },
+      "Treatment": {
+        "Legend": "Treatment",
+        "HealDamageHint": "Knowledge, on oneself or an engaged target: heals 1 damage per success (core p. 33).",
+        "HealInjuryHint": "Knowledge, on oneself or an engaged target: heals an injury that needs 1-3 successes (core p. 33-34)."
+      },
+      "Horror": {
+        "Legend": "Horror",
+        "Limit": "Horror limit",
+        "IntrospectionHint": "Resolve, on oneself: a success lowers the horror limit by 1 (core p. 38).",
+        "CounselingHint": "Presence, on a target within earshot: a success lowers its horror limit by 1 (core p. 38)."
+      },
+      "Recovery": {
+        "MenuLabel": "Recovery",
+        "Span": {
+          "night": "Night's rest (8 hours)",
+          "week": "One week",
+          "twoWeeks": "Two weeks"
+        },
+        "Dialog": {
+          "Title": "Recovery",
+          "Prompt": "How much time does {actorName} get?",
+          "Span": "Time span",
+          "Note": "Deliberately not tied to the world clock — the span is your call. A night's rest restores the pool limit, a week also heals light injuries and the horror limit, two weeks heal the heavier ones as well.",
+          "Apply": "Apply"
+        },
+        "Chat": {
+          "Label": "Recovery"
+        }
+      }
+    },
+    "TRAUMA": {
+      "Tooltip": "Roll the trauma on table 2-2. The modifier already includes the traumas this character has.",
+      "Reasons": {
+        "ACTOR_NOT_FOUND": "The affected character could not be found.",
+        "ACTOR_TYPE_UNSUPPORTED": "This actor cannot suffer a trauma.",
+        "NO_HORROR_ONES": "No new ones on horror dice."
+      },
+      "Chat": {
+        "Label": "Trauma",
+        "Summary": "{actorName} rolled {horrorOnes} one(s) on horror dice and suffers a trauma (core p. 37).",
+        "Severity": "Every further one makes it worse: modifier +{severityModifier} on the trauma roll.",
+        "Note": "The roll is not made automatically — the GM decides when it happens.",
+        "RollButton": "Roll trauma"
+      },
+      "Settings": {
+        "AutoReport": {
+          "Name": "Report traumas from ones on horror dice",
+          "Hint": "After every skill roll, ones on horror dice are reported as a trauma with a button for the trauma roll (core p. 37). Switch off to handle traumas entirely by hand."
+        }
+      }
+    },
+    "ROLLEFFECTS": {
+      "AddSuccesses": "{count} success",
+      "HealDamage": "heals {count} damage",
+      "HealInjury": "injury difficulty -1",
+      "ReduceHorrorLimit": "horror limit -{count}"
+    },
+    "ROLL_EFFECT_SHEET": {
+      "AddSuccesses": "Granted successes",
+      "AddSuccessesHint": "Added to the counted successes after the dice are read. Grants no extra dice.",
+      "HealDamage": "Extra damage healed",
+      "HealDamageHint": "Added on top of the 1 damage per success a healing roll restores.",
+      "HealInjury": "Lowers injury difficulty",
+      "HealInjuryHint": "An injury needs one success less to be healed — never fewer than one.",
+      "ReduceHorrorLimit": "Extra horror steps",
+      "ReduceHorrorLimitHint": "Added to the single step a successful Introspection or Counseling grants.",
+      "DecreaseAfterUsage": "Spends a charge",
+      "DecreaseAfterUsageHint": "Every use lowers the remaining charges, even when the frequency itself is unlimited."
     }
   },
   "ITEM": {

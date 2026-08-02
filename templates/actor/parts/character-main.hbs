@@ -30,8 +30,14 @@
         <div class="right-side-60">
             {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-insight.hbs"}}
             {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-personality-trait.hbs"}}
-            {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-injuries.hbs"}}
-            {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-knacks.hbs"}}
         </div>
+    </div>
+
+    {{!-- Injuries and knacks sit side by side across the full width: as entries in the
+          narrow right column they made the sheet twice as long as necessary and left
+          the area below the skill list empty. --}}
+    <div class="character-sheet-grid">
+        {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-injuries.hbs"}}
+        {{> "systems/arkham-horror-rpg-fvtt/templates/actor/parts/character-knacks.hbs"}}
     </div>
 </section>

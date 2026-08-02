@@ -1,5 +1,69 @@
 # CHANGELOG
 
+## 14.2.0
+- Implemented "Straining Oneself" (core p. 31): a button on the character and Major NPC sheet that
+  restores the dice pool limit and rolls the injury it costs. NPCs may only do it with the Major NPC
+  knack, and only once.
+- Attacks on targeted tokens now offer the matching reaction on the roll card — Agility against
+  ranged, Melee Combat against melee (core p. 22 and 30). Exactly one die, one reaction per attack,
+  and no button when the pool is empty.
+- Damage can be applied straight from the roll card: a dialog with a pre-filled amount, a live
+  preview of the pool limit, an injury checkbox and a list of the target's protective equipment.
+  Reductions are deliberately not calculated automatically — the rules state them as text.
+- The tabs of the character and NPC sheet now sit as an icon rail along the right window edge.
+- Implemented healing (core p. 33-34 and 38): heal damage (Knowledge, 1 per success), heal injuries
+  (1-3 successes depending on severity), and overcome horror through Introspection and Counseling
+  (each -1, regardless of the number of successes). Plus a GM tool for a night's rest and one or two
+  weeks of recovery. Traumas are never healed, as the rules require.
+- Traumas from rolled 1s on horror dice (core p. 37) are now reported — the value was already being
+  counted but never evaluated. Can be switched off with a world setting.
+- Fix: horror raised the horror limit but never topped up the horror dice in the pool. The roll card
+  now also reports when horror was capped at the dice pool maximum.
+- Roll effects (`rollEffects`) are now available on useful items and relics as well, with new
+  modifiers for granted successes and for healing. Existing knacks and injuries are unchanged.
+- Useful items and relics now have a sheet editor for roll effects and usage, and the roll-kind
+  picker offers the four healing rolls everywhere. The injury sheet gained fields for heal difficulty
+  and natural healing. Skill and roll-kind lists now come from one shared source instead of four
+  hand-maintained copies in the templates.
+- The healing modifiers on items now actually take effect: `healDamage` adds flatly on top of the
+  1 damage per success (core p. 33), `healInjury` lowers the successes an injury costs by 1 (never
+  below 1), and `reduceHorrorLimit` grants an extra horror step on top of the single one a successful
+  roll gives (p. 38). The healing dialog shows which item contributed what. Until now the three
+  values were only carried into the chat flags and ignored there.
+- Charges on useful items now run through `system.usage` throughout. The older `system.uses` is only
+  read to seed existing items and stays untouched in the data model until a later migration.
+- New "Effects" tab on the character and NPC sheet: shows the actor's ActiveEffects grouped into
+  temporary, passive and inactive, plus the effects transferred from items with their origin. Effects
+  owned by an item can be toggled there, but not deleted.
+- Fix: actor sheets grew with their content instead of scrolling — a character with many knacks ran
+  far past the window frame. The cause was the icon rail: its `overflow: visible` also took the height
+  constraint off the window content. Every tab now stays inside the window and scrolls on its own. The
+  sheet header is no longer shrinkable either; otherwise the flex algorithm took its height away and
+  cut off the dice pool strip at the bottom (entirely on the character sheet, halfway on the NPC one).
+- Injuries and knacks now sit side by side in a full-width grid on the character sheet instead of
+  stacked in the narrow right column. Below 700 px window width they stack again.
+- German skill names unified: "Presence" is now *Ausstrahlung* instead of "Präsenz" (by the rules the
+  skill measures charm and getting along with others, not physical presence), and "Lore" is now
+  *Geheimwissen* instead of being left untranslated. The ten abbreviations on the NPC sheet were
+  unchanged English copies (AGI, WIT, PRES …) and are now German (BEW, VER, AUS …). Fixed along the
+  way: the introspection hint called "Resolve" *Willenskraft* in German and *Temple* in Spanish, while
+  both languages name the skill differently everywhere else.
+- Visual redesign of sheets, dialogs and chat cards, following the look of the official sheet.
+- Actor sheets are considerably more compact: the gaps between section panels halved, the minimum
+  height of the sheet header removed, skill rows tightened. The character sheet needs roughly 150 px
+  less height (about 18 %) without shrinking any content.
+- Removed `system.skills.*.max` — the field had no mechanical effect; the advancement limit lives on
+  the archetype (core p. 66). Existing actors load unchanged: Foundry drops the unknown field on load,
+  so no migration is needed.
+- Fix: dropping an archetype onto the sheet clamped skill values to the archetype's cap. Since lower
+  values are better, that was a free advancement.
+- Fix (#37): "Spend Regular Die", "Spend Horror Die" and "Discard Die" did nothing on the NPC sheet.
+  The dice pool strip is shared with the character sheet and dispatches six actions; the NPC sheet had
+  only registered three of them.
+- Fix (#38): editing a text field on the personality trait sheet left the area blank. A `display: block`
+  on the `<prose-mirror>` element destroyed the flex context Foundry uses to reserve room for the
+  toolbar, so the toolbar covered the first line of text. The title is legible on the paper again, too.
+
 ## 14.1.0
 - styling update for the actor sheets
 

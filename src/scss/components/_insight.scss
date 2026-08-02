@@ -1,0 +1,79 @@
+// ---------------------------------------------------------------------------
+// Insight as a pill.
+//
+// Model: a rounded elongated field with an ornamental double outline, split
+// inside by a vertical line into "Limit" and "Remaining".
+// ---------------------------------------------------------------------------
+
+// Nested under `.sheet.actor` — otherwise the generic field baseline from
+// components/_forms.scss (`.sheet.actor input[type="number"]`) knocks the number
+// fields in the pill back to a baseline and a border.
+.sheet.actor {
+
+  .arkham-insight-pill {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    align-items: stretch;
+    margin: var(--ah-space-2) 0 var(--ah-space-1);
+    padding: var(--ah-space-2) var(--ah-space-3);
+    border: 1.5px solid var(--ah-ink);
+    border-radius: var(--ah-radius-pill);
+    // Double outline: paper gap, then hairline.
+    box-shadow:
+      0 0 0 2px var(--ah-paper-raised),
+      0 0 0 3px var(--ah-line-strong);
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .arkham-insight-divider {
+    background: var(--ah-line-strong);
+  }
+
+  .arkham-insight-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 0 var(--ah-space-2);
+    min-width: 0;
+
+    > label {
+      @include ah-caps(0.68rem);
+
+      margin: 0;
+      flex: 0 0 auto;
+      min-width: 0;
+      text-align: center;
+    }
+
+    // The number stands free in the pill — no second border within the border.
+    input[type="number"] {
+      width: 100%;
+      max-width: 70px;
+      height: 26px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      color: var(--ah-ink);
+      font-family: var(--ah-font-text);
+      font-size: 1.3rem;
+      line-height: 1;
+      text-align: center;
+
+      &:hover:not(:disabled) {
+        background: var(--ah-hover-wash);
+        border: none;
+      }
+
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        border: none;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: inset 0 -2px 0 -1px var(--ah-focus);
+      }
+    }
+  }
+
+} // end .sheet.actor

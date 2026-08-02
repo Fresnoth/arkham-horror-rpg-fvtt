@@ -4,59 +4,38 @@
   margin: 2px 0;
   padding: 0;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  font-weight: bold;
+  background: rgba(30, 26, 20, 0.06);
+  font-weight: normal;
   > * {
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
   }
   .item-name {
-    font-weight: bold;
     padding-left: 5px;
     text-align: left;
     display: flex;
   }
 }
 
-// Section sub-headers (h5.quick-label used above items-lists in character sheet)
-.quick-label {
-  font-family: $font-primary;
-  font-size: 1.0em;
-  color: $c-banner-text;
-  background: $c-banner-bg;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: normal;
-  padding: 3px 10px;
-  margin: 8px 0 0;
-  border: none;
-  text-shadow: none;
+// Section sub-headers (h5.quick-label used above items-lists) — banners like
+// the section headers. The selector has to carry `h5.quick-label` along,
+// because otherwise the generic heading rule in components/_forms.scss
+// (`.sheet.actor .window-content h5`) wins and brings the double rule
+// back.
+.sheet.actor .window-content h5.quick-label,
+.sheet.npc .window-content h5.quick-label,
+.sheet.vehicle .window-content h5.quick-label,
+h5.quick-label {
+  @include ah-banner(0.9rem, 10px);
 
-  &::before {
-    content: '\2726';
-    margin-right: 7px;
-    opacity: 0.55;
-    font-size: 0.65em;
-    vertical-align: middle;
-  }
-
-  &::after {
-    content: '\2726';
-    margin-left: 7px;
-    opacity: 0.55;
-    font-size: 0.65em;
-    vertical-align: middle;
-  }
+  margin: var(--ah-space-4) 0 0;
+  border-bottom: none;
+  box-shadow: none;
 }
 
-// In actor sheets, a quick-label directly above an items-list should visually attach.
-.sheet.actor .window-content h5.quick-label {
-  margin-bottom: 0;
-  font-size: 1.15rem;
-  text-align: center;
-}
-
-.sheet.actor .window-content h5.quick-label + .items-list {
+.sheet.actor .window-content h5.quick-label + .items-list,
+.sheet.npc .window-content h5.quick-label + .items-list,
+.sheet.vehicle .window-content h5.quick-label + .items-list {
   margin-top: 0;
 }
 
@@ -65,19 +44,14 @@
 // -----------------------------------------
 
 .items-list {
-  --ah-chat-bg-top: rgba(249, 240, 219, 0.96);
-  --ah-chat-bg-bottom: rgba(232, 219, 191, 0.94);
+  @include ah-panel;
+
   list-style: none;
-  margin: 0;
+  margin: 0 0 var(--ah-space-3);
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: $c-dark;
-  background:
-        linear-gradient(180deg, var(--ah-chat-bg-top), var(--ah-chat-bg-bottom)),
-        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, rgba(255, 255, 255, 0.00) 3px, rgba(255, 255, 255, 0.00) 7px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-  padding: 0;
+  border-radius: 0 0 var(--ah-radius) var(--ah-radius);
 
   // Child lists
   .item-list {
@@ -117,55 +91,84 @@
   // Individual Item
   .item {
     align-items: center;
-    padding: 0 5px;
-    border-bottom: 1px solid $c-faint;
+    padding: 3px var(--ah-space-2);
+    border-bottom: 1px solid var(--ah-line);
     &:last-child { border-bottom: none; }
+
+    // Zebra stripes: very quiet, only as a reading aid in the tight grid.
+    &:nth-of-type(even):not(.items-header) {
+      background: rgba(30, 26, 20, 0.035);
+    }
+
+    &:hover:not(.items-header) {
+      background: var(--ah-hover-wash);
+    }
+
     .item-name {
-      color: $c-dark;
-      font-family: $font-tertiary;
+      color: var(--ah-ink);
+      font-family: var(--ah-font-text);
       .item-image {
-        flex: 0 0 30px;
-        height: 30px;
-        background-size: 30px;
+        flex: 0 0 26px;
+        height: 26px;
+        background-size: 26px;
         border: none;
-        margin-right: 5px;
+        margin-right: var(--ah-space-2);
+
+        img {
+          border: 1px solid var(--ah-line-strong);
+          border-radius: var(--ah-radius);
+        }
       }
     }
   }
 
   .item-prop {
     text-align: center;
-    //border-left: 1px solid black;
-    border-right: 1px solid black;
+    // Thin column separators instead of solid black lines.
+    border-right: 1px solid var(--ah-line);
     font-size: 12px;
-    color: $c-dark;
-    font-family: $font-tertiary;
+    color: var(--ah-ink);
+    font-family: var(--ah-font-text);
+
+    &:last-of-type { border-right: none; }
   }
 
   // Inner items-header (column header row inside an items-list)
   .items-header {
-    height: 30px;
-    margin: 0;
-    margin-bottom: 5px;
-    padding: 0 6px;
+    height: 28px;
+    margin: 0 0 var(--ah-space-1);
+    padding: 0 var(--ah-space-2);
     align-items: center;
-    background: $c-banner-bg;
-    color: $c-banner-text;
+    background: var(--ah-banner);
+    color: var(--ah-banner-ink);
     border-bottom: none;
     font-weight: normal;
-    font-family: $font-primary;
-    letter-spacing: 0.06em;
+    font-family: var(--ah-font-display);
+    letter-spacing: 0.10em;
     text-transform: uppercase;
     > * {
-      font-size: 12px;
+      font-size: 11px;
       text-align: center;
-      color: $c-banner-text;
+      color: var(--ah-banner-ink);
+      border-right-color: rgba(240, 232, 208, 0.20);
      }
     .item-name {
-      padding-left: 5px;
+      padding-left: 3px;
       text-align: left;
-      color: $c-banner-text;
+      color: var(--ah-banner-ink);
     }
+  }
+
+  .item-controls a {
+    color: var(--ah-ink-soft);
+
+    &:hover { color: var(--ah-accent); }
+  }
+
+  .items-header .item-controls a {
+    color: rgba(240, 232, 208, 0.72);
+
+    &:hover { color: var(--ah-banner-ink); }
   }
 }
 

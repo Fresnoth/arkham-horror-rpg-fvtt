@@ -1,4 +1,4 @@
-import { rollD6, computeSkillOutcome } from "../helpers/roll-engine.mjs";
+import { rollD6, computeSkillOutcome, resolveRollAftermath } from "../helpers/roll-engine.mjs";
 import { computeShowRollDetails } from "../helpers/roll-details.mjs";
 import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 
@@ -116,6 +116,8 @@ export class SkillRerollWorkflow {
       penalty: this.rollFlags.penalty,
       successesNeeded: this.rollFlags.successesNeeded,
       resultModifier: this.rollFlags.resultModifier,
+      // Item effects were already paid for on the source roll, so the reroll keeps them.
+      addSuccesses: this.rollFlags.addedSuccesses,
     });
   }
 
@@ -164,6 +166,7 @@ export class SkillRerollWorkflow {
       // outcome fields
       results: outcome.finalDiceRollResults,
       successCount: outcome.successCount,
+      addedSuccesses: outcome.addedSuccesses,
       failureCount: outcome.failureCount,
       horrorFailureCount: outcome.horrorFailureCount,
       isSuccess: outcome.isSuccess,
@@ -242,6 +245,20 @@ export class SkillRerollWorkflow {
     const outcome = this.computeOutcome({ plan, exec });
     await this.applyEffects({ outcome });
     const built = await this.buildChat({ outcome });
-    return this.post({ built });
+    const message = await this.post({ built });
+
+    // A reroll recomputes the whole dice array, so the aftermath only reacts to what this reroll
+    // added: horror ones already reported by the source card are passed in as the baseline.
+    await resolveRollAftermath({
+      actor: this.actor,
+      outcome,
+      rollKind: this.rollFlags?.rollKind ?? "complex",
+      skillKey: this.rollFlags?.skillKey ?? "",
+      isReroll: true,
+      previousHorrorOnes: Number(this.rollFlags?.horrorFailureCount ?? 0) || 0,
+      source: "skill-reroll",
+    });
+
+    return message;
   }
 }

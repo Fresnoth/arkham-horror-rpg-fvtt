@@ -1,5 +1,6 @@
 import { DiceRollApp } from "../../apps/dice-roll-app.mjs";
 import { InjuryTraumaRollApp } from "../../apps/injury-trauma-roll-app.mjs";
+import { HEAL_ROLL_KINDS, HEAL_ROLL_SKILLS, decorateHealRollMessage } from "../../helpers/healing.mjs";
 
 function getSkillSnapshot(actor, skillKey) {
   const key = String(skillKey ?? "").trim();
@@ -57,12 +58,55 @@ export async function openSkillDialog(actor, {
 export async function openReactionDialog(actor, {
   skillKey,
   rollKind = "reaction",
+  successesNeeded,
+  afterRoll,
 } = {}) {
   return openSkillDialog(actor, {
     skillKey,
     rollKind,
     weaponToUse: null,
     spellToUse: null,
+    successesNeeded,
+    afterRoll,
+  });
+}
+
+/**
+ * Healing rolls (core p. 33-34 and p. 38). Four roll kinds, three skills:
+ *   - `heal-damage`   Knowledge, heals 1 damage per success
+ *   - `heal-injury`   Knowledge, removes an injury that needs 1-3 successes
+ *   - `introspection` Resolve, always on oneself, lowers the horror limit by exactly 1
+ *   - `counseling`    Presence, on a target, lowers its horror limit by exactly 1
+ *
+ * The result is not applied here: the roll card gets an "apply healing" button per target, so the
+ * owner of the target decides — the same chain an attack uses.
+ */
+export async function openHealDialog(actor, {
+  skillKey,
+  rollKind = "heal-damage",
+  successesNeeded,
+  afterRoll,
+} = {}) {
+  if (!actor) return { ok: false, reason: "ACTOR_REQUIRED" };
+
+  const kind = HEAL_ROLL_KINDS.includes(String(rollKind)) ? String(rollKind) : "heal-damage";
+  const skill = String(skillKey ?? "").trim() || HEAL_ROLL_SKILLS[kind];
+
+  return openSkillDialog(actor, {
+    skillKey: skill,
+    rollKind: kind,
+    weaponToUse: null,
+    spellToUse: null,
+    successesNeeded,
+    afterRoll: async (result) => {
+      await decorateHealRollMessage({
+        message: result?.message,
+        actor,
+        rollKind: kind,
+        outcome: result?.outcome,
+      });
+      if (typeof afterRoll === "function") await afterRoll(result);
+    },
   });
 }
 
@@ -160,6 +204,7 @@ export const rollsApi = {
   version: "v1",
   openSkillDialog,
   openReactionDialog,
+  openHealDialog,
   openWeaponDialog,
   openSpellDialog,
   openInjuryTraumaDialog,

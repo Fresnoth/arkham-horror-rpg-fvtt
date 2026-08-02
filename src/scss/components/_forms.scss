@@ -3,18 +3,22 @@
 }
 
 .sheet-header {
-  flex: 0 auto;
+  // Not shrinkable (`0 0`, not `0 auto`). The header is a flex item of
+  // `.window-content`; now that its content is clamped to the window height again, the
+  // flex algorithm takes the missing height from every shrinkable child — and with
+  // `overflow: hidden` that cut the dice pool strip off the bottom of the header.
+  // Only the tab section may shrink; it is a scroll container.
+  flex: 0 0 auto;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-bottom: 10px;
-  min-height: 220px;
-
-  &.npc {
-    min-height: 200px;
-  }
+  gap: var(--ah-space-2);
+  margin-bottom: var(--ah-space-2);
+  // No min-height: on short sheets (NPC, empty characters) it only forced
+  // empty space. The header is tall enough anyway from the portrait and the
+  // dice pool.
 
   .profile-img {
     flex: 0 0 100px;
@@ -27,26 +31,33 @@
   }
 
   h1.charname {
-    height: 50px;
-    padding: 0px;
-    margin: 5px 0;
+    height: 44px;
+    padding: 0;
+    margin: 2px 0 8px;
     border-bottom: 0;
     font-size: 1rem;
+
+    // The name used to be set in banner cream here — on the light paper surface
+    // of the header that was practically unreadable. It is now ink on paper.
     input {
+      @include ah-field;
+
       width: 100%;
       height: 100%;
       margin: 0;
-      background-color: inherit;
-      color: $c-banner-text;
-
-      &:focus {
-        color: $c-banner-text;
-      }
+      padding: 0 2px;
+      font-family: var(--ah-font-display);
+      font-size: 1.65rem;
+      letter-spacing: 0.03em;
     }
   }
 }
 
-.sheet-tabs {
+// Only applies to the horizontal tab bar now. The character and NPC sheets use
+// the icon rail on the right (global/_tabs-rail.scss) and no longer have any
+// `.sheet-tabs` at all.
+.sheet.item .sheet-tabs,
+.sheet.vehicle .sheet-tabs {
   flex: 0;
 }
 
@@ -67,7 +78,6 @@
 }
 
 .skill-entry {
-  background: green;
   flex: 1;
   display: flex;
   flex-direction: row;
@@ -122,16 +132,49 @@
 .sheet.actor,
 .sheet.item,
 .roll-dialog-container {
+  // Baseline for every input in the sheet. Otherwise Foundry's dark theme
+  // colours fields dark grey — on the light paper surface that would be a
+  // foreign body, and placeholders would be practically invisible.
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  input:not([type]),
+  select,
+  textarea {
+    @include ah-field;
+  }
+
+  // The browser draws a <select>'s option list outside the element; without
+  // its own values it inherits Foundry's dark theme and would then stand as a
+  // dark block in front of the light sheet.
+  select option,
+  select optgroup {
+    background: var(--ah-paper);
+    color: var(--ah-ink);
+  }
+
+  input[type="checkbox"] {
+    accent-color: var(--ah-banner);
+  }
+
+  // Foundry fades disabled fields via opacity only. On paper that is too
+  // little — here the ink is what counts, not the transparency.
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    opacity: 1;
+  }
+
   .form-group {
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: center;
     margin-bottom: 5px;
     label {
+      @include ah-caps(0.78rem);
+
       margin-right: 5px;
       flex-basis: 50%;
-      font-family: $font-primary;
-      font-size: 1.2em;
       min-width: 120px;
     }
   }
@@ -139,122 +182,137 @@
   .header-form-group {
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: center;
     margin-bottom: 5px;
     label {
+      @include ah-caps(0.78rem);
+
       margin-right: 5px;
       flex-basis: 50%;
-      font-family: $font-primary;
-      font-size: 1.2em;
     }
   }
 
   .form-group-editor {
     label {
+      @include ah-caps(0.8rem);
+
       margin-right: 5px;
       flex-basis: 50%;
-      font-family: $font-primary;
-      font-size: 1.1em;
     }
   }
 
+  // Section panel. The legend is the banner of the printed sheet: it stays a
+  // real `legend` and therefore a "rendered legend", which the browser centres
+  // on the top border line — exactly as in print, where the wings stick out of
+  // the top of the panel. Hence the large `margin-top`: the upper half of the
+  // banner needs room above it.
   fieldset {
-    color: $c-dark;
-    background:
-      linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.02) 0px,
-        rgba(0, 0, 0, 0.02) 1px,
-        rgba(255, 255, 255, 0) 3px,
-        rgba(255, 255, 255, 0) 7px
-      );
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-    border: 1.5px solid $c-border-dark;
-    border-radius: 2px;
-    padding: 5px;
-    margin-top: 5px;
+    @include ah-panel;
 
-    legend {
-      font-family: $font-primary;
-      font-size: 1.1em;
-      color: $c-banner-text;
-      background: $c-banner-bg;
-      text-transform: uppercase;
-      font-weight: normal;
-      letter-spacing: 0.08em;
-      padding: 2px 14px;
-      text-shadow: none;
+    // Enough room at the top for the overhanging half of the banner: the legend is
+    // ~35px tall and sits half above the border line, so it protrudes ~18px. Between
+    // adjacent panels the margins collapse to this value, so the 22px leave the
+    // banner a good 4px of air to the panel above.
+    margin: 22px 0 var(--ah-space-2);
+    padding: var(--ah-space-1) $panel-pad var(--ah-space-2);
 
-      &::before {
-        content: '✦';
-        margin-right: 8px;
-        opacity: 0.55;
-        font-size: 0.65em;
-        vertical-align: middle;
-      }
+    > legend {
+      @include ah-banner(0.95rem, 9px);
 
-      &::after {
-        content: '✦';
-        margin-left: 8px;
-        opacity: 0.55;
-        font-size: 0.65em;
-        vertical-align: middle;
-      }
+      margin: 0 0 var(--ah-space-1);
 
-      // Action icons inside legend keep their original size and colours
       a, i {
-        font-size: 0.85em;
-        color: rgba($c-banner-text, 0.75);
-        vertical-align: middle;
+        font-size: 0.8em;
+        color: rgba($c-banner-text, 0.72);
+        letter-spacing: normal;
+        vertical-align: baseline;
 
         &:hover {
           color: $c-banner-text;
+          text-shadow: none;
         }
       }
     }
 
     input {
-      height: 20px;
+      height: 22px;
     }
   }
 
+  // Rulebook heading: serif caps with a thin rule instead of yet another black
+  // bar. The bar stays reserved for the section headers (legend, .quick-label),
+  // otherwise the sheet turns into a ladder.
   .window-content {
     h5, h4, h3, h2, h1 {
-      font-family: $font-primary;
-      color: $c-banner-text;
-      background: $c-banner-bg;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: normal;
-      padding: 2px 10px;
+      position: relative;
+      margin: var(--ah-space-4) 0 var(--ah-space-2);
+      padding: 0 0 5px;
       border: none;
+      background: none;
+      color: var(--ah-ink);
+      font-family: var(--ah-font-display);
+      font-weight: normal;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
       text-shadow: none;
-      margin: 6px 0 4px;
+      // Thin double rule as a separator, as in the rulebook.
+      border-bottom: 1px solid var(--ah-line-strong);
+      box-shadow: 0 3px 0 -2px var(--ah-line);
+    }
+
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.3rem; }
+    h3 { font-size: 1.15rem; }
+    h4 { font-size: 1.02rem; }
+    h5 { font-size: 0.92rem; }
+
+    // The document name is not a section heading — it gets neither caps nor
+    // the double rule. Applies to h1 (actor) and h2 (item).
+    h1.charname,
+    h2.charname {
+      margin: 2px 0 8px;
+      padding: 0;
+      border-bottom: none;
+      box-shadow: none;
+      letter-spacing: normal;
+      text-transform: none;
     }
   }
 } // end of sheet
 
 .foldable-content {
   display: none;
-  background: rgba(26, 19, 10, 0.06);
-  border: 1px solid rgba(42, 31, 16, 0.2);
-  border-radius: 2px;
-  padding: 6px 8px;
-  color: $c-dark;
-  text-align: justify;
-  font-family: $font-tertiary;
-  font-size: 0.92em;
-  line-height: 1.45;
+  margin: 4px 0 2px;
+  padding: var(--ah-space-2) var(--ah-space-3);
+  border: none;
+  border-left: 2px solid var(--ah-line-strong);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.34);
+  color: var(--ah-ink);
+  text-align: left;
+  font-family: var(--ah-font-text);
+  font-size: 0.95em;
+  line-height: var(--ah-line-height);
 
   &.collapsed {
     display: block;
   }
+
+  p:first-child { margin-top: 0; }
+  p:last-child { margin-bottom: 0; }
 }
 
-// Personality trait card title should be smaller than the generic h4 banner.
+// Personality trait card title should stay quieter than a section heading.
+// Carries enough classes to beat the generic `.window-content h4` rule above —
+// otherwise there would be a second heading line here.
+.sheet.actor .window-content .item-card > h4,
 .item-card > h4 {
-  font-size: 0.8rem;
+  margin: 0 0 var(--ah-space-1);
+  padding: 0;
+  border-bottom: none;
+  box-shadow: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
 }
 
 // Dice roll dialog: tidy up the Knacks selector layout.
@@ -397,7 +455,7 @@
     margin: 0 0 6px 0;
     padding: 4px 6px;
     background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--ah-line);
     border-radius: 4px;
   }
 
@@ -438,7 +496,7 @@
     }
 
     .knack-choice-row + .knack-choice-row {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: 1px solid var(--ah-line);
     }
 
     .knack-choice-row input[type="checkbox"] {
@@ -483,7 +541,7 @@
       padding: 0 8px;
       line-height: 22px;
       font-size: 0.9em;
-      border: 1px solid rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--ah-line);
       background: rgba(255, 255, 255, 0.2);
       font-family: $font-primary;
       cursor: pointer;
@@ -495,9 +553,9 @@
       width: 26px;
       height: 26px;
       padding: 0;
-      border: 1px solid rgba(0, 0, 0, 0.18);
+      border: 1px solid var(--ah-line);
       background: rgba(255, 255, 255, 0.12);
-      color: rgba(0, 0, 0, 0.75);
+      color: var(--ah-ink);
       cursor: pointer;
       align-self: start;
       display: inline-flex;
@@ -509,7 +567,7 @@
       margin: 0 0 6px 0;
       padding: 4px 6px;
       background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(0, 0, 0, 0.18);
+      border: 1px solid var(--ah-line);
       border-radius: 4px;
     }
 
@@ -539,27 +597,19 @@
   }
 
   .resource-group-styled {
-    margin-top: 10px;
-    color: $c-dark;
-    background:
-      linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.02) 0px,
-        rgba(0, 0, 0, 0.02) 1px,
-        rgba(255, 255, 255, 0) 3px,
-        rgba(255, 255, 255, 0) 7px
-      );
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    @include ah-panel;
 
-    border: 1.5px solid $c-border-dark;
-    border-radius: 2px;
-    padding: 5px;
+    margin-top: var(--ah-space-2);
+    padding: var(--ah-space-1) $panel-pad;
+
     input, select {
-      height: 20px;
+      height: 22px;
     }
 
-    &.knack-sheet {
+    // The picker markup moved into `templates/item/parts/roll-effects.hbs` and is now shared by four
+    // item types. `knack-sheet` stays for the two sheets that always had it; the sheets that gained
+    // the editor use the neutral name.
+    &.knack-sheet, &.roll-effects-sheet {
       select.knack-multiselect {
         height: auto;
         min-height: 120px;
@@ -589,7 +639,7 @@
         line-height: 26px;
         padding: 0;
         font-weight: 700;
-        border: 1px solid rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--ah-line);
         background: rgba(255, 255, 255, 0.25);
       }
 
@@ -605,15 +655,15 @@
         align-items: center;
         gap: 6px;
         padding: 2px 6px;
-        border: 1px solid rgba(0, 0, 0, 0.18);
-        background: rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--ah-line);
+        background: rgba(30, 26, 20, 0.07);
         border-radius: 4px;
         font-family: $font-tertiary;
         font-size: 0.95em;
       }
 
       .knack-pill__remove {
-        color: rgba(0, 0, 0, 0.75);
+        color: var(--ah-ink);
         text-decoration: none;
       }
 
@@ -623,23 +673,40 @@
     }
   }
 
-  nav.tabs [data-group="sheet"] {
-    color: $c-light-red;
-    font-weight: bold;
-    font-family: $font-primary;
-    font-size: 1.1em;
+}
 
-    .active {
-      color: black;
-      text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+// Horizontal tab bar — after the switch to the icon rail only in use on the
+// item and vehicle sheets. The `:not(.arkham-icon-tabs)` that used to be needed
+// is therefore gone; the restriction now sits on the sheet type.
+.sheet.item,
+.sheet.vehicle {
+  nav.tabs [data-group="sheet"] {
+    color: var(--ah-ink-soft);
+    font-family: $font-primary;
+    font-size: 1.05em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      color: var(--ah-ink);
+      text-shadow: none;
+    }
+
+    &.active {
+      color: var(--ah-ink);
+      border-bottom-color: var(--ah-banner);
+      text-shadow: none;
     }
   }
 }
 
 .skill {
   font-family: $font-primary;
-  font-size: 1.4em;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+  font-size: 1.15em;
+  letter-spacing: 0.05em;
+  text-shadow: none;
 }
 
 // Character sheet money controls (no inline styles in templates)
@@ -661,81 +728,62 @@
 
 // Dice roll dialogs: align dialog controls with the Arkham sheet visual language.
 #dice-roll-app,
-#injury-trauma-roll-app {
+#injury-trauma-roll-app,
+.apply-damage-app,
+.spend-insight-app,
+.money-adjust-app,
+.reroll-dice-app {
   .roll-dialog-container {
-    padding: 6px;
+    padding: var(--ah-space-2);
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
 
     .form-group {
-      background:
-        linear-gradient(180deg, $c-gradient-top, $c-gradient-bottom),
-        repeating-linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.02) 0px,
-          rgba(0, 0, 0, 0.02) 1px,
-          rgba(255, 255, 255, 0) 3px,
-          rgba(255, 255, 255, 0) 7px
-        );
-      border: 1px solid rgba(42, 31, 16, 0.2);
-      border-radius: 2px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-      padding: 4px 6px;
+      @include ah-panel;
+
+      padding: 5px var(--ah-space-2);
+      margin-bottom: var(--ah-space-2);
     }
 
     .form-group > label {
-      color: $c-dark;
-      font-size: 1em;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      @include ah-caps(0.78rem);
     }
 
     input[type="text"],
     input[type="number"],
     select {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(42, 31, 16, 0.45);
-      border-radius: 0;
-      box-shadow: none;
-      color: $c-dark;
-      font-family: $font-tertiary;
-
-      &:focus {
-        outline: none;
-        border-bottom-color: $c-banner-bg;
-        box-shadow: none;
-      }
+      @include ah-field;
     }
 
     .button-dicepool-rolldialog,
     .roll-button {
-      background: $c-banner-bg;
-      color: $c-banner-text;
-      border: 1px solid $c-border-dark;
-      border-radius: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      box-shadow: none;
+      @include ah-button;
     }
 
     .roll-button {
       margin: 0;
     }
 
+    .arkham-roll-details {
+      border-color: var(--ah-line);
+      background: transparent;
+    }
+
     .arkham-roll-details-summary {
-      font-family: $font-primary;
-      color: $c-banner-text;
-      background: $c-banner-bg;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      padding: 4px var(--ah-space-2);
+      background: var(--ah-banner);
+      color: var(--ah-banner-ink);
+      font-family: var(--ah-font-display);
       font-weight: normal;
-      padding: 3px 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
     }
 
     .arkham-roll-details-body {
-      background: rgba(26, 19, 10, 0.06);
-      border: 1px solid rgba(42, 31, 16, 0.2);
+      padding: var(--ah-space-2);
+      border: 1px solid var(--ah-line);
       border-top: none;
-      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.28);
     }
   }
 }
@@ -795,14 +843,6 @@
   }
 }
 
-// Character sheet skills: keep the reaction icon in its own fixed-width column
-// instead of consuming a full 1fr grid track.
-.skills-list .skill-row {
-  grid-template-columns: 1fr 1fr 40px 18px;
-  gap: 6px;
-  align-items: center;
-}
-
 .skills-list .skill-row .skill-reaction-icon {
   margin-left: 0;
   justify-self: center;
@@ -814,19 +854,19 @@
 
 .npc-skill {
   font-family: $font-primary;
-  font-size: 1.4em;
-  text-shadow: 1px 1px rgba(210, 90, 63, 0.25);
+  font-size: 1.05em;
+  letter-spacing: 0.05em;
+  text-shadow: none;
   text-align: center;
   width: 100%;
   display: block;
 }
 
-/* NPC skills: lock each skill tile to a 3-column grid so it won't wrap/jumble */
+/* NPC skills: lock each skill tile to a 3-column grid so it won't wrap/jumble.
+   The column measurements live with the skill circles in components/_skills.scss. */
 .npc-skill-entry {
   display: grid;
-  grid-template-columns: 1fr 40px 18px;
   align-items: center;
-  column-gap: 6px;
 }
 
 /* Override the global NPC label width just within the skill entry */
@@ -836,7 +876,6 @@
 }
 
 .npc-skill-entry input {
-  width: 30px;
   justify-self: center;
 }
 
@@ -886,12 +925,9 @@
   }
 }
 
-.styled-label {
-  font-family: $font-primary;
-  font-size: 1.0em;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: $c-dark;
+.styled-label,
+.header-label {
+  @include ah-caps(0.78rem);
 }
 
 .ammo_input {
@@ -931,20 +967,29 @@
   height: auto;
 }
 
+// The host MUST stay a flex column: Foundry reserves the space for the toolbar via
+// `.menu-container { flex: 0 0 var(--menu-height) }`. Without a flex context that does
+// not apply, the bar collapses to height 0 and lies over the first line of text —
+// which made the field look empty while editing (Issue #38).
 .personality-trait-form prose-mirror {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
-.personality-trait-form prose-mirror .editor-content {
+// In core, `.editor-content` is `position: absolute; inset: 0`; a min-height there
+// therefore carries nothing. It belongs on the container that spans the area.
+.personality-trait-form prose-mirror .editor-container {
   min-height: 120px;
 }
 
 .roll-button {
+  @include ah-button;
+
   margin: 5px;
   margin-top: 25px;
-  font-family: $font-primary;
   width: 100%;
-  font-size: 1.2em;
+  font-size: 1.05em;
+  padding: 6px 12px;
 }
 
 .dice-action-icon {
@@ -968,29 +1013,17 @@
 .skills-list {
   input {
     text-align: center;
-    max-width: 40px;
   }
 }
 
 .button-dicepool-rolldialog {
-  background-color: $c-red;
-  color: white;
+  @include ah-button;
+
   height: 32px;
 }
 
 .fancy-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(42, 31, 16, 0.45);
-  border-radius: 0;
-  box-shadow: none;
-  font-family: $font-tertiary;
-  color: $c-dark;
-  font-weight: 400;
+  @include ah-field;
 
-  &:focus {
-    outline: none;
-    border-bottom-color: $c-banner-bg;
-    box-shadow: none;
-  }
+  font-weight: 400;
 }

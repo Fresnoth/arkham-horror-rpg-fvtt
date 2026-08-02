@@ -3,10 +3,15 @@ import { createArkhamHorrorChatCard } from "../util/chat-utils.mjs";
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
 const TEMPLATE = `systems/${SYSTEM_ID}/templates/chat/dicepool-reset.hbs`;
 
+/**
+ * @param {boolean} [postChat=true] Set false when the caller posts its own card for the same
+ *   event — straining does that, and two cards for one click only clutter the log.
+ */
 export async function refreshDicepoolAndPost({
   actor,
   label = game.i18n?.localize?.("ARKHAM_HORROR.DICEPOOL.Chat.Refresh") ?? "Dicepool Refresh",
   healDamage = false,
+  postChat = true,
 } = {}) {
   if (!actor) throw new Error("refreshDicepoolAndPost requires an actor");
 
@@ -49,7 +54,7 @@ export async function refreshDicepoolAndPost({
     },
   };
 
-  await createArkhamHorrorChatCard({ actor, template: TEMPLATE, chatVars, flags });
+  if (postChat) await createArkhamHorrorChatCard({ actor, template: TEMPLATE, chatVars, flags });
 
   return {
     oldDamage,

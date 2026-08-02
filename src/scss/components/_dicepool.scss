@@ -1,0 +1,147 @@
+// ---------------------------------------------------------------------------
+// Dice pool in a diamond frame.
+//
+// The printed sheet sets every pool slot in a diamond with concentric circles
+// inside — the most distinctive element of the sheet. Here the diamond is a
+// square rotated by 45 degrees as a pseudo element; the die glyph stays
+// unrotated on top of it.
+// ---------------------------------------------------------------------------
+
+$die-slot: 40px;
+
+.dicepool-display {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ah-space-1);
+  padding: var(--ah-space-2) 0;
+
+  // The dice slots stand as their own group between the controls — otherwise
+  // the row reads as a single chain of icons.
+  .dicepool-slots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ah-space-1);
+    padding: 0 var(--ah-space-2);
+    min-width: 0;
+  }
+
+  .dicepool-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--ah-space-1);
+    flex: 0 0 auto;
+  }
+
+  .dice-action-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    border: 1px solid var(--ah-line);
+    border-radius: 50%;
+    color: var(--ah-ink-soft);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
+
+    &:hover {
+      border-color: var(--ah-ink);
+      background: var(--ah-hover-wash);
+      color: var(--ah-ink);
+    }
+  }
+
+  // The pool slot.
+  .dicepool-dice {
+    position: relative;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: $die-slot;
+    height: $die-slot;
+    margin: 0;
+    // `.dicepool-dice` inherits a font size of 1.85em from global/_fonts.scss;
+    // that would inflate the diamond with an empty line of text.
+    font-size: 0;
+    line-height: 0;
+    cursor: pointer;
+
+    // Outer diamond
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1.5px solid var(--ah-ink);
+      transform: rotate(45deg);
+      transition: border-color 160ms ease;
+    }
+
+    // Inner diamond — the second, thin outline of the print
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 9px;
+      border: 1px solid var(--ah-line);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    img {
+      position: relative;
+      z-index: 1;
+      width: 20px;
+      height: 20px;
+      border-radius: 0;
+    }
+
+    &:hover::before {
+      border-color: var(--ah-accent);
+    }
+
+    // Spent slot: the diamond stays, only the die fades. That keeps the pool
+    // grid available as a counting aid.
+    &.used {
+      opacity: 1;
+
+      img { opacity: 0.22; }
+
+      &::before { border-color: var(--ah-line); }
+      &::after { border-color: transparent; }
+    }
+  }
+}
+
+// Its own panel in the sheet header, across the full width: `.sheet-header` is a
+// wrapping flex container, so `flex-basis: 100%` pushes the row below the
+// portrait AND the header fields instead of next to the portrait.
+//
+// The strain-oneself button sits at the right of the row — it is a dice pool
+// action and belongs next to the other pool symbols.
+.dicepool-container {
+  flex: 0 0 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ah-space-2);
+
+  .dicepool-display {
+    flex: 1 1 auto;
+  }
+
+  .arkham-strain-button {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+}

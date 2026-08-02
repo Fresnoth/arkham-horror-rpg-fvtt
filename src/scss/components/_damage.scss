@@ -1,0 +1,234 @@
+// Apply damage: button on the attack chat card, the apply dialog and the confirmation card.
+// Lives outside the sheet scope because chat cards render in the sidebar and the dialog is its
+// own application window.
+
+.arkham-damage-button {
+    @include ah-button-quiet;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+    padding: 3px var(--ah-space-2);
+    line-height: 1.5;
+    font-size: 0.72rem;
+}
+
+/* Dialog */
+
+.apply-damage-form {
+    font-family: var(--ah-font-text);
+    line-height: var(--ah-line-height);
+
+    // Dialog header as a banner panel: attacker / weapon / target at a glance,
+    // in the same idiom as the sheet's section headers.
+    .arkham-damage-head {
+        margin-bottom: var(--ah-space-3);
+        padding: var(--ah-space-2) var(--ah-space-3);
+        border: 1px solid var(--ah-line-strong);
+        border-radius: var(--ah-radius);
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .arkham-damage-head-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--ah-space-2);
+        padding: 2px 0;
+
+        & + .arkham-damage-head-row {
+            border-top: 1px dotted var(--ah-line);
+        }
+    }
+
+    .arkham-damage-head-label {
+        font-family: var(--ah-font-display);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-damage-head-value {
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--ah-ink);
+    }
+
+    .arkham-damage-preview {
+        font-style: normal;
+        color: var(--ah-ink);
+    }
+
+    .arkham-damage-wounded {
+        margin: 2px 0 var(--ah-space-2);
+        padding: var(--ah-space-1) var(--ah-space-2);
+        border-left: 3px solid var(--ah-accent);
+        font-size: 0.8rem;
+        color: var(--ah-accent);
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    .arkham-damage-horror-preview {
+        font-style: normal;
+        color: var(--ah-ink);
+    }
+
+    .arkham-damage-horror-max {
+        margin: 2px 0 var(--ah-space-2);
+        padding: var(--ah-space-1) var(--ah-space-2);
+        border-left: 3px solid var(--ah-line-strong);
+        font-size: 0.8rem;
+        color: var(--ah-ink-soft);
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    .arkham-damage-injury label {
+        display: flex;
+        align-items: center;
+        gap: var(--ah-space-2);
+    }
+
+    .arkham-damage-hints {
+        margin-top: var(--ah-space-3);
+        padding-top: var(--ah-space-2);
+        border-top: 1px solid var(--ah-line-strong);
+        box-shadow: 0 3px 0 -2px var(--ah-line);
+    }
+
+    .arkham-damage-hints-title {
+        font-family: var(--ah-font-display);
+        font-size: 0.8rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ah-ink);
+    }
+
+    .arkham-damage-hints-note {
+        margin: 2px 0 var(--ah-space-2);
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-damage-hints-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-height: 160px;
+        overflow-y: auto;
+    }
+
+    .arkham-damage-hint {
+        padding: var(--ah-space-1) 0 var(--ah-space-1) var(--ah-space-2);
+        border-left: 2px solid var(--ah-line);
+        font-size: 0.82rem;
+
+        & + .arkham-damage-hint {
+            margin-top: var(--ah-space-1);
+        }
+    }
+
+    .arkham-damage-hint-name {
+        display: block;
+        font-family: var(--ah-font-display);
+        font-weight: normal;
+        letter-spacing: 0.06em;
+        color: var(--ah-ink);
+    }
+
+    .arkham-damage-hint-text {
+        display: block;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-damage-hints-empty {
+        margin: 0;
+        font-size: 0.82rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .dialog-footer {
+        display: flex;
+        gap: var(--ah-space-2);
+        margin-top: var(--ah-space-3);
+    }
+}
+
+/* Confirmation chat card */
+
+.arkham-damage-card {
+    p {
+        margin: 2px 0;
+    }
+
+    .arkham-damage-card-source {
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-damage-card-wounded {
+        margin-top: var(--ah-space-2);
+        padding: 2px 0 2px var(--ah-space-2);
+        border-left: 3px solid var(--ah-accent);
+        color: var(--ah-accent);
+    }
+}
+
+/* Trauma card (ones on horror dice, core p. 37) */
+
+.arkham-trauma-card {
+    p {
+        margin: 2px 0;
+    }
+
+    .arkham-trauma-card-title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: var(--ah-space-1);
+        font-family: var(--ah-font-display);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ah-ink);
+    }
+
+    .arkham-trauma-card-severity {
+        padding: 2px 0 2px var(--ah-space-2);
+        border-left: 3px solid var(--ah-accent);
+        color: var(--ah-accent);
+    }
+
+    .arkham-trauma-card-note {
+        font-size: 0.74rem;
+        font-style: italic;
+        color: var(--ah-ink-soft);
+    }
+
+    .arkham-trauma-card-actions {
+        margin-top: var(--ah-space-2);
+    }
+}
+
+.arkham-trauma-button {
+    @include ah-button-quiet;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+    padding: 3px var(--ah-space-2);
+    line-height: 1.5;
+    font-size: 0.72rem;
+}

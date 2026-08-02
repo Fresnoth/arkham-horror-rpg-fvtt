@@ -4,6 +4,7 @@ const { TextEditor, DragDrop } = foundry.applications.ux
 import { enrichHTML } from "../util/util.mjs"
 import { DiceRollApp } from "../apps/dice-roll-app.mjs";
 import { attuneTomeExclusive, clearTomeUnderstanding as clearTomeUnderstandingHelper, understandTomeAndLearnSpells } from "../helpers/tome.mjs";
+import { buildRollEffectContext, buildUsageContext } from "../data/fields/roll-effects.mjs";
 
 export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     #dragDrop // Private field to hold dragDrop handlers
@@ -98,23 +99,23 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         return await this.removeKnackRollEffectKey(event, target)
     }
 
+    /** Whether this item type carries `system.rollEffects` at all (see `data/fields/roll-effects.mjs`). */
+    get hasRollEffects() {
+        return !!this.document?.system?.rollEffects
+    }
+
     async addKnackRollEffectKey(event, target) {
         event.preventDefault()
-        if (this.document.type !== 'knack' && this.document.type !== 'injury') return
+        if (!this.hasRollEffects) return
         if (!this.isEditable) return
 
         const group = String(target?.dataset?.group ?? '')
-        if (!group) return
+        if (group !== 'skillKeys' && group !== 'rollKinds') return
 
-        const type = String(this.document.type ?? '')
-        const selectName = group === 'skillKeys'
-            ? (type === 'injury' ? '_injurySkillKey' : '_knackSkillKey')
-            : group === 'rollKinds'
-                ? (type === 'injury' ? '_injuryRollKind' : '_knackRollKind')
-                : null
-        if (!selectName) return
-
-        const select = this.element?.querySelector?.(`select[name="${selectName}"]`)
+        // The select sits inside the same picker as the button. Looking it up that way instead of by
+        // name lets every item type share one partial — the old per-type names (`_knackSkillKey`,
+        // `_injurySkillKey`) were the only reason this handler had to know the item type.
+        const select = target?.closest?.('.knack-picker')?.querySelector?.('select')
         const value = String(select?.value ?? '')
         if (!value) return
 
@@ -137,7 +138,7 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
     async removeKnackRollEffectKey(event, target) {
         event.preventDefault()
-        if (this.document.type !== 'knack' && this.document.type !== 'injury') return
+        if (!this.hasRollEffects) return
         if (!this.isEditable) return
 
         const group = String(target?.dataset?.group ?? '')
@@ -187,6 +188,16 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
         context.config = CONFIG.SHADOWCITY;
 
         context.descriptionHTML = await enrichHTML('system.description',this.document);
+
+        // Everything the shared `parts/roll-effects.hbs` and `parts/usage.hbs` need. Built here for
+        // every item type that carries the fields, so the templates stay free of hand-kept option
+        // lists — that is what let the heal roll kinds go missing from the pickers.
+        if (actorData.system.rollEffects) {
+            context.rollEffects = buildRollEffectContext(actorData.system.rollEffects);
+        }
+        if (actorData.system.usage) {
+            context.usage = buildUsageContext(actorData.system.usage);
+        }
 
         if (actorData.system.specialRules) {
             context.specialRulesHTML = await enrichHTML('system.specialRules',this.document);

@@ -1,0 +1,32 @@
+{{!--
+    Shared editor for `system.usage`, used by knack, useful_item and relic.
+
+    `remaining`/`max` are the charges the dice dialog reads and spends. Frequency options come from
+    `buildUsageContext()`, so `USAGE_FREQUENCIES` stays the only place they are listed.
+--}}
+<h5 class="quick-label">{{localize "ARKHAM_HORROR.KNACK_SHEET.Usage"}}</h5>
+
+<div class="form-group">
+    <label for="usage-frequency" class="styled-label">{{localize "ARKHAM_HORROR.KNACK_SHEET.Frequency"}}</label>
+    <select id="usage-frequency" name="system.usage.frequency">
+        {{#each usage.frequencies as |choice|}}
+            <option value="{{choice.key}}" {{#if choice.selected}}selected{{/if}}>{{choice.label}}</option>
+        {{/each}}
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="usage-max" class="styled-label">{{localize "ARKHAM_HORROR.KNACK_SHEET.MaxUses"}}</label>
+    <input type="number" id="usage-max" name="system.usage.max" value="{{system.usage.max}}" min="0">
+</div>
+
+<div class="form-group">
+    <label for="usage-remaining" class="styled-label">{{localize "ARKHAM_HORROR.LABELS.Remaining"}}</label>
+    <input type="number" id="usage-remaining" name="system.usage.remaining" value="{{system.usage.remaining}}" min="0">
+</div>
+
+<div class="form-group">
+    <label for="usage-decrease" class="styled-label">{{localize "ARKHAM_HORROR.ROLL_EFFECT_SHEET.DecreaseAfterUsage"}}</label>
+    <input type="checkbox" id="usage-decrease" name="system.usage.decreaseAfterUsage" {{#if system.usage.decreaseAfterUsage}}checked{{/if}}>
+</div>
+<div class="notes">{{localize "ARKHAM_HORROR.ROLL_EFFECT_SHEET.DecreaseAfterUsageHint"}}</div>

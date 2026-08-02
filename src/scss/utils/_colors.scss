@@ -15,7 +15,35 @@ $c-blue: #1C4A72;
 $c-gradient-top: rgba(249, 240, 219, 0.96);
 $c-gradient-bottom: rgba(232, 219, 191, 0.94);
 
-// Official sheet design - dark banner headers and matching borders
-$c-banner-bg: #1a130a;
-$c-banner-text: #f0e8d0;
-$c-border-dark: #2a1f10;
+// ---------------------------------------------------------------------------
+// Arkham palette, sampled from the official sheet and the rulebook interiors.
+// Practically monochrome: the accent is the ink itself, not a decorative colour.
+// The SCSS variables are the source; utils/_variables.scss mirrors them as
+// CSS custom properties on :root so that the chat cards can use them too
+// (those render in the sidebar, so OUTSIDE the system scope).
+// ---------------------------------------------------------------------------
+
+// Paper
+$c-paper:         #ece7e1; // sheet surface, warm cream white
+$c-paper-edge:    #ccc4b8; // vignette toward the edge
+$c-paper-raised:  #e5dfd6; // panels, a shade darker than the surface
+$c-paper-sunken:  #dcd5ca; // inputs, alternating list rows
+
+// Ink — almost black sepia, not pure black
+$c-ink:           #1e1a14;
+$c-ink-soft:      rgba(30, 26, 20, 0.74); // secondary text, labels
+$c-ink-faint:     rgba(30, 26, 20, 0.50); // placeholders, disabled
+$c-line:          rgba(30, 26, 20, 0.26); // thin separators
+$c-line-strong:   rgba(30, 26, 20, 0.58); // panel borders, outer double rule
+
+// Banner (section header) — the banner of the printed sheet.
+// These three values also feed the icon rail (global/_tabs-rail.scss).
+// The rail is sampled from them: do not shift the values here.
+$c-banner-bg:     #1a130a;
+$c-banner-text:   #f0e8d0;
+$c-border-dark:   #2a1f10;
+
+// States. Red stays the only colour accent and is used sparingly.
+$c-good:          #2f5d40;
+$c-bad:           #7c2419;
+$c-focus:         #722a1c;

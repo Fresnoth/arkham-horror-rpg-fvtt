@@ -1,0 +1,23 @@
+<div class="arkham-trauma-card">
+    <div class="arkham-trauma-card-title">
+        <i class="fa-solid fa-brain" aria-hidden="true"></i>
+        <strong>{{localize "ARKHAM_HORROR.TRAUMA.Chat.Label"}}</strong>
+    </div>
+
+    <p>{{localize "ARKHAM_HORROR.TRAUMA.Chat.Summary" actorName=actorName horrorOnes=horrorOnes}}</p>
+
+    {{#if hasSeverity}}
+        <p class="arkham-trauma-card-severity">
+            {{localize "ARKHAM_HORROR.TRAUMA.Chat.Severity" severityModifier=severityModifier}}
+        </p>
+    {{/if}}
+
+    <p class="arkham-trauma-card-note">{{localize "ARKHAM_HORROR.TRAUMA.Chat.Note"}}</p>
+
+    <div class="arkham-trauma-card-actions">
+        <button type="button" class="arkham-trauma-button" data-action="arkham-roll-trauma"
+                data-actor-uuid="{{actorUuid}}" data-severity-modifier="{{severityModifier}}">
+            <i class="fa-solid fa-dice-d6" aria-hidden="true"></i> {{localize "ARKHAM_HORROR.TRAUMA.Chat.RollButton"}}
+        </button>
+    </div>
+</div>
