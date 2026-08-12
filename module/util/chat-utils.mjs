@@ -4,7 +4,12 @@ export async function renderChatHtml(templatePath, chatVars) {
 }
 // applies the roll mode to the chat data respecticting default foundry selectors and posts the message
 export async function applyChatModeAndPost(chatData, { rollMode = "roll" } = {}) {
-  const dataWithMode = ChatMessage.applyRollMode({ ...chatData }, rollMode);
+  const mode = rollMode === "roll"
+    ? undefined
+    : ({ publicroll: "public", gmroll: "gm", blindroll: "blind", selfroll: "self" }[rollMode] ?? rollMode);
+  const dataWithMode = typeof ChatMessage.applyMode === "function"
+    ? ChatMessage.applyMode({ ...chatData }, mode)
+    : ChatMessage.applyRollMode({ ...chatData }, rollMode);
   return ChatMessage.create(dataWithMode);
 }
 

@@ -185,7 +185,7 @@ export class ArkhamHorrorVehicleSheet extends HandlebarsApplicationMixin(ActorSh
         // Get the type of item to create.
         const type = target.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(target.dataset);
+        const data = foundry.utils.duplicate(target.dataset);
         // Initialize a default name.
         const name = game.i18n.format('DOCUMENT.New', {
             type: game.i18n.localize(`TYPES.Item.${type}`)
@@ -201,7 +201,9 @@ export class ArkhamHorrorVehicleSheet extends HandlebarsApplicationMixin(ActorSh
         delete itemData.system['type'];
 
         // Finally, create the item!
-        return await ArkhamHorrorItem.create(itemData, { parent: actor });
+        const created = await ArkhamHorrorItem.create(itemData, { parent: actor });
+        created?.sheet?.render(true);
+        return created;
     }
 
     static async #handleDeleteItem(event, target) {

@@ -524,6 +524,7 @@ li.chat-message.message {
     --ah-chat-paper: var(--ah-paper);
     --ah-chat-border: var(--ah-line-strong);
     --ah-chat-accent: var(--ah-banner);
+    --ah-chat-tint: transparent;
 
     border: 1px solid var(--ah-chat-border);
     border-radius: var(--ah-radius);
@@ -531,12 +532,13 @@ li.chat-message.message {
     // The same paper surface as the sheet, just with a flatter vignette.
     background-color: var(--ah-chat-paper);
     background-image:
+        linear-gradient(var(--ah-chat-tint), var(--ah-chat-tint)),
         radial-gradient(120% 130% at 50% 0%, rgba(236, 231, 225, 0) 55%, rgba(196, 187, 173, 0.45) 100%),
         linear-gradient(rgba(238, 233, 226, 0.86), rgba(238, 233, 226, 0.86)),
         url("../assets/images/sheet-background-v2.webp");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100% 100%, 100% 100%, cover;
+    background-size: 100% 100%, 100% 100%, 100% 100%, cover;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.30);
 }
 
@@ -545,6 +547,7 @@ li.chat-message.message.whisper {
     --ah-chat-paper: #e4e7ee;
     --ah-chat-border: rgba(54, 74, 115, 0.75);
     --ah-chat-accent: rgba(46, 62, 96, 0.95);
+    --ah-chat-tint: rgba(54, 74, 115, 0.10);
 
     // Also align with Foundry's native variables (in case core styles reference them)
     --color-whisper-background: #dbe6f6;
@@ -556,6 +559,7 @@ li.chat-message.message.blind {
     --ah-chat-paper: #f0e2e7;
     --ah-chat-border: rgba(124, 52, 73, 0.72);
     --ah-chat-accent: rgba(110, 44, 62, 0.95);
+    --ah-chat-tint: rgba(124, 52, 73, 0.07);
 
     --color-blind-background: #f2d7e0;
     --color-blind-border: #7a3a50;

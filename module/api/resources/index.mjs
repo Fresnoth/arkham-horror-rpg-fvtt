@@ -11,6 +11,7 @@ import { applyDamageAndPost, previewDamage as previewDamageHelper } from "../../
 import {
   adjustHorrorLimit,
   applyHealingAndPost,
+  openRecoveryDialog as openRecoveryDialogHelper,
   previewHeal as previewHealHelper,
 } from "../../helpers/healing.mjs";
 
@@ -285,6 +286,20 @@ export async function adjustHorror(actor, {
   return adjustHorrorLimit(actor, delta, { source, healerName, rollMode, postChat, notify });
 }
 
+/**
+ * Recovery over time (GM tool)
+ * Applies a recovery span: pool limit back to maximum, naturally healing injuries removed and —
+ * from a week on — the horror limit reset to 0.
+ * One week heals injuries of difficulty 1, two weeks also the harder ones (core p. 34).
+ * "Time Heals All Wounds" (core p. 38): a full quiet week drops the horror limit to 0.
+ */
+
+export async function openRecoveryDialog(actor, {
+  source = "api",
+} = {}) {
+  return openRecoveryDialogHelper(actor, { source });
+}
+
 export const resourcesApi = {
   version: "v1",
   canSpend,
@@ -302,4 +317,5 @@ export const resourcesApi = {
   previewHeal,
   healInjury,
   adjustHorror,
+  openRecoveryDialog,
 };
