@@ -48,6 +48,11 @@
   unchanged English copies (AGI, WIT, PRES …) and are now German (BEW, VER, AUS …). Fixed along the
   way: the introspection hint called "Resolve" *Willenskraft* in German and *Temple* in Spanish, while
   both languages name the skill differently everywhere else.
+- Fix: section headings on item sheets were sliced in half. The banner shape is a `clip-path` that
+  eats into the top and bottom edge, and the generic heading rule outweighs the banner rule on item
+  sheets — it removed the vertical padding but could not remove the clip, so the shape cut straight
+  through the glyphs. Affected the knack and tome sheets all along, and became obvious once useful
+  items and relics gained the same headings.
 - Visual redesign of sheets, dialogs and chat cards, following the look of the official sheet.
 - Actor sheets are considerably more compact: the gaps between section panels halved, the minimum
   height of the sheet header removed, skill rows tightened. The character sheet needs roughly 150 px

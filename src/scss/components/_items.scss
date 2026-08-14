@@ -25,6 +25,12 @@
 .sheet.actor .window-content h5.quick-label,
 .sheet.npc .window-content h5.quick-label,
 .sheet.vehicle .window-content h5.quick-label,
+// Item sheets belong in this list too, ever since the shared `parts/usage.hbs` and
+// `parts/roll-effects.hbs` brought quick-labels to knack, injury, useful_item and relic.
+// Without it the generic rule wins on padding and background, but NOT on `clip-path` —
+// nothing else declares that. The banner shape then cut into a box with no vertical
+// padding left, slicing the top off the glyphs.
+.sheet.item .window-content h5.quick-label,
 h5.quick-label {
   @include ah-banner(0.9rem, 10px);
 
