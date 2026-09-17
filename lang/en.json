@@ -320,6 +320,8 @@
       "PermissionStrainActor": "You do not have permission to strain for this Actor.",
       "StrainRequiresDamage": "You can only strain when your dice pool maximum is reduced by damage.",
       "ArchetypeKnackDropInvalid": "Invalid archetype knack drop data.",
+      "ArchetypeActorOwnerRequired": "You must own this actor to change its archetype.",
+      "ArchetypeObserverRequired": "You need at least Observer permission for this archetype.",
       "ArchetypeRequiredForKnacks": "Set an archetype on this actor before purchasing knacks.",
       "KnackDifferentArchetype": "This knack belongs to a different archetype.",
       "ActorArchetypeInvalid": "Actor archetype reference is invalid.",
@@ -359,6 +361,7 @@
       "RollTableEmptyResultName": "Roll table '{tableName}' has a matching range but an empty result name. Set the RollTable Result Name, or the system will fall back to built-in tables.",
       "RollTableOverflowAssumption": "Roll table '{tableName}' maxes at {tableMax}; treating top entry as {tableMax}+ for total {total}.",
       "ItemOpenSourceKnackGmOnly": "Only the GM can open/edit source Knack documents from an Archetype.",
+      "ItemDropResolveFailed": "The dropped item could not be accessed. Ask the GM for Observer permission.",
       "ItemUuidResolveFailed": "Could not resolve the dropped UUID.",
       "ItemNoSheetForDocument": "No sheet available for that document.",
       "ItemOpenUuidFailed": "Failed to open the UUID document.",
@@ -379,6 +382,9 @@
     },
     "Info": {
       "KnackAlreadyOwnedUpdated": "Knack already owned; updated tier to match archetype.",
+      "KnackPurchased": "Purchased {knack} for {xpCost} XP. {remainingXp} unused XP remaining.",
+      "KnackAcquiredWithoutXp": "Added {knack} without spending XP.",
+      "KnackXpRefunded": "Refunded {xp} XP for {count} deleted purchased Knack(s). {remainingXp} unused XP remaining.",
       "ArchetypeSet": "Archetype set to {archetypeName}.",
       "TomeAlreadyUnderstood": "This Tome is already understood.",
       "TomeNoSpellsToLearn": "This Tome has no spells to learn.",
@@ -514,6 +520,29 @@
       }
     },
     "Dialog": {
+      "ChangeArchetype": {
+        "Title": "Change Archetype",
+        "Prompt": "Change this actor's archetype from {currentArchetype} to {newArchetype}?",
+        "RemoveKnacksTitle": "Remove Existing Knacks",
+        "RemoveKnacksPrompt": "Remove all {count} existing Knacks? Spells granted by those Knacks will also be removed."
+      },
+      "SkillBelowArchetypeCap": {
+        "Title": "Skill Below Archetype Cap",
+        "Prompt": "{archetype} sets the {skill} skill cap at {cap}. Set {skill} to {value} anyway?"
+      },
+      "KnackTierLimitOverride": {
+        "Title": "Exceed Knack Tier Limit",
+        "Prompt": "Tier {tier} allows {maxPurchasable} Knacks and this actor already has {existingTierCount}. Add this Knack anyway?"
+      },
+      "KnackInsufficientXp": {
+        "Title": "Insufficient XP",
+        "Prompt": "{knack} costs {xpCost} XP, but this actor has {unusedXp} unused XP. Add it without spending XP?"
+      },
+      "PurchaseKnack": {
+        "Title": "Purchase Knack",
+        "Prompt": "Purchase {knack} for {xpCost} XP? The actor will have {remainingXp} unused XP remaining.",
+        "Confirm": "Purchase"
+      },
       "ResetKnacks": {
         "Title": "Reset Knack Uses",
         "Prompt": "Reset which Knack uses?",

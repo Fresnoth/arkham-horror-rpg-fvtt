@@ -26,8 +26,6 @@ import { registerChatDefendHooks } from './hooks/chat-defend-hooks.mjs';
 import { registerChatTraumaHooks } from './hooks/chat-trauma-hooks.mjs';
 import { refreshInsightAndPost, spendInsightAndPost, refreshInsight, spendInsight } from './helpers/insight.mjs';
 
-import { applyKnackGrantsOnAcquire, removeKnackGrantedSpellsOnDelete } from './helpers/knacks.mjs';
-
 import { refreshDicepoolAndPost } from './helpers/dicepool.mjs';
 import { configureStatusEffects } from './helpers/status-effects.mjs';
 import * as money from './helpers/money.mjs';
@@ -176,30 +174,6 @@ Hooks.once('init', function () {
   registerChatRerollHooks();
   registerChatDefendHooks();
   registerChatTraumaHooks();
-
-  // Knack spell grants: apply on acquire, remove on delete.
-  // This is intentionally data-driven and does not require special purchase flows.
-  Hooks.on('createItem', async (item) => {
-    try {
-      if (item?.type !== 'knack') return;
-      const actor = item?.parent;
-      if (!actor || !(actor instanceof Actor)) return;
-      await applyKnackGrantsOnAcquire({ actor, knack: item, notify: false });
-    } catch (e) {
-      console.warn('Knack grant apply failed', e);
-    }
-  });
-
-  Hooks.on('preDeleteItem', async (item) => {
-    try {
-      if (item?.type !== 'knack') return;
-      const actor = item?.parent;
-      if (!actor || !(actor instanceof Actor)) return;
-      await removeKnackGrantedSpellsOnDelete({ actor, knack: item, notify: false });
-    } catch (e) {
-      console.warn('Knack grant remove failed', e);
-    }
-  });
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();

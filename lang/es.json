@@ -320,6 +320,8 @@
       "PermissionStrainActor": "No tienes permiso para esforzarte con este Actor.",
       "StrainRequiresDamage": "Solo puedes esforzarte cuando el máximo de tu reserva de dados se ha reducido por daño.",
       "ArchetypeKnackDropInvalid": "Datos inválidos al soltar talento de arquetipo.",
+      "ArchetypeActorOwnerRequired": "Debes ser propietario de este actor para cambiar su arquetipo.",
+      "ArchetypeObserverRequired": "Necesitas al menos permiso de Observador para este arquetipo.",
       "ArchetypeRequiredForKnacks": "Asigna un arquetipo a este actor antes de comprar talentos.",
       "KnackDifferentArchetype": "Este talento pertenece a un arquetipo diferente.",
       "ActorArchetypeInvalid": "La referencia de arquetipo del actor no es válida.",
@@ -359,6 +361,7 @@
       "RollTableEmptyResultName": "La tabla de tiradas '{tableName}' tiene un rango coincidente pero un nombre de resultado vacío. Asigna un nombre de resultado a la tabla o el sistema recurrirá a las tablas integradas.",
       "RollTableOverflowAssumption": "La tabla de tiradas '{tableName}' llega hasta {tableMax}; tratando la entrada superior como {tableMax}+ para un total de {total}.",
       "ItemOpenSourceKnackGmOnly": "Solo el DJ puede abrir/editar documentos de Talento de origen desde un Arquetipo.",
+      "ItemDropResolveFailed": "No se pudo acceder al objeto soltado. Pide al DJ permiso de Observador.",
       "ItemUuidResolveFailed": "No se pudo resolver la UUID soltada.",
       "ItemNoSheetForDocument": "No hay una hoja disponible para ese documento.",
       "ItemOpenUuidFailed": "No se pudo abrir el documento UUID.",
@@ -379,6 +382,9 @@
     },
     "Info": {
       "KnackAlreadyOwnedUpdated": "Talento ya adquirido; nivel actualizado para coincidir con el arquetipo.",
+      "KnackPurchased": "Se ha comprado {knack} por {xpCost} PX. Quedan {remainingXp} PX sin gastar.",
+      "KnackAcquiredWithoutXp": "Se ha añadido {knack} sin gastar PX.",
+      "KnackXpRefunded": "Se han reembolsado {xp} PX por {count} talento(s) comprado(s) eliminado(s). Quedan {remainingXp} PX sin gastar.",
       "ArchetypeSet": "Arquetipo establecido en {archetypeName}.",
       "TomeAlreadyUnderstood": "Este Tomo ya está comprendido.",
       "TomeNoSpellsToLearn": "Este Tomo no tiene hechizos que aprender.",
@@ -514,6 +520,29 @@
       }
     },
     "Dialog": {
+      "ChangeArchetype": {
+        "Title": "Cambiar arquetipo",
+        "Prompt": "¿Cambiar el arquetipo de este actor de {currentArchetype} a {newArchetype}?",
+        "RemoveKnacksTitle": "Eliminar talentos existentes",
+        "RemoveKnacksPrompt": "¿Eliminar los {count} talentos existentes? También se eliminarán los hechizos concedidos por esos talentos."
+      },
+      "SkillBelowArchetypeCap": {
+        "Title": "Habilidad por debajo del límite del arquetipo",
+        "Prompt": "{archetype} establece el límite de {skill} en {cap}. ¿Establecer {skill} en {value} de todos modos?"
+      },
+      "KnackTierLimitOverride": {
+        "Title": "Superar el límite de talentos del nivel",
+        "Prompt": "El Nivel {tier} permite {maxPurchasable} talentos y este actor ya tiene {existingTierCount}. ¿Añadir este talento de todos modos?"
+      },
+      "KnackInsufficientXp": {
+        "Title": "PX insuficientes",
+        "Prompt": "{knack} cuesta {xpCost} PX, pero este actor tiene {unusedXp} PX sin gastar. ¿Añadirlo sin gastar PX?"
+      },
+      "PurchaseKnack": {
+        "Title": "Comprar talento",
+        "Prompt": "¿Comprar {knack} por {xpCost} PX? Al actor le quedarán {remainingXp} PX sin gastar.",
+        "Confirm": "Comprar"
+      },
       "ResetKnacks": {
         "Title": "Restablecer usos de Talento",
         "Prompt": "¿Restablecer qué usos de Talento?",

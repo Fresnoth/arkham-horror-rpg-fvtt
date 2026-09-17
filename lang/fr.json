@@ -320,6 +320,8 @@
       "PermissionStrainActor": "Vous n’avez pas l’autorisation de vous dépasser avec cet acteur.",
       "StrainRequiresDamage": "Vous ne pouvez vous dépasser que lorsque le maximum de votre réserve de dés est réduit par des dégâts.",
       "ArchetypeKnackDropInvalid": "Données de dépôt de don d’archétype invalides.",
+      "ArchetypeActorOwnerRequired": "Vous devez être propriétaire de cet acteur pour modifier son archétype.",
+      "ArchetypeObserverRequired": "Vous devez disposer au minimum de l’autorisation Observateur pour cet archétype.",
       "ArchetypeRequiredForKnacks": "Définissez un archétype pour cet acteur avant d’acheter des dons.",
       "KnackDifferentArchetype": "Ce don appartient à un autre archétype.",
       "ActorArchetypeInvalid": "La référence d’archétype de l’acteur est invalide.",
@@ -359,6 +361,7 @@
       "RollTableEmptyResultName": "La table de jets « {tableName} » possède une plage correspondante mais un nom de résultat vide. Définissez le nom du résultat ou le système utilisera les tables intégrées.",
       "RollTableOverflowAssumption": "La table de jets « {tableName} » s’arrête à {tableMax} ; l’entrée supérieure est traitée comme {tableMax}+ pour un total de {total}.",
       "ItemOpenSourceKnackGmOnly": "Seul le MJ peut ouvrir ou modifier les documents de dons source depuis un archétype.",
+      "ItemDropResolveFailed": "Impossible d’accéder à l’objet déposé. Demandez au MJ l’autorisation Observateur.",
       "ItemUuidResolveFailed": "Impossible de résoudre l’UUID déposé.",
       "ItemNoSheetForDocument": "Aucune fiche disponible pour ce document.",
       "ItemOpenUuidFailed": "Échec de l’ouverture du document UUID.",
@@ -379,6 +382,9 @@
     },
     "Info": {
       "KnackAlreadyOwnedUpdated": "Don déjà possédé ; rang mis à jour pour correspondre à l’archétype.",
+      "KnackPurchased": "{knack} acheté pour {xpCost} XP. Il reste {remainingXp} XP inutilisés.",
+      "KnackAcquiredWithoutXp": "{knack} a été ajouté sans dépenser d’XP.",
+      "KnackXpRefunded": "{xp} XP remboursés pour {count} don(s) acheté(s) supprimé(s). Il reste {remainingXp} XP inutilisés.",
       "ArchetypeSet": "Archétype défini sur {archetypeName}.",
       "TomeAlreadyUnderstood": "Cet ouvrage occulte est déjà compris.",
       "TomeNoSpellsToLearn": "Cet ouvrage occulte ne contient aucun sort à apprendre.",
@@ -514,6 +520,29 @@
       }
     },
     "Dialog": {
+      "ChangeArchetype": {
+        "Title": "Changer d’archétype",
+        "Prompt": "Changer l’archétype de cet acteur de {currentArchetype} à {newArchetype} ?",
+        "RemoveKnacksTitle": "Supprimer les dons existants",
+        "RemoveKnacksPrompt": "Supprimer les {count} dons existants ? Les sorts accordés par ces dons seront également supprimés."
+      },
+      "SkillBelowArchetypeCap": {
+        "Title": "Compétence sous la limite de l’archétype",
+        "Prompt": "{archetype} fixe la limite de {skill} à {cap}. Définir tout de même {skill} sur {value} ?"
+      },
+      "KnackTierLimitOverride": {
+        "Title": "Dépasser la limite de dons du rang",
+        "Prompt": "Le rang {tier} autorise {maxPurchasable} dons et cet acteur en possède déjà {existingTierCount}. Ajouter tout de même ce don ?"
+      },
+      "KnackInsufficientXp": {
+        "Title": "XP insuffisants",
+        "Prompt": "{knack} coûte {xpCost} XP, mais cet acteur ne dispose que de {unusedXp} XP inutilisés. L’ajouter sans dépenser d’XP ?"
+      },
+      "PurchaseKnack": {
+        "Title": "Acheter un don",
+        "Prompt": "Acheter {knack} pour {xpCost} XP ? Il restera {remainingXp} XP inutilisés à l’acteur.",
+        "Confirm": "Acheter"
+      },
       "ResetKnacks": {
         "Title": "Réinitialiser les utilisations des dons",
         "Prompt": "Quelles utilisations de dons réinitialiser ?",

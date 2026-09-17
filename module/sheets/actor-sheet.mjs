@@ -16,6 +16,7 @@ import { formatCurrency, spendMoney } from "../helpers/money.mjs";
 import { discardAllDice, discardDice, spendSimpleActionDie } from "../api/resources/index.mjs";
 import { setValue as setDicepoolValue } from "../api/dicepool/index.mjs";
 import { collectActorEffects, onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { postKnackXpReceipt } from "../helpers/knacks.mjs";
 
 export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
@@ -128,6 +129,7 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             effectToggle: this.#handleManageEffect,
         },
         form: {
+            handler: this.#onSubmitForm,
             submitOnChange: true
         },
         actor: {
@@ -204,6 +206,44 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         super(options)
     }
 
+    static async #onSubmitForm(event, form, formData, options = {}) {
+        if (!this.isEditable) return;
+
+        const { updateData, ...updateOptions } = options;
+        const submitData = this._prepareSubmitData(event, form, formData, updateData);
+        const skillMatch = /^system\.skills\.([^.]+)\.current$/.exec(event.target?.name ?? '');
+
+        if (skillMatch && this.document.system?.archetypeUuid) {
+            const skillKey = skillMatch[1];
+            const proposedValue = Number(foundry.utils.getProperty(submitData, event.target.name));
+            const archetype = await fromUuid(this.document.system.archetypeUuid);
+            const skillCap = Number(archetype?.system?.skillCaps?.[skillKey]);
+
+            if (Number.isFinite(proposedValue) && Number.isFinite(skillCap) && proposedValue < skillCap) {
+                const confirmed = await foundry.applications.api.DialogV2.confirm({
+                    window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.SkillBelowArchetypeCap.Title') },
+                    content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.SkillBelowArchetypeCap.Prompt', {
+                        skill: foundry.utils.escapeHTML(game.i18n.localize(`ARKHAM_HORROR.SKILL.${skillKey}`)),
+                        value: proposedValue,
+                        archetype: foundry.utils.escapeHTML(archetype.name),
+                        cap: skillCap
+                    })}</p>`,
+                    yes: { label: game.i18n.localize('Yes'), icon: 'fa-solid fa-check' },
+                    no: { label: game.i18n.localize('No'), icon: 'fa-solid fa-xmark' },
+                    modal: true,
+                    rejectClose: false
+                });
+
+                if (confirmed !== true) {
+                    event.target.value = this.document.system.skills?.[skillKey]?.current ?? 0;
+                    return;
+                }
+            }
+        }
+
+        await this._processSubmitData(event, form, submitData, updateOptions);
+    }
+
     /** @inheritDoc */
     async _onDrop(event) {
         const data = TextEditor.getDragEventData(event);
@@ -211,6 +251,18 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         if (data?.type === 'ArkhamHorrorArchetypeKnack') {
             await this.#onDropArchetypeKnack(event, data);
             return;
+        }
+
+        if (data?.type === 'Item') {
+            let item;
+            try {
+                item = await Item.fromDropData(data);
+            } catch (error) {
+                console.warn('Dropped Item could not be resolved', error);
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ItemDropResolveFailed'));
+                return;
+            }
+            return this._onDropItem(event, item);
         }
 
         return super._onDrop?.(event);
@@ -241,6 +293,10 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ActorArchetypeInvalid'));
             return;
         }
+        if (!archetype.testUserPermission(game.user, 'OBSERVER')) {
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeObserverRequired'));
+            return;
+        }
 
         await ArkhamHorrorActorSheet.#flushOpenArchetypeSheetDraft(archetype);
 
@@ -251,26 +307,8 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             return;
         }
 
-        const maxPurchasable = Number(archetype.system?.knackTiers?.[tier]?.maxPurchasable ?? 0);
-        if (maxPurchasable <= 0) {
-            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.KnackTierNotPurchasable', { tier, maxPurchasable }));
-            return;
-        }
-
-        // Policy: this counts ALL owned Knacks by tier (even if added via some other workflow)
-        // to enforce the archetype's tier limits system-wide for this actor.
-        const existingTierCount = (this.document.items?.contents ?? [])
-            .filter(i => i.type === 'knack')
-            .filter(i => Number(i.system?.tier ?? 0) === tier)
-            .length;
-
-        if (existingTierCount >= maxPurchasable) {
-            ui.notifications.warn(game.i18n.format('ARKHAM_HORROR.Warnings.KnackTierLimitReached', { tier, existingTierCount, maxPurchasable }));
-            return;
-        }
-
         // Deduplication: when the knack was originally sourced from a UUID (pack/world), we store it in flags.core.sourceId.
-        // If present, use that to avoid creating duplicates.
+        // If present, use that to avoid creating duplicates or charging XP again.
         const existing = (this.document.items?.contents ?? [])
             .find(i => i.type === 'knack' && i.flags?.core?.sourceId === uuid);
 
@@ -290,6 +328,69 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
             return;
         }
 
+        const maxPurchasable = Number(tierData.maxPurchasable ?? 0);
+
+        // Policy: this counts ALL owned Knacks by tier (even if added via some other workflow)
+        // to enforce the archetype's tier limits system-wide for this actor.
+        const existingTierCount = (this.document.items?.contents ?? [])
+            .filter(i => i.type === 'knack')
+            .filter(i => Number(i.system?.tier ?? 0) === tier)
+            .length;
+
+        if (maxPurchasable <= 0 || existingTierCount >= maxPurchasable) {
+            const confirmed = await foundry.applications.api.DialogV2.confirm({
+                window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.KnackTierLimitOverride.Title') },
+                content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.KnackTierLimitOverride.Prompt', {
+                    tier,
+                    existingTierCount,
+                    maxPurchasable
+                })}</p>`,
+                yes: { label: game.i18n.localize('Yes'), icon: 'fa-solid fa-check' },
+                no: { label: game.i18n.localize('No'), icon: 'fa-solid fa-xmark' },
+                modal: true,
+                rejectClose: false
+            });
+            if (confirmed !== true) return;
+        }
+
+        const xpCost = Math.max(0, Number(tierData.xpcost) || 0);
+        const rawUnusedXp = Number(this.document.system?.xp?.unused ?? 0);
+        const unusedXp = Number.isFinite(rawUnusedXp) ? rawUnusedXp : 0;
+        let spendXp = xpCost > 0;
+
+        if (spendXp && unusedXp < xpCost) {
+            const confirmed = await foundry.applications.api.DialogV2.confirm({
+                window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.KnackInsufficientXp.Title') },
+                content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.KnackInsufficientXp.Prompt', {
+                    knack: foundry.utils.escapeHTML(source.name),
+                    xpCost,
+                    unusedXp
+                })}</p>`,
+                yes: { label: game.i18n.localize('Yes'), icon: 'fa-solid fa-check' },
+                no: { label: game.i18n.localize('No'), icon: 'fa-solid fa-xmark' },
+                modal: true,
+                rejectClose: false
+            });
+            if (confirmed !== true) return;
+            spendXp = false;
+        }
+
+        if (spendXp) {
+            const confirmed = await foundry.applications.api.DialogV2.confirm({
+                window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.PurchaseKnack.Title') },
+                content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.PurchaseKnack.Prompt', {
+                    knack: foundry.utils.escapeHTML(source.name),
+                    xpCost,
+                    remainingXp: unusedXp - xpCost
+                })}</p>`,
+                yes: { label: game.i18n.localize('ARKHAM_HORROR.Dialog.PurchaseKnack.Confirm'), icon: 'fa-solid fa-cart-shopping' },
+                no: { label: game.i18n.localize('Cancel'), icon: 'fa-solid fa-xmark' },
+                modal: true,
+                rejectClose: false
+            });
+            if (confirmed !== true) return;
+        }
+
         const itemData = foundry.utils.deepClone(source.toObject());
         delete itemData._id;
         itemData.system = itemData.system ?? {};
@@ -300,51 +401,110 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
         itemData.flags['arkham-horror-rpg-fvtt'] = {
             ...(itemData.flags['arkham-horror-rpg-fvtt'] ?? {}),
             archetypeUuid: actorArchetypeUuid,
-            archetypeTier: tier
+            archetypeTier: tier,
+            xpPurchaseCost: 0
         };
 
         // NOTE: v13 best practice is usually `this.document.createEmbeddedDocuments('Item', [itemData])`.
         // Leaving as-is for now.
-        await ArkhamHorrorItem.create(itemData, { parent: this.document });
-    }
+        const createdKnack = await ArkhamHorrorItem.create(itemData, { parent: this.document });
+        if (!createdKnack) return;
 
-    async _onDropItem(event, data) {
-        // Prevent NPC-only Knacks from being acquired by Character actors via drag/drop.
-        // We treat both flags as NPC-only markers, since older/edited data might set weakness without setting isNPCknack.
-        const droppedItemType = data?.data?.type;
-        const droppedSystem = data?.data?.system;
-        if (droppedItemType === 'knack' && (droppedSystem?.isNPCknack || droppedSystem?.isNPCweakness)) {
-            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.NpcKnackDropBlocked'));
-            return false;
+        if (!spendXp) {
+            await postKnackXpReceipt({
+                actor: this.document,
+                messageKey: 'ARKHAM_HORROR.Info.KnackAcquiredWithoutXp',
+                data: { knack: foundry.utils.escapeHTML(source.name) }
+            });
+            return;
         }
 
         try {
-            const dropped = await Item.fromDropData(data);
-
-            if (dropped?.type === 'knack' && (dropped.system?.isNPCknack || dropped.system?.isNPCweakness)) {
-                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.NpcKnackDropBlocked'));
-                return false;
+            const remainingXp = unusedXp - xpCost;
+            await this.document.update({ 'system.xp.unused': remainingXp });
+            await createdKnack.update({ 'flags.arkham-horror-rpg-fvtt.xpPurchaseCost': xpCost });
+            await postKnackXpReceipt({
+                actor: this.document,
+                messageKey: 'ARKHAM_HORROR.Info.KnackPurchased',
+                data: { knack: foundry.utils.escapeHTML(source.name), xpCost, remainingXp }
+            });
+        } catch (error) {
+            if (Number(this.document.system?.xp?.unused) === unusedXp - xpCost) {
+                await this.document.update({ 'system.xp.unused': unusedXp });
             }
+            await createdKnack.delete();
+            throw error;
+        }
+    }
 
-            if (dropped?.type === 'archetype') {
-                await ArkhamHorrorActorSheet.#flushOpenArchetypeSheetDraft(dropped);
-
-                const updateData = {
-                    'system.archetypeUuid': dropped.uuid,
-                    'system.archetype': dropped.name
-                };
-
-                // The archetype's skillCaps are advancement limits (how far XP may improve a skill),
-                // not values to copy onto the actor. They stay on the archetype Item.
-                await this.document.update(updateData);
-                ui.notifications.info(game.i18n.format('ARKHAM_HORROR.Info.ArchetypeSet', { archetypeName: dropped.name }));
-                return;
-            }
-        } catch (e) {
-            // Fall through to default handling
+    async _onDropItem(event, dropped) {
+        // Prevent NPC-only Knacks from being acquired by Character actors via drag/drop.
+        // We treat both flags as NPC-only markers, since older/edited data might set weakness without setting isNPCknack.
+        if (dropped?.type === 'knack' && (dropped.system?.isNPCknack || dropped.system?.isNPCweakness)) {
+            ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.NpcKnackDropBlocked'));
+            return null;
         }
 
-        return super._onDropItem(event, data);
+        if (dropped?.type === 'archetype') {
+            if (!this.document.isOwner) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeActorOwnerRequired'));
+                return null;
+            }
+            if (!dropped.testUserPermission(game.user, 'OBSERVER')) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeObserverRequired'));
+                return null;
+            }
+
+            const currentUuid = this.document.system?.archetypeUuid;
+            const changingArchetype = Boolean(currentUuid && currentUuid !== dropped.uuid);
+            if (changingArchetype) {
+                const confirmed = await foundry.applications.api.DialogV2.confirm({
+                    window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.ChangeArchetype.Title') },
+                    content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.ChangeArchetype.Prompt', {
+                        currentArchetype: foundry.utils.escapeHTML(this.document.system?.archetype || game.i18n.localize('None')),
+                        newArchetype: foundry.utils.escapeHTML(dropped.name)
+                    })}</p>`,
+                    yes: { label: game.i18n.localize('Yes'), icon: 'fa-solid fa-check' },
+                    no: { label: game.i18n.localize('No'), icon: 'fa-solid fa-xmark' },
+                    modal: true,
+                    rejectClose: false
+                });
+                if (confirmed !== true) return null;
+
+                const knackIds = (this.document.items?.contents ?? [])
+                    .filter(item => item.type === 'knack')
+                    .map(item => item.id);
+                if (knackIds.length > 0) {
+                    const removeKnacks = await foundry.applications.api.DialogV2.confirm({
+                        window: { title: game.i18n.localize('ARKHAM_HORROR.Dialog.ChangeArchetype.RemoveKnacksTitle') },
+                        content: `<p>${game.i18n.format('ARKHAM_HORROR.Dialog.ChangeArchetype.RemoveKnacksPrompt', {
+                            count: knackIds.length
+                        })}</p>`,
+                        yes: { label: game.i18n.localize('Yes'), icon: 'fa-solid fa-trash' },
+                        no: { label: game.i18n.localize('No'), icon: 'fa-solid fa-xmark' },
+                        modal: true,
+                        rejectClose: false
+                    });
+                    if (removeKnacks === true) {
+                        await this.document.deleteEmbeddedDocuments('Item', knackIds);
+                    }
+                }
+
+            }
+
+            await ArkhamHorrorActorSheet.#flushOpenArchetypeSheetDraft(dropped);
+
+            // The archetype's skillCaps are advancement limits (how far XP may improve a skill),
+            // not values to copy onto the actor. They stay on the archetype Item.
+            await this.document.update({
+                'system.archetypeUuid': dropped.uuid,
+                'system.archetype': dropped.name
+            });
+            ui.notifications.info(game.i18n.format('ARKHAM_HORROR.Info.ArchetypeSet', { archetypeName: dropped.name }));
+            return dropped;
+        }
+
+        return super._onDropItem(event, dropped);
     }
 
     /* @inheritDoc */
@@ -690,15 +850,16 @@ export class ArkhamHorrorActorSheet extends HandlebarsApplicationMixin(ActorShee
 
     static async #handleDeleteItem(event, target) {
         const li = $(target).parents('.item');
+        let item;
         if (target.dataset.itemId == undefined) {
-            const item = this.actor.items.get(li.data('itemId'));
-            item.delete();
-            li.slideUp(200, () => this.render(false));
+            item = this.actor.items.get(li.data('itemId'));
         } else {
-            const item = this.options.document.items.get(target.dataset.itemId);
-            item.delete();
-            li.slideUp(200, () => this.render(false));
+            item = this.options.document.items.get(target.dataset.itemId);
         }
+        if (!item) return;
+        const deleted = await item.delete();
+        if (!deleted) return;
+        li.slideUp(200, () => this.render(false));
     }
 
     static async #handleToggleFoldableContent(event, target) {

@@ -1,8 +1,25 @@
 import { ROLL_EFFECT_ITEM_TYPES } from "../data/fields/roll-effects.mjs";
+import { applyChatModeAndPost } from "../util/chat-utils.mjs";
 
 const SYSTEM_ID = "arkham-horror-rpg-fvtt";
 
 const EFFECT_ITEM_TYPES = new Set(ROLL_EFFECT_ITEM_TYPES);
+
+export async function postKnackXpReceipt({ actor, messageKey, data = {} } = {}) {
+  if (!actor || !messageKey) return;
+
+  const message = game.i18n.format(messageKey, data);
+  ui.notifications?.info?.(message);
+
+  try {
+    await applyChatModeAndPost({
+      content: `<p>${message}</p>`,
+      speaker: ChatMessage.getSpeaker({ actor })
+    });
+  } catch (error) {
+    console.warn("Could not post Knack XP receipt", error);
+  }
+}
 
 function isActorEmbeddedItem(item) {
   return !!item?.parent && item.parent instanceof Actor;

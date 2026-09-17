@@ -645,7 +645,9 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
      * @protected
      */
     _canDragStart(selector) {
-        // game.user fetches the current user
+        if (this.document.type === 'archetype') {
+            return this.document.testUserPermission(game.user, 'OBSERVER');
+        }
         return this.isEditable;
     }
 
@@ -676,6 +678,10 @@ export class ArkhamHorrorItemSheet extends HandlebarsApplicationMixin(ItemSheetV
 
         // Dragging a knack entry from an Archetype tier list onto an Actor sheet
         if (el?.dataset?.dragType === 'archetype-knack') {
+            if (!this.document.testUserPermission(game.user, 'OBSERVER')) {
+                ui.notifications.warn(game.i18n.localize('ARKHAM_HORROR.Warnings.ArchetypeObserverRequired'));
+                return;
+            }
             const uuid = el.dataset.uuid;
             const tier = Number(el.dataset.tier);
             if (!uuid || !tier) return;

@@ -320,6 +320,8 @@
       "PermissionStrainActor": "Du hast keine Berechtigung, diesen Akteur zu belasten.",
       "StrainRequiresDamage": "Du kannst dich nur belasten, wenn dein Würfelpool-Maximum durch Schaden reduziert ist.",
       "ArchetypeKnackDropInvalid": "Ungültige Drag&Drop-Daten für einen Archetypen-Kniff.",
+      "ArchetypeActorOwnerRequired": "Du musst Eigentümer dieses Akteurs sein, um seinen Archetypen zu ändern.",
+      "ArchetypeObserverRequired": "Du benötigst mindestens Beobachter-Berechtigung für diesen Archetypen.",
       "ArchetypeRequiredForKnacks": "Lege zuerst einen Archetypen auf diesen Akteur fest, bevor Kniffe gekauft werden.",
       "KnackDifferentArchetype": "Dieser Kniff gehört zu einem anderen Archetypen.",
       "ActorArchetypeInvalid": "Die Archetypen-Referenz des Akteurs ist ungültig.",
@@ -359,6 +361,7 @@
       "RollTableEmptyResultName": "Würfeltabelle '{tableName}' hat zwar einen passenden Bereich, aber einen leeren Ergebnisnamen. Lege einen Namen für das Würfeltabellen-Ergebnis fest, sonst verwendet das System die eingebauten Fallback-Tabellen.",
       "RollTableOverflowAssumption": "Würfeltabelle '{tableName}' endet bei {tableMax}; behandle den obersten Eintrag als {tableMax}+ für Gesamt {total}.",
       "ItemOpenSourceKnackGmOnly": "Nur die SL kann Quell-Kniff-Dokumente aus einem Archetypen öffnen/bearbeiten.",
+      "ItemDropResolveFailed": "Auf den abgelegten Gegenstand konnte nicht zugegriffen werden. Bitte die SL um Beobachter-Berechtigung.",
       "ItemUuidResolveFailed": "Die abgelegte UUID konnte nicht aufgelöst werden.",
       "ItemNoSheetForDocument": "Für dieses Dokument ist kein Sheet verfügbar.",
       "ItemOpenUuidFailed": "Das UUID-Dokument konnte nicht geöffnet werden.",
@@ -379,6 +382,9 @@
     },
     "Info": {
       "KnackAlreadyOwnedUpdated": "Kniff bereits vorhanden; Stufe wurde an den Archetypen angepasst.",
+      "KnackPurchased": "{knack} für {xpCost} EP gekauft. {remainingXp} unverbrauchte EP verbleiben.",
+      "KnackAcquiredWithoutXp": "{knack} wurde ohne EP-Ausgabe hinzugefügt.",
+      "KnackXpRefunded": "{xp} EP für {count} gelöschte gekaufte Kniffe zurückerstattet. {remainingXp} unverbrauchte EP verbleiben.",
       "ArchetypeSet": "Archetyp auf {archetypeName} gesetzt.",
       "TomeAlreadyUnderstood": "Dieser Foliant ist bereits verstanden.",
       "TomeNoSpellsToLearn": "Dieser Foliant enthält keine Zauber, die gelernt werden können.",
@@ -514,6 +520,29 @@
       }
     },
     "Dialog": {
+      "ChangeArchetype": {
+        "Title": "Archetypen ändern",
+        "Prompt": "Den Archetypen dieses Akteurs von {currentArchetype} zu {newArchetype} ändern?",
+        "RemoveKnacksTitle": "Vorhandene Kniffe entfernen",
+        "RemoveKnacksPrompt": "Alle {count} vorhandenen Kniffe entfernen? Von diesen Kniffen gewährte Zauber werden ebenfalls entfernt."
+      },
+      "SkillBelowArchetypeCap": {
+        "Title": "Fertigkeit unter Archetypenlimit",
+        "Prompt": "{archetype} setzt das Limit für {skill} auf {cap}. {skill} trotzdem auf {value} setzen?"
+      },
+      "KnackTierLimitOverride": {
+        "Title": "Kniff-Stufenlimit überschreiten",
+        "Prompt": "Stufe {tier} erlaubt {maxPurchasable} Kniffe und dieser Akteur besitzt bereits {existingTierCount}. Diesen Kniff trotzdem hinzufügen?"
+      },
+      "KnackInsufficientXp": {
+        "Title": "Nicht genügend EP",
+        "Prompt": "{knack} kostet {xpCost} EP, aber dieser Akteur hat nur {unusedXp} unverbrauchte EP. Ohne EP-Ausgabe hinzufügen?"
+      },
+      "PurchaseKnack": {
+        "Title": "Kniff kaufen",
+        "Prompt": "{knack} für {xpCost} EP kaufen? Dem Akteur verbleiben {remainingXp} unverbrauchte EP.",
+        "Confirm": "Kaufen"
+      },
       "ResetKnacks": {
         "Title": "Kniff-Verwendungen zurücksetzen",
         "Prompt": "Welche Kniff-Verwendungen zurücksetzen?",

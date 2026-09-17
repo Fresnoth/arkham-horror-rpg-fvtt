@@ -1,4 +1,7 @@
 import { synchronizeItemStatusEffect } from '../helpers/status-effects.mjs';
+import { applyKnackGrantsOnAcquire, postKnackXpReceipt, removeKnackGrantedSpellsOnDelete } from '../helpers/knacks.mjs';
+
+const SYSTEM_ID = 'arkham-horror-rpg-fvtt';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -8,7 +11,44 @@ export class ArkhamHorrorItem extends Item {
   static async _onCreateOperation(documents, operation, user) {
     await super._onCreateOperation(documents, operation, user);
     if (user?.id !== game.user?.id) return;
-    for (const item of documents) await synchronizeItemStatusEffect(item);
+    for (const item of documents) {
+      await synchronizeItemStatusEffect(item);
+      if (item?.type === 'knack' && item?.parent instanceof Actor) {
+        await applyKnackGrantsOnAcquire({ actor: item.parent, knack: item, notify: false });
+      }
+    }
+  }
+
+  static async _onDeleteOperation(documents, operation, user) {
+    await super._onDeleteOperation(documents, operation, user);
+    if (user?.id !== game.user?.id) return;
+
+    const refundsByActor = new Map();
+    for (const item of documents) {
+      if (item?.type === 'knack' && item?.parent instanceof Actor) {
+        await removeKnackGrantedSpellsOnDelete({ actor: item.parent, knack: item, notify: false });
+
+        const xpPaid = Math.max(0, Number(item.flags?.[SYSTEM_ID]?.xpPurchaseCost) || 0);
+        if (xpPaid <= 0) continue;
+
+        const refund = refundsByActor.get(item.parent) ?? { xp: 0, count: 0 };
+        refund.xp += xpPaid;
+        refund.count += 1;
+        refundsByActor.set(item.parent, refund);
+      }
+    }
+
+    for (const [actor, refund] of refundsByActor) {
+      const rawUnusedXp = Number(actor.system?.xp?.unused ?? 0);
+      const unusedXp = Number.isFinite(rawUnusedXp) ? rawUnusedXp : 0;
+      const remainingXp = unusedXp + refund.xp;
+      await actor.update({ 'system.xp.unused': remainingXp });
+      await postKnackXpReceipt({
+        actor,
+        messageKey: 'ARKHAM_HORROR.Info.KnackXpRefunded',
+        data: { count: refund.count, xp: refund.xp, remainingXp }
+      });
+    }
   }
 
   static async _onUpdateOperation(documents, operation, user) {
